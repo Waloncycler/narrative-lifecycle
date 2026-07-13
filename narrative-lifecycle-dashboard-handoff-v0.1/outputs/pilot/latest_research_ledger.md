@@ -2,9 +2,9 @@
 
 ## 1. Run Context
 
-- ledger_id: research_ledger_run_20260713T032841770_1f2f1f
-- run_id: run_20260713T032841770_1f2f1f
-- generated_at: 2026-07-13T03:28:42.900Z
+- ledger_id: research_ledger_run_20260713T035113631_508dfa
+- run_id: run_20260713T035113631_508dfa
+- generated_at: 2026-07-13T03:51:14.089Z
 - status: ok
 - pilot_topic_count: 10
 
@@ -170,7 +170,7 @@
 - false_positive_count: 0
 - missed_change_count: 0
 - falsification_count: 0
-- consecutive_no_change_runs: 20
+- consecutive_no_change_runs: 22
 
 ## 4. Guardrails
 

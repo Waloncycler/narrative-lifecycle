@@ -1,7 +1,7 @@
 - import_id: import_20260713
-  imported_at: 2026-07-13T03:28:41.623Z
+  imported_at: 2026-07-13T03:51:13.612Z
   source_file: data/imports/evidence_draft.example.yaml
-  evidence_hash: ceed1fa2fe47bf59f5ddacece3e1abf5dd6732d95065933903424f1b2bc318d4
+  evidence_hash: 84579e942ec26bd0681a26656080b0928185e35984c5f1770b8d5468e7d83e1f
   evidence_id: import_bci_medical_rehab_followup_001
   topic_id: bci
   branch_id: bci_medical_rehab

@@ -55,6 +55,7 @@ npm run weekly
 npm run review
 npm run pilot:init
 npm run pilot:review
+npm run replay
 npm run typecheck
 npm test
 ```
@@ -117,6 +118,15 @@ The review layer aggregates historical operator evidence: run success/failure co
 
 The Pilot layer only records, compares, and evaluates existing artifacts plus manual operator observations. It does not reclassify stages, rescore topics, infer evidence, produce precise probabilities, or upgrade a parent narrative because a branch changed. Each pilot topic must include a current hypothesis, competing hypothesis, falsification trigger, `why_not_higher_stage`, operator agreement, and outcome status. Allowed next actions are limited to `observe`, `wait`, `validate`, `review`, `monitor`, and `flag_risk`.
 
+`npm run replay` runs Historical Narrative Replay against time-sliced historical cases:
+
+- `data/replay/replay_cases.yaml`
+- `outputs/replay/latest_replay_ledger.json`
+- `outputs/replay/latest_replay_ledger.md`
+- `outputs/replay/history/replay_ledger_<run_id>.json`
+
+Replay uses only evidence whose `available_at` is on or before the slice date. It runs stage, diff, and Early Radar checks before revealing the outcome, then reports stage paths, misclassification, lead time, missed changes, false positives, and rule calibration suggestions. It does not use future evidence, price movement, branch-to-parent lift, or trading advice.
+
 `npm run evidence:validate` checks a manual evidence draft before it can enter the pipeline. By default it reads:
 
 - `data/imports/evidence_draft.example.yaml`
@@ -163,6 +173,8 @@ See `data/golden_cases/`:
 11. Generate historical operator reviews from immutable run artifacts.
 12. Enforce v0.4 layered architecture boundaries and versioned public artifact metadata.
 13. Generate a live research pilot ledger for 10-15 real topics without reclassification, rescoring, probability modeling, UI, database, or automated ingestion.
+14. Run historical narrative replay with `available_at` time slicing and outcome reveal after each replay path.
+15. Provide non-developer operator guides for evidence intake, weekly review, pilot recording, replay, and troubleshooting.
 
 ## v0.4 Product Core
 
@@ -199,3 +211,11 @@ Migrated implementation code now lives in the layered core:
 `src/services/*` remains as compatibility wrappers plus explicitly inventoried legacy-active files. New code should import from `src/domain`, `src/application`, or `src/infrastructure` directly.
 
 See `docs/20_system_summary.md` for the system checklist and current architecture.
+
+## Operator Guides
+
+- `docs/QUICKSTART.md`
+- `docs/OPERATOR_GUIDE.md`
+- `docs/EVIDENCE_GUIDE.md`
+- `docs/REPLAY_GUIDE.md`
+- `docs/TROUBLESHOOTING.md`

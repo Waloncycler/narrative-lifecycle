@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.5.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260713T035113631_508dfa",
-  "generated_at": "2026-07-13T03:51:14.089Z",
-  "ledger_id": "research_ledger_run_20260713T035113631_508dfa",
+  "run_id": "run_20260713T035057514_3ac02b",
+  "generated_at": "2026-07-13T03:50:57.680Z",
+  "ledger_id": "research_ledger_run_20260713T035057514_3ac02b",
   "status": "ok",
   "source_artifacts": [
     "outputs/runs/latest_run.json",
@@ -318,7 +318,7 @@
     "false_positive_count": 0,
     "missed_change_count": 0,
     "falsification_count": 0,
-    "consecutive_no_change_runs": 22
+    "consecutive_no_change_runs": 21
   },
   "guardrail_check": {
     "no_trading_advice": true,

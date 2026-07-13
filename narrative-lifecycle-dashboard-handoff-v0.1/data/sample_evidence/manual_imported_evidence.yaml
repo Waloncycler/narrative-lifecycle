@@ -2,7 +2,6 @@
   topic_id: bci
   branch_id: bci_medical_rehab
   event_date: 2026-07-09
-  available_at: 2026-07-09
   event_title: Medical rehabilitation BCI follow-up validation
   event_summary: Branch-specific rehabilitation evidence adds follow-up validation
     but does not prove parent-level BCI pricing or revenue.
@@ -16,6 +15,7 @@
     - feedback
   stage_effect: maintain_branch
   parent_or_branch: branch
+  available_at: 2026-07-09
   branch_coverage_score: 35
   interpretation: Supports the medical rehabilitation branch only.
   limitation: Branch evidence cannot upgrade the parent BCI narrative or replace

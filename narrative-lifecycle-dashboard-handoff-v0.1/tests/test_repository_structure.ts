@@ -39,6 +39,11 @@ describe('repository structure', () => {
       'docs/17_migration_strategy.md',
       'docs/18_evaluation_framework.md',
       'docs/19_operational_workflow.md',
+      'docs/QUICKSTART.md',
+      'docs/OPERATOR_GUIDE.md',
+      'docs/EVIDENCE_GUIDE.md',
+      'docs/REPLAY_GUIDE.md',
+      'docs/TROUBLESHOOTING.md',
     ]);
   });
 

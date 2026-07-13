@@ -1,6 +1,6 @@
 {
   "validation_id": "validation_20260713",
-  "generated_at": "2026-07-13T03:28:42.914Z",
+  "generated_at": "2026-07-13T03:51:14.106Z",
   "source_file": "data/imports/evidence_draft.invalid.yaml",
   "status": "failed",
   "accepted_count": 0,
@@ -9,6 +9,11 @@
     {
       "evidence_id": "schema",
       "field": "/0/event_date",
+      "message": "must match format \"date\""
+    },
+    {
+      "evidence_id": "schema",
+      "field": "/0/available_at",
       "message": "must match format \"date\""
     },
     {
@@ -35,6 +40,11 @@
       "evidence_id": "invalid_parent_branch_trade_001",
       "field": "event_date",
       "message": "event_date must be YYYY-MM-DD"
+    },
+    {
+      "evidence_id": "invalid_parent_branch_trade_001",
+      "field": "available_at",
+      "message": "available_at must be YYYY-MM-DD"
     },
     {
       "evidence_id": "invalid_parent_branch_trade_001",

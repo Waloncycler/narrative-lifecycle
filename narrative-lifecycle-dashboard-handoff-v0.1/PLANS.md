@@ -151,9 +151,28 @@
 - Mark early or unavailable metrics as `insufficient_history`; do not invent precision or probabilities.
 - Keep Pilot mechanical and research-only: no classification, scoring, evidence inference, branch-to-parent lift, UI, database, automated ingestion, source-quality model, probability model, or trading advice.
 
+## Current Historical Replay Extension
+
+- Add `available_at` to Evidence and manual evidence import so historical replay can prevent future-evidence leakage.
+- Add `npm run replay` to run time-sliced historical narrative cases.
+- Read `data/replay/replay_cases.yaml` and write replay ledger JSON/Markdown under `outputs/replay/`.
+- Run Stage, Diff, and Early Radar checks at T0-Tn using only evidence available at that slice.
+- Reveal outcome only after the slice path is complete.
+- Cover success, failure, S7B, S7C, parent/branch separation, and long `no_change` cases.
+- Report stage paths, future evidence excluded, misclassification, lead time, missed changes, false positives, and calibration suggestions.
+- Do not use future evidence, price movement, branch-to-parent lift, automated ingestion, UI, database, or trading advice.
+
+## Current Friendly Operator Guide Extension
+
+- Add non-developer guides: `docs/QUICKSTART.md`, `docs/OPERATOR_GUIDE.md`, `docs/EVIDENCE_GUIDE.md`, `docs/REPLAY_GUIDE.md`, and `docs/TROUBLESHOOTING.md`.
+- Organize operator workflow around four steps: record evidence, run weekly, inspect changes, record outcomes.
+- Keep technical details in appendices and foreground current state, change reason, `why_not_higher_stage`, and next validation.
+
 ## Product Roadmap
 
 - v0.5 Live Research Pilot
-- v0.5.1 Pilot Iteration After 4-6 Weeks
+- v0.5.1 Historical Narrative Replay
+- v0.5.2 Friendly Operator Guide
+- v0.5.3 Pilot Iteration After 4-6 Weeks
 - v0.6 Read-Only Operator Interface
 - v0.7 PostgreSQL Adapter

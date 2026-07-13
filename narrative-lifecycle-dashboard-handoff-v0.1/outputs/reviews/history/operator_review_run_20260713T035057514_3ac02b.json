@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260713T035113631_508dfa",
-  "generated_at": "2026-07-13T03:51:22.828Z",
-  "review_id": "operator_review_run_20260713T035113631_508dfa",
+  "run_id": "run_20260713T035057514_3ac02b",
+  "generated_at": "2026-07-13T03:51:04.598Z",
+  "review_id": "operator_review_run_20260713T035057514_3ac02b",
   "status": "ok",
   "source_artifacts": [
     "outputs/runs/run_20260711T120227457_6350c6/run_manifest.json",
@@ -73,20 +73,17 @@
     "outputs/runs/run_20260713T032841770_1f2f1f/weekly_brief.json",
     "outputs/runs/run_20260713T035057514_3ac02b/run_manifest.json",
     "outputs/runs/run_20260713T035057514_3ac02b/stage_diff.json",
-    "outputs/runs/run_20260713T035057514_3ac02b/weekly_brief.json",
-    "outputs/runs/run_20260713T035113631_508dfa/run_manifest.json",
-    "outputs/runs/run_20260713T035113631_508dfa/stage_diff.json",
-    "outputs/runs/run_20260713T035113631_508dfa/weekly_brief.json"
+    "outputs/runs/run_20260713T035057514_3ac02b/weekly_brief.json"
   ],
   "review_window": {
     "first_run_id": "run_20260711T120227457_6350c6",
-    "last_run_id": "run_20260713T035113631_508dfa",
+    "last_run_id": "run_20260713T035057514_3ac02b",
     "first_started_at": "2026-07-11T12:02:27.457Z",
-    "last_completed_at": "2026-07-13T03:51:14.089Z"
+    "last_completed_at": "2026-07-13T03:50:57.680Z"
   },
   "run_summary": {
-    "run_count": 23,
-    "successful_run_count": 23,
+    "run_count": 22,
+    "successful_run_count": 22,
     "failed_run_count": 0
   },
   "runs": [
@@ -287,15 +284,6 @@
       "guardrail_status": "ok",
       "has_stage_diff": true,
       "has_weekly_brief": true
-    },
-    {
-      "run_id": "run_20260713T035113631_508dfa",
-      "started_at": "2026-07-13T03:51:13.631Z",
-      "completed_at": "2026-07-13T03:51:14.089Z",
-      "status": "ok",
-      "guardrail_status": "ok",
-      "has_stage_diff": true,
-      "has_weekly_brief": true
     }
   ],
   "stage_trends": {
@@ -337,7 +325,7 @@
     {
       "topic_id": "bci",
       "topic_name": "脑机接口 BCI",
-      "consecutive_run_count": 23,
+      "consecutive_run_count": 22,
       "run_ids": [
         "run_20260711T120227457_6350c6",
         "run_20260711T120448376_86c2d0",
@@ -360,15 +348,14 @@
         "run_20260713T032611996_4c5cea",
         "run_20260713T032639333_5d6e4f",
         "run_20260713T032841770_1f2f1f",
-        "run_20260713T035057514_3ac02b",
-        "run_20260713T035113631_508dfa"
+        "run_20260713T035057514_3ac02b"
       ],
       "current_stage": "S4"
     },
     {
       "topic_id": "humanoid_robotics",
       "topic_name": "人形机器人 / 具身智能",
-      "consecutive_run_count": 23,
+      "consecutive_run_count": 22,
       "run_ids": [
         "run_20260711T120227457_6350c6",
         "run_20260711T120448376_86c2d0",
@@ -391,15 +378,14 @@
         "run_20260713T032611996_4c5cea",
         "run_20260713T032639333_5d6e4f",
         "run_20260713T032841770_1f2f1f",
-        "run_20260713T035057514_3ac02b",
-        "run_20260713T035113631_508dfa"
+        "run_20260713T035057514_3ac02b"
       ],
       "current_stage": "S5-S6"
     },
     {
       "topic_id": "innovative_drug_license_out",
       "topic_name": "创新药 License-out",
-      "consecutive_run_count": 23,
+      "consecutive_run_count": 22,
       "run_ids": [
         "run_20260711T120227457_6350c6",
         "run_20260711T120448376_86c2d0",
@@ -422,8 +408,7 @@
         "run_20260713T032611996_4c5cea",
         "run_20260713T032639333_5d6e4f",
         "run_20260713T032841770_1f2f1f",
-        "run_20260713T035057514_3ac02b",
-        "run_20260713T035113631_508dfa"
+        "run_20260713T035057514_3ac02b"
       ],
       "current_stage": "S5-S6"
     }

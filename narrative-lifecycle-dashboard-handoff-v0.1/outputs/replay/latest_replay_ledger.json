@@ -1,0 +1,1109 @@
+{
+  "artifact_type": "historical_replay_ledger",
+  "schema_version": "1.0.0",
+  "producer_version": "0.5.1",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "run_id": "run_20260713T035113631_508dfa",
+  "generated_at": "2026-07-13T03:51:22.971Z",
+  "ledger_id": "replay_ledger_run_20260713T035113631_508dfa",
+  "status": "ok",
+  "source_artifacts": [
+    "data/replay/replay_cases.yaml",
+    "outputs/runs/latest_run.json"
+  ],
+  "case_count": 5,
+  "replay_cases": [
+    {
+      "case_id": "replay_ai_edge_success",
+      "topic_id": "ai_edge_applications",
+      "scenario_type": "success",
+      "stage_path": [
+        {
+          "slice_id": "T0",
+          "as_of": "2026-02-01",
+          "evidence_ids_used": [
+            "replay_ai_edge_label"
+          ],
+          "future_evidence_excluded": [
+            "replay_ai_edge_capital_pricing",
+            "replay_ai_edge_reality"
+          ],
+          "parent_stage": "S3",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+          "early_radar_candidate_ids": [
+            "radar_replay_ai_edge_success_S3"
+          ],
+          "diff_change_type": "initial_snapshot",
+          "diff_detected_changes": [
+            "initial_snapshot"
+          ]
+        },
+        {
+          "slice_id": "T1",
+          "as_of": "2026-02-15",
+          "evidence_ids_used": [
+            "replay_ai_edge_capital_pricing",
+            "replay_ai_edge_label"
+          ],
+          "future_evidence_excluded": [
+            "replay_ai_edge_reality"
+          ],
+          "parent_stage": "S5",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing hard reality evidence.",
+          "early_radar_candidate_ids": [],
+          "diff_change_type": "stage_upgrade",
+          "diff_detected_changes": [
+            "stage_upgrade",
+            "evidence_added",
+            "why_not_higher_changed"
+          ]
+        },
+        {
+          "slice_id": "T2",
+          "as_of": "2026-03-15",
+          "evidence_ids_used": [
+            "replay_ai_edge_capital_pricing",
+            "replay_ai_edge_label",
+            "replay_ai_edge_reality"
+          ],
+          "future_evidence_excluded": [],
+          "parent_stage": "S6",
+          "branch_stages": [],
+          "why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+          "early_radar_candidate_ids": [],
+          "diff_change_type": "stage_upgrade",
+          "diff_detected_changes": [
+            "stage_upgrade",
+            "evidence_added",
+            "why_not_higher_changed"
+          ]
+        }
+      ],
+      "final_stage_before_outcome": "S6",
+      "outcome_status": "confirmed",
+      "correct_stage": "S6",
+      "outcome_summary": "Later operating evidence confirmed the parent narrative reached reality validation without using market-price movement as proof.",
+      "misclassification": false,
+      "lead_time_days": 73,
+      "missed_change": false,
+      "false_positive": false,
+      "parent_branch_separation_preserved": true,
+      "calibration_suggestion": "Keep E4 multi-customer replication as the required S6 confirmation point."
+    },
+    {
+      "case_id": "replay_metaverse_failure",
+      "topic_id": "consumer_metaverse",
+      "scenario_type": "failure",
+      "stage_path": [
+        {
+          "slice_id": "T0",
+          "as_of": "2026-01-10",
+          "evidence_ids_used": [
+            "replay_meta_label"
+          ],
+          "future_evidence_excluded": [
+            "replay_meta_capital_pricing"
+          ],
+          "parent_stage": "S3",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+          "early_radar_candidate_ids": [
+            "radar_replay_metaverse_failure_S3"
+          ],
+          "diff_change_type": "initial_snapshot",
+          "diff_detected_changes": [
+            "initial_snapshot"
+          ]
+        },
+        {
+          "slice_id": "T1",
+          "as_of": "2026-01-25",
+          "evidence_ids_used": [
+            "replay_meta_capital_pricing",
+            "replay_meta_label"
+          ],
+          "future_evidence_excluded": [],
+          "parent_stage": "S5",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing hard reality evidence.",
+          "early_radar_candidate_ids": [],
+          "diff_change_type": "stage_upgrade",
+          "diff_detected_changes": [
+            "stage_upgrade",
+            "evidence_added",
+            "why_not_higher_changed"
+          ]
+        }
+      ],
+      "final_stage_before_outcome": "S5",
+      "outcome_status": "falsified",
+      "correct_stage": "S3",
+      "outcome_summary": "Later usage and customer-retention evidence weakened the narrative; the replay should treat the S5 setup as an overreach.",
+      "misclassification": true,
+      "lead_time_days": 50,
+      "missed_change": false,
+      "false_positive": true,
+      "parent_branch_separation_preserved": true,
+      "calibration_suggestion": "Add stricter downgrade pressure when pricing language lacks reality evidence across the validation window."
+    },
+    {
+      "case_id": "replay_policy_s7b",
+      "topic_id": "industrial_policy_cycle",
+      "scenario_type": "s7b",
+      "stage_path": [
+        {
+          "slice_id": "T0",
+          "as_of": "2026-04-01",
+          "evidence_ids_used": [
+            "replay_policy_label_capital_pricing"
+          ],
+          "future_evidence_excluded": [
+            "replay_policy_saturation"
+          ],
+          "parent_stage": "S5",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing hard reality evidence.",
+          "early_radar_candidate_ids": [],
+          "diff_change_type": "initial_snapshot",
+          "diff_detected_changes": [
+            "initial_snapshot"
+          ]
+        },
+        {
+          "slice_id": "T1",
+          "as_of": "2026-04-20",
+          "evidence_ids_used": [
+            "replay_policy_label_capital_pricing",
+            "replay_policy_saturation"
+          ],
+          "future_evidence_excluded": [],
+          "parent_stage": "S7B",
+          "branch_stages": [],
+          "why_not_higher_stage": "S7B state evidence is present; still verify continuity and failure signals.",
+          "early_radar_candidate_ids": [],
+          "diff_change_type": "stage_band_change",
+          "diff_detected_changes": [
+            "stage_band_change",
+            "evidence_added",
+            "why_not_higher_changed"
+          ]
+        }
+      ],
+      "final_stage_before_outcome": "S7B",
+      "outcome_status": "weakened",
+      "correct_stage": "S7B",
+      "outcome_summary": "Later evidence confirmed saturation and weakening rather than a new early-stage opportunity.",
+      "misclassification": false,
+      "lead_time_days": 30,
+      "missed_change": false,
+      "false_positive": false,
+      "parent_branch_separation_preserved": true,
+      "calibration_suggestion": "Keep S7B separate from early opportunity logic and surface it as a risk-state classification."
+    },
+    {
+      "case_id": "replay_bci_s7c_branch",
+      "topic_id": "bci",
+      "scenario_type": "s7c",
+      "stage_path": [
+        {
+          "slice_id": "T0",
+          "as_of": "2026-05-01",
+          "evidence_ids_used": [
+            "replay_bci_parent_label_capital"
+          ],
+          "future_evidence_excluded": [
+            "replay_bci_branch_s7c"
+          ],
+          "parent_stage": "S4",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "early_radar_candidate_ids": [
+            "radar_replay_bci_s7c_branch_S4"
+          ],
+          "diff_change_type": "initial_snapshot",
+          "diff_detected_changes": [
+            "initial_snapshot"
+          ]
+        },
+        {
+          "slice_id": "T1",
+          "as_of": "2026-05-25",
+          "evidence_ids_used": [
+            "replay_bci_branch_s7c",
+            "replay_bci_parent_label_capital"
+          ],
+          "future_evidence_excluded": [],
+          "parent_stage": "S4",
+          "branch_stages": [
+            {
+              "branch_id": "bci_medical_rehab",
+              "current_stage": "S7C",
+              "evidence_ids": [
+                "replay_bci_branch_s7c"
+              ]
+            }
+          ],
+          "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "early_radar_candidate_ids": [
+            "radar_replay_bci_s7c_branch_S4",
+            "radar_replay_bci_s7c_branch_bci_medical_rehab"
+          ],
+          "diff_change_type": "branch_mutation_candidate",
+          "diff_detected_changes": [
+            "branch_change",
+            "branch_mutation_candidate"
+          ]
+        }
+      ],
+      "final_stage_before_outcome": "S4",
+      "outcome_status": "confirmed",
+      "correct_stage": "S4",
+      "outcome_summary": "Later evidence confirmed the branch mutation while the parent narrative stayed S4.",
+      "misclassification": false,
+      "lead_time_days": 50,
+      "missed_change": false,
+      "false_positive": false,
+      "parent_branch_separation_preserved": true,
+      "calibration_suggestion": "Preserve parent and branch separation; never lift parent BCI to S7C from branch evidence."
+    },
+    {
+      "case_id": "replay_industrial_iot_no_change",
+      "topic_id": "industrial_iot",
+      "scenario_type": "long_no_change",
+      "stage_path": [
+        {
+          "slice_id": "T0",
+          "as_of": "2026-02-01",
+          "evidence_ids_used": [
+            "replay_iot_label_capital"
+          ],
+          "future_evidence_excluded": [],
+          "parent_stage": "S4",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "early_radar_candidate_ids": [
+            "radar_replay_industrial_iot_no_change_S4"
+          ],
+          "diff_change_type": "initial_snapshot",
+          "diff_detected_changes": [
+            "initial_snapshot"
+          ]
+        },
+        {
+          "slice_id": "T1",
+          "as_of": "2026-03-01",
+          "evidence_ids_used": [
+            "replay_iot_label_capital"
+          ],
+          "future_evidence_excluded": [],
+          "parent_stage": "S4",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "early_radar_candidate_ids": [
+            "radar_replay_industrial_iot_no_change_S4"
+          ],
+          "diff_change_type": "no_change",
+          "diff_detected_changes": [
+            "no_change"
+          ]
+        },
+        {
+          "slice_id": "T2",
+          "as_of": "2026-04-01",
+          "evidence_ids_used": [
+            "replay_iot_label_capital"
+          ],
+          "future_evidence_excluded": [],
+          "parent_stage": "S4",
+          "branch_stages": [],
+          "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "early_radar_candidate_ids": [
+            "radar_replay_industrial_iot_no_change_S4"
+          ],
+          "diff_change_type": "no_change",
+          "diff_detected_changes": [
+            "no_change"
+          ]
+        }
+      ],
+      "final_stage_before_outcome": "S4",
+      "outcome_status": "no_change",
+      "correct_stage": "S4",
+      "outcome_summary": "Later evidence showed no material stage transition; long no-change was the correct research state.",
+      "misclassification": false,
+      "lead_time_days": "not_applicable",
+      "missed_change": false,
+      "false_positive": false,
+      "parent_branch_separation_preserved": true,
+      "calibration_suggestion": "Treat long no-change as valid and avoid forced action generation."
+    }
+  ],
+  "aggregate": {
+    "success_count": 2,
+    "failure_count": 1,
+    "misclassification_count": 1,
+    "missed_change_count": 0,
+    "false_positive_count": 1,
+    "average_lead_time_days": 51,
+    "parent_branch_separation_preserved": true
+  },
+  "guardrail_check": {
+    "no_future_evidence_used": true,
+    "no_trading_advice": true,
+    "no_price_based_outcome_inference": true,
+    "parent_branch_separation_preserved": true
+  },
+  "debug_diffs": [
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "no_previous_snapshot",
+      "previous_snapshot_id": null,
+      "current_snapshot_id": "replay_snapshot_replay_ai_edge_success_0",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 0,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "ai_edge_applications",
+          "topic_name": "AI Edge Applications",
+          "change_type": "initial_snapshot",
+          "detected_changes": [
+            "initial_snapshot"
+          ],
+          "previous_stage": null,
+          "current_stage": "S3",
+          "previous_evidence_ids": [],
+          "current_evidence_ids": [
+            "replay_ai_edge_label"
+          ],
+          "new_evidence_ids": [
+            "replay_ai_edge_label"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": null,
+          "current_why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+          "previous_data_confidence": null,
+          "current_data_confidence": "high",
+          "change_reason": "No previous snapshot found. Current run saved as baseline.",
+          "priority": "low",
+          "research_only_action": "observe",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": []
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "ok",
+      "previous_snapshot_id": "replay_snapshot_replay_ai_edge_success_0",
+      "current_snapshot_id": "replay_snapshot_replay_ai_edge_success_1",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 1,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 1,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "ai_edge_applications",
+          "topic_name": "AI Edge Applications",
+          "change_type": "stage_upgrade",
+          "detected_changes": [
+            "stage_upgrade",
+            "evidence_added",
+            "why_not_higher_changed"
+          ],
+          "previous_stage": "S3",
+          "current_stage": "S5",
+          "previous_evidence_ids": [
+            "replay_ai_edge_label"
+          ],
+          "current_evidence_ids": [
+            "replay_ai_edge_label",
+            "replay_ai_edge_capital_pricing"
+          ],
+          "new_evidence_ids": [
+            "replay_ai_edge_capital_pricing"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+          "current_why_not_higher_stage": "Missing hard reality evidence.",
+          "previous_data_confidence": "high",
+          "current_data_confidence": "high",
+          "change_reason": "Detected: stage upgrade, evidence added, why not higher changed. Comparison uses persisted artifacts only.",
+          "priority": "medium",
+          "research_only_action": "review",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [
+        {
+          "candidate_id": "radar_replay_ai_edge_success_S3",
+          "candidate_topic": "AI Edge Applications",
+          "reactivation_record_id": "replay_reactivation_replay_ai_edge_success",
+          "evidence_ids": [
+            "replay_ai_edge_label"
+          ],
+          "change_type": "early_radar_removed",
+          "priority": "medium",
+          "research_only_action": "review"
+        }
+      ],
+      "guardrail_changes": [],
+      "next_operator_actions": [
+        {
+          "action": "review",
+          "topic_id": "ai_edge_applications",
+          "reason": "Detected: stage upgrade, evidence added, why not higher changed. Comparison uses persisted artifacts only.",
+          "evidence_ids": [
+            "replay_ai_edge_capital_pricing"
+          ]
+        },
+        {
+          "action": "review",
+          "reason": "early_radar_removed: AI Edge Applications; reactivation reference preserved.",
+          "evidence_ids": [
+            "replay_ai_edge_label"
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "ok",
+      "previous_snapshot_id": "replay_snapshot_replay_ai_edge_success_1",
+      "current_snapshot_id": "replay_snapshot_replay_ai_edge_success_2",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 1,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 1,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "ai_edge_applications",
+          "topic_name": "AI Edge Applications",
+          "change_type": "stage_upgrade",
+          "detected_changes": [
+            "stage_upgrade",
+            "evidence_added",
+            "why_not_higher_changed"
+          ],
+          "previous_stage": "S5",
+          "current_stage": "S6",
+          "previous_evidence_ids": [
+            "replay_ai_edge_label",
+            "replay_ai_edge_capital_pricing"
+          ],
+          "current_evidence_ids": [
+            "replay_ai_edge_label",
+            "replay_ai_edge_capital_pricing",
+            "replay_ai_edge_reality"
+          ],
+          "new_evidence_ids": [
+            "replay_ai_edge_reality"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": "Missing hard reality evidence.",
+          "current_why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+          "previous_data_confidence": "high",
+          "current_data_confidence": "high",
+          "change_reason": "Detected: stage upgrade, evidence added, why not higher changed. Comparison uses persisted artifacts only.",
+          "priority": "medium",
+          "research_only_action": "review",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": [
+        {
+          "action": "review",
+          "topic_id": "ai_edge_applications",
+          "reason": "Detected: stage upgrade, evidence added, why not higher changed. Comparison uses persisted artifacts only.",
+          "evidence_ids": [
+            "replay_ai_edge_reality"
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "no_previous_snapshot",
+      "previous_snapshot_id": null,
+      "current_snapshot_id": "replay_snapshot_replay_metaverse_failure_0",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 0,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "consumer_metaverse",
+          "topic_name": "Consumer Metaverse",
+          "change_type": "initial_snapshot",
+          "detected_changes": [
+            "initial_snapshot"
+          ],
+          "previous_stage": null,
+          "current_stage": "S3",
+          "previous_evidence_ids": [],
+          "current_evidence_ids": [
+            "replay_meta_label"
+          ],
+          "new_evidence_ids": [
+            "replay_meta_label"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": null,
+          "current_why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+          "previous_data_confidence": null,
+          "current_data_confidence": "medium",
+          "change_reason": "No previous snapshot found. Current run saved as baseline.",
+          "priority": "low",
+          "research_only_action": "observe",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": []
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "ok",
+      "previous_snapshot_id": "replay_snapshot_replay_metaverse_failure_0",
+      "current_snapshot_id": "replay_snapshot_replay_metaverse_failure_1",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 1,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 1,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "consumer_metaverse",
+          "topic_name": "Consumer Metaverse",
+          "change_type": "stage_upgrade",
+          "detected_changes": [
+            "stage_upgrade",
+            "evidence_added",
+            "why_not_higher_changed"
+          ],
+          "previous_stage": "S3",
+          "current_stage": "S5",
+          "previous_evidence_ids": [
+            "replay_meta_label"
+          ],
+          "current_evidence_ids": [
+            "replay_meta_label",
+            "replay_meta_capital_pricing"
+          ],
+          "new_evidence_ids": [
+            "replay_meta_capital_pricing"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+          "current_why_not_higher_stage": "Missing hard reality evidence.",
+          "previous_data_confidence": "medium",
+          "current_data_confidence": "medium",
+          "change_reason": "Detected: stage upgrade, evidence added, why not higher changed. Comparison uses persisted artifacts only.",
+          "priority": "medium",
+          "research_only_action": "review",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [
+        {
+          "candidate_id": "radar_replay_metaverse_failure_S3",
+          "candidate_topic": "Consumer Metaverse",
+          "reactivation_record_id": "replay_reactivation_replay_metaverse_failure",
+          "evidence_ids": [
+            "replay_meta_label"
+          ],
+          "change_type": "early_radar_removed",
+          "priority": "medium",
+          "research_only_action": "review"
+        }
+      ],
+      "guardrail_changes": [],
+      "next_operator_actions": [
+        {
+          "action": "review",
+          "topic_id": "consumer_metaverse",
+          "reason": "Detected: stage upgrade, evidence added, why not higher changed. Comparison uses persisted artifacts only.",
+          "evidence_ids": [
+            "replay_meta_capital_pricing"
+          ]
+        },
+        {
+          "action": "review",
+          "reason": "early_radar_removed: Consumer Metaverse; reactivation reference preserved.",
+          "evidence_ids": [
+            "replay_meta_label"
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "no_previous_snapshot",
+      "previous_snapshot_id": null,
+      "current_snapshot_id": "replay_snapshot_replay_policy_s7b_0",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 0,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "industrial_policy_cycle",
+          "topic_name": "Industrial Policy Cycle",
+          "change_type": "initial_snapshot",
+          "detected_changes": [
+            "initial_snapshot"
+          ],
+          "previous_stage": null,
+          "current_stage": "S5",
+          "previous_evidence_ids": [],
+          "current_evidence_ids": [
+            "replay_policy_label_capital_pricing"
+          ],
+          "new_evidence_ids": [
+            "replay_policy_label_capital_pricing"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": null,
+          "current_why_not_higher_stage": "Missing hard reality evidence.",
+          "previous_data_confidence": null,
+          "current_data_confidence": "high",
+          "change_reason": "No previous snapshot found. Current run saved as baseline.",
+          "priority": "low",
+          "research_only_action": "observe",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": []
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "ok",
+      "previous_snapshot_id": "replay_snapshot_replay_policy_s7b_0",
+      "current_snapshot_id": "replay_snapshot_replay_policy_s7b_1",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 1,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "industrial_policy_cycle",
+          "topic_name": "Industrial Policy Cycle",
+          "change_type": "stage_band_change",
+          "detected_changes": [
+            "stage_band_change",
+            "evidence_added",
+            "why_not_higher_changed"
+          ],
+          "previous_stage": "S5",
+          "current_stage": "S7B",
+          "previous_evidence_ids": [
+            "replay_policy_label_capital_pricing"
+          ],
+          "current_evidence_ids": [
+            "replay_policy_label_capital_pricing",
+            "replay_policy_saturation"
+          ],
+          "new_evidence_ids": [
+            "replay_policy_saturation"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": "Missing hard reality evidence.",
+          "current_why_not_higher_stage": "S7B state evidence is present; still verify continuity and failure signals.",
+          "previous_data_confidence": "high",
+          "current_data_confidence": "high",
+          "change_reason": "Detected: stage band change, evidence added, why not higher changed. Comparison uses persisted artifacts only.",
+          "priority": "low",
+          "research_only_action": "review",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": [
+        {
+          "action": "review",
+          "topic_id": "industrial_policy_cycle",
+          "reason": "Detected: stage band change, evidence added, why not higher changed. Comparison uses persisted artifacts only.",
+          "evidence_ids": [
+            "replay_policy_saturation"
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "no_previous_snapshot",
+      "previous_snapshot_id": null,
+      "current_snapshot_id": "replay_snapshot_replay_bci_s7c_branch_0",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 0,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "bci",
+          "topic_name": "BCI",
+          "change_type": "initial_snapshot",
+          "detected_changes": [
+            "initial_snapshot"
+          ],
+          "previous_stage": null,
+          "current_stage": "S4",
+          "previous_evidence_ids": [],
+          "current_evidence_ids": [
+            "replay_bci_parent_label_capital"
+          ],
+          "new_evidence_ids": [
+            "replay_bci_parent_label_capital"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": null,
+          "current_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "previous_data_confidence": null,
+          "current_data_confidence": "high",
+          "change_reason": "No previous snapshot found. Current run saved as baseline.",
+          "priority": "low",
+          "research_only_action": "observe",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": []
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "ok",
+      "previous_snapshot_id": "replay_snapshot_replay_bci_s7c_branch_0",
+      "current_snapshot_id": "replay_snapshot_replay_bci_s7c_branch_1",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 0,
+        "branch_mutation_candidate_count": 1,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "bci",
+          "topic_name": "BCI",
+          "change_type": "branch_mutation_candidate",
+          "detected_changes": [
+            "branch_change",
+            "branch_mutation_candidate"
+          ],
+          "previous_stage": "S4",
+          "current_stage": "S4",
+          "previous_evidence_ids": [
+            "replay_bci_parent_label_capital"
+          ],
+          "current_evidence_ids": [
+            "replay_bci_parent_label_capital"
+          ],
+          "new_evidence_ids": [],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "current_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "previous_data_confidence": "high",
+          "current_data_confidence": "high",
+          "change_reason": "Detected: branch change, branch mutation candidate. Comparison uses persisted artifacts only.",
+          "priority": "medium",
+          "research_only_action": "review",
+          "branch_id": "bci_medical_rehab",
+          "reactivation_record_id": "replay_branch_mutation_replay_bci_s7c_branch_bci_medical_rehab"
+        }
+      ],
+      "early_radar_changes": [
+        {
+          "candidate_id": "radar_replay_bci_s7c_branch_bci_medical_rehab",
+          "candidate_topic": "BCI",
+          "reactivation_record_id": "replay_branch_mutation_replay_bci_s7c_branch_bci_medical_rehab",
+          "evidence_ids": [
+            "replay_bci_branch_s7c"
+          ],
+          "change_type": "early_radar_added",
+          "priority": "medium",
+          "research_only_action": "review"
+        }
+      ],
+      "guardrail_changes": [],
+      "next_operator_actions": [
+        {
+          "action": "review",
+          "topic_id": "bci",
+          "reason": "Detected: branch change, branch mutation candidate. Comparison uses persisted artifacts only.",
+          "evidence_ids": [
+            "replay_bci_parent_label_capital"
+          ]
+        },
+        {
+          "action": "review",
+          "reason": "early_radar_added: BCI; reactivation reference preserved.",
+          "evidence_ids": [
+            "replay_bci_branch_s7c"
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "no_previous_snapshot",
+      "previous_snapshot_id": null,
+      "current_snapshot_id": "replay_snapshot_replay_industrial_iot_no_change_0",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 0,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "industrial_iot",
+          "topic_name": "Industrial IoT",
+          "change_type": "initial_snapshot",
+          "detected_changes": [
+            "initial_snapshot"
+          ],
+          "previous_stage": null,
+          "current_stage": "S4",
+          "previous_evidence_ids": [],
+          "current_evidence_ids": [
+            "replay_iot_label_capital"
+          ],
+          "new_evidence_ids": [
+            "replay_iot_label_capital"
+          ],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": null,
+          "current_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "previous_data_confidence": null,
+          "current_data_confidence": "high",
+          "change_reason": "No previous snapshot found. Current run saved as baseline.",
+          "priority": "low",
+          "research_only_action": "observe",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": []
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "ok",
+      "previous_snapshot_id": "replay_snapshot_replay_industrial_iot_no_change_0",
+      "current_snapshot_id": "replay_snapshot_replay_industrial_iot_no_change_1",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 0,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "industrial_iot",
+          "topic_name": "Industrial IoT",
+          "change_type": "no_change",
+          "detected_changes": [
+            "no_change"
+          ],
+          "previous_stage": "S4",
+          "current_stage": "S4",
+          "previous_evidence_ids": [
+            "replay_iot_label_capital"
+          ],
+          "current_evidence_ids": [
+            "replay_iot_label_capital"
+          ],
+          "new_evidence_ids": [],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "current_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "previous_data_confidence": "high",
+          "current_data_confidence": "high",
+          "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+          "priority": "low",
+          "research_only_action": "observe",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": []
+    },
+    {
+      "artifact_type": "stage_diff",
+      "schema_version": "1.0.0",
+      "producer_version": "0.4.0",
+      "rule_version": "narrative-lifecycle-rules-v0.1",
+      "run_id": "run_20260713T035113631_508dfa",
+      "generated_at": "2026-07-13T03:51:22.971Z",
+      "diff_id": "stage_diff_run_20260713T035113631_508dfa",
+      "status": "ok",
+      "previous_snapshot_id": "replay_snapshot_replay_industrial_iot_no_change_1",
+      "current_snapshot_id": "replay_snapshot_replay_industrial_iot_no_change_2",
+      "summary": {
+        "topic_count": 1,
+        "stage_upgrade_count": 0,
+        "stage_downgrade_count": 0,
+        "evidence_added_count": 0,
+        "branch_mutation_candidate_count": 0,
+        "guardrail_regression_count": 0
+      },
+      "topic_changes": [
+        {
+          "topic_id": "industrial_iot",
+          "topic_name": "Industrial IoT",
+          "change_type": "no_change",
+          "detected_changes": [
+            "no_change"
+          ],
+          "previous_stage": "S4",
+          "current_stage": "S4",
+          "previous_evidence_ids": [
+            "replay_iot_label_capital"
+          ],
+          "current_evidence_ids": [
+            "replay_iot_label_capital"
+          ],
+          "new_evidence_ids": [],
+          "removed_evidence_ids": [],
+          "previous_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "current_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+          "previous_data_confidence": "high",
+          "current_data_confidence": "high",
+          "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+          "priority": "low",
+          "research_only_action": "observe",
+          "branch_id": null,
+          "reactivation_record_id": null
+        }
+      ],
+      "early_radar_changes": [],
+      "guardrail_changes": [],
+      "next_operator_actions": []
+    }
+  ]
+}

@@ -96,3 +96,18 @@
 - Added Pilot schemas, types, Domain rules, Application use cases, Infrastructure file adapter, Markdown renderer, CLI commands, and tests.
 - Preserved the rule that Pilot records and evaluates only; it does not reclassify, rescore, infer evidence, produce precise probabilities, mutate historical artifacts, or lift parent narratives from branch mutations.
 - Limited Pilot actions to research-only actions and preserved no-trading-advice guardrails.
+
+## v0.5.1-historical-narrative-replay
+
+- Added `available_at` to Evidence and manual evidence import so historical replay can run without future-evidence leakage.
+- Added `npm run replay` for time-sliced historical narrative replay.
+- Added replay types, schema, Domain rules, Application use case, Infrastructure adapter, Markdown renderer, CLI, fixtures, and tests.
+- Added replay coverage for success, failure, S7B, S7C branch mutation, parent/branch separation, and long `no_change`.
+- Replay reports stage paths, future evidence excluded, misclassification, lead time, missed changes, false positives, and calibration suggestions.
+- Preserved the rule that replay does not use outcome, future evidence, price movement, or branch evidence to lift parent stage.
+
+## v0.5.2-friendly-operator-guide
+
+- Added `docs/QUICKSTART.md`, `docs/OPERATOR_GUIDE.md`, `docs/EVIDENCE_GUIDE.md`, `docs/REPLAY_GUIDE.md`, and `docs/TROUBLESHOOTING.md`.
+- Reframed operator documentation around recording evidence, running weekly, inspecting changes, and recording outcomes.
+- Added a complete example from new Evidence through weekly, review, and pilot outcome recording.

@@ -20,6 +20,7 @@ npm run weekly
 npm run review
 npm run pilot:init
 npm run pilot:review
+npm run replay
 ```
 
 The command loads local YAML fixtures, runs the rule engine, validates generated artifacts against JSON schemas, and writes:
@@ -66,6 +67,15 @@ Then `npm run pilot:review` records and evaluates the current pilot ledger from 
 
 The Pilot layer is a 4-6 week research trial layer. It tracks 10-15 topics with current and competing hypotheses, prior band, posterior direction, event intensity, tail structure, strongest evidence IDs, `why_not_higher_stage`, falsification trigger, validation window, operator agreement, comments, and outcome status. It does not classify, score, infer evidence, produce precise probabilities, mutate historical artifacts, or treat branch mutation as parent-stage movement.
 
+Then `npm run replay` runs historical time-slice validation:
+
+- `data/replay/replay_cases.yaml`
+- `outputs/replay/latest_replay_ledger.json`
+- `outputs/replay/latest_replay_ledger.md`
+- `outputs/replay/history/replay_ledger_<run_id>.json`
+
+Replay uses each evidence row's `available_at` field to ensure the system only uses information available at the replay slice. It runs Stage, Diff, and Early Radar checks before revealing the outcome, then reports stage paths, future evidence excluded, misclassification, lead time, missed changes, false positives, and calibration suggestions. It does not use price movement as proof, future evidence, or branch evidence to lift parent stages.
+
 Manual evidence import runs before the pipeline:
 
 - `data/imports/evidence_draft.example.yaml`
@@ -99,6 +109,8 @@ Manual evidence import runs before the pipeline:
 - Report integration: weekly brief stage changes are a projection of canonical diff output. The report does not run stage comparisons itself.
 - Historical review layer: operator reviews aggregate immutable run artifacts only and surface historical trends, repeated issues, guardrail regressions, consecutive `no_change` topics, and research-only next actions.
 - Pilot layer: live research ledgers compare existing artifacts with manual operator observations, require competing hypotheses and falsification triggers, allow unchanged topics, and restrict actions to `observe`, `wait`, `validate`, `review`, `monitor`, and `flag_risk`.
+- Replay layer: historical time slices use `available_at` to prevent future-evidence leakage and calibrate Stage, Diff, Early Radar, missed-change, false-positive, and parent/branch behavior.
+- Operator guide layer: non-developer docs explain evidence intake, weekly review, change inspection, outcome recording, replay, and troubleshooting.
 - Artifact contract layer: stable public artifacts carry `artifact_type`, `schema_version`, `producer_version`, `rule_version`, `run_id`, and `generated_at` metadata.
 - Legacy service cleanup layer: `src/services` is now an inventoried compatibility surface; migrated rules live in Domain/Application/Infrastructure and remaining legacy-active services have documented target layers and reasons.
 
@@ -118,6 +130,8 @@ The product core defines contracts for:
 File-system implementations back the current local CLI. InMemory implementations support tests. PostgreSQL and database migrations are intentionally out of scope for v0.4.
 
 Pilot I/O currently uses a file-system adapter for YAML inputs and JSON/Markdown artifacts. It remains outside database scope.
+
+Replay I/O currently uses a file-system adapter for replay YAML inputs and JSON/Markdown artifacts. It remains outside database and automated-ingestion scope.
 
 ## Legacy Service Migration
 
@@ -147,12 +161,14 @@ Remaining legacy-active services are tracked in `docs/legacy_service_inventory.j
 - Some report, review, diff, and pipeline assembly code remains in inventoried legacy-active services pending the next cleanup slice.
 - Pilot metrics such as stage-change precision and Early Radar follow-through are marked `insufficient_history` when the available run history cannot support calculation.
 - The Pilot layer is not a UI, database, automated ingestion layer, source-quality model, or probability model.
+- Replay fixtures are synthetic calibration cases. They validate rule behavior and time slicing, but they are not a substitute for the 4-6 week live pilot outcome review.
+- Operator guides are Markdown docs, not an interactive product interface.
 
 ## Next Recommended Phase
 
 Product roadmap:
 
-1. v0.5.1 Pilot Iteration After 4-6 Weeks.
+1. v0.5.3 Pilot Iteration After 4-6 Weeks.
 2. v0.6 Read-Only Operator Interface.
 3. v0.7 PostgreSQL Adapter.
 4. Automated ingestion only after source quality, provenance, pilot evaluation, and read-only review gates remain stable.

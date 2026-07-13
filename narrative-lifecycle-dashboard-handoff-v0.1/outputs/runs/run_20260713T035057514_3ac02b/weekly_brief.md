@@ -2,8 +2,8 @@
 
 ## 1. Executive Summary
 
-- report_id: weekly_brief_run_20260713T035113631_508dfa
-- generated_at: 2026-07-13T03:51:13.631Z
+- report_id: weekly_brief_run_20260713T035057514_3ac02b
+- generated_at: 2026-07-13T03:50:57.514Z
 - rule_version: narrative-lifecycle-rules-v0.1
 - dashboard_card_count: 3
 - score_count: 3
@@ -35,9 +35,9 @@
 
 ## 3. Stage Changes
 
-- previous_snapshot_id: stage_snapshot_run_20260713T035057514_3ac02b
-- current_snapshot_id: stage_snapshot_run_20260713T035113631_508dfa
-No narrative state changes detected compared with stage_snapshot_run_20260713T035057514_3ac02b.
+- previous_snapshot_id: stage_snapshot_run_20260713T032841770_1f2f1f
+- current_snapshot_id: stage_snapshot_run_20260713T035057514_3ac02b
+No narrative state changes detected compared with stage_snapshot_run_20260713T032841770_1f2f1f.
 
 ### Upgrades
 - none
