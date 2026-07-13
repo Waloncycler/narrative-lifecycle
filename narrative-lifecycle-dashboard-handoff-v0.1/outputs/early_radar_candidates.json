@@ -1,0 +1,26 @@
+[
+  {
+    "candidate_id": "radar_bci",
+    "candidate_name": "脑机接口 BCI",
+    "parent_narrative": "脑机接口 BCI",
+    "current_stage": "S4",
+    "transition_target": "S5",
+    "radar_pool": "S4 Early Trading Pool",
+    "early_opportunity_type": "Stage Gate Candidate",
+    "signal_origin": "reality_catch_up",
+    "reactivation_record_id": "reactivation_bci_S4",
+    "narrative_delta_score": 42,
+    "early_opportunity_score": 52,
+    "data_confidence": 74,
+    "why_early": "Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.",
+    "why_not_confirmed": "Missing pricing adoption; Missing hard reality evidence.",
+    "next_triggers": [
+      "Fill missing evidence listed in why_not_higher_stage.",
+      "Re-run stage gates before scoring."
+    ],
+    "failure_signals": [
+      "Do not classify the parent narrative as S6 without parent-level hard reality evidence."
+    ],
+    "suggested_action": "early research"
+  }
+]

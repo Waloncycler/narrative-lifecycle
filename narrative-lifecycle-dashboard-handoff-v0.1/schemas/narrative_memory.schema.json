@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "NarrativeMemory",
+  "required": [
+    "topic_id",
+    "historical_stage_path",
+    "previous_peak_stage",
+    "memory_confidence"
+  ],
+  "properties": {
+    "topic_id": {
+      "type": "string"
+    },
+    "first_seen_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "last_active_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "historical_stage_path": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+      }
+    },
+    "previous_peak_stage": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "previous_failed_transition": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])_to_(S[0-6]|S7[A-C])$"
+    },
+    "previous_failure_reason": {
+      "type": "string"
+    },
+    "previous_missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "previous_friction_points": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "previous_branch_structure": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_failure_case": {
+      "type": "boolean"
+    },
+    "memory_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

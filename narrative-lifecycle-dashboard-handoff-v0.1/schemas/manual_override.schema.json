@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "ManualOverride",
+  "required": [
+    "override_id",
+    "target_type",
+    "target_id",
+    "field_name",
+    "old_value",
+    "new_value",
+    "override_reason",
+    "reviewer",
+    "created_at",
+    "rule_version"
+  ],
+  "properties": {
+    "override_id": {
+      "type": "string"
+    },
+    "target_type": {
+      "type": "string"
+    },
+    "target_id": {
+      "type": "string"
+    },
+    "field_name": {
+      "type": "string"
+    },
+    "old_value": {},
+    "new_value": {},
+    "override_reason": {
+      "type": "string"
+    },
+    "reviewer": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "rule_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

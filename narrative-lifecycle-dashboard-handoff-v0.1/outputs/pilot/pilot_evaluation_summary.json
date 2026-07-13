@@ -1,0 +1,10 @@
+{
+  "research_time_saved": "insufficient_history",
+  "operator_agreement_rate": "insufficient_history",
+  "stage_change_precision": "insufficient_history",
+  "early_radar_follow_through": "insufficient_history",
+  "false_positive_count": 0,
+  "missed_change_count": 0,
+  "falsification_count": 0,
+  "consecutive_no_change_runs": 20
+}

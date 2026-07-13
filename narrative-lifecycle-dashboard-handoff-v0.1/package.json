@@ -1,0 +1,31 @@
+{
+  "name": "narrative-lifecycle-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "evidence:validate": "tsx src/cli/run_evidence_validate.ts",
+    "evidence:import": "tsx src/cli/run_evidence_import.ts",
+    "pipeline": "tsx src/cli/run_pipeline.ts",
+    "report": "tsx src/cli/run_report.ts",
+    "diff": "tsx src/cli/run_diff.ts",
+    "weekly": "tsx src/cli/run_weekly.ts",
+    "review": "tsx src/cli/run_review.ts",
+    "pilot:init": "tsx src/cli/run_pilot_init.ts",
+    "pilot:review": "tsx src/cli/run_pilot_review.ts",
+    "replay": "tsx src/cli/run_replay.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "tsx": "^4.23.0",
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  }
+}

@@ -1,0 +1,23 @@
+case_id: metaverse
+case_name: 元宇宙
+narrative_name: 元宇宙
+time_period: "2021-2022 broad calibration window"
+initial_stage: S2
+peak_stage: S5
+failed_transition: S5_to_S6
+failure_type: reality_validation_gap
+failure_reason_tags:
+  - heat_without_durable_revenue
+  - hardware_adoption_friction
+false_positive_signals:
+  - high media attention treated as reality validation
+  - virtual land and concept activity treated as pricing adoption quality
+missed_warning_signals:
+  - weak repeatable customer adoption
+  - unclear revenue and profit translation
+  - good-news fatigue after label saturation
+corrective_rules:
+  - Do not classify research reports or demonstrations as hard reality evidence.
+  - Require customer, revenue, or product delivery evidence before S6.
+lessons_for_model: Treat high heat as perception evidence only unless reality evidence closes the loop.
+status: structured_calibration_case

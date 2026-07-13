@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "DashboardCard",
+  "required": [
+    "card_id",
+    "topic_id",
+    "topic_name",
+    "as_of_date",
+    "current_stage",
+    "transition_target",
+    "stage_confidence",
+    "stage_reasoning",
+    "why_not_lower_stage",
+    "why_not_higher_stage",
+    "stage_snapshot",
+    "parent_narrative",
+    "key_branches",
+    "key_events",
+    "evidence_ids",
+    "score_id",
+    "scores",
+    "next_triggers",
+    "failure_signals",
+    "action",
+    "review_window",
+    "data_confidence",
+    "rule_version"
+  ],
+  "properties": {
+    "card_id": {
+      "type": "string"
+    },
+    "topic_id": {
+      "type": "string"
+    },
+    "topic_name": {
+      "type": "string"
+    },
+    "as_of_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "current_stage": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "transition_target": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "stage_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "stage_reasoning": {
+      "type": "string"
+    },
+    "why_not_lower_stage": {
+      "type": "string"
+    },
+    "why_not_higher_stage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage_snapshot": {
+      "type": "object",
+      "required": [
+        "current_stage",
+        "max_allowed_stage",
+        "why_not_higher_stage",
+        "evidence_ids",
+        "data_confidence_cap_applied"
+      ],
+      "properties": {
+        "current_stage": {
+          "type": "string",
+          "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+        },
+        "max_allowed_stage": {
+          "type": "string",
+          "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+        },
+        "why_not_higher_stage": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_confidence_cap_applied": {
+          "type": "boolean"
+        },
+        "data_confidence_cap_reason": {
+          "type": "string"
+        }
+      }
+    },
+    "parent_narrative": {
+      "type": "string"
+    },
+    "key_branches": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": [
+          "branch_id",
+          "branch_name",
+          "current_stage",
+          "evidence_ids",
+          "branch_coverage_score",
+          "parent_lift_assessment"
+        ],
+        "properties": {
+          "branch_id": {
+            "type": "string"
+          },
+          "branch_name": {
+            "type": "string"
+          },
+          "current_stage": {
+            "type": "string",
+            "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "branch_coverage_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "parent_lift_assessment": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "key_events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "evidence_id",
+          "event_title",
+          "reason_used"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string"
+          },
+          "event_title": {
+            "type": "string"
+          },
+          "reason_used": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "score_id": {
+      "type": "string"
+    },
+    "scores": {
+      "type": "object"
+    },
+    "next_triggers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "failure_signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "observe",
+        "early research",
+        "focus tracking",
+        "wait for confirmation",
+        "validation tracking",
+        "overcrowding alert",
+        "failure watch"
+      ]
+    },
+    "review_window": {
+      "type": "string"
+    },
+    "data_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "rule_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

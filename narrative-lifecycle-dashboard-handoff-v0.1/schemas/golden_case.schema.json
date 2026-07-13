@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "GoldenCase",
+  "required": [
+    "topic_id",
+    "topic_name",
+    "baseline_current_stage",
+    "transition_target",
+    "key_judgment",
+    "required_outputs",
+    "forbidden_outputs"
+  ],
+  "properties": {
+    "topic_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "topic_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "baseline_current_stage": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "transition_target": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "signal_origin": {
+      "type": "string"
+    },
+    "key_judgment": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_outputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "current_stage",
+        "must_include"
+      ],
+      "properties": {
+        "current_stage": {
+          "type": "string",
+          "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+        },
+        "branch_medical_rehab_stage": {
+          "type": "string",
+          "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+        },
+        "must_include": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "forbidden_outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

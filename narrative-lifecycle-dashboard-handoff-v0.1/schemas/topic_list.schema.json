@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "title": "TopicList",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+      "topic_id",
+      "topic_name",
+      "current_stage",
+      "transition_target",
+      "watch_status"
+    ],
+    "properties": {
+      "topic_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "topic_name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "current_stage": {
+        "type": "string",
+        "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+      },
+      "transition_target": {
+        "type": "string",
+        "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+      },
+      "watch_status": {
+        "type": "string",
+        "enum": [
+          "early_opportunity_pool",
+          "validation_tracking",
+          "overcrowding_watch",
+          "failure_watch",
+          "archived"
+        ]
+      }
+    }
+  }
+}

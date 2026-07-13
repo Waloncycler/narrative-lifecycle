@@ -1,0 +1,22 @@
+topic_id: bci
+topic_name: 脑机接口 BCI
+baseline_current_stage: S4
+transition_target: S5
+signal_origin: stage_reactivation
+key_judgment: >
+  BCI is not a brand-new topic. It is an old signal being reactivated.
+  The parent narrative is S4. Medical rehabilitation BCI branch is S5-S6.
+  The parent narrative must not be classified as S6.
+required_outputs:
+  current_stage: S4
+  branch_medical_rehab_stage: S5-S6
+  must_include:
+    - old theme reactivation
+    - branch reality upgrade
+    - pricing adoption insufficient
+    - parent reality insufficient
+    - medical branch validation cannot represent whole BCI
+    - revenue/payment/listed-asset mapping still missing
+forbidden_outputs:
+  - parent_stage_S6_without_parent_reality
+  - direct_buy_or_sell_instruction

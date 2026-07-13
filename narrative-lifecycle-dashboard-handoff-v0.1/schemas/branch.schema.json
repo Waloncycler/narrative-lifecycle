@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "Branch",
+  "required": [
+    "branch_id",
+    "topic_id",
+    "branch_name"
+  ],
+  "properties": {
+    "branch_id": {
+      "type": "string"
+    },
+    "topic_id": {
+      "type": "string"
+    },
+    "branch_name": {
+      "type": "string"
+    },
+    "current_stage": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "branch_importance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "branch_coverage_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "branch_feedback_to_parent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "stage_reasoning": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

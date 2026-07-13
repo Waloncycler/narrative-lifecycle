@@ -1,0 +1,23 @@
+case_id: prepared_food
+case_name: 预制菜
+narrative_name: 预制菜
+time_period: "2022-2023 broad calibration window"
+initial_stage: S2
+peak_stage: S4
+failed_transition: S4_to_S5
+failure_type: pricing_adoption_failure
+failure_reason_tags:
+  - consumer_acceptance_friction
+  - policy_and_channel_noise
+false_positive_signals:
+  - short-term attention treated as stable demand
+  - channel expansion treated as durable pricing adoption
+missed_warning_signals:
+  - consumer trust and food-safety concerns
+  - weak brand-level repeat purchase evidence
+  - limited valuation reframing by durable financial translation
+corrective_rules:
+  - Do not upgrade from S4 to S5 without valuation reframing and financial translation.
+  - Treat consumer friction as confidence-reducing missing data until validated.
+lessons_for_model: Consumer adoption and repeat purchase evidence matter more than temporary attention.
+status: structured_calibration_case

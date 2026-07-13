@@ -1,0 +1,29 @@
+{
+  "run_id": "run_20260713T032841770_1f2f1f",
+  "generated_at": "2026-07-13T03:28:41.770Z",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "mission": "Evidence-first narrative lifecycle decision-support system. Not a trading system.",
+  "guardrails": [
+    "Evidence Table First",
+    "Stage First, Score Second",
+    "No Evidence Table, no scoring",
+    "Parent and branch narratives are judged separately",
+    "Narrative Memory before Early Radar for old themes",
+    "No buy/sell advice, target prices, position sizing, or execution language"
+  ],
+  "produced_artifacts": {
+    "dashboard_cards": [
+      "outputs/dashboard_cards/bci.json",
+      "outputs/dashboard_cards/humanoid_robotics.json",
+      "outputs/dashboard_cards/innovative_drug_license_out.json"
+    ],
+    "scores": [
+      "outputs/scores/bci.json",
+      "outputs/scores/humanoid_robotics.json",
+      "outputs/scores/innovative_drug_license_out.json"
+    ],
+    "golden_results": "outputs/golden_case_results.json",
+    "early_radar": "outputs/early_radar_candidates.json",
+    "evaluation_summary": "outputs/evaluation_summary.json"
+  }
+}

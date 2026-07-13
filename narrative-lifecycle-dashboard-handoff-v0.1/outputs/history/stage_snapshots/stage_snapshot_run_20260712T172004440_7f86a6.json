@@ -1,0 +1,151 @@
+{
+  "artifact_type": "stage_snapshot_history",
+  "schema_version": "1.0.0",
+  "producer_version": "0.4.0",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "run_id": "run_20260712T172004440_7f86a6",
+  "generated_at": "2026-07-12T17:20:04.440Z",
+  "snapshot_id": "stage_snapshot_run_20260712T172004440_7f86a6",
+  "source_report_id": "weekly_brief_run_20260712T172004440_7f86a6",
+  "topics": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口 BCI",
+      "parent_narrative": "脑机接口 BCI",
+      "current_stage": "S4",
+      "gate_stage": "S4",
+      "max_allowed_stage": "S4",
+      "strongest_branch": "bci medical rehab (S5-S6)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": "medium",
+      "evidence_ids": [
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "bci_parent_capital",
+        "bci_parent_label",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "score_id": "score_bci_2026_07_05",
+      "dashboard_card_id": "card_bci",
+      "why_not_higher_stage": "Upgrade is capped by required checks: old theme reactivation; branch reality upgrade; pricing adoption insufficient; parent reality insufficient; medical branch validation cannot represent whole BCI; revenue/payment/listed-asset mapping still missing.",
+      "gate_why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+      "gate_evidence_ids": [
+        "bci_parent_capital",
+        "bci_parent_label"
+      ],
+      "branches": [
+        {
+          "branch_id": "bci_medical_rehab",
+          "branch_name": "bci medical rehab",
+          "current_stage": "S5-S6",
+          "evidence_ids": [
+            "bci_branch_label_pricing",
+            "bci_e001",
+            "import_bci_medical_rehab_followup_001"
+          ],
+          "reactivation_record_id": "reactivation_bci_S4"
+        }
+      ]
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人 / 具身智能",
+      "parent_narrative": "人形机器人 / 具身智能",
+      "current_stage": "S5-S6",
+      "gate_stage": "S6",
+      "max_allowed_stage": "S6",
+      "strongest_branch": "robot actuator (S5-S6)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": "medium",
+      "evidence_ids": [
+        "humanoid_e001",
+        "humanoid_parent_capital",
+        "humanoid_parent_label",
+        "humanoid_parent_pricing",
+        "humanoid_parent_reality"
+      ],
+      "score_id": "score_humanoid_robotics_2026_07_05",
+      "dashboard_card_id": "card_humanoid_robotics",
+      "why_not_higher_stage": "Upgrade is capped by required checks: pricing adoption; reality validation; valuation friction; S7A/S7C potential; S7B risk for crowded edge assets.",
+      "gate_why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "gate_evidence_ids": [
+        "humanoid_parent_capital",
+        "humanoid_parent_label",
+        "humanoid_parent_pricing",
+        "humanoid_parent_reality"
+      ],
+      "branches": [
+        {
+          "branch_id": "robot_actuator",
+          "branch_name": "robot actuator",
+          "current_stage": "S5-S6",
+          "evidence_ids": [
+            "humanoid_e001"
+          ],
+          "reactivation_record_id": null
+        }
+      ]
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药 License-out",
+      "parent_narrative": "创新药 License-out",
+      "current_stage": "S5-S6",
+      "gate_stage": "S6",
+      "max_allowed_stage": "S6",
+      "strongest_branch": "adc license out (S5-S6)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": "medium",
+      "evidence_ids": [
+        "licenseout_e001",
+        "licenseout_parent_capital",
+        "licenseout_parent_label",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "score_id": "score_innovative_drug_license_out_2026_07_05",
+      "dashboard_card_id": "card_innovative_drug_license_out",
+      "why_not_higher_stage": "Upgrade is capped by required checks: reality-first path; pricing adoption through upfront/milestone/global rights; clinical and regulatory risk; milestone realization risk.",
+      "gate_why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "gate_evidence_ids": [
+        "licenseout_parent_capital",
+        "licenseout_parent_label",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "branches": [
+        {
+          "branch_id": "adc_license_out",
+          "branch_name": "adc license out",
+          "current_stage": "S5-S6",
+          "evidence_ids": [
+            "licenseout_e001"
+          ],
+          "reactivation_record_id": null
+        }
+      ]
+    }
+  ],
+  "early_radar_candidates": [
+    {
+      "candidate_id": "radar_bci",
+      "candidate_topic": "脑机接口 BCI",
+      "reactivation_record_id": "reactivation_bci_S4",
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital",
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ]
+    }
+  ],
+  "guardrail_check": {
+    "no_trading_advice": false,
+    "research_only_actions": true,
+    "parent_branch_separation_preserved": true,
+    "evidence_ids_visible": true,
+    "why_not_higher_present": true,
+    "data_confidence_present": true
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "EvaluationResult",
+  "required": [
+    "evaluation_id",
+    "case_id",
+    "metric_name",
+    "result",
+    "score",
+    "expected",
+    "actual",
+    "created_at"
+  ],
+  "properties": {
+    "evaluation_id": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "metric_name": {
+      "type": "string"
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "review"
+      ]
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "expected": {
+      "type": "object"
+    },
+    "actual": {
+      "type": "object"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

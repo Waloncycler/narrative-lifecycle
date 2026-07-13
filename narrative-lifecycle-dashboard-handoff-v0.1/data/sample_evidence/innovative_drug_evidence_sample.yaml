@@ -1,0 +1,100 @@
+- evidence_id: licenseout_parent_label
+  topic_id: innovative_drug_license_out
+  branch_id:
+  event_date: "2026-01-14"
+  available_at: "2026-01-14"
+  event_title: License-out label is stable across industry and market discussion
+  event_summary: Parent innovative drug license-out narrative has stable perception.
+  event_type: label_formation
+  source_name: industry source fixture
+  source_url: https://example.invalid/fixtures/licenseout-parent-label
+  source_type: fixture_industry_source
+  evidence_strength: E2
+  affected_layer: [perception]
+  stage_effect: supports_S3
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports perception maturity for the license-out narrative.
+  limitation: Perception follows hard deal evidence and is not sufficient by itself.
+  positive_or_negative: positive
+  confidence: 82
+- evidence_id: licenseout_parent_capital
+  topic_id: innovative_drug_license_out
+  branch_id:
+  event_date: "2026-01-15"
+  available_at: "2026-01-15"
+  event_title: Capital confirms high-quality license-out deal leaders
+  event_summary: Capital confirmation appears around companies with high-quality license-out structures.
+  event_type: capital_confirmation
+  source_name: market data fixture
+  source_url: https://example.invalid/fixtures/licenseout-parent-capital
+  source_type: fixture_market_data
+  evidence_strength: E2
+  affected_layer: [capital]
+  stage_effect: supports_S4
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports capital confirmation for the parent narrative.
+  limitation: Capital response must be separated from full milestone realization.
+  positive_or_negative: positive
+  confidence: 82
+- evidence_id: licenseout_parent_pricing
+  topic_id: innovative_drug_license_out
+  branch_id:
+  event_date: "2026-01-16"
+  available_at: "2026-01-16"
+  event_title: Upfront, milestone, and global rights terms support pricing adoption
+  event_summary: Deal terms provide explicit financial translation through upfront cash, milestones, and global rights.
+  event_type: pricing_adoption
+  source_name: company announcement fixture
+  source_url: https://example.invalid/fixtures/licenseout-parent-pricing
+  source_type: fixture_company_announcement
+  evidence_strength: E3
+  affected_layer: [pricing]
+  stage_effect: supports_S5
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports pricing adoption through deal structure.
+  limitation: Headline deal value is not equal to realized cash flow.
+  positive_or_negative: positive
+  confidence: 82
+- evidence_id: licenseout_parent_reality
+  topic_id: innovative_drug_license_out
+  branch_id:
+  event_date: "2026-01-17"
+  available_at: "2026-01-17"
+  event_title: Partner quality and clinical path provide hard reality evidence
+  event_summary: Global partner quality and clinical path support reality validation while regulatory risk remains.
+  event_type: clinical_partner_validation
+  source_name: company announcement fixture
+  source_url: https://example.invalid/fixtures/licenseout-parent-reality
+  source_type: fixture_company_announcement
+  evidence_strength: E3
+  affected_layer: [reality]
+  stage_effect: supports_S6
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports reality-first validation for the parent narrative.
+  limitation: Milestones, clinical progress, and regulatory outcomes are not fully realized.
+  positive_or_negative: positive
+  confidence: 82
+- evidence_id: licenseout_e001
+  topic_id: innovative_drug_license_out
+  branch_id: adc_license_out
+  event_date: "2026-01-17"
+  available_at: "2026-01-17"
+  event_title: License-out deal with upfront and milestone structure
+  event_summary: Deal structure gives financial translation evidence while milestone realization and regulatory risk remain open.
+  event_type: order_contract
+  source_name: company announcement
+  source_url: https://example.invalid/fixtures/innovative-drug-license-out-deal
+  source_type: fixture_company_announcement
+  evidence_strength: E2
+  affected_layer: [reality, pricing]
+  stage_effect: supports_S5_to_S6
+  parent_or_branch: branch
+  branch_coverage_score: 55
+  interpretation: Supports reality-first path and pricing adoption.
+  limitation: Headline total deal value is not equal to realized cash flow.
+  positive_or_negative: positive
+  confidence: 82

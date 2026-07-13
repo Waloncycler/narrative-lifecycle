@@ -1,0 +1,181 @@
+{
+  "score_id": "score_innovative_drug_license_out_2026_07_05",
+  "topic_id": "innovative_drug_license_out",
+  "score_date": "2026-07-05",
+  "stage_snapshot": {
+    "current_stage": "S6",
+    "max_allowed_stage": "S6",
+    "why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+    "evidence_ids": [
+      "licenseout_parent_label",
+      "licenseout_parent_capital",
+      "licenseout_parent_pricing",
+      "licenseout_parent_reality"
+    ],
+    "data_confidence_cap_applied": false
+  },
+  "dimensions": {
+    "policy_perception": {
+      "score": 20,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Policy perception uses policy naming and support evidence only when present.",
+      "missing_data": [
+        "policy naming and support evidence"
+      ],
+      "confidence": 82
+    },
+    "market_perception": {
+      "score": 65,
+      "evidence_ids": [
+        "licenseout_parent_label"
+      ],
+      "reasoning": "Score is derived only from structured evidence that affects perception.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "trading_perception": {
+      "score": 60,
+      "evidence_ids": [
+        "licenseout_parent_label"
+      ],
+      "reasoning": "Trading perception requires stable label or mapped beneficiary evidence.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "capital_confirmation": {
+      "score": 65,
+      "evidence_ids": [
+        "licenseout_parent_capital"
+      ],
+      "reasoning": "Capital score uses leader, breadth, volume, or financing evidence when present.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "pricing_adoption": {
+      "score": 70,
+      "evidence_ids": [
+        "licenseout_parent_pricing"
+      ],
+      "reasoning": "Pricing score requires valuation reframing or financial translation evidence.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "parent_reality": {
+      "score": 65,
+      "evidence_ids": [
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Parent reality only uses evidence mapped to the parent narrative.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "branch_reality": {
+      "score": 70,
+      "evidence_ids": [
+        "licenseout_e001"
+      ],
+      "reasoning": "Branch reality only uses evidence explicitly mapped to a branch.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "branch_coverage": {
+      "score": 55,
+      "evidence_ids": [
+        "licenseout_e001"
+      ],
+      "reasoning": "Branch coverage reflects how representative branch evidence is for the parent narrative.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "feedback": {
+      "score": 25,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Feedback score uses perception-capital-reality loop evidence.",
+      "missing_data": [
+        "closed-loop feedback evidence"
+      ],
+      "confidence": 82
+    },
+    "execution_friction": {
+      "score": 35,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Execution friction uses negative execution, regulation, clinical, delivery, or commercialization evidence.",
+      "missing_data": [
+        "execution friction evidence"
+      ],
+      "confidence": 82
+    },
+    "valuation_friction": {
+      "score": 30,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Valuation friction uses crowding, saturation, and good-news fatigue evidence.",
+      "missing_data": [
+        "valuation friction evidence"
+      ],
+      "confidence": 82
+    },
+    "transition_probability": {
+      "score": 60,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Transition probability is capped by the completed Stage Gate classification.",
+      "missing_data": [
+        "next-stage trigger evidence"
+      ],
+      "confidence": 82
+    },
+    "narrative_delta_score": {
+      "score": 55,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality",
+        "licenseout_e001"
+      ],
+      "reasoning": "Narrative delta score requires memory/reactivation inputs; this value reflects structured evidence breadth only.",
+      "missing_data": [
+        "Narrative Memory comparison"
+      ],
+      "confidence": 82
+    },
+    "data_confidence": {
+      "score": 70,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality",
+        "licenseout_e001"
+      ],
+      "reasoning": "Data confidence reflects source breadth, authority, recency, balance, and layer coverage.",
+      "missing_data": [],
+      "confidence": 70
+    }
+  },
+  "rule_version": "narrative-lifecycle-rules-v0.1"
+}

@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "Evidence",
+  "required": [
+    "evidence_id",
+    "topic_id",
+    "event_date",
+    "available_at",
+    "event_title",
+    "event_summary",
+    "event_type",
+    "source_name",
+    "source_url",
+    "source_type",
+    "evidence_strength",
+    "affected_layer",
+    "stage_effect",
+    "parent_or_branch",
+    "branch_coverage_score",
+    "interpretation",
+    "limitation",
+    "positive_or_negative",
+    "confidence"
+  ],
+  "properties": {
+    "evidence_id": {
+      "type": "string"
+    },
+    "topic_id": {
+      "type": "string"
+    },
+    "branch_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "available_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "event_title": {
+      "type": "string"
+    },
+    "event_summary": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string"
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "source_type": {
+      "type": "string"
+    },
+    "evidence_strength": {
+      "type": "string",
+      "enum": [
+        "E0",
+        "E1",
+        "E2",
+        "E3",
+        "E4"
+      ]
+    },
+    "affected_layer": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "perception",
+          "capital",
+          "pricing",
+          "reality",
+          "feedback",
+          "friction"
+        ]
+      }
+    },
+    "stage_effect": {
+      "type": "string"
+    },
+    "parent_or_branch": {
+      "type": "string",
+      "enum": [
+        "parent",
+        "branch",
+        "asset",
+        "unknown"
+      ]
+    },
+    "branch_coverage_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "interpretation": {
+      "type": "string"
+    },
+    "limitation": {
+      "type": "string"
+    },
+    "positive_or_negative": {
+      "type": "string",
+      "enum": [
+        "positive",
+        "negative",
+        "neutral"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "parent_or_branch": {
+            "const": "branch"
+          }
+        },
+        "required": [
+          "parent_or_branch"
+        ]
+      },
+      "then": {
+        "required": [
+          "branch_id"
+        ]
+      }
+    }
+  ]
+}

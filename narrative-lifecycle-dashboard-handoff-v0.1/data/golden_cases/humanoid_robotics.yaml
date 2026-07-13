@@ -1,0 +1,20 @@
+topic_id: humanoid_robotics
+topic_name: 人形机器人 / 具身智能
+baseline_current_stage: S5-S6
+transition_target: S7A/S7C
+key_judgment: >
+  Humanoid robotics has strong perception, strong capital confirmation,
+  meaningful pricing adoption, and moderate-to-strong reality validation.
+  It is no longer an early S3/S4 theme. Edge assets may face S7B overcrowding risk.
+required_outputs:
+  current_stage: S5-S6
+  must_include:
+    - pricing adoption
+    - reality validation
+    - valuation friction
+    - S7A/S7C potential
+    - S7B risk for crowded edge assets
+forbidden_outputs:
+  - classify_as_S3_without_explanation
+  - ignore_valuation_friction
+  - direct_buy_or_sell_instruction

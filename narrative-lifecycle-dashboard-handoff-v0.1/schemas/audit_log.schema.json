@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "AuditLog",
+  "required": [
+    "audit_id",
+    "target_type",
+    "target_id",
+    "action",
+    "evidence_ids",
+    "rule_version",
+    "created_at"
+  ],
+  "properties": {
+    "audit_id": {
+      "type": "string"
+    },
+    "target_type": {
+      "type": "string"
+    },
+    "target_id": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "manual_override",
+        "stage_classification",
+        "scoring",
+        "dashboard_generation",
+        "evaluation"
+      ]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rule_version": {
+      "type": "string"
+    },
+    "model_version": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "details": {},
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

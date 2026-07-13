@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "FailureCase",
+  "required": [
+    "case_id",
+    "case_name",
+    "narrative_name",
+    "time_period",
+    "initial_stage",
+    "peak_stage",
+    "failed_transition",
+    "failure_type",
+    "failure_reason_tags",
+    "false_positive_signals",
+    "missed_warning_signals",
+    "corrective_rules",
+    "lessons_for_model"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "narrative_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "time_period": {
+      "type": "string",
+      "minLength": 1
+    },
+    "initial_stage": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])$",
+      "minLength": 1
+    },
+    "peak_stage": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])$",
+      "minLength": 1
+    },
+    "failed_transition": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])_to_(S[0-6]|S7[A-C])$",
+      "minLength": 1
+    },
+    "failure_type": {
+      "type": "string",
+      "enum": [
+        "reality_validation_gap",
+        "pricing_adoption_failure",
+        "policy_name_without_capital_confirmation",
+        "pricing_without_reality_validation",
+        "application_mapping_without_pricing_adoption"
+      ],
+      "minLength": 1
+    },
+    "failure_reason_tags": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "false_positive_signals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "missed_warning_signals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "corrective_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "lessons_for_model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "structured_calibration_case",
+        "researched"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

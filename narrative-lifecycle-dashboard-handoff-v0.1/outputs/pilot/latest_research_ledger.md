@@ -1,0 +1,191 @@
+# Live Research Pilot Ledger
+
+## 1. Run Context
+
+- ledger_id: research_ledger_run_20260713T032841770_1f2f1f
+- run_id: run_20260713T032841770_1f2f1f
+- generated_at: 2026-07-13T03:28:42.900Z
+- status: ok
+- pilot_topic_count: 10
+
+## 2. Topic Ledger
+
+- bci
+  - current_hypothesis: 脑机接口 BCI remains in S4 until new evidence changes the persisted artifacts.
+  - competing_hypothesis: 脑机接口 BCI may be a narrower branch event rather than a parent narrative transition.
+  - current_stage: S4
+  - latest_artifact_stage: S4
+  - posterior_direction: unchanged
+  - event_intensity: medium
+  - tail_structure: normal
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: wait
+  - strongest_evidence_ids: bci_parent_label, bci_parent_capital, bci_branch_label_pricing, bci_e001, import_bci_medical_rehab_followup_001
+  - falsification_trigger: New persisted evidence contradicts the current stage or removes a required Stage Gate layer.
+  - status_note: No change is a valid pilot state; continue the validation window.
+- humanoid_robotics
+  - current_hypothesis: 人形机器人 / 具身智能 remains in S5-S6 until new evidence changes the persisted artifacts.
+  - competing_hypothesis: 人形机器人 / 具身智能 may be a narrower branch event rather than a parent narrative transition.
+  - current_stage: S5-S6
+  - latest_artifact_stage: S5-S6
+  - posterior_direction: unchanged
+  - event_intensity: medium
+  - tail_structure: normal
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: wait
+  - strongest_evidence_ids: humanoid_parent_label, humanoid_parent_capital, humanoid_parent_pricing, humanoid_parent_reality, humanoid_e001
+  - falsification_trigger: New persisted evidence contradicts the current stage or removes a required Stage Gate layer.
+  - status_note: No change is a valid pilot state; continue the validation window.
+- innovative_drug_license_out
+  - current_hypothesis: 创新药 License-out remains in S5-S6 until new evidence changes the persisted artifacts.
+  - competing_hypothesis: 创新药 License-out may be a narrower branch event rather than a parent narrative transition.
+  - current_stage: S5-S6
+  - latest_artifact_stage: S5-S6
+  - posterior_direction: unchanged
+  - event_intensity: medium
+  - tail_structure: normal
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: wait
+  - strongest_evidence_ids: licenseout_parent_label, licenseout_parent_capital, licenseout_parent_pricing, licenseout_parent_reality, licenseout_e001
+  - falsification_trigger: New persisted evidence contradicts the current stage or removes a required Stage Gate layer.
+  - status_note: No change is a valid pilot state; continue the validation window.
+- ai_edge_applications
+  - current_hypothesis: AI edge applications has observable research signals but still needs artifact-backed validation.
+  - competing_hypothesis: AI edge applications may remain a local event cluster rather than a durable parent narrative.
+  - current_stage: S3
+  - latest_artifact_stage: none
+  - posterior_direction: unchanged
+  - event_intensity: low
+  - tail_structure: right_tail_candidate
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: observe
+  - strongest_evidence_ids: none
+  - falsification_trigger: No validated evidence appears during the pilot window or key assumptions are contradicted.
+  - status_note: Pilot topic remains under observation.
+- synthetic_biology_tools
+  - current_hypothesis: Synthetic biology tools has observable research signals but still needs artifact-backed validation.
+  - competing_hypothesis: Synthetic biology tools may remain a local event cluster rather than a durable parent narrative.
+  - current_stage: S2
+  - latest_artifact_stage: none
+  - posterior_direction: unchanged
+  - event_intensity: low
+  - tail_structure: right_tail_candidate
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: observe
+  - strongest_evidence_ids: none
+  - falsification_trigger: No validated evidence appears during the pilot window or key assumptions are contradicted.
+  - status_note: Pilot topic remains under observation.
+- solid_state_battery
+  - current_hypothesis: Solid-state battery has observable research signals but still needs artifact-backed validation.
+  - competing_hypothesis: Solid-state battery may remain a local event cluster rather than a durable parent narrative.
+  - current_stage: S4
+  - latest_artifact_stage: none
+  - posterior_direction: unchanged
+  - event_intensity: low
+  - tail_structure: normal
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: observe
+  - strongest_evidence_ids: none
+  - falsification_trigger: No validated evidence appears during the pilot window or key assumptions are contradicted.
+  - status_note: Pilot topic remains under observation.
+- low_altitude_economy
+  - current_hypothesis: Low-altitude economy has observable research signals but still needs artifact-backed validation.
+  - competing_hypothesis: Low-altitude economy may remain a local event cluster rather than a durable parent narrative.
+  - current_stage: S4
+  - latest_artifact_stage: none
+  - posterior_direction: unchanged
+  - event_intensity: low
+  - tail_structure: left_tail_risk
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: observe
+  - strongest_evidence_ids: none
+  - falsification_trigger: No validated evidence appears during the pilot window or key assumptions are contradicted.
+  - status_note: Pilot topic remains under observation.
+- robotics_components
+  - current_hypothesis: Robotics components has observable research signals but still needs artifact-backed validation.
+  - competing_hypothesis: Robotics components may remain a local event cluster rather than a durable parent narrative.
+  - current_stage: S5
+  - latest_artifact_stage: none
+  - posterior_direction: unchanged
+  - event_intensity: low
+  - tail_structure: right_tail_candidate
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: observe
+  - strongest_evidence_ids: none
+  - falsification_trigger: No validated evidence appears during the pilot window or key assumptions are contradicted.
+  - status_note: Pilot topic remains under observation.
+- advanced_packaging
+  - current_hypothesis: Advanced packaging has observable research signals but still needs artifact-backed validation.
+  - competing_hypothesis: Advanced packaging may remain a local event cluster rather than a durable parent narrative.
+  - current_stage: S5
+  - latest_artifact_stage: none
+  - posterior_direction: unchanged
+  - event_intensity: low
+  - tail_structure: normal
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: observe
+  - strongest_evidence_ids: none
+  - falsification_trigger: No validated evidence appears during the pilot window or key assumptions are contradicted.
+  - status_note: Pilot topic remains under observation.
+- fusion_energy_supply_chain
+  - current_hypothesis: Fusion energy supply chain has observable research signals but still needs artifact-backed validation.
+  - competing_hypothesis: Fusion energy supply chain may remain a local event cluster rather than a durable parent narrative.
+  - current_stage: S2
+  - latest_artifact_stage: none
+  - posterior_direction: unchanged
+  - event_intensity: low
+  - tail_structure: right_tail_candidate
+  - operator_agreement: uncertain
+  - outcome_status: pending
+  - missed_change_detected: false
+  - research_only_action: observe
+  - strongest_evidence_ids: none
+  - falsification_trigger: No validated evidence appears during the pilot window or key assumptions are contradicted.
+  - status_note: Pilot topic remains under observation.
+
+## 3. Evaluation Summary
+
+- research_time_saved: insufficient_history
+- operator_agreement_rate: insufficient_history
+- stage_change_precision: insufficient_history
+- early_radar_follow_through: insufficient_history
+- false_positive_count: 0
+- missed_change_count: 0
+- falsification_count: 0
+- consecutive_no_change_runs: 20
+
+## 4. Guardrails
+
+- no_trading_advice: true
+- required_hypotheses_present: true
+- required_falsification_triggers_present: true
+- research_only_actions: true
+- branch_parent_separation_preserved: true
+
+## 5. Source Artifacts
+
+- outputs/runs/latest_run.json
+- outputs/reports/weekly_brief.json
+- outputs/diffs/latest_stage_diff.json
+- outputs/reviews/latest_operator_review.json
+- data/pilot/pilot_topics.yaml
+- data/pilot/operator_observations.yaml
+

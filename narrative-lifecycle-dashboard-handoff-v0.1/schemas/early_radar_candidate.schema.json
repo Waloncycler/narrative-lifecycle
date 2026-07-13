@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "EarlyRadarCandidate",
+  "required": [
+    "candidate_id",
+    "candidate_name",
+    "parent_narrative",
+    "current_stage",
+    "transition_target",
+    "radar_pool",
+    "early_opportunity_type",
+    "signal_origin",
+    "narrative_delta_score",
+    "early_opportunity_score",
+    "data_confidence",
+    "why_early",
+    "why_not_confirmed",
+    "next_triggers",
+    "failure_signals",
+    "suggested_action"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string"
+    },
+    "candidate_name": {
+      "type": "string"
+    },
+    "parent_narrative": {
+      "type": "string"
+    },
+    "branch_name": {
+      "type": "string"
+    },
+    "current_stage": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "transition_target": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "radar_pool": {
+      "type": "string"
+    },
+    "early_opportunity_type": {
+      "type": "string"
+    },
+    "signal_origin": {
+      "type": "string",
+      "enum": [
+        "new_topic",
+        "dormant_signal_reactivation",
+        "stage_reactivation",
+        "branch_mutation",
+        "reality_catch_up",
+        "expectation_reset",
+        "repeated_old_story",
+        "failed_revival_attempt",
+        "noise"
+      ]
+    },
+    "reactivation_record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "narrative_delta_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "early_opportunity_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "data_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "why_early": {
+      "type": "string"
+    },
+    "why_not_confirmed": {
+      "type": "string"
+    },
+    "next_triggers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "failure_signals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "suggested_action": {
+      "type": "string",
+      "enum": [
+        "observe",
+        "early research",
+        "focus tracking",
+        "wait for confirmation",
+        "validation tracking",
+        "overcrowding alert",
+        "failure watch"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "signal_origin": {
+            "not": {
+              "const": "new_topic"
+            }
+          }
+        },
+        "required": [
+          "signal_origin"
+        ]
+      },
+      "then": {
+        "required": [
+          "reactivation_record_id"
+        ]
+      }
+    }
+  ]
+}

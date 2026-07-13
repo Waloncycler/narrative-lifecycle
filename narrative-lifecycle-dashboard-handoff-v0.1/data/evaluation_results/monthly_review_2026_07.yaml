@@ -1,0 +1,38 @@
+- evaluation_id: eval_bci_boundary_2026_07
+  case_id: bci
+  metric_name: Boundary Accuracy
+  result: pass
+  score: 100
+  expected:
+    parent_stage: S4
+    branch_stage: S5-S6
+  actual:
+    parent_stage: S4
+    branch_stage: S5-S6
+  notes: BCI parent remained separated from medical rehabilitation branch validation.
+  created_at: "2026-07-05T00:00:00.000Z"
+  schema_version: "0.1"
+- evaluation_id: eval_metaverse_failure_2026_07
+  case_id: metaverse
+  metric_name: Failure Case Calibration
+  result: review
+  score: 70
+  expected:
+    failed_transition: S5_to_S6
+  actual:
+    corrective_rule: Require customer, revenue, or product delivery evidence before S6.
+  notes: Calibration failure case is structured but still needs researched evidence.
+  created_at: "2026-07-05T00:00:00.000Z"
+  schema_version: "0.1"
+- evaluation_id: eval_short_policy_theme_2026_07
+  case_id: short_policy_theme
+  metric_name: Stage Gate Calibration
+  result: pass
+  score: 90
+  expected:
+    cap_without_capital: S3
+  actual:
+    cap_without_capital: S3
+  notes: Policy naming alone remains capped below S4.
+  created_at: "2026-07-05T00:00:00.000Z"
+  schema_version: "0.1"

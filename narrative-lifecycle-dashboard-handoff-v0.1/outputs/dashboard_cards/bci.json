@@ -1,0 +1,246 @@
+{
+  "card_id": "card_bci",
+  "topic_id": "bci",
+  "topic_name": "脑机接口 BCI",
+  "as_of_date": "2026-07-05",
+  "current_stage": "S4",
+  "transition_target": "S5",
+  "stage_confidence": 70,
+  "stage_reasoning": "BCI is not a brand-new topic. It is an old signal being reactivated. The parent narrative is S4. Medical rehabilitation BCI branch is S5-S6. The parent narrative must not be classified as S6.\n",
+  "why_not_lower_stage": "The golden case includes enough structured evidence to support its baseline lifecycle stage.",
+  "why_not_higher_stage": "Upgrade is capped by required checks: old theme reactivation; branch reality upgrade; pricing adoption insufficient; parent reality insufficient; medical branch validation cannot represent whole BCI; revenue/payment/listed-asset mapping still missing.",
+  "stage_snapshot": {
+    "current_stage": "S4",
+    "max_allowed_stage": "S4",
+    "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+    "evidence_ids": [
+      "bci_parent_label",
+      "bci_parent_capital"
+    ],
+    "data_confidence_cap_applied": false
+  },
+  "parent_narrative": "脑机接口 BCI",
+  "key_branches": [
+    {
+      "branch_id": "bci_medical_rehab",
+      "branch_name": "bci medical rehab",
+      "current_stage": "S5-S6",
+      "evidence_ids": [
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "branch_coverage_score": 42,
+      "parent_lift_assessment": "Branch evidence is tracked separately and cannot automatically upgrade the parent narrative."
+    }
+  ],
+  "key_events": [
+    {
+      "evidence_id": "bci_parent_label",
+      "event_title": "BCI label and beneficiary map reactivates",
+      "reason_used": "Supports parent narrative label stability."
+    },
+    {
+      "evidence_id": "bci_parent_capital",
+      "event_title": "Capital tests BCI parent theme",
+      "reason_used": "Supports S4 capital confirmation for the parent narrative."
+    },
+    {
+      "evidence_id": "bci_branch_label_pricing",
+      "event_title": "Medical rehabilitation BCI branch has pricing language",
+      "reason_used": "Supports branch-level pricing adoption."
+    },
+    {
+      "evidence_id": "bci_e001",
+      "event_title": "BCI medical device approval event",
+      "reason_used": "Supports medical rehabilitation BCI branch validation."
+    },
+    {
+      "evidence_id": "import_bci_medical_rehab_followup_001",
+      "event_title": "Medical rehabilitation BCI follow-up validation",
+      "reason_used": "Supports the medical rehabilitation branch only."
+    }
+  ],
+  "evidence_ids": [
+    "bci_parent_label",
+    "bci_parent_capital",
+    "bci_branch_label_pricing",
+    "bci_e001",
+    "import_bci_medical_rehab_followup_001"
+  ],
+  "score_id": "score_bci_2026_07_05",
+  "scores": {
+    "policy_perception": {
+      "score": 20,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ],
+      "reasoning": "Policy perception uses policy naming and support evidence only when present.",
+      "missing_data": [
+        "policy naming and support evidence"
+      ],
+      "confidence": 70
+    },
+    "market_perception": {
+      "score": 65,
+      "evidence_ids": [
+        "bci_parent_label"
+      ],
+      "reasoning": "Score is derived only from structured evidence that affects perception.",
+      "missing_data": [],
+      "confidence": 70
+    },
+    "trading_perception": {
+      "score": 60,
+      "evidence_ids": [
+        "bci_parent_label"
+      ],
+      "reasoning": "Trading perception requires stable label or mapped beneficiary evidence.",
+      "missing_data": [],
+      "confidence": 70
+    },
+    "capital_confirmation": {
+      "score": 65,
+      "evidence_ids": [
+        "bci_parent_capital"
+      ],
+      "reasoning": "Capital score uses leader, breadth, volume, or financing evidence when present.",
+      "missing_data": [],
+      "confidence": 70
+    },
+    "pricing_adoption": {
+      "score": 25,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ],
+      "reasoning": "Pricing score requires valuation reframing or financial translation evidence.",
+      "missing_data": [
+        "valuation reframing evidence"
+      ],
+      "confidence": 70
+    },
+    "parent_reality": {
+      "score": 20,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ],
+      "reasoning": "Parent reality only uses evidence mapped to the parent narrative.",
+      "missing_data": [
+        "parent-level orders, revenue, customers, regulatory, clinical, product, or profit evidence"
+      ],
+      "confidence": 70
+    },
+    "branch_reality": {
+      "score": 70,
+      "evidence_ids": [
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "reasoning": "Branch reality only uses evidence explicitly mapped to a branch.",
+      "missing_data": [],
+      "confidence": 73
+    },
+    "branch_coverage": {
+      "score": 42,
+      "evidence_ids": [
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "reasoning": "Branch coverage reflects how representative branch evidence is for the parent narrative.",
+      "missing_data": [],
+      "confidence": 73
+    },
+    "feedback": {
+      "score": 25,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ],
+      "reasoning": "Feedback score uses perception-capital-reality loop evidence.",
+      "missing_data": [
+        "closed-loop feedback evidence"
+      ],
+      "confidence": 70
+    },
+    "execution_friction": {
+      "score": 35,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ],
+      "reasoning": "Execution friction uses negative execution, regulation, clinical, delivery, or commercialization evidence.",
+      "missing_data": [
+        "execution friction evidence"
+      ],
+      "confidence": 70
+    },
+    "valuation_friction": {
+      "score": 30,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ],
+      "reasoning": "Valuation friction uses crowding, saturation, and good-news fatigue evidence.",
+      "missing_data": [
+        "valuation friction evidence"
+      ],
+      "confidence": 70
+    },
+    "transition_probability": {
+      "score": 45,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ],
+      "reasoning": "Transition probability is capped by the completed Stage Gate classification.",
+      "missing_data": [
+        "next-stage trigger evidence"
+      ],
+      "confidence": 70
+    },
+    "narrative_delta_score": {
+      "score": 55,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital",
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "reasoning": "Narrative delta score requires memory/reactivation inputs; this value reflects structured evidence breadth only.",
+      "missing_data": [
+        "Narrative Memory comparison"
+      ],
+      "confidence": 72
+    },
+    "data_confidence": {
+      "score": 74,
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital",
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "reasoning": "Data confidence reflects source breadth, authority, recency, balance, and layer coverage.",
+      "missing_data": [],
+      "confidence": 74
+    }
+  },
+  "data_confidence": 74,
+  "narrative_memory_status": "stage_reactivation",
+  "next_triggers": [
+    "Fill missing evidence listed in why_not_higher_stage.",
+    "Re-run stage gates before scoring."
+  ],
+  "failure_signals": [
+    "Do not classify the parent narrative as S6 without parent-level hard reality evidence."
+  ],
+  "action": "validation tracking",
+  "review_window": "weekly",
+  "rule_version": "narrative-lifecycle-rules-v0.1"
+}

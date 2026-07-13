@@ -1,0 +1,41 @@
+{
+  "output_dir": "outputs",
+  "run_id": "run_20260713T032841770_1f2f1f",
+  "generated_at": "2026-07-13T03:28:41.770Z",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "golden_results": [
+    {
+      "topic_id": "bci",
+      "expected_stage": "S4",
+      "actual_stage": "S4",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "expected_stage": "S5-S6",
+      "actual_stage": "S5-S6",
+      "passed": true,
+      "failures": []
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "expected_stage": "S5-S6",
+      "actual_stage": "S5-S6",
+      "passed": true,
+      "failures": []
+    }
+  ],
+  "dashboard_card_files": [
+    "outputs/dashboard_cards/bci.json",
+    "outputs/dashboard_cards/humanoid_robotics.json",
+    "outputs/dashboard_cards/innovative_drug_license_out.json"
+  ],
+  "score_files": [
+    "outputs/scores/bci.json",
+    "outputs/scores/humanoid_robotics.json",
+    "outputs/scores/innovative_drug_license_out.json"
+  ],
+  "early_radar_count": 1,
+  "evaluation_summary_file": "outputs/evaluation_summary.json"
+}

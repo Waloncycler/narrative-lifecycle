@@ -1,0 +1,24 @@
+{
+  "run_id": "run_20260711T120448376_86c2d0",
+  "started_at": "2026-07-11T12:04:48.376Z",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "artifact_version": "v0.3.1",
+  "completed_at": "2026-07-11T12:04:52.505Z",
+  "status": "ok",
+  "commands": [
+    "pipeline",
+    "diff",
+    "report"
+  ],
+  "artifacts": [
+    "outputs/runs/run_20260711T120448376_86c2d0/stage_snapshot.json",
+    "outputs/runs/run_20260711T120448376_86c2d0/stage_diff.json",
+    "outputs/runs/run_20260711T120448376_86c2d0/stage_diff.md",
+    "outputs/runs/run_20260711T120448376_86c2d0/weekly_brief.json",
+    "outputs/runs/run_20260711T120448376_86c2d0/weekly_brief.md"
+  ],
+  "previous_run_id": "run_20260711T120227457_6350c6",
+  "current_snapshot_id": "stage_snapshot_run_20260711T120448376_86c2d0",
+  "previous_snapshot_id": "stage_snapshot_run_20260711T120305829_483409",
+  "guardrail_status": "ok"
+}

@@ -1,0 +1,248 @@
+{
+  "card_id": "card_innovative_drug_license_out",
+  "topic_id": "innovative_drug_license_out",
+  "topic_name": "创新药 License-out",
+  "as_of_date": "2026-07-05",
+  "current_stage": "S5-S6",
+  "transition_target": "S7A/S7C",
+  "stage_confidence": 70,
+  "stage_reasoning": "Innovative drug License-out is a reality-first, perception-later narrative. Reality validation and pricing adoption are stronger than in BCI. The system must distinguish headline deal value from high-quality realization.\n",
+  "why_not_lower_stage": "The golden case includes enough structured evidence to support its baseline lifecycle stage.",
+  "why_not_higher_stage": "Upgrade is capped by required checks: reality-first path; pricing adoption through upfront/milestone/global rights; clinical and regulatory risk; milestone realization risk.",
+  "stage_snapshot": {
+    "current_stage": "S6",
+    "max_allowed_stage": "S6",
+    "why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+    "evidence_ids": [
+      "licenseout_parent_label",
+      "licenseout_parent_capital",
+      "licenseout_parent_pricing",
+      "licenseout_parent_reality"
+    ],
+    "data_confidence_cap_applied": false
+  },
+  "parent_narrative": "创新药 License-out",
+  "key_branches": [
+    {
+      "branch_id": "adc_license_out",
+      "branch_name": "adc license out",
+      "current_stage": "S5-S6",
+      "evidence_ids": [
+        "licenseout_e001"
+      ],
+      "branch_coverage_score": 55,
+      "parent_lift_assessment": "Branch evidence is tracked separately and cannot automatically upgrade the parent narrative."
+    }
+  ],
+  "key_events": [
+    {
+      "evidence_id": "licenseout_parent_label",
+      "event_title": "License-out label is stable across industry and market discussion",
+      "reason_used": "Supports perception maturity for the license-out narrative."
+    },
+    {
+      "evidence_id": "licenseout_parent_capital",
+      "event_title": "Capital confirms high-quality license-out deal leaders",
+      "reason_used": "Supports capital confirmation for the parent narrative."
+    },
+    {
+      "evidence_id": "licenseout_parent_pricing",
+      "event_title": "Upfront, milestone, and global rights terms support pricing adoption",
+      "reason_used": "Supports pricing adoption through deal structure."
+    },
+    {
+      "evidence_id": "licenseout_parent_reality",
+      "event_title": "Partner quality and clinical path provide hard reality evidence",
+      "reason_used": "Supports reality-first validation for the parent narrative."
+    },
+    {
+      "evidence_id": "licenseout_e001",
+      "event_title": "License-out deal with upfront and milestone structure",
+      "reason_used": "Supports reality-first path and pricing adoption."
+    }
+  ],
+  "evidence_ids": [
+    "licenseout_parent_label",
+    "licenseout_parent_capital",
+    "licenseout_parent_pricing",
+    "licenseout_parent_reality",
+    "licenseout_e001"
+  ],
+  "score_id": "score_innovative_drug_license_out_2026_07_05",
+  "scores": {
+    "policy_perception": {
+      "score": 20,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Policy perception uses policy naming and support evidence only when present.",
+      "missing_data": [
+        "policy naming and support evidence"
+      ],
+      "confidence": 82
+    },
+    "market_perception": {
+      "score": 65,
+      "evidence_ids": [
+        "licenseout_parent_label"
+      ],
+      "reasoning": "Score is derived only from structured evidence that affects perception.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "trading_perception": {
+      "score": 60,
+      "evidence_ids": [
+        "licenseout_parent_label"
+      ],
+      "reasoning": "Trading perception requires stable label or mapped beneficiary evidence.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "capital_confirmation": {
+      "score": 65,
+      "evidence_ids": [
+        "licenseout_parent_capital"
+      ],
+      "reasoning": "Capital score uses leader, breadth, volume, or financing evidence when present.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "pricing_adoption": {
+      "score": 70,
+      "evidence_ids": [
+        "licenseout_parent_pricing"
+      ],
+      "reasoning": "Pricing score requires valuation reframing or financial translation evidence.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "parent_reality": {
+      "score": 65,
+      "evidence_ids": [
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Parent reality only uses evidence mapped to the parent narrative.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "branch_reality": {
+      "score": 70,
+      "evidence_ids": [
+        "licenseout_e001"
+      ],
+      "reasoning": "Branch reality only uses evidence explicitly mapped to a branch.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "branch_coverage": {
+      "score": 55,
+      "evidence_ids": [
+        "licenseout_e001"
+      ],
+      "reasoning": "Branch coverage reflects how representative branch evidence is for the parent narrative.",
+      "missing_data": [],
+      "confidence": 82
+    },
+    "feedback": {
+      "score": 25,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Feedback score uses perception-capital-reality loop evidence.",
+      "missing_data": [
+        "closed-loop feedback evidence"
+      ],
+      "confidence": 82
+    },
+    "execution_friction": {
+      "score": 35,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Execution friction uses negative execution, regulation, clinical, delivery, or commercialization evidence.",
+      "missing_data": [
+        "execution friction evidence"
+      ],
+      "confidence": 82
+    },
+    "valuation_friction": {
+      "score": 30,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Valuation friction uses crowding, saturation, and good-news fatigue evidence.",
+      "missing_data": [
+        "valuation friction evidence"
+      ],
+      "confidence": 82
+    },
+    "transition_probability": {
+      "score": 60,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "reasoning": "Transition probability is capped by the completed Stage Gate classification.",
+      "missing_data": [
+        "next-stage trigger evidence"
+      ],
+      "confidence": 82
+    },
+    "narrative_delta_score": {
+      "score": 55,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality",
+        "licenseout_e001"
+      ],
+      "reasoning": "Narrative delta score requires memory/reactivation inputs; this value reflects structured evidence breadth only.",
+      "missing_data": [
+        "Narrative Memory comparison"
+      ],
+      "confidence": 82
+    },
+    "data_confidence": {
+      "score": 70,
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality",
+        "licenseout_e001"
+      ],
+      "reasoning": "Data confidence reflects source breadth, authority, recency, balance, and layer coverage.",
+      "missing_data": [],
+      "confidence": 70
+    }
+  },
+  "data_confidence": 70,
+  "narrative_memory_status": "golden_case_baseline",
+  "next_triggers": [
+    "Fill missing evidence listed in why_not_higher_stage.",
+    "Re-run stage gates before scoring."
+  ],
+  "failure_signals": [
+    "Do not treat headline deal value as fully realized cash flow or business validation.",
+    "Do not ignore partner quality, clinical execution, or regulatory risk."
+  ],
+  "action": "validation tracking",
+  "review_window": "weekly",
+  "rule_version": "narrative-lifecycle-rules-v0.1"
+}

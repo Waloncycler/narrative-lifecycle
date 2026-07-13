@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "ReplayLedger",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "producer_version",
+    "rule_version",
+    "run_id",
+    "generated_at",
+    "ledger_id",
+    "status",
+    "source_artifacts",
+    "case_count",
+    "replay_cases",
+    "aggregate",
+    "guardrail_check",
+    "debug_diffs"
+  ],
+  "properties": {
+    "artifact_type": { "const": "historical_replay_ledger" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "const": "0.5.1" },
+    "rule_version": { "type": "string" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "ledger_id": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["ok", "insufficient_history"] },
+    "source_artifacts": { "$ref": "#/$defs/strings" },
+    "case_count": { "type": "integer", "minimum": 0 },
+    "replay_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id",
+          "topic_id",
+          "scenario_type",
+          "stage_path",
+          "final_stage_before_outcome",
+          "outcome_status",
+          "correct_stage",
+          "outcome_summary",
+          "misclassification",
+          "lead_time_days",
+          "missed_change",
+          "false_positive",
+          "parent_branch_separation_preserved",
+          "calibration_suggestion"
+        ],
+        "properties": {
+          "case_id": { "type": "string", "minLength": 1 },
+          "topic_id": { "type": "string", "minLength": 1 },
+          "scenario_type": { "enum": ["success", "failure", "s7b", "s7c", "parent_branch_separation", "long_no_change"] },
+          "stage_path": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "slice_id",
+                "as_of",
+                "evidence_ids_used",
+                "future_evidence_excluded",
+                "parent_stage",
+                "branch_stages",
+                "why_not_higher_stage",
+                "early_radar_candidate_ids",
+                "diff_change_type",
+                "diff_detected_changes"
+              ],
+              "properties": {
+                "slice_id": { "type": "string", "minLength": 1 },
+                "as_of": { "type": "string", "format": "date" },
+                "evidence_ids_used": { "$ref": "#/$defs/strings" },
+                "future_evidence_excluded": { "$ref": "#/$defs/strings" },
+                "parent_stage": { "type": "string", "minLength": 1 },
+                "branch_stages": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["branch_id", "current_stage", "evidence_ids"],
+                    "properties": {
+                      "branch_id": { "type": "string", "minLength": 1 },
+                      "current_stage": { "type": "string", "minLength": 1 },
+                      "evidence_ids": { "$ref": "#/$defs/strings" }
+                    }
+                  }
+                },
+                "why_not_higher_stage": { "type": "string", "minLength": 1 },
+                "early_radar_candidate_ids": { "$ref": "#/$defs/strings" },
+                "diff_change_type": { "type": "string", "minLength": 1 },
+                "diff_detected_changes": { "$ref": "#/$defs/strings" }
+              }
+            }
+          },
+          "final_stage_before_outcome": { "type": "string", "minLength": 1 },
+          "outcome_status": { "enum": ["confirmed", "weakened", "falsified", "no_change"] },
+          "correct_stage": { "type": "string", "minLength": 1 },
+          "outcome_summary": { "type": "string", "minLength": 1 },
+          "misclassification": { "type": "boolean" },
+          "lead_time_days": {
+            "oneOf": [
+              { "type": "number" },
+              { "enum": ["missed", "not_applicable"] }
+            ]
+          },
+          "missed_change": { "type": "boolean" },
+          "false_positive": { "type": "boolean" },
+          "parent_branch_separation_preserved": { "type": "boolean" },
+          "calibration_suggestion": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "aggregate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "success_count",
+        "failure_count",
+        "misclassification_count",
+        "missed_change_count",
+        "false_positive_count",
+        "average_lead_time_days",
+        "parent_branch_separation_preserved"
+      ],
+      "properties": {
+        "success_count": { "type": "integer", "minimum": 0 },
+        "failure_count": { "type": "integer", "minimum": 0 },
+        "misclassification_count": { "type": "integer", "minimum": 0 },
+        "missed_change_count": { "type": "integer", "minimum": 0 },
+        "false_positive_count": { "type": "integer", "minimum": 0 },
+        "average_lead_time_days": {
+          "oneOf": [
+            { "type": "number" },
+            { "const": "insufficient_history" }
+          ]
+        },
+        "parent_branch_separation_preserved": { "type": "boolean" }
+      }
+    },
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "no_future_evidence_used",
+        "no_trading_advice",
+        "no_price_based_outcome_inference",
+        "parent_branch_separation_preserved"
+      ],
+      "properties": {
+        "no_future_evidence_used": { "type": "boolean" },
+        "no_trading_advice": { "type": "boolean" },
+        "no_price_based_outcome_inference": { "type": "boolean" },
+        "parent_branch_separation_preserved": { "type": "boolean" }
+      }
+    },
+    "debug_diffs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "$defs": {
+    "strings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

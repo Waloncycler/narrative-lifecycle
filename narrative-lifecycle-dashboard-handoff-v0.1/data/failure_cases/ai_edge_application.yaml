@@ -1,0 +1,23 @@
+case_id: ai_edge_application
+case_name: AI edge application overextension
+narrative_name: AI edge application
+time_period: "2023-2024 broad calibration window"
+initial_stage: S2
+peak_stage: S4
+failed_transition: S4_to_S5
+failure_type: application_mapping_without_pricing_adoption
+failure_reason_tags:
+  - demo_heat_without_financial_translation
+  - unclear_customer_budget
+false_positive_signals:
+  - product demos treated as durable demand
+  - broad AI label treated as beneficiary mapping
+missed_warning_signals:
+  - weak paid customer evidence
+  - unclear unit economics and valuation reframing
+  - branch evidence overgeneralized to parent AI application narrative
+corrective_rules:
+  - Do not treat demos as orders or revenue.
+  - Require paid adoption or financial translation before S5.
+lessons_for_model: Application narratives need customer-budget and revenue evidence before pricing adoption.
+status: structured_calibration_case

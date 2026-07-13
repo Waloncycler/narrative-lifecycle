@@ -1,0 +1,384 @@
+{
+  "artifact_type": "operator_review",
+  "schema_version": "1.0.0",
+  "producer_version": "0.4.0",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "run_id": "run_20260712T173515004_e0bf3d",
+  "generated_at": "2026-07-12T17:35:24.409Z",
+  "review_id": "operator_review_run_20260712T173515004_e0bf3d",
+  "status": "ok",
+  "source_artifacts": [
+    "outputs/runs/run_20260711T120227457_6350c6/run_manifest.json",
+    "outputs/runs/run_20260711T120227457_6350c6/stage_diff.json",
+    "outputs/runs/run_20260711T120227457_6350c6/weekly_brief.json",
+    "outputs/runs/run_20260711T120448376_86c2d0/run_manifest.json",
+    "outputs/runs/run_20260711T120448376_86c2d0/stage_diff.json",
+    "outputs/runs/run_20260711T120448376_86c2d0/weekly_brief.json",
+    "outputs/runs/run_20260711T120532061_66cf6e/run_manifest.json",
+    "outputs/runs/run_20260711T120532061_66cf6e/stage_diff.json",
+    "outputs/runs/run_20260711T120532061_66cf6e/weekly_brief.json",
+    "outputs/runs/run_20260711T120609281_35cfa5/run_manifest.json",
+    "outputs/runs/run_20260711T120609281_35cfa5/stage_diff.json",
+    "outputs/runs/run_20260711T120609281_35cfa5/weekly_brief.json",
+    "outputs/runs/run_20260711T120630686_c8886f/run_manifest.json",
+    "outputs/runs/run_20260711T120630686_c8886f/stage_diff.json",
+    "outputs/runs/run_20260711T120630686_c8886f/weekly_brief.json",
+    "outputs/runs/run_20260711T120702519_1aa0aa/run_manifest.json",
+    "outputs/runs/run_20260711T120702519_1aa0aa/stage_diff.json",
+    "outputs/runs/run_20260711T120702519_1aa0aa/weekly_brief.json",
+    "outputs/runs/run_20260711T120723766_fcf4d6/run_manifest.json",
+    "outputs/runs/run_20260711T120723766_fcf4d6/stage_diff.json",
+    "outputs/runs/run_20260711T120723766_fcf4d6/weekly_brief.json",
+    "outputs/runs/run_20260711T120738454_309065/run_manifest.json",
+    "outputs/runs/run_20260711T120738454_309065/stage_diff.json",
+    "outputs/runs/run_20260711T120738454_309065/weekly_brief.json",
+    "outputs/runs/run_20260712T161512479_220925/run_manifest.json",
+    "outputs/runs/run_20260712T161512479_220925/stage_diff.json",
+    "outputs/runs/run_20260712T161512479_220925/weekly_brief.json",
+    "outputs/runs/run_20260712T161532338_3d3640/run_manifest.json",
+    "outputs/runs/run_20260712T161532338_3d3640/stage_diff.json",
+    "outputs/runs/run_20260712T161532338_3d3640/weekly_brief.json",
+    "outputs/runs/run_20260712T172004440_7f86a6/run_manifest.json",
+    "outputs/runs/run_20260712T172004440_7f86a6/stage_diff.json",
+    "outputs/runs/run_20260712T172004440_7f86a6/weekly_brief.json",
+    "outputs/runs/run_20260712T172025529_6e4afc/run_manifest.json",
+    "outputs/runs/run_20260712T172025529_6e4afc/stage_diff.json",
+    "outputs/runs/run_20260712T172025529_6e4afc/weekly_brief.json",
+    "outputs/runs/run_20260712T172122333_54d120/run_manifest.json",
+    "outputs/runs/run_20260712T172122333_54d120/stage_diff.json",
+    "outputs/runs/run_20260712T172122333_54d120/weekly_brief.json",
+    "outputs/runs/run_20260712T172137443_0d28be/run_manifest.json",
+    "outputs/runs/run_20260712T172137443_0d28be/stage_diff.json",
+    "outputs/runs/run_20260712T172137443_0d28be/weekly_brief.json",
+    "outputs/runs/run_20260712T172145560_a4b892/run_manifest.json",
+    "outputs/runs/run_20260712T172145560_a4b892/stage_diff.json",
+    "outputs/runs/run_20260712T172145560_a4b892/weekly_brief.json",
+    "outputs/runs/run_20260712T173515004_e0bf3d/run_manifest.json",
+    "outputs/runs/run_20260712T173515004_e0bf3d/stage_diff.json",
+    "outputs/runs/run_20260712T173515004_e0bf3d/weekly_brief.json"
+  ],
+  "review_window": {
+    "first_run_id": "run_20260711T120227457_6350c6",
+    "last_run_id": "run_20260712T173515004_e0bf3d",
+    "first_started_at": "2026-07-11T12:02:27.457Z",
+    "last_completed_at": "2026-07-12T17:35:15.162Z"
+  },
+  "run_summary": {
+    "run_count": 16,
+    "successful_run_count": 16,
+    "failed_run_count": 0
+  },
+  "runs": [
+    {
+      "run_id": "run_20260711T120227457_6350c6",
+      "started_at": "2026-07-11T12:02:27.457Z",
+      "completed_at": "2026-07-11T12:02:34.367Z",
+      "status": "ok",
+      "guardrail_status": "review_required",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260711T120448376_86c2d0",
+      "started_at": "2026-07-11T12:04:48.376Z",
+      "completed_at": "2026-07-11T12:04:52.505Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260711T120532061_66cf6e",
+      "started_at": "2026-07-11T12:05:32.061Z",
+      "completed_at": "2026-07-11T12:05:39.470Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260711T120609281_35cfa5",
+      "started_at": "2026-07-11T12:06:09.281Z",
+      "completed_at": "2026-07-11T12:06:14.872Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260711T120630686_c8886f",
+      "started_at": "2026-07-11T12:06:30.686Z",
+      "completed_at": "2026-07-11T12:06:33.669Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260711T120702519_1aa0aa",
+      "started_at": "2026-07-11T12:07:02.519Z",
+      "completed_at": "2026-07-11T12:07:07.603Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260711T120723766_fcf4d6",
+      "started_at": "2026-07-11T12:07:23.766Z",
+      "completed_at": "2026-07-11T12:07:28.948Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260711T120738454_309065",
+      "started_at": "2026-07-11T12:07:38.454Z",
+      "completed_at": "2026-07-11T12:07:41.873Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260712T161512479_220925",
+      "started_at": "2026-07-12T16:15:12.479Z",
+      "completed_at": "2026-07-12T16:15:13.661Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260712T161532338_3d3640",
+      "started_at": "2026-07-12T16:15:32.338Z",
+      "completed_at": "2026-07-12T16:15:41.487Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260712T172004440_7f86a6",
+      "started_at": "2026-07-12T17:20:04.440Z",
+      "completed_at": "2026-07-12T17:20:04.606Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260712T172025529_6e4afc",
+      "started_at": "2026-07-12T17:20:25.529Z",
+      "completed_at": "2026-07-12T17:20:26.595Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260712T172122333_54d120",
+      "started_at": "2026-07-12T17:21:22.333Z",
+      "completed_at": "2026-07-12T17:21:22.496Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260712T172137443_0d28be",
+      "started_at": "2026-07-12T17:21:37.443Z",
+      "completed_at": "2026-07-12T17:21:38.396Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260712T172145560_a4b892",
+      "started_at": "2026-07-12T17:21:45.560Z",
+      "completed_at": "2026-07-12T17:21:45.731Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260712T173515004_e0bf3d",
+      "started_at": "2026-07-12T17:35:15.004Z",
+      "completed_at": "2026-07-12T17:35:15.162Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    }
+  ],
+  "stage_trends": {
+    "upgrades": [],
+    "downgrades": []
+  },
+  "evidence_trends": {
+    "added": [],
+    "removed": []
+  },
+  "why_not_higher_changes": [],
+  "data_confidence_changes": [],
+  "branch_mutation_changes": [],
+  "early_radar_changes": [],
+  "guardrail_regressions": [
+    {
+      "run_id": "run_20260711T120227457_6350c6",
+      "generated_at": "2026-07-11T12:02:27.457Z",
+      "change_type": "no_trading_advice",
+      "previous_value": "true",
+      "current_value": "false",
+      "evidence_ids": []
+    }
+  ],
+  "failure_case_hits": [
+    {
+      "run_id": "run_20260711T120227457_6350c6",
+      "status": "review_required",
+      "issue": "run manifest reported guardrail review required"
+    },
+    {
+      "run_id": "run_20260711T120227457_6350c6",
+      "status": "review_required",
+      "issue": "guardrail regression: no_trading_advice"
+    }
+  ],
+  "repeated_issues": [],
+  "consecutive_no_change_topics": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口 BCI",
+      "consecutive_run_count": 16,
+      "run_ids": [
+        "run_20260711T120227457_6350c6",
+        "run_20260711T120448376_86c2d0",
+        "run_20260711T120532061_66cf6e",
+        "run_20260711T120609281_35cfa5",
+        "run_20260711T120630686_c8886f",
+        "run_20260711T120702519_1aa0aa",
+        "run_20260711T120723766_fcf4d6",
+        "run_20260711T120738454_309065",
+        "run_20260712T161512479_220925",
+        "run_20260712T161532338_3d3640",
+        "run_20260712T172004440_7f86a6",
+        "run_20260712T172025529_6e4afc",
+        "run_20260712T172122333_54d120",
+        "run_20260712T172137443_0d28be",
+        "run_20260712T172145560_a4b892",
+        "run_20260712T173515004_e0bf3d"
+      ],
+      "current_stage": "S4"
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人 / 具身智能",
+      "consecutive_run_count": 16,
+      "run_ids": [
+        "run_20260711T120227457_6350c6",
+        "run_20260711T120448376_86c2d0",
+        "run_20260711T120532061_66cf6e",
+        "run_20260711T120609281_35cfa5",
+        "run_20260711T120630686_c8886f",
+        "run_20260711T120702519_1aa0aa",
+        "run_20260711T120723766_fcf4d6",
+        "run_20260711T120738454_309065",
+        "run_20260712T161512479_220925",
+        "run_20260712T161532338_3d3640",
+        "run_20260712T172004440_7f86a6",
+        "run_20260712T172025529_6e4afc",
+        "run_20260712T172122333_54d120",
+        "run_20260712T172137443_0d28be",
+        "run_20260712T172145560_a4b892",
+        "run_20260712T173515004_e0bf3d"
+      ],
+      "current_stage": "S5-S6"
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药 License-out",
+      "consecutive_run_count": 16,
+      "run_ids": [
+        "run_20260711T120227457_6350c6",
+        "run_20260711T120448376_86c2d0",
+        "run_20260711T120532061_66cf6e",
+        "run_20260711T120609281_35cfa5",
+        "run_20260711T120630686_c8886f",
+        "run_20260711T120702519_1aa0aa",
+        "run_20260711T120723766_fcf4d6",
+        "run_20260711T120738454_309065",
+        "run_20260712T161512479_220925",
+        "run_20260712T161532338_3d3640",
+        "run_20260712T172004440_7f86a6",
+        "run_20260712T172025529_6e4afc",
+        "run_20260712T172122333_54d120",
+        "run_20260712T172137443_0d28be",
+        "run_20260712T172145560_a4b892",
+        "run_20260712T173515004_e0bf3d"
+      ],
+      "current_stage": "S5-S6"
+    }
+  ],
+  "high_priority_operator_alerts": [
+    {
+      "priority": "high",
+      "category": "guardrail_regression",
+      "message": "no_trading_advice requires operator review.",
+      "run_ids": [
+        "run_20260711T120227457_6350c6"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "failed_run",
+      "message": "run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260711T120227457_6350c6"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "failed_run",
+      "message": "guardrail regression: no_trading_advice",
+      "run_ids": [
+        "run_20260711T120227457_6350c6"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    }
+  ],
+  "research_only_next_actions": [
+    {
+      "action": "flag_risk",
+      "reason": "no_trading_advice requires operator review.",
+      "run_ids": [
+        "run_20260711T120227457_6350c6"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260711T120227457_6350c6"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "guardrail regression: no_trading_advice",
+      "run_ids": [
+        "run_20260711T120227457_6350c6"
+      ],
+      "evidence_ids": []
+    }
+  ]
+}

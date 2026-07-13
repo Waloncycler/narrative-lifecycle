@@ -1,0 +1,309 @@
+- case_id: replay_ai_edge_success
+  topic_id: ai_edge_applications
+  topic_name: AI Edge Applications
+  parent_narrative: AI edge applications
+  scenario_type: success
+  requested_stage: S6
+  data_confidence: 78
+  slices:
+    - slice_id: T0
+      as_of: "2026-02-01"
+    - slice_id: T1
+      as_of: "2026-02-15"
+    - slice_id: T2
+      as_of: "2026-03-15"
+  evidence:
+    - evidence_id: replay_ai_edge_label
+      topic_id: ai_edge_applications
+      branch_id:
+      event_date: "2026-02-01"
+      available_at: "2026-02-01"
+      event_title: Edge AI workload label stabilizes
+      event_summary: Research notes converge on a stable AI edge workload label and use-case map.
+      event_type: label_formation
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/ai-edge-label
+      source_type: fixture_research_note
+      evidence_strength: E2
+      affected_layer: [perception]
+      stage_effect: supports_parent_S3
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports stable label formation at the parent narrative level.
+      limitation: Does not yet prove capital, pricing, or reality validation.
+      positive_or_negative: positive
+      confidence: 70
+    - evidence_id: replay_ai_edge_capital_pricing
+      topic_id: ai_edge_applications
+      branch_id:
+      event_date: "2026-02-10"
+      available_at: "2026-02-15"
+      event_title: Capital and pricing language appear for edge deployments
+      event_summary: Multiple suppliers describe committed budgets and pricing terms for edge inference deployments.
+      event_type: capital_pricing_confirmation
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/ai-edge-capital-pricing
+      source_type: fixture_research_note
+      evidence_strength: E3
+      affected_layer: [capital, pricing]
+      stage_effect: supports_parent_S5
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports capital confirmation and pricing adoption for the parent narrative.
+      limitation: Reality validation still needs multi-customer replication.
+      positive_or_negative: positive
+      confidence: 78
+    - evidence_id: replay_ai_edge_reality
+      topic_id: ai_edge_applications
+      branch_id:
+      event_date: "2026-03-01"
+      available_at: "2026-03-15"
+      event_title: Multi-customer edge workload replication appears
+      event_summary: Several customers report repeated deployment of edge inference workloads with operational acceptance.
+      event_type: reality_validation
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/ai-edge-reality
+      source_type: fixture_research_note
+      evidence_strength: E4
+      affected_layer: [reality, feedback]
+      stage_effect: supports_parent_S6
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports hard reality validation through multi-customer replication.
+      limitation: S7 states require later continuity and failure-signal review.
+      positive_or_negative: positive
+      confidence: 82
+  outcome:
+    revealed_at: "2026-04-15"
+    status: confirmed
+    correct_stage: S6
+    summary: Later operating evidence confirmed the parent narrative reached reality validation without using market-price movement as proof.
+    outcome_evidence_ids: [replay_ai_edge_reality]
+  calibration_note: Keep E4 multi-customer replication as the required S6 confirmation point.
+
+- case_id: replay_metaverse_failure
+  topic_id: consumer_metaverse
+  topic_name: Consumer Metaverse
+  parent_narrative: Consumer metaverse
+  scenario_type: failure
+  requested_stage: S6
+  data_confidence: 72
+  slices:
+    - slice_id: T0
+      as_of: "2026-01-10"
+    - slice_id: T1
+      as_of: "2026-01-25"
+  evidence:
+    - evidence_id: replay_meta_label
+      topic_id: consumer_metaverse
+      branch_id:
+      event_date: "2026-01-10"
+      available_at: "2026-01-10"
+      event_title: Consumer metaverse label returns
+      event_summary: The label returned in research discussions with a broad beneficiary map.
+      event_type: label_formation
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/metaverse-label
+      source_type: fixture_research_note
+      evidence_strength: E2
+      affected_layer: [perception]
+      stage_effect: supports_parent_S3
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports label stability.
+      limitation: Does not prove durable demand or reality validation.
+      positive_or_negative: positive
+      confidence: 70
+    - evidence_id: replay_meta_capital_pricing
+      topic_id: consumer_metaverse
+      branch_id:
+      event_date: "2026-01-20"
+      available_at: "2026-01-25"
+      event_title: Capital tests and pricing claims appear
+      event_summary: Providers describe budget experiments and pricing language, but user validation remains thin.
+      event_type: capital_pricing_confirmation
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/metaverse-capital-pricing
+      source_type: fixture_research_note
+      evidence_strength: E3
+      affected_layer: [capital, pricing]
+      stage_effect: supports_parent_S5
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports a possible S5 setup.
+      limitation: Hard reality evidence is missing and later validation may weaken the setup.
+      positive_or_negative: positive
+      confidence: 72
+  outcome:
+    revealed_at: "2026-03-01"
+    status: falsified
+    correct_stage: S3
+    summary: Later usage and customer-retention evidence weakened the narrative; the replay should treat the S5 setup as an overreach.
+    outcome_evidence_ids: []
+  calibration_note: Add stricter downgrade pressure when pricing language lacks reality evidence across the validation window.
+
+- case_id: replay_policy_s7b
+  topic_id: industrial_policy_cycle
+  topic_name: Industrial Policy Cycle
+  parent_narrative: Industrial policy cycle
+  scenario_type: s7b
+  requested_stage: S7B
+  data_confidence: 82
+  slices:
+    - slice_id: T0
+      as_of: "2026-04-01"
+    - slice_id: T1
+      as_of: "2026-04-20"
+  evidence:
+    - evidence_id: replay_policy_label_capital_pricing
+      topic_id: industrial_policy_cycle
+      branch_id:
+      event_date: "2026-04-01"
+      available_at: "2026-04-01"
+      event_title: Policy cycle has label, capital, and pricing adoption
+      event_summary: The policy narrative has stable label, confirmed budget allocation, and explicit pricing impact.
+      event_type: policy_capital_pricing
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/policy-label-capital-pricing
+      source_type: fixture_policy_note
+      evidence_strength: E3
+      affected_layer: [perception, capital, pricing]
+      stage_effect: supports_parent_S5
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports parent S5 setup.
+      limitation: Needs real procurement and saturation evidence before S7 states.
+      positive_or_negative: positive
+      confidence: 82
+    - evidence_id: replay_policy_saturation
+      topic_id: industrial_policy_cycle
+      branch_id:
+      event_date: "2026-04-18"
+      available_at: "2026-04-20"
+      event_title: Reality validation and saturation signal appear
+      event_summary: Procurement execution confirms reality validation while saturation evidence indicates an S7B state.
+      event_type: reality_saturation
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/policy-saturation
+      source_type: fixture_policy_note
+      evidence_strength: E4
+      affected_layer: [reality, friction]
+      stage_effect: supports_state_S7B
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports an S7B state after real procurement validation.
+      limitation: S7B is a state label, not a forecast or action instruction.
+      positive_or_negative: neutral
+      confidence: 84
+  outcome:
+    revealed_at: "2026-05-20"
+    status: weakened
+    correct_stage: S7B
+    summary: Later evidence confirmed saturation and weakening rather than a new early-stage opportunity.
+    outcome_evidence_ids: [replay_policy_saturation]
+  calibration_note: Keep S7B separate from early opportunity logic and surface it as a risk-state classification.
+
+- case_id: replay_bci_s7c_branch
+  topic_id: bci
+  topic_name: BCI
+  parent_narrative: BCI
+  scenario_type: s7c
+  requested_stage: S6
+  data_confidence: 80
+  branch_id: bci_medical_rehab
+  slices:
+    - slice_id: T0
+      as_of: "2026-05-01"
+    - slice_id: T1
+      as_of: "2026-05-25"
+  evidence:
+    - evidence_id: replay_bci_parent_label_capital
+      topic_id: bci
+      branch_id:
+      event_date: "2026-05-01"
+      available_at: "2026-05-01"
+      event_title: Parent BCI label and capital attention persist
+      event_summary: Parent BCI keeps label stability and capital attention but still lacks parent-level pricing and reality evidence.
+      event_type: parent_label_capital
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/bci-parent
+      source_type: fixture_research_note
+      evidence_strength: E2
+      affected_layer: [perception, capital]
+      stage_effect: supports_parent_S4
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports parent S4 only.
+      limitation: Branch validation cannot upgrade the BCI parent narrative.
+      positive_or_negative: positive
+      confidence: 78
+    - evidence_id: replay_bci_branch_s7c
+      topic_id: bci
+      branch_id: bci_medical_rehab
+      event_date: "2026-05-20"
+      available_at: "2026-05-25"
+      event_title: Medical rehabilitation branch mutates into S7C
+      event_summary: The medical rehabilitation branch shows branch-specific pricing, reality validation, and mutation evidence.
+      event_type: branch_mutation
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/bci-branch-s7c
+      source_type: fixture_research_note
+      evidence_strength: E4
+      affected_layer: [perception, capital, pricing, reality, feedback]
+      stage_effect: supports_branch_S7C
+      parent_or_branch: branch
+      branch_coverage_score: 42
+      interpretation: Supports S7C for the branch only.
+      limitation: The parent BCI narrative remains limited by missing parent-level pricing and reality evidence.
+      positive_or_negative: positive
+      confidence: 82
+  outcome:
+    revealed_at: "2026-06-20"
+    status: confirmed
+    correct_stage: S4
+    summary: Later evidence confirmed the branch mutation while the parent narrative stayed S4.
+    outcome_evidence_ids: [replay_bci_branch_s7c]
+  calibration_note: Preserve parent and branch separation; never lift parent BCI to S7C from branch evidence.
+
+- case_id: replay_industrial_iot_no_change
+  topic_id: industrial_iot
+  topic_name: Industrial IoT
+  parent_narrative: Industrial IoT
+  scenario_type: long_no_change
+  requested_stage: S6
+  data_confidence: 76
+  slices:
+    - slice_id: T0
+      as_of: "2026-02-01"
+    - slice_id: T1
+      as_of: "2026-03-01"
+    - slice_id: T2
+      as_of: "2026-04-01"
+  evidence:
+    - evidence_id: replay_iot_label_capital
+      topic_id: industrial_iot
+      branch_id:
+      event_date: "2026-02-01"
+      available_at: "2026-02-01"
+      event_title: Industrial IoT remains a stable S4 narrative
+      event_summary: The narrative has stable label and capital attention but no new pricing or reality validation.
+      event_type: label_capital_no_change
+      source_name: replay fixture
+      source_url: https://example.invalid/replay/iot-label-capital
+      source_type: fixture_research_note
+      evidence_strength: E2
+      affected_layer: [perception, capital]
+      stage_effect: supports_parent_S4
+      parent_or_branch: parent
+      branch_coverage_score: 0
+      interpretation: Supports a durable S4 state.
+      limitation: No new evidence justifies forcing a stage change.
+      positive_or_negative: neutral
+      confidence: 76
+  outcome:
+    revealed_at: "2026-05-01"
+    status: no_change
+    correct_stage: S4
+    summary: Later evidence showed no material stage transition; long no-change was the correct research state.
+    outcome_evidence_ids: [replay_iot_label_capital]
+  calibration_note: Treat long no-change as valid and avoid forced action generation.

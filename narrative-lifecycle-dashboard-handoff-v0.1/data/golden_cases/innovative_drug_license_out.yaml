@@ -1,0 +1,19 @@
+topic_id: innovative_drug_license_out
+topic_name: 创新药 License-out
+baseline_current_stage: S5-S6
+transition_target: S7A/S7C
+key_judgment: >
+  Innovative drug License-out is a reality-first, perception-later narrative.
+  Reality validation and pricing adoption are stronger than in BCI.
+  The system must distinguish headline deal value from high-quality realization.
+required_outputs:
+  current_stage: S5-S6
+  must_include:
+    - reality-first path
+    - pricing adoption through upfront/milestone/global rights
+    - clinical and regulatory risk
+    - milestone realization risk
+forbidden_outputs:
+  - treat_headline_deal_value_as_full_reality
+  - ignore_partner_quality
+  - direct_buy_or_sell_instruction

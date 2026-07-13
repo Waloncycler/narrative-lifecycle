@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "ReactivationRecord",
+  "required": [
+    "record_id",
+    "topic_id",
+    "reactivation_type",
+    "narrative_delta_score",
+    "missing_evidence_filled",
+    "branch_mutation_detected",
+    "expectation_reset_detected",
+    "old_story_repetition_risk",
+    "should_enter_radar"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string"
+    },
+    "topic_id": {
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "reactivation_type": {
+      "type": "string",
+      "enum": [
+        "new_topic",
+        "dormant_signal_reactivation",
+        "stage_reactivation",
+        "branch_mutation",
+        "reality_catch_up",
+        "expectation_reset",
+        "repeated_old_story",
+        "failed_revival_attempt",
+        "noise"
+      ]
+    },
+    "narrative_delta_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "new_evidence_quality": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "stage_gate_impact": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "missing_evidence_filled": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "branch_mutation_detected": {
+      "type": "boolean"
+    },
+    "expectation_reset_detected": {
+      "type": "boolean"
+    },
+    "old_story_repetition_risk": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "reactivation_reasoning": {
+      "type": "string"
+    },
+    "should_enter_radar": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

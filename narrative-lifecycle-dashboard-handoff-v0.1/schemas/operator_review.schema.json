@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "OperatorReview",
+  "additionalProperties": false,
+  "required": [
+    "review_id",
+    "artifact_type",
+    "schema_version",
+    "producer_version",
+    "rule_version",
+    "run_id",
+    "generated_at",
+    "status",
+    "source_artifacts",
+    "review_window",
+    "run_summary",
+    "runs",
+    "stage_trends",
+    "evidence_trends",
+    "why_not_higher_changes",
+    "data_confidence_changes",
+    "branch_mutation_changes",
+    "early_radar_changes",
+    "guardrail_regressions",
+    "failure_case_hits",
+    "repeated_issues",
+    "consecutive_no_change_topics",
+    "high_priority_operator_alerts",
+    "research_only_next_actions"
+  ],
+  "properties": {
+    "review_id": {
+      "type": "string",
+      "pattern": "^operator_review_(run_[0-9]{8}T[0-9]{9}_[a-f0-9]{6}|[0-9]{8}T[0-9]{6})$"
+    },
+    "artifact_type": { "const": "operator_review" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "const": "0.4.0" },
+    "rule_version": { "type": "string" },
+    "run_id": { "type": "string", "pattern": "^run_[0-9]{8}T[0-9]{9}_[a-f0-9]{6}$" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["ok", "insufficient_history"] },
+    "source_artifacts": { "$ref": "#/$defs/strings" },
+    "review_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["first_run_id", "last_run_id", "first_started_at", "last_completed_at"],
+      "properties": {
+        "first_run_id": { "type": ["string", "null"] },
+        "last_run_id": { "type": ["string", "null"] },
+        "first_started_at": { "type": ["string", "null"], "format": "date-time" },
+        "last_completed_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "run_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_count", "successful_run_count", "failed_run_count"],
+      "properties": {
+        "run_count": { "type": "integer", "minimum": 0 },
+        "successful_run_count": { "type": "integer", "minimum": 0 },
+        "failed_run_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["run_id", "started_at", "completed_at", "status", "guardrail_status", "has_stage_diff", "has_weekly_brief"],
+        "properties": {
+          "run_id": { "type": "string" },
+          "started_at": { "type": "string", "format": "date-time" },
+          "completed_at": { "type": "string", "format": "date-time" },
+          "status": { "enum": ["ok", "failed"] },
+          "guardrail_status": { "enum": ["ok", "review_required"] },
+          "has_stage_diff": { "type": "boolean" },
+          "has_weekly_brief": { "type": "boolean" }
+        }
+      }
+    },
+    "stage_trends": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["upgrades", "downgrades"],
+      "properties": {
+        "upgrades": { "$ref": "#/$defs/trendPoints" },
+        "downgrades": { "$ref": "#/$defs/trendPoints" }
+      }
+    },
+    "evidence_trends": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["added", "removed"],
+      "properties": {
+        "added": { "$ref": "#/$defs/trendPoints" },
+        "removed": { "$ref": "#/$defs/trendPoints" }
+      }
+    },
+    "why_not_higher_changes": { "$ref": "#/$defs/trendPoints" },
+    "data_confidence_changes": { "$ref": "#/$defs/trendPoints" },
+    "branch_mutation_changes": { "$ref": "#/$defs/trendPoints" },
+    "early_radar_changes": { "$ref": "#/$defs/trendPoints" },
+    "guardrail_regressions": { "$ref": "#/$defs/trendPoints" },
+    "failure_case_hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["run_id", "status", "issue"],
+        "properties": {
+          "run_id": { "type": "string" },
+          "status": { "enum": ["failed", "review_required"] },
+          "issue": { "type": "string", "minLength": 1 },
+          "command": { "type": "string" }
+        }
+      }
+    },
+    "repeated_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["issue", "count", "run_ids"],
+        "properties": {
+          "issue": { "type": "string", "minLength": 1 },
+          "count": { "type": "integer", "minimum": 2 },
+          "run_ids": { "$ref": "#/$defs/strings" }
+        }
+      }
+    },
+    "consecutive_no_change_topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["topic_id", "topic_name", "consecutive_run_count", "run_ids", "current_stage"],
+        "properties": {
+          "topic_id": { "type": "string" },
+          "topic_name": { "type": "string" },
+          "consecutive_run_count": { "type": "integer", "minimum": 2 },
+          "run_ids": { "$ref": "#/$defs/strings" },
+          "current_stage": { "type": "string" }
+        }
+      }
+    },
+    "high_priority_operator_alerts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["priority", "category", "message", "run_ids", "research_only_action", "evidence_ids"],
+        "properties": {
+          "priority": { "enum": ["high", "medium"] },
+          "category": { "type": "string" },
+          "message": { "type": "string" },
+          "run_ids": { "$ref": "#/$defs/strings" },
+          "research_only_action": { "$ref": "#/$defs/action" },
+          "evidence_ids": { "$ref": "#/$defs/strings" }
+        }
+      }
+    },
+    "research_only_next_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["action", "reason", "run_ids", "evidence_ids"],
+        "properties": {
+          "action": { "$ref": "#/$defs/action" },
+          "reason": { "type": "string" },
+          "run_ids": { "$ref": "#/$defs/strings" },
+          "evidence_ids": { "$ref": "#/$defs/strings" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "strings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "action": {
+      "enum": ["observe", "track", "validate", "review", "monitor", "compare", "flag_risk", "request_more_evidence"]
+    },
+    "trendPoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["run_id", "generated_at", "change_type", "evidence_ids"],
+        "properties": {
+          "run_id": { "type": "string" },
+          "generated_at": { "type": "string", "format": "date-time" },
+          "topic_id": { "type": "string" },
+          "topic_name": { "type": "string" },
+          "change_type": { "type": "string" },
+          "previous_value": { "type": ["string", "null"] },
+          "current_value": { "type": ["string", "null"] },
+          "evidence_ids": { "$ref": "#/$defs/strings" },
+          "branch_id": { "type": ["string", "null"] },
+          "reactivation_record_id": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

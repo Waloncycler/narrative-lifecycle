@@ -1,0 +1,50 @@
+- topic_id: bci
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Initial pilot seed; awaiting operator review.
+  outcome_status: pending
+- topic_id: humanoid_robotics
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Initial pilot seed; awaiting operator review.
+  outcome_status: pending
+- topic_id: innovative_drug_license_out
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Initial pilot seed; awaiting operator review.
+  outcome_status: pending
+- topic_id: ai_edge_applications
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Pilot seed; not yet linked to canonical artifacts.
+  outcome_status: pending
+- topic_id: synthetic_biology_tools
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Pilot seed; not yet linked to canonical artifacts.
+  outcome_status: pending
+- topic_id: solid_state_battery
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Pilot seed; not yet linked to canonical artifacts.
+  outcome_status: pending
+- topic_id: low_altitude_economy
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Pilot seed; not yet linked to canonical artifacts.
+  outcome_status: pending
+- topic_id: robotics_components
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Pilot seed; not yet linked to canonical artifacts.
+  outcome_status: pending
+- topic_id: advanced_packaging
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Pilot seed; not yet linked to canonical artifacts.
+  outcome_status: pending
+- topic_id: fusion_energy_supply_chain
+  run_id: run_20260713T032611996_4c5cea
+  operator_agreement: uncertain
+  operator_comment: Pilot seed; not yet linked to canonical artifacts.
+  outcome_status: pending

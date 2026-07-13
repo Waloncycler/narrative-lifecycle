@@ -1,0 +1,69 @@
+{
+  "validation_id": "validation_20260713",
+  "generated_at": "2026-07-13T03:28:42.914Z",
+  "source_file": "data/imports/evidence_draft.invalid.yaml",
+  "status": "failed",
+  "accepted_count": 0,
+  "rejected_count": 1,
+  "errors": [
+    {
+      "evidence_id": "schema",
+      "field": "/0/event_date",
+      "message": "must match format \"date\""
+    },
+    {
+      "evidence_id": "schema",
+      "field": "/0/source_name",
+      "message": "must NOT have fewer than 1 characters"
+    },
+    {
+      "evidence_id": "schema",
+      "field": "/0/affected_layer/1",
+      "message": "must be equal to one of the allowed values"
+    },
+    {
+      "evidence_id": "invalid_parent_branch_trade_001",
+      "field": "scope",
+      "message": "parent evidence cannot contain branch-only evidence"
+    },
+    {
+      "evidence_id": "invalid_parent_branch_trade_001",
+      "field": "affected_layer",
+      "message": "invalid affected_layer"
+    },
+    {
+      "evidence_id": "invalid_parent_branch_trade_001",
+      "field": "event_date",
+      "message": "event_date must be YYYY-MM-DD"
+    },
+    {
+      "evidence_id": "invalid_parent_branch_trade_001",
+      "field": "source_name",
+      "message": "source_name is required"
+    },
+    {
+      "evidence_id": "invalid_parent_branch_trade_001",
+      "message": "trading advice terms are not allowed"
+    },
+    {
+      "evidence_id": "invalid_parent_branch_trade_001",
+      "field": "source_url",
+      "message": "E3/E4 evidence requires source_url and non-other source_type"
+    }
+  ],
+  "warnings": [],
+  "accepted_evidence_ids": [],
+  "rejected_evidence_ids": [
+    "invalid_parent_branch_trade_001"
+  ],
+  "guardrail_check": {
+    "no_trading_advice": false,
+    "parent_branch_scope_valid": false,
+    "evidence_strength_valid": true,
+    "affected_layer_valid": false,
+    "source_metadata_present": false
+  },
+  "import_id": "import_20260713",
+  "imported_at": "2026-07-13T03:28:42.914Z",
+  "rejected_copy_path": "data/imports/rejected/import_20260713.yaml"
+}

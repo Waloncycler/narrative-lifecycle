@@ -1,0 +1,15 @@
+- topic_id: bci
+  topic_name: 脑机接口 BCI
+  current_stage: S4
+  transition_target: S5
+  watch_status: early_opportunity_pool
+- topic_id: humanoid_robotics
+  topic_name: 人形机器人 / 具身智能
+  current_stage: S5-S6
+  transition_target: S7A/S7C
+  watch_status: validation_tracking
+- topic_id: innovative_drug_license_out
+  topic_name: 创新药 License-out
+  current_stage: S5-S6
+  transition_target: S7A/S7C
+  watch_status: validation_tracking

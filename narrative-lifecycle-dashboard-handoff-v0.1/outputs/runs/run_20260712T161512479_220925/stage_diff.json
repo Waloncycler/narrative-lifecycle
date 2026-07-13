@@ -1,0 +1,126 @@
+{
+  "diff_id": "stage_diff_run_20260712T161512479_220925",
+  "run_id": "run_20260712T161512479_220925",
+  "generated_at": "2026-07-12T16:15:12.479Z",
+  "status": "ok",
+  "previous_snapshot_id": "stage_snapshot_run_20260711T120738454_309065",
+  "current_snapshot_id": "stage_snapshot_run_20260712T161512479_220925",
+  "summary": {
+    "topic_count": 3,
+    "stage_upgrade_count": 0,
+    "stage_downgrade_count": 0,
+    "evidence_added_count": 0,
+    "branch_mutation_candidate_count": 0,
+    "guardrail_regression_count": 0
+  },
+  "topic_changes": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口 BCI",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "previous_stage": "S4",
+      "current_stage": "S4",
+      "previous_evidence_ids": [
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "bci_parent_capital",
+        "bci_parent_label",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "current_evidence_ids": [
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "bci_parent_capital",
+        "bci_parent_label",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "previous_why_not_higher_stage": "Upgrade is capped by required checks: old theme reactivation; branch reality upgrade; pricing adoption insufficient; parent reality insufficient; medical branch validation cannot represent whole BCI; revenue/payment/listed-asset mapping still missing.",
+      "current_why_not_higher_stage": "Upgrade is capped by required checks: old theme reactivation; branch reality upgrade; pricing adoption insufficient; parent reality insufficient; medical branch validation cannot represent whole BCI; revenue/payment/listed-asset mapping still missing.",
+      "previous_data_confidence": "medium",
+      "current_data_confidence": "medium",
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人 / 具身智能",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "previous_stage": "S5-S6",
+      "current_stage": "S5-S6",
+      "previous_evidence_ids": [
+        "humanoid_e001",
+        "humanoid_parent_capital",
+        "humanoid_parent_label",
+        "humanoid_parent_pricing",
+        "humanoid_parent_reality"
+      ],
+      "current_evidence_ids": [
+        "humanoid_e001",
+        "humanoid_parent_capital",
+        "humanoid_parent_label",
+        "humanoid_parent_pricing",
+        "humanoid_parent_reality"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "previous_why_not_higher_stage": "Upgrade is capped by required checks: pricing adoption; reality validation; valuation friction; S7A/S7C potential; S7B risk for crowded edge assets.",
+      "current_why_not_higher_stage": "Upgrade is capped by required checks: pricing adoption; reality validation; valuation friction; S7A/S7C potential; S7B risk for crowded edge assets.",
+      "previous_data_confidence": "medium",
+      "current_data_confidence": "medium",
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药 License-out",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "previous_stage": "S5-S6",
+      "current_stage": "S5-S6",
+      "previous_evidence_ids": [
+        "licenseout_e001",
+        "licenseout_parent_capital",
+        "licenseout_parent_label",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "current_evidence_ids": [
+        "licenseout_e001",
+        "licenseout_parent_capital",
+        "licenseout_parent_label",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "previous_why_not_higher_stage": "Upgrade is capped by required checks: reality-first path; pricing adoption through upfront/milestone/global rights; clinical and regulatory risk; milestone realization risk.",
+      "current_why_not_higher_stage": "Upgrade is capped by required checks: reality-first path; pricing adoption through upfront/milestone/global rights; clinical and regulatory risk; milestone realization risk.",
+      "previous_data_confidence": "medium",
+      "current_data_confidence": "medium",
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    }
+  ],
+  "early_radar_changes": [],
+  "guardrail_changes": [],
+  "next_operator_actions": []
+}

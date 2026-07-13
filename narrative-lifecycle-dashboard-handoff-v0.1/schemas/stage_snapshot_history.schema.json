@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "StageSnapshotHistory",
+  "additionalProperties": false,
+  "required": ["artifact_type", "schema_version", "producer_version", "rule_version", "run_id", "generated_at", "snapshot_id", "source_report_id", "topics", "early_radar_candidates", "guardrail_check"],
+  "properties": {
+    "artifact_type": { "const": "stage_snapshot_history" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "const": "0.4.0" },
+    "rule_version": { "type": "string" },
+    "snapshot_id": { "type": "string", "pattern": "^stage_snapshot_run_[0-9]{8}T[0-9]{9}_[a-f0-9]{6}$" },
+    "run_id": { "type": "string", "pattern": "^run_[0-9]{8}T[0-9]{9}_[a-f0-9]{6}$" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "source_report_id": { "type": "string", "pattern": "^weekly_brief_run_[0-9]{8}T[0-9]{9}_[a-f0-9]{6}$" },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["topic_id", "topic_name", "parent_narrative", "current_stage", "gate_stage", "max_allowed_stage", "strongest_branch", "weakest_layer", "data_confidence", "evidence_ids", "gate_evidence_ids", "score_id", "dashboard_card_id", "why_not_higher_stage", "gate_why_not_higher_stage", "branches"],
+        "properties": {
+          "topic_id": { "type": "string", "minLength": 1 },
+          "topic_name": { "type": "string", "minLength": 1 },
+          "parent_narrative": { "type": "string", "minLength": 1 },
+          "current_stage": { "$ref": "#/$defs/stage" },
+          "gate_stage": { "$ref": "#/$defs/stage" },
+          "max_allowed_stage": { "$ref": "#/$defs/stage" },
+          "strongest_branch": { "type": "string" },
+          "weakest_layer": { "type": "string" },
+          "data_confidence": { "enum": ["low", "medium", "high"] },
+          "evidence_ids": { "$ref": "#/$defs/evidenceIds" },
+          "gate_evidence_ids": { "$ref": "#/$defs/evidenceIds" },
+          "score_id": { "type": "string", "minLength": 1 },
+          "dashboard_card_id": { "type": "string", "minLength": 1 },
+          "why_not_higher_stage": { "type": "string", "minLength": 1 },
+          "gate_why_not_higher_stage": { "type": "string", "minLength": 1 },
+          "branches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["branch_id", "branch_name", "current_stage", "evidence_ids", "reactivation_record_id"],
+              "properties": {
+                "branch_id": { "type": "string", "minLength": 1 },
+                "branch_name": { "type": "string", "minLength": 1 },
+                "current_stage": { "$ref": "#/$defs/stage" },
+                "evidence_ids": { "$ref": "#/$defs/evidenceIds" },
+                "reactivation_record_id": { "type": ["string", "null"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "early_radar_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["candidate_id", "candidate_topic", "reactivation_record_id", "evidence_ids"],
+        "properties": {
+          "candidate_id": { "type": "string", "minLength": 1 },
+          "candidate_topic": { "type": "string", "minLength": 1 },
+          "reactivation_record_id": { "type": "string", "minLength": 1 },
+          "evidence_ids": { "$ref": "#/$defs/evidenceIds" }
+        }
+      }
+    },
+    "guardrail_check": { "$ref": "#/$defs/guardrails" }
+  },
+  "$defs": {
+    "stage": { "type": "string", "enum": ["S0", "S1", "S2", "S3", "S4", "S4-S5", "S5", "S5-S6", "S6", "S6-S7A", "S7A", "S7B", "S7C"] },
+    "evidenceIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "guardrails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["no_trading_advice", "research_only_actions", "parent_branch_separation_preserved", "evidence_ids_visible", "why_not_higher_present", "data_confidence_present"],
+      "properties": {
+        "no_trading_advice": { "type": "boolean" },
+        "research_only_actions": { "type": "boolean" },
+        "parent_branch_separation_preserved": { "type": "boolean" },
+        "evidence_ids_visible": { "type": "boolean" },
+        "why_not_higher_present": { "type": "boolean" },
+        "data_confidence_present": { "type": "boolean" }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "topic_id": "bci",
+    "expected_stage": "S4",
+    "actual_stage": "S4",
+    "passed": true,
+    "failures": [],
+    "stage_snapshot": {
+      "current_stage": "S4",
+      "max_allowed_stage": "S4",
+      "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ],
+      "data_confidence_cap_applied": false
+    }
+  },
+  {
+    "topic_id": "humanoid_robotics",
+    "expected_stage": "S5-S6",
+    "actual_stage": "S5-S6",
+    "passed": true,
+    "failures": [],
+    "stage_snapshot": {
+      "current_stage": "S6",
+      "max_allowed_stage": "S6",
+      "why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "humanoid_parent_label",
+        "humanoid_parent_capital",
+        "humanoid_parent_pricing",
+        "humanoid_parent_reality"
+      ],
+      "data_confidence_cap_applied": false
+    }
+  },
+  {
+    "topic_id": "innovative_drug_license_out",
+    "expected_stage": "S5-S6",
+    "actual_stage": "S5-S6",
+    "passed": true,
+    "failures": [],
+    "stage_snapshot": {
+      "current_stage": "S6",
+      "max_allowed_stage": "S6",
+      "why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ],
+      "data_confidence_cap_applied": false
+    }
+  }
+]

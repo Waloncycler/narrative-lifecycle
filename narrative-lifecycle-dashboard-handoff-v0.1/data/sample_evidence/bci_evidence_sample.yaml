@@ -1,0 +1,80 @@
+- evidence_id: bci_parent_label
+  topic_id: bci
+  branch_id:
+  event_date: "2026-01-13"
+  available_at: "2026-01-13"
+  event_title: BCI label and beneficiary map reactivates
+  event_summary: Parent BCI narrative has a stable label and mapped beneficiaries, but not parent-level pricing or reality validation.
+  event_type: label_formation
+  source_name: research desk fixture
+  source_url: https://example.invalid/fixtures/bci-parent-label
+  source_type: fixture_research_note
+  evidence_strength: E2
+  affected_layer: [perception]
+  stage_effect: supports_parent_S3
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports parent narrative label stability.
+  limitation: Does not prove pricing adoption or hard reality evidence.
+  positive_or_negative: positive
+  confidence: 70
+- evidence_id: bci_parent_capital
+  topic_id: bci
+  branch_id:
+  event_date: "2026-01-14"
+  available_at: "2026-01-14"
+  event_title: Capital tests BCI parent theme
+  event_summary: Parent BCI has capital testing and attention breadth without durable valuation reframing.
+  event_type: capital_confirmation
+  source_name: market breadth fixture
+  source_url: https://example.invalid/fixtures/bci-parent-capital
+  source_type: fixture_market_data
+  evidence_strength: E2
+  affected_layer: [capital]
+  stage_effect: supports_parent_S4
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports S4 capital confirmation for the parent narrative.
+  limitation: Pricing adoption and parent reality validation remain missing.
+  positive_or_negative: positive
+  confidence: 70
+- evidence_id: bci_branch_label_pricing
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  event_date: "2026-01-14"
+  available_at: "2026-01-14"
+  event_title: Medical rehabilitation BCI branch has pricing language
+  event_summary: Medical rehabilitation BCI has branch-specific pricing language, but this does not represent the whole parent narrative.
+  event_type: branch_pricing_adoption
+  source_name: clinical reimbursement fixture
+  source_url: https://example.invalid/fixtures/bci-medical-rehab-pricing
+  source_type: fixture_reimbursement
+  evidence_strength: E2
+  affected_layer: [perception, capital, pricing]
+  stage_effect: supports_branch_S5
+  parent_or_branch: branch
+  branch_coverage_score: 45
+  interpretation: Supports branch-level pricing adoption.
+  limitation: Branch pricing cannot upgrade the parent BCI narrative.
+  positive_or_negative: positive
+  confidence: 75
+- evidence_id: bci_e001
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  event_date: "2026-01-15"
+  available_at: "2026-01-15"
+  event_title: BCI medical device approval event
+  event_summary: Regulatory validation supports the medical rehabilitation branch, not the full BCI parent narrative.
+  event_type: regulation
+  source_name: authoritative regulatory source
+  source_url: https://example.invalid/fixtures/bci-medical-device-approval
+  source_type: fixture_regulatory
+  evidence_strength: E2
+  affected_layer: [reality, perception]
+  stage_effect: supports_branch_S5_to_S6
+  parent_or_branch: branch
+  branch_coverage_score: 45
+  interpretation: Supports medical rehabilitation BCI branch validation.
+  limitation: Does not prove parent BCI narrative has S6 reality validation.
+  positive_or_negative: positive
+  confidence: 75

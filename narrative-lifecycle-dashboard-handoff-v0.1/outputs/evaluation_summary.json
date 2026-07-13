@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-07-13T03:28:41.770Z",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "calibration": [
+    {
+      "case_id": "ai_edge_application",
+      "status": "missing_evaluation",
+      "corrective_rules": [
+        "Do not treat demos as orders or revenue.",
+        "Require paid adoption or financial translation before S5."
+      ],
+      "evaluation_ids": []
+    },
+    {
+      "case_id": "metaverse",
+      "status": "covered",
+      "corrective_rules": [
+        "Do not classify research reports or demonstrations as hard reality evidence.",
+        "Require customer, revenue, or product delivery evidence before S6."
+      ],
+      "evaluation_ids": [
+        "eval_metaverse_failure_2026_07"
+      ]
+    },
+    {
+      "case_id": "prepared_food",
+      "status": "missing_evaluation",
+      "corrective_rules": [
+        "Do not upgrade from S4 to S5 without valuation reframing and financial translation.",
+        "Treat consumer friction as confidence-reducing missing data until validated."
+      ],
+      "evaluation_ids": []
+    },
+    {
+      "case_id": "short_policy_theme",
+      "status": "covered",
+      "corrective_rules": [
+        "Policy naming alone cannot move a topic above S3.",
+        "Require leader, breadth, volume, and persistence before S4."
+      ],
+      "evaluation_ids": [
+        "eval_short_policy_theme_2026_07"
+      ]
+    },
+    {
+      "case_id": "web3_nft",
+      "status": "missing_evaluation",
+      "corrective_rules": [
+        "Price action alone is not pricing adoption.",
+        "Require customer, revenue, utility, or regulatory evidence before S6."
+      ],
+      "evaluation_ids": []
+    }
+  ]
+}

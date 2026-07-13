@@ -1,0 +1,27 @@
+- import_id: import_20260709
+  imported_at: 2026-07-09T14:33:04.432Z
+  source_file: data/imports/evidence_draft.example.yaml
+  evidence_hash: ceed1fa2fe47bf59f5ddacece3e1abf5dd6732d95065933903424f1b2bc318d4
+  evidence_id: import_bci_medical_rehab_followup_001
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  scope: branch
+  event_date: 2026-07-09
+  available_at: 2026-07-09
+  event_title: Medical rehabilitation BCI follow-up validation
+  event_summary: Branch-specific rehabilitation evidence adds follow-up validation
+    but does not prove parent-level BCI pricing or revenue.
+  event_type: clinical_followup
+  source_name: Manual research note
+  source_url: https://example.invalid/imports/bci-medical-rehab-followup
+  source_type: research
+  evidence_strength: E2
+  affected_layer:
+    - reality
+    - data_confidence
+  stage_effect: maintain
+  polarity: positive
+  interpretation: Supports the medical rehabilitation branch only.
+  limitation: Branch evidence cannot upgrade the parent BCI narrative or replace
+    parent pricing and revenue evidence.
+  confidence: medium

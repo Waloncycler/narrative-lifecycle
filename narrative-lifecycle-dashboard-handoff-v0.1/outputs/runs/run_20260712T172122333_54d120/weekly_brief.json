@@ -1,0 +1,299 @@
+{
+  "artifact_type": "weekly_brief",
+  "schema_version": "1.0.0",
+  "producer_version": "0.4.0",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "run_id": "run_20260712T172122333_54d120",
+  "generated_at": "2026-07-12T17:21:22.333Z",
+  "report_id": "weekly_brief_run_20260712T172122333_54d120",
+  "source_artifacts": [
+    "outputs/dashboard_cards/bci.json",
+    "outputs/dashboard_cards/humanoid_robotics.json",
+    "outputs/dashboard_cards/innovative_drug_license_out.json",
+    "outputs/scores/bci.json",
+    "outputs/scores/humanoid_robotics.json",
+    "outputs/scores/innovative_drug_license_out.json",
+    "outputs/golden_case_results.json",
+    "outputs/early_radar_candidates.json",
+    "outputs/evaluation_summary.json",
+    "outputs/system_summary.json"
+  ],
+  "executive_summary": {
+    "dashboard_card_count": 3,
+    "score_count": 3,
+    "golden_case_passed": 3,
+    "golden_case_total": 3,
+    "early_radar_candidate_count": 1,
+    "system_status": "ok",
+    "rule_version": "narrative-lifecycle-rules-v0.1"
+  },
+  "stage_snapshot": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口 BCI",
+      "current_stage": "S4",
+      "parent_narrative": "脑机接口 BCI",
+      "strongest_branch": "bci medical rehab (S5-S6)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 74
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人 / 具身智能",
+      "current_stage": "S5-S6",
+      "parent_narrative": "人形机器人 / 具身智能",
+      "strongest_branch": "robot actuator (S5-S6)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 70
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药 License-out",
+      "current_stage": "S5-S6",
+      "parent_narrative": "创新药 License-out",
+      "strongest_branch": "adc license out (S5-S6)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 70
+    }
+  ],
+  "stage_change_summary": {
+    "previous_snapshot_id": "stage_snapshot_run_20260712T172025529_6e4afc",
+    "current_snapshot_id": "stage_snapshot_run_20260712T172122333_54d120",
+    "upgrade_count": 0,
+    "downgrade_count": 0,
+    "evidence_added_count": 0,
+    "branch_mutation_candidate_count": 0,
+    "guardrail_regression_count": 0
+  },
+  "stage_changes": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口 BCI",
+      "previous_stage": "S4",
+      "current_stage": "S4",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人 / 具身智能",
+      "previous_stage": "S5-S6",
+      "current_stage": "S5-S6",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药 License-out",
+      "previous_stage": "S5-S6",
+      "current_stage": "S5-S6",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    }
+  ],
+  "strongest_evidence": [
+    {
+      "evidence_id": "bci_parent_label",
+      "evidence_strength": "score_74",
+      "affected_layer": [
+        "perception"
+      ],
+      "topic": "脑机接口 BCI",
+      "interpretation": "Supports parent narrative label stability."
+    },
+    {
+      "evidence_id": "bci_parent_capital",
+      "evidence_strength": "score_74",
+      "affected_layer": [
+        "perception"
+      ],
+      "topic": "脑机接口 BCI",
+      "interpretation": "Supports S4 capital confirmation for the parent narrative."
+    },
+    {
+      "evidence_id": "humanoid_parent_pricing",
+      "evidence_strength": "score_70",
+      "affected_layer": [
+        "pricing"
+      ],
+      "topic": "人形机器人 / 具身智能",
+      "interpretation": "Supports pricing adoption for the parent narrative."
+    },
+    {
+      "evidence_id": "humanoid_e001",
+      "evidence_strength": "score_70",
+      "affected_layer": [
+        "reality"
+      ],
+      "topic": "人形机器人 / 具身智能",
+      "interpretation": "Supports reality validation in a core branch."
+    },
+    {
+      "evidence_id": "licenseout_parent_pricing",
+      "evidence_strength": "score_70",
+      "affected_layer": [
+        "pricing"
+      ],
+      "topic": "创新药 License-out",
+      "interpretation": "Supports pricing adoption through deal structure."
+    },
+    {
+      "evidence_id": "licenseout_e001",
+      "evidence_strength": "score_70",
+      "affected_layer": [
+        "reality"
+      ],
+      "topic": "创新药 License-out",
+      "interpretation": "Supports reality-first path and pricing adoption."
+    }
+  ],
+  "why_not_higher": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口 BCI",
+      "current_stage": "S4",
+      "why_not_higher_stage": "Upgrade is capped by required checks: old theme reactivation; branch reality upgrade; pricing adoption insufficient; parent reality insufficient; medical branch validation cannot represent whole BCI; revenue/payment/listed-asset mapping still missing.",
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital",
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ]
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人 / 具身智能",
+      "current_stage": "S5-S6",
+      "why_not_higher_stage": "Upgrade is capped by required checks: pricing adoption; reality validation; valuation friction; S7A/S7C potential; S7B risk for crowded edge assets.",
+      "evidence_ids": [
+        "humanoid_parent_label",
+        "humanoid_parent_capital",
+        "humanoid_parent_pricing",
+        "humanoid_parent_reality",
+        "humanoid_e001"
+      ]
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药 License-out",
+      "current_stage": "S5-S6",
+      "why_not_higher_stage": "Upgrade is capped by required checks: reality-first path; pricing adoption through upfront/milestone/global rights; clinical and regulatory risk; milestone realization risk.",
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality",
+        "licenseout_e001"
+      ]
+    }
+  ],
+  "early_radar_candidates": [
+    {
+      "candidate_id": "radar_bci",
+      "candidate_topic": "脑机接口 BCI",
+      "reason": "Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.",
+      "reactivation_record_id": "reactivation_bci_S4",
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital",
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ],
+      "research_only_action": "early research"
+    }
+  ],
+  "guardrail_check": {
+    "no_trading_advice": true,
+    "research_only_actions": true,
+    "parent_branch_separation_preserved": true,
+    "evidence_ids_visible": true,
+    "why_not_higher_present": true,
+    "data_confidence_present": true
+  },
+  "next_operator_actions": [
+    {
+      "action": "request_more_evidence",
+      "topic_id": "bci",
+      "reason": "Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital"
+      ]
+    },
+    {
+      "action": "monitor",
+      "topic_id": "humanoid_robotics",
+      "reason": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "humanoid_parent_label",
+        "humanoid_parent_capital",
+        "humanoid_parent_pricing",
+        "humanoid_parent_reality"
+      ]
+    },
+    {
+      "action": "monitor",
+      "topic_id": "innovative_drug_license_out",
+      "reason": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "licenseout_parent_label",
+        "licenseout_parent_capital",
+        "licenseout_parent_pricing",
+        "licenseout_parent_reality"
+      ]
+    },
+    {
+      "action": "track",
+      "topic_id": "bci",
+      "reason": "Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.",
+      "evidence_ids": [
+        "bci_parent_label",
+        "bci_parent_capital",
+        "bci_branch_label_pricing",
+        "bci_e001",
+        "import_bci_medical_rehab_followup_001"
+      ]
+    }
+  ],
+  "artifact_index": [
+    "outputs/dashboard_cards/bci.json",
+    "outputs/dashboard_cards/humanoid_robotics.json",
+    "outputs/dashboard_cards/innovative_drug_license_out.json",
+    "outputs/scores/bci.json",
+    "outputs/scores/humanoid_robotics.json",
+    "outputs/scores/innovative_drug_license_out.json",
+    "outputs/golden_case_results.json",
+    "outputs/early_radar_candidates.json",
+    "outputs/evaluation_summary.json",
+    "outputs/system_summary.json"
+  ]
+}

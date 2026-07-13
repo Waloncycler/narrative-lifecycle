@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "Topic",
+  "required": [
+    "topic_id",
+    "topic_name"
+  ],
+  "properties": {
+    "topic_id": {
+      "type": "string"
+    },
+    "topic_name": {
+      "type": "string"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "macro_theme": {
+      "type": "string"
+    },
+    "current_stage": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "transition_target": {
+      "type": "string",
+      "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+    },
+    "watch_status": {
+      "type": "string"
+    },
+    "data_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "last_review_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  }
+}

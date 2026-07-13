@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "RunManifest",
+  "additionalProperties": false,
+  "required": ["artifact_type", "schema_version", "producer_version", "rule_version", "run_id", "generated_at", "started_at", "completed_at", "status", "commands", "artifacts", "previous_run_id", "current_snapshot_id", "previous_snapshot_id", "artifact_version", "guardrail_status"],
+  "properties": {
+    "artifact_type": { "const": "run_manifest" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "const": "0.4.0" },
+    "run_id": { "type": "string", "pattern": "^run_[0-9]{8}T[0-9]{9}_[a-f0-9]{6}$" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["ok", "failed"] },
+    "commands": { "type": "array", "items": { "enum": ["pipeline", "diff", "report"] } },
+    "artifacts": { "type": "array", "items": { "type": "string" } },
+    "previous_run_id": { "type": ["string", "null"] },
+    "current_snapshot_id": { "type": ["string", "null"] },
+    "previous_snapshot_id": { "type": ["string", "null"] },
+    "rule_version": { "type": "string" },
+    "artifact_version": { "type": "string" },
+    "guardrail_status": { "enum": ["ok", "review_required"] }
+  }
+}

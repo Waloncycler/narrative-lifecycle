@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "title": "Score",
+  "required": [
+    "score_id",
+    "topic_id",
+    "score_date",
+    "stage_snapshot",
+    "dimensions",
+    "rule_version"
+  ],
+  "properties": {
+    "score_id": {
+      "type": "string"
+    },
+    "topic_id": {
+      "type": "string"
+    },
+    "branch_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "score_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "stage_snapshot": {
+      "$ref": "#/$defs/stage_snapshot"
+    },
+    "dimensions": {
+      "type": "object",
+      "required": [
+        "policy_perception",
+        "market_perception",
+        "trading_perception",
+        "capital_confirmation",
+        "pricing_adoption",
+        "parent_reality",
+        "branch_reality",
+        "branch_coverage",
+        "feedback",
+        "execution_friction",
+        "valuation_friction",
+        "data_confidence",
+        "transition_probability",
+        "narrative_delta_score"
+      ],
+      "properties": {
+        "policy_perception": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "market_perception": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "trading_perception": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "capital_confirmation": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "pricing_adoption": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "parent_reality": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "branch_reality": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "branch_coverage": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "feedback": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "execution_friction": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "valuation_friction": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "data_confidence": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "transition_probability": {
+          "$ref": "#/$defs/score_detail"
+        },
+        "narrative_delta_score": {
+          "$ref": "#/$defs/score_detail"
+        }
+      }
+    },
+    "policy_perception": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "market_perception": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "trading_perception": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "capital_confirmation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "pricing_adoption": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "parent_reality": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "branch_reality": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "branch_coverage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "feedback": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "execution_friction": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "valuation_friction": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "data_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "transition_probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "narrative_delta_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "reasoning": {
+      "type": "string"
+    },
+    "missing_data": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rule_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "score_detail": {
+      "type": "object",
+      "required": [
+        "score",
+        "evidence_ids",
+        "reasoning",
+        "missing_data",
+        "confidence"
+      ],
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reasoning": {
+          "type": "string",
+          "minLength": 1
+        },
+        "missing_data": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "stage_snapshot": {
+      "type": "object",
+      "required": [
+        "current_stage",
+        "max_allowed_stage",
+        "why_not_higher_stage",
+        "evidence_ids",
+        "data_confidence_cap_applied"
+      ],
+      "properties": {
+        "current_stage": {
+          "type": "string",
+          "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+        },
+        "max_allowed_stage": {
+          "type": "string",
+          "pattern": "^(S[0-6]|S7[A-C])([-/](S[0-6]|S7[A-C]))?$"
+        },
+        "why_not_higher_stage": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_confidence_cap_applied": {
+          "type": "boolean"
+        },
+        "data_confidence_cap_reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

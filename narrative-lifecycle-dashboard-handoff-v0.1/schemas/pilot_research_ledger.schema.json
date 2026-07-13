@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "PilotResearchLedger",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "producer_version",
+    "rule_version",
+    "run_id",
+    "generated_at",
+    "ledger_id",
+    "status",
+    "source_artifacts",
+    "pilot_topic_count",
+    "ledger_entries",
+    "evaluation_summary",
+    "guardrail_check"
+  ],
+  "properties": {
+    "artifact_type": { "const": "pilot_research_ledger" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "const": "0.5.0" },
+    "rule_version": { "type": "string" },
+    "run_id": { "type": "string", "pattern": "^run_[0-9]{8}T[0-9]{9}_[a-f0-9]{6}$" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "ledger_id": { "type": "string", "pattern": "^research_ledger_run_[0-9]{8}T[0-9]{9}_[a-f0-9]{6}$" },
+    "status": { "enum": ["ok", "insufficient_history"] },
+    "source_artifacts": { "$ref": "#/$defs/strings" },
+    "pilot_topic_count": { "type": "integer", "minimum": 0 },
+    "ledger_entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "topic_id",
+          "current_hypothesis",
+          "competing_hypothesis",
+          "current_stage",
+          "prior_band",
+          "posterior_direction",
+          "event_intensity",
+          "tail_structure",
+          "strongest_evidence_ids",
+          "why_not_higher_stage",
+          "falsification_trigger",
+          "next_validation_window",
+          "operator_agreement",
+          "operator_comment",
+          "outcome_status",
+          "latest_artifact_stage",
+          "diff_change_type",
+          "diff_detected_changes",
+          "branch_mutation_detected",
+          "missed_change_detected",
+          "artifact_evidence_ids",
+          "research_only_action",
+          "status_note"
+        ],
+        "properties": {
+          "topic_id": { "type": "string", "minLength": 1 },
+          "current_hypothesis": { "type": "string", "minLength": 1 },
+          "competing_hypothesis": { "type": "string", "minLength": 1 },
+          "current_stage": { "type": "string", "minLength": 1 },
+          "prior_band": { "enum": ["low", "medium", "high"] },
+          "posterior_direction": { "enum": ["up", "down", "unchanged"] },
+          "event_intensity": { "enum": ["low", "medium", "high", "burst"] },
+          "tail_structure": { "enum": ["normal", "right_tail_candidate", "left_tail_risk"] },
+          "strongest_evidence_ids": { "$ref": "#/$defs/strings" },
+          "why_not_higher_stage": { "type": "string", "minLength": 1 },
+          "falsification_trigger": { "type": "string", "minLength": 1 },
+          "next_validation_window": { "type": "string", "minLength": 1 },
+          "operator_agreement": { "enum": ["agree", "disagree", "uncertain"] },
+          "operator_comment": { "type": "string" },
+          "outcome_status": { "enum": ["pending", "confirmed", "weakened", "falsified"] },
+          "latest_artifact_stage": { "type": ["string", "null"] },
+          "diff_change_type": { "type": ["string", "null"] },
+          "diff_detected_changes": { "$ref": "#/$defs/strings" },
+          "branch_mutation_detected": { "type": "boolean" },
+          "missed_change_detected": { "type": "boolean" },
+          "artifact_evidence_ids": { "$ref": "#/$defs/strings" },
+          "research_only_action": { "enum": ["observe", "wait", "validate", "review", "monitor", "flag_risk"] },
+          "status_note": { "type": "string" }
+        }
+      }
+    },
+    "evaluation_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "research_time_saved",
+        "operator_agreement_rate",
+        "stage_change_precision",
+        "early_radar_follow_through",
+        "false_positive_count",
+        "missed_change_count",
+        "falsification_count",
+        "consecutive_no_change_runs"
+      ],
+      "properties": {
+        "research_time_saved": { "$ref": "#/$defs/metric" },
+        "operator_agreement_rate": { "$ref": "#/$defs/metric" },
+        "stage_change_precision": { "$ref": "#/$defs/metric" },
+        "early_radar_follow_through": { "$ref": "#/$defs/metric" },
+        "false_positive_count": { "$ref": "#/$defs/metric" },
+        "missed_change_count": { "$ref": "#/$defs/metric" },
+        "falsification_count": { "$ref": "#/$defs/metric" },
+        "consecutive_no_change_runs": { "$ref": "#/$defs/metric" }
+      }
+    },
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "no_trading_advice",
+        "required_hypotheses_present",
+        "required_falsification_triggers_present",
+        "research_only_actions",
+        "branch_parent_separation_preserved"
+      ],
+      "properties": {
+        "no_trading_advice": { "type": "boolean" },
+        "required_hypotheses_present": { "type": "boolean" },
+        "required_falsification_triggers_present": { "type": "boolean" },
+        "research_only_actions": { "type": "boolean" },
+        "branch_parent_separation_preserved": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "strings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metric": {
+      "oneOf": [
+        { "type": "number" },
+        { "const": "insufficient_history" }
+      ]
+    }
+  }
+}
