@@ -71,10 +71,11 @@ function topicState(
   generatedAt: string,
   scores: ScoreResult[],
 ): StageSnapshotTopic {
-  const parentEvidence = evidence.filter((item) => item.parent_or_branch === 'parent');
+  const topicEvidence = evidence.filter((item) => item.topic_id === topicId);
+  const parentEvidence = topicEvidence.filter((item) => item.parent_or_branch === 'parent' || !item.branch_id);
   const branchIds = new Set([
     ...registry.branches.filter((branch) => branch.topic_id === topicId).map((branch) => branch.branch_id),
-    ...evidence.filter((item) => item.parent_or_branch === 'branch' && item.branch_id).map((item) => item.branch_id as string),
+    ...evidence.filter((item) => item.topic_id === topicId && item.parent_or_branch === 'branch' && item.branch_id).map((item) => item.branch_id as string),
   ]);
   const branches = [...branchIds].map((branchId) => branchState(branchId, evidence, registry, topicId));
 
@@ -100,12 +101,12 @@ function topicState(
   }
 
   const parentConfidence = averageConfidence(parentEvidence);
-  const stage = classifyStage({ evidence, scope: 'parent', dataConfidence: parentConfidence });
+  const stage = classifyStage({ evidence: parentEvidence, scope: 'parent', dataConfidence: parentConfidence });
   const score = generateScore({
     score_id: `score_operational_${topicId}_${generatedAt.slice(0, 10).replaceAll('-', '')}`,
     topic_id: topicId,
     score_date: generatedAt.slice(0, 10),
-    evidence,
+    evidence: parentEvidence,
     stageClassification: stage,
     missing_data: missingLayers(stage),
   });

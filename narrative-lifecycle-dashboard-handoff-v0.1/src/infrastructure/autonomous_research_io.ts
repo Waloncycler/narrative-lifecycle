@@ -26,9 +26,20 @@ export class FileAutonomousResearchRepository {
     const rows = [
       ...this.readAuditedManualEvidence(),
       ...this.readYamlRows(AUTOMATED_EVIDENCE_PATH),
+      ...this.readJsonEvidenceTable(),
     ];
     const byId = new Map(rows.map((item) => [item.evidence_id, item]));
     return [...byId.values()];
+  }
+
+  private readJsonEvidenceTable(): EvidenceNode[] {
+    const jsonPath = resolve(this.repoRoot, 'data/evidence_table/evidence_table.json');
+    if (!existsSync(jsonPath)) return [];
+    try {
+      return JSON.parse(readFileSync(jsonPath, 'utf8')) as EvidenceNode[];
+    } catch {
+      return [];
+    }
   }
 
   writePublishedEvidence(rows: EvidenceNode[]): void {
@@ -36,6 +47,13 @@ export class FileAutonomousResearchRepository {
     const merged = new Map(existing.map((item) => [item.evidence_id, item]));
     for (const row of rows) merged.set(row.evidence_id, row);
     writeTextAtomically(resolve(this.repoRoot, AUTOMATED_EVIDENCE_PATH), stringify([...merged.values()]));
+
+    const jsonPath = resolve(this.repoRoot, 'data/evidence_table/evidence_table.json');
+    const existingJson = this.readJsonEvidenceTable();
+    const jsonMerged = new Map(existingJson.map((item) => [item.evidence_id, item]));
+    for (const row of rows) jsonMerged.set(row.evidence_id, row);
+    mkdirSync(resolve(this.repoRoot, 'data/evidence_table'), { recursive: true });
+    writeTextAtomically(jsonPath, JSON.stringify([...jsonMerged.values()], null, 2));
   }
 
   readLatestSnapshot(): StageSnapshotHistory | null {

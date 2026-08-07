@@ -111,6 +111,7 @@ export function analyzeLeadWithDeepProbe(lead: ResearchLeadTriageItem, rawBody: 
 }
 
 function inferTopicFromText(text: string): string {
+  if (/(?:memory|hbm|dram|nand|semiconductor memory|存储芯片|内存芯片|长鑫|美光|海力士|兆易创新)/i.test(text)) return 'provisional_semiconductor_memory_market';
   if (/(?:bci|brain|neuro|neuralink|synchron|脑机|脑机接口|侵入式|神经控创)/i.test(text)) return 'bci';
   if (/(?:robot|humanoid|actuator|embodied|人形机器人|机器人|具身智能|灵巧手|减速器)/i.test(text)) return 'humanoid_robotics';
   if (/(?:license|out-license|deal|pharma|biotech|创新药|对外授权|首付款|里程碑)/i.test(text)) return 'innovative_drug_license_out';
@@ -119,6 +120,10 @@ function inferTopicFromText(text: string): string {
 }
 
 function inferBranchFromText(topicId: string, text: string): string | null {
+  if (topicId === 'provisional_semiconductor_memory_market') {
+    if (/(?:hbm|high bandwidth memory|高带宽内存)/i.test(text)) return 'provisional_hbm_high_bandwidth_memory';
+    if (/(?:dram|nand|price|contract|合约价|涨价潮)/i.test(text)) return 'provisional_dram_nand_flash_price_hike';
+  }
   if (topicId === 'bci') {
     if (/(?:medical|clinical|als|rehabilitation|康复|抑郁|渐冻症|医疗)/i.test(text)) return 'provisional_bci_medical_rehabilitation';
   }

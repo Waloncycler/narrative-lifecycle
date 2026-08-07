@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260807T100945041_a87ed1",
-  "generated_at": "2026-08-07T10:09:45.270Z",
-  "review_id": "operator_review_run_20260807T100945041_a87ed1",
+  "run_id": "run_20260807T103017741_9a0f3e",
+  "generated_at": "2026-08-07T10:30:17.982Z",
+  "review_id": "operator_review_run_20260807T103017741_9a0f3e",
   "status": "ok",
   "source_artifacts": [
     "outputs/operator_runs/run_20260802T181123872_9133dd/run_manifest.json",
@@ -262,17 +262,26 @@
     "outputs/operator_runs/run_20260807T095906361_27e52a/weekly_brief.json",
     "outputs/operator_runs/run_20260807T100945041_a87ed1/run_manifest.json",
     "outputs/operator_runs/run_20260807T100945041_a87ed1/stage_diff.json",
-    "outputs/operator_runs/run_20260807T100945041_a87ed1/weekly_brief.json"
+    "outputs/operator_runs/run_20260807T100945041_a87ed1/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T102443050_f3c588/run_manifest.json",
+    "outputs/operator_runs/run_20260807T102443050_f3c588/stage_diff.json",
+    "outputs/operator_runs/run_20260807T102443050_f3c588/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T102652092_8bbd48/run_manifest.json",
+    "outputs/operator_runs/run_20260807T102652092_8bbd48/stage_diff.json",
+    "outputs/operator_runs/run_20260807T102652092_8bbd48/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T103017741_9a0f3e/run_manifest.json",
+    "outputs/operator_runs/run_20260807T103017741_9a0f3e/stage_diff.json",
+    "outputs/operator_runs/run_20260807T103017741_9a0f3e/weekly_brief.json"
   ],
   "review_window": {
     "first_run_id": "run_20260802T181123872_9133dd",
-    "last_run_id": "run_20260807T100945041_a87ed1",
+    "last_run_id": "run_20260807T103017741_9a0f3e",
     "first_started_at": "2026-08-02T18:11:23.872Z",
-    "last_completed_at": "2026-08-07T10:09:45.171Z"
+    "last_completed_at": "2026-08-07T10:30:17.875Z"
   },
   "run_summary": {
-    "run_count": 85,
-    "successful_run_count": 85,
+    "run_count": 88,
+    "successful_run_count": 88,
     "failed_run_count": 0
   },
   "runs": [
@@ -1040,6 +1049,33 @@
       "guardrail_status": "ok",
       "has_stage_diff": true,
       "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "started_at": "2026-08-07T10:24:43.050Z",
+      "completed_at": "2026-08-07T10:24:43.177Z",
+      "status": "ok",
+      "guardrail_status": "review_required",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T102652092_8bbd48",
+      "started_at": "2026-08-07T10:26:52.092Z",
+      "completed_at": "2026-08-07T10:26:52.217Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T103017741_9a0f3e",
+      "started_at": "2026-08-07T10:30:17.741Z",
+      "completed_at": "2026-08-07T10:30:17.875Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
     }
   ],
   "stage_trends": {
@@ -1058,9 +1094,72 @@
         ],
         "branch_id": null,
         "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T102443050_f3c588",
+        "generated_at": "2026-08-07T10:24:43.050Z",
+        "topic_id": "bci",
+        "topic_name": "脑机接口",
+        "change_type": "stage_upgrade",
+        "previous_value": "S4",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_probe_cbbf4a76f9854c82"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T102443050_f3c588",
+        "generated_at": "2026-08-07T10:24:43.050Z",
+        "topic_id": "provisional_semiconductor_memory_market",
+        "topic_name": "存储芯片",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S4",
+        "evidence_ids": [
+          "ev_mem_cxmt_wafer_expansion_2026",
+          "ev_mem_miit_policy_support_2026"
+        ],
+        "branch_id": "provisional_hbm_high_bandwidth_memory",
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T102443050_f3c588",
+        "generated_at": "2026-08-07T10:24:43.050Z",
+        "topic_id": "provisional_additive_manufacturing",
+        "topic_name": "增材制造",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S2",
+        "evidence_ids": [
+          "ev_probe_5df83a9e30fc2404",
+          "ev_probe_68a3ff38a4f2a25a",
+          "ev_probe_73a9f86d483f295c",
+          "ev_probe_7df310a0927544bd",
+          "ev_probe_b4a6b7fb21b57408"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
       }
     ],
-    "downgrades": []
+    "downgrades": [
+      {
+        "run_id": "run_20260807T103017741_9a0f3e",
+        "generated_at": "2026-08-07T10:30:17.741Z",
+        "topic_id": "bci",
+        "topic_name": "脑机接口",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S4",
+        "evidence_ids": [
+          "bci_parent_capital_synchron_20251106",
+          "bci_parent_policy_label_20250730"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      }
+    ]
   },
   "evidence_trends": {
     "added": [
@@ -1090,9 +1189,113 @@
         ],
         "branch_id": null,
         "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T102443050_f3c588",
+        "generated_at": "2026-08-07T10:24:43.050Z",
+        "topic_id": "bci",
+        "topic_name": "脑机接口",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_probe_cbbf4a76f9854c82"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T102443050_f3c588",
+        "generated_at": "2026-08-07T10:24:43.050Z",
+        "topic_id": "humanoid_robotics",
+        "topic_name": "人形机器人",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_probe_329791bdabd1e2a8"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T102443050_f3c588",
+        "generated_at": "2026-08-07T10:24:43.050Z",
+        "topic_id": "provisional_semiconductor_memory_market",
+        "topic_name": "存储芯片",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_mem_cxmt_wafer_expansion_2026",
+          "ev_mem_miit_policy_support_2026"
+        ],
+        "branch_id": "provisional_hbm_high_bandwidth_memory",
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T102443050_f3c588",
+        "generated_at": "2026-08-07T10:24:43.050Z",
+        "topic_id": "provisional_additive_manufacturing",
+        "topic_name": "增材制造",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_probe_5df83a9e30fc2404",
+          "ev_probe_68a3ff38a4f2a25a",
+          "ev_probe_73a9f86d483f295c",
+          "ev_probe_7df310a0927544bd",
+          "ev_probe_b4a6b7fb21b57408"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T102443050_f3c588",
+        "generated_at": "2026-08-07T10:24:43.050Z",
+        "topic_id": "provisional_ai_agents",
+        "topic_name": "AI 智能体",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "direct_arxiv_mn8gv5",
+          "ev_probe_889c5c2d51bd842b"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
       }
     ],
-    "removed": []
+    "removed": [
+      {
+        "run_id": "run_20260807T103017741_9a0f3e",
+        "generated_at": "2026-08-07T10:30:17.741Z",
+        "topic_id": "bci",
+        "topic_name": "脑机接口",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_probe_cbbf4a76f9854c82"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T103017741_9a0f3e",
+        "generated_at": "2026-08-07T10:30:17.741Z",
+        "topic_id": "humanoid_robotics",
+        "topic_name": "人形机器人",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_probe_329791bdabd1e2a8"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T103017741_9a0f3e",
+        "generated_at": "2026-08-07T10:30:17.741Z",
+        "topic_id": "provisional_ai_agents",
+        "topic_name": "AI 智能体",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "direct_arxiv_mn8gv5",
+          "ev_probe_889c5c2d51bd842b"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      }
+    ]
   },
   "why_not_higher_changes": [
     {
@@ -1107,6 +1310,121 @@
         "bci_parent_capital_synchron_20251106",
         "bci_parent_policy_label_20250730"
       ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "bci",
+      "topic_name": "脑机接口",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing pricing adoption; Missing hard reality evidence.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_probe_cbbf4a76f9854c82"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "No evidence is available for this scope.",
+      "evidence_ids": [
+        "ev_probe_329791bdabd1e2a8"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "provisional_semiconductor_memory_market",
+      "topic_name": "存储芯片",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_mem_cxmt_wafer_expansion_2026",
+        "ev_mem_miit_policy_support_2026"
+      ],
+      "branch_id": "provisional_hbm_high_bandwidth_memory",
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "provisional_additive_manufacturing",
+      "topic_name": "增材制造",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_probe_5df83a9e30fc2404",
+        "ev_probe_68a3ff38a4f2a25a",
+        "ev_probe_73a9f86d483f295c",
+        "ev_probe_7df310a0927544bd",
+        "ev_probe_b4a6b7fb21b57408"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "No evidence is available for this scope.",
+      "evidence_ids": [
+        "direct_arxiv_mn8gv5",
+        "ev_probe_889c5c2d51bd842b"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T103017741_9a0f3e",
+      "generated_at": "2026-08-07T10:30:17.741Z",
+      "topic_id": "bci",
+      "topic_name": "脑机接口",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "bci_parent_capital_synchron_20251106",
+        "bci_parent_policy_label_20250730"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T103017741_9a0f3e",
+      "generated_at": "2026-08-07T10:30:17.741Z",
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No evidence is available for this scope.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T103017741_9a0f3e",
+      "generated_at": "2026-08-07T10:30:17.741Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No evidence is available for this scope.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
       "branch_id": null,
       "reactivation_record_id": null
     }
@@ -1124,6 +1442,66 @@
         "bci_parent_capital_synchron_20251106",
         "bci_parent_policy_label_20250730"
       ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "provisional_semiconductor_memory_market",
+      "topic_name": "存储芯片",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_mem_cxmt_wafer_expansion_2026",
+        "ev_mem_miit_policy_support_2026"
+      ],
+      "branch_id": "provisional_hbm_high_bandwidth_memory",
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "provisional_additive_manufacturing",
+      "topic_name": "增材制造",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_probe_5df83a9e30fc2404",
+        "ev_probe_68a3ff38a4f2a25a",
+        "ev_probe_73a9f86d483f295c",
+        "ev_probe_7df310a0927544bd",
+        "ev_probe_b4a6b7fb21b57408"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "direct_arxiv_mn8gv5",
+        "ev_probe_889c5c2d51bd842b"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T103017741_9a0f3e",
+      "generated_at": "2026-08-07T10:30:17.741Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
       "branch_id": null,
       "reactivation_record_id": null
     }
@@ -1190,6 +1568,19 @@
       "evidence_ids": [],
       "branch_id": "provisional_ai_agents_compute_budget_governance",
       "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "topic_id": "provisional_semiconductor_memory_market",
+      "topic_name": "存储芯片",
+      "change_type": "branch_mutation_candidate",
+      "evidence_ids": [
+        "ev_mem_cxmt_wafer_expansion_2026",
+        "ev_mem_miit_policy_support_2026"
+      ],
+      "branch_id": "provisional_hbm_high_bandwidth_memory",
+      "reactivation_record_id": null
     }
   ],
   "early_radar_changes": [],
@@ -1206,6 +1597,14 @@
       "run_id": "run_20260807T093409754_8847fb",
       "generated_at": "2026-08-07T09:34:09.754Z",
       "change_type": "evidence_ids_visible",
+      "previous_value": "true",
+      "current_value": "false",
+      "evidence_ids": []
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "generated_at": "2026-08-07T10:24:43.050Z",
+      "change_type": "parent_branch_separation_preserved",
       "previous_value": "true",
       "current_value": "false",
       "evidence_ids": []
@@ -1231,15 +1630,26 @@
       "run_id": "run_20260807T093409754_8847fb",
       "status": "review_required",
       "issue": "guardrail regression: evidence_ids_visible"
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "status": "review_required",
+      "issue": "run manifest reported guardrail review required"
+    },
+    {
+      "run_id": "run_20260807T102443050_f3c588",
+      "status": "review_required",
+      "issue": "guardrail regression: parent_branch_separation_preserved"
     }
   ],
   "repeated_issues": [
     {
       "issue": "run manifest reported guardrail review required",
-      "count": 2,
+      "count": 3,
       "run_ids": [
         "run_20260802T182646779_3913e9",
-        "run_20260807T093409754_8847fb"
+        "run_20260807T093409754_8847fb",
+        "run_20260807T102443050_f3c588"
       ]
     },
     {
@@ -1255,7 +1665,7 @@
     {
       "topic_id": "bci",
       "topic_name": "脑机接口",
-      "consecutive_run_count": 53,
+      "consecutive_run_count": 54,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1309,14 +1719,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102652092_8bbd48"
       ],
       "current_stage": "S4"
     },
     {
       "topic_id": "humanoid_robotics",
       "topic_name": "人形机器人",
-      "consecutive_run_count": 55,
+      "consecutive_run_count": 56,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1372,14 +1783,15 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102652092_8bbd48"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "innovative_drug_license_out",
       "topic_name": "创新药对外授权",
-      "consecutive_run_count": 52,
+      "consecutive_run_count": 55,
       "run_ids": [
         "run_20260802T183030393_2e4435",
         "run_20260802T183223529_e223a1",
@@ -1432,14 +1844,17 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_blockchain_crypto_market",
       "topic_name": "区块链与加密资产",
-      "consecutive_run_count": 31,
+      "consecutive_run_count": 34,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1471,14 +1886,17 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_luxury_consumer",
       "topic_name": "高端消费",
-      "consecutive_run_count": 31,
+      "consecutive_run_count": 34,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1510,14 +1928,17 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_low_altitude_economy",
       "topic_name": "低空经济",
-      "consecutive_run_count": 31,
+      "consecutive_run_count": 34,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1549,14 +1970,17 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_new_energy_industry",
       "topic_name": "新能源产业",
-      "consecutive_run_count": 58,
+      "consecutive_run_count": 61,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1615,14 +2039,17 @@
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_commercial_space",
       "topic_name": "商业航天",
-      "consecutive_run_count": 58,
+      "consecutive_run_count": 61,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1681,14 +2108,17 @@
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_quantum_computing",
       "topic_name": "量子计算",
-      "consecutive_run_count": 29,
+      "consecutive_run_count": 32,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1718,14 +2148,17 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_innovative_drug_clinical_development",
       "topic_name": "创新药临床研发",
-      "consecutive_run_count": 55,
+      "consecutive_run_count": 58,
       "run_ids": [
         "run_20260802T182405982_052013",
         "run_20260802T182601304_177bdf",
@@ -1781,14 +2214,17 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_ai_foundation_models",
       "topic_name": "基础大模型",
-      "consecutive_run_count": 29,
+      "consecutive_run_count": 32,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1818,14 +2254,17 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_semiconductor_advanced_manufacturing",
       "topic_name": "半导体先进制造",
-      "consecutive_run_count": 29,
+      "consecutive_run_count": 32,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1855,14 +2294,17 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_semiconductor_memory_market",
       "topic_name": "存储芯片",
-      "consecutive_run_count": 15,
+      "consecutive_run_count": 17,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1878,14 +2320,16 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S4"
     },
     {
       "topic_id": "provisional_china_ip_policy",
       "topic_name": "中国知识产权政策",
-      "consecutive_run_count": 76,
+      "consecutive_run_count": 79,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -1962,14 +2406,17 @@
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_additive_manufacturing",
       "topic_name": "增材制造",
-      "consecutive_run_count": 29,
+      "consecutive_run_count": 31,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1999,14 +2446,16 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S2"
     },
     {
       "topic_id": "provisional_china_social_security_policy",
       "topic_name": "社会保障政策",
-      "consecutive_run_count": 76,
+      "consecutive_run_count": 79,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -2083,14 +2532,27 @@
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
+      ],
+      "current_stage": "S2"
+    },
+    {
+      "topic_id": "provisional_advanced_packaging",
+      "topic_name": "Advanced Packaging",
+      "consecutive_run_count": 2,
+      "run_ids": [
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_ai_agents",
       "topic_name": "AI 智能体",
-      "consecutive_run_count": 27,
+      "consecutive_run_count": 28,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2118,14 +2580,15 @@
         "run_20260807T073055977_631f1f",
         "run_20260807T073542612_372da6",
         "run_20260807T095712116_45d145",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102652092_8bbd48"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_smart_manufacturing",
       "topic_name": "智能制造",
-      "consecutive_run_count": 56,
+      "consecutive_run_count": 59,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2182,14 +2645,17 @@
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_computing_infrastructure",
       "topic_name": "算力基础设施",
-      "consecutive_run_count": 29,
+      "consecutive_run_count": 32,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2219,7 +2685,10 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
-        "run_20260807T100945041_a87ed1"
+        "run_20260807T100945041_a87ed1",
+        "run_20260807T102443050_f3c588",
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e"
       ],
       "current_stage": "S0"
     }
@@ -2247,6 +2716,39 @@
     },
     {
       "priority": "high",
+      "category": "guardrail_regression",
+      "message": "parent_branch_separation_preserved requires operator review.",
+      "run_ids": [
+        "run_20260807T102443050_f3c588"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "脑机接口 moved S6 -> S4.",
+      "run_ids": [
+        "run_20260807T103017741_9a0f3e"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": [
+        "bci_parent_capital_synchron_20251106",
+        "bci_parent_policy_label_20250730"
+      ]
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "AI 智能体 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T103017741_9a0f3e"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
       "category": "failed_run",
       "message": "run manifest reported guardrail review required",
       "run_ids": [
@@ -2281,6 +2783,26 @@
       "message": "guardrail regression: evidence_ids_visible",
       "run_ids": [
         "run_20260807T093409754_8847fb"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "failed_run",
+      "message": "run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260807T102443050_f3c588"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "failed_run",
+      "message": "guardrail regression: parent_branch_separation_preserved",
+      "run_ids": [
+        "run_20260807T102443050_f3c588"
       ],
       "research_only_action": "review",
       "evidence_ids": []
@@ -2346,6 +2868,19 @@
       ],
       "research_only_action": "review",
       "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "branch_mutation",
+      "message": "存储芯片 has branch mutation provisional_hbm_high_bandwidth_memory; parent stage remains artifact-derived.",
+      "run_ids": [
+        "run_20260807T102443050_f3c588"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": [
+        "ev_mem_cxmt_wafer_expansion_2026",
+        "ev_mem_miit_policy_support_2026"
+      ]
     }
   ],
   "research_only_next_actions": [
@@ -2366,6 +2901,33 @@
       "evidence_ids": []
     },
     {
+      "action": "flag_risk",
+      "reason": "parent_branch_separation_preserved requires operator review.",
+      "run_ids": [
+        "run_20260807T102443050_f3c588"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "脑机接口 moved S6 -> S4.",
+      "run_ids": [
+        "run_20260807T103017741_9a0f3e"
+      ],
+      "evidence_ids": [
+        "bci_parent_capital_synchron_20251106",
+        "bci_parent_policy_label_20250730"
+      ]
+    },
+    {
+      "action": "review",
+      "reason": "AI 智能体 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T103017741_9a0f3e"
+      ],
+      "evidence_ids": []
+    },
+    {
       "action": "review",
       "reason": "run manifest reported guardrail review required",
       "run_ids": [
@@ -2394,6 +2956,22 @@
       "reason": "guardrail regression: evidence_ids_visible",
       "run_ids": [
         "run_20260807T093409754_8847fb"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260807T102443050_f3c588"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "guardrail regression: parent_branch_separation_preserved",
+      "run_ids": [
+        "run_20260807T102443050_f3c588"
       ],
       "evidence_ids": []
     },
@@ -2451,10 +3029,22 @@
     },
     {
       "action": "review",
+      "reason": "存储芯片 has branch mutation provisional_hbm_high_bandwidth_memory; parent stage remains artifact-derived.",
+      "run_ids": [
+        "run_20260807T102443050_f3c588"
+      ],
+      "evidence_ids": [
+        "ev_mem_cxmt_wafer_expansion_2026",
+        "ev_mem_miit_policy_support_2026"
+      ]
+    },
+    {
+      "action": "review",
       "reason": "Repeated issue: run manifest reported guardrail review required",
       "run_ids": [
         "run_20260802T182646779_3913e9",
-        "run_20260807T093409754_8847fb"
+        "run_20260807T093409754_8847fb",
+        "run_20260807T102443050_f3c588"
       ],
       "evidence_ids": []
     },
