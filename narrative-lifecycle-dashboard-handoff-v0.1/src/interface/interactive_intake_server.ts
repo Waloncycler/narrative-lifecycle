@@ -60,6 +60,14 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
       if (request.method === 'GET' && pathname === '/governance') return html(response, renderGovernance(readMonitor(repoRoot, useCases)));
       if (request.method === 'GET' && pathname.startsWith('/topics/')) return html(response, renderTopicDetail(readMonitor(repoRoot, useCases), decodeURIComponent(pathname.slice('/topics/'.length))));
       if (request.method === 'GET' && pathname === '/api/state') return json(response, readState(repoRoot));
+      if (request.method === 'GET' && pathname === '/api/evolution-timeline') {
+        try {
+          const content = readFileSync(resolve(repoRoot, 'outputs/evolution_timelines/all_topics_evolution.json'), 'utf8');
+          return json(response, JSON.parse(content));
+        } catch (e) {
+          return json(response, []);
+        }
+      }
       if (request.method === 'GET' && pathname === '/api/monitor') return json(response, readMonitor(repoRoot, useCases));
       if (request.method === 'GET' && pathname === '/api/agent/state') return json(response, readAgentState(repoRoot, useCases));
       if (request.method === 'POST' && pathname === '/api/intelligence-review') {

@@ -13,7 +13,7 @@
     "early_opportunity_score": 50,
     "data_confidence": 70,
     "why_early": "Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.",
-    "why_not_confirmed": "Missing pricing adoption; Missing hard reality evidence.",
+    "why_not_confirmed": "Missing pricing adoption; Missing hard reality evidence; Missing at least 3 independent sources.",
     "next_triggers": [
       "Fill missing evidence listed in why_not_higher_stage.",
       "Re-run stage gates before scoring."

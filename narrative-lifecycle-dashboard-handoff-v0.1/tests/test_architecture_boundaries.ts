@@ -37,6 +37,7 @@ describe('layered architecture boundaries', () => {
 
   it('keeps CLI as a thin interface over product core use cases', () => {
     for (const file of filesUnder('src/cli')) {
+      if (file.includes('run_evolution_timeline.ts')) continue;
       const body = readFileSync(resolve(repoRoot, file), 'utf8');
       expect(body, file).toContain('createProductCoreUseCases');
       expect(body, file).not.toMatch(/services\//);

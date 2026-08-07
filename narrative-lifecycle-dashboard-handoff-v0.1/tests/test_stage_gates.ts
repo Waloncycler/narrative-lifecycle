@@ -5,27 +5,27 @@ import type { EvidenceNode } from '../src/domain/evidence';
 
 describe('stage gates', () => {
   it('caps stage when stable label is missing', () => {
-    expect(maxAllowedStage({ hasStableLabel: false, hasCapitalConfirmation: true, hasPricingAdoption: true, hasHardRealityEvidence: true })).toBe('S2');
+    expect(maxAllowedStage({ hasStableLabel: false, hasCapitalConfirmation: true, hasPricingAdoption: true, hasHardRealityEvidence: true, independentSourceCount: 3 })).toBe('S2');
   });
 
-  it('caps stage when capital confirmation is missing', () => {
-    expect(maxAllowedStage({ hasStableLabel: true, hasCapitalConfirmation: false, hasPricingAdoption: true, hasHardRealityEvidence: true })).toBe('S3');
+  it('S3 limit if capital confirmation is missing despite hard reality', () => {
+    expect(maxAllowedStage({ hasStableLabel: true, hasCapitalConfirmation: false, hasPricingAdoption: true, hasHardRealityEvidence: true, independentSourceCount: 3 })).toBe('S3');
   });
 
-  it('caps stage when pricing adoption is missing', () => {
-    expect(maxAllowedStage({ hasStableLabel: true, hasCapitalConfirmation: true, hasPricingAdoption: false, hasHardRealityEvidence: true })).toBe('S4');
+  it('S4 limit if pricing adoption is missing', () => {
+    expect(maxAllowedStage({ hasStableLabel: true, hasCapitalConfirmation: true, hasPricingAdoption: false, hasHardRealityEvidence: true, independentSourceCount: 3 })).toBe('S4');
   });
 
-  it('caps stage when hard reality evidence is missing', () => {
-    expect(maxAllowedStage({ hasStableLabel: true, hasCapitalConfirmation: true, hasPricingAdoption: true, hasHardRealityEvidence: false })).toBe('S5');
+  it('S5 limit if hard reality evidence is missing', () => {
+    expect(maxAllowedStage({ hasStableLabel: true, hasCapitalConfirmation: true, hasPricingAdoption: true, hasHardRealityEvidence: false, independentSourceCount: 3 })).toBe('S5');
   });
 
-  it('allows S6 only when all stage gate evidence is present', () => {
-    expect(maxAllowedStage({ hasStableLabel: true, hasCapitalConfirmation: true, hasPricingAdoption: true, hasHardRealityEvidence: true })).toBe('S6');
+  it('S6 allowed if all gates satisfied and source count met', () => {
+    expect(maxAllowedStage({ hasStableLabel: true, hasCapitalConfirmation: true, hasPricingAdoption: true, hasHardRealityEvidence: true, independentSourceCount: 3 })).toBe('S6');
   });
 
-  it('uses the earliest missing gate as the maximum allowed stage', () => {
-    expect(maxAllowedStage({ hasStableLabel: false, hasCapitalConfirmation: false, hasPricingAdoption: false, hasHardRealityEvidence: false })).toBe('S2');
+  it('S0 starts out at S2 maximum for minimal reality', () => {
+    expect(maxAllowedStage({ hasStableLabel: false, hasCapitalConfirmation: false, hasPricingAdoption: false, hasHardRealityEvidence: false, independentSourceCount: 0 })).toBe('S2');
   });
 
   it('does not let branch, asset, unknown, or missing-scope evidence satisfy parent gates', () => {

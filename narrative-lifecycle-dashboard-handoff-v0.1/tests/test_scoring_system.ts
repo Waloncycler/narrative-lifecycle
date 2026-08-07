@@ -88,6 +88,7 @@ describe('test_scoring_system', () => {
             hasCapitalConfirmation: true,
             hasPricingAdoption: true,
             hasHardRealityEvidence: true,
+            independentSourceCount: 3,
           },
           why_not_higher_stage: 'forged',
           evidence_ids: parentS4Evidence.map((item) => item.evidence_id),

@@ -25,6 +25,16 @@ export interface StageClassification {
 }
 
 export function inferStageGateInput(evidence: EvidenceNode[]): StageGateInput {
+  // Compute independent sources by unique source_url or title
+  const uniqueSources = new Set<string>();
+  for (const item of evidence) {
+    if (item.source_url) {
+      uniqueSources.add(item.source_url);
+    } else {
+      uniqueSources.add(item.event_title);
+    }
+  }
+
   return {
     hasStableLabel: evidence.some((item) =>
       item.affected_layer.includes('perception') ||
@@ -36,6 +46,7 @@ export function inferStageGateInput(evidence: EvidenceNode[]): StageGateInput {
     hasCapitalConfirmation: evidence.some((item) => item.affected_layer.includes('capital')),
     hasPricingAdoption: evidence.some((item) => item.affected_layer.includes('pricing')),
     hasHardRealityEvidence: evidence.some(isHardRealityEvidence),
+    independentSourceCount: uniqueSources.size,
   };
 }
 
@@ -81,6 +92,7 @@ export function toStageSnapshot(classification: StageClassification): StageSnaps
   return {
     current_stage: classification.current_stage,
     max_allowed_stage: classification.max_allowed_stage,
+    gate_input: classification.gate_input,
     why_not_higher_stage: classification.why_not_higher_stage,
     evidence_ids: classification.evidence_ids,
     data_confidence_cap_applied: classification.data_confidence_cap_applied,

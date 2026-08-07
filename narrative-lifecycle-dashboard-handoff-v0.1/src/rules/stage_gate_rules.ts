@@ -5,7 +5,9 @@ export function maxAllowedStage(input: StageGateInput): Stage {
   if (!input.hasStableLabel) return 'S2';
   if (!input.hasCapitalConfirmation) return 'S3';
   if (!input.hasPricingAdoption) return 'S4';
+  if (input.independentSourceCount < 2) return 'S4'; // Quantitative threshold for S5+
   if (!input.hasHardRealityEvidence) return 'S5';
+  if (input.independentSourceCount < 3) return 'S5'; // Quantitative threshold for S6
   return 'S6';
 }
 
@@ -18,6 +20,8 @@ export function missingStageGateReasons(input: StageGateInput): string[] {
   if (!input.hasStableLabel) missing.push('stable label');
   if (!input.hasCapitalConfirmation) missing.push('capital confirmation');
   if (!input.hasPricingAdoption) missing.push('pricing adoption');
+  if (input.independentSourceCount < 2) missing.push('at least 2 independent sources');
   if (!input.hasHardRealityEvidence) missing.push('hard reality evidence');
+  if (input.independentSourceCount < 3) missing.push('at least 3 independent sources');
   return missing;
 }

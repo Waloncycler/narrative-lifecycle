@@ -5,7 +5,7 @@
   "stage_snapshot": {
     "current_stage": "S4",
     "max_allowed_stage": "S4",
-    "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+    "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence; Missing at least 3 independent sources.",
     "evidence_ids": [
       "bci_parent_label",
       "bci_parent_capital"

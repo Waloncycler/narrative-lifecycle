@@ -1,0 +1,2231 @@
+[
+  {
+    "topic_id": "bci",
+    "topic_name": "脑机接口",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S3",
+    "total_evidence_count": 1,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_f82a905b66987ade",
+        "trigger_evidence_title": "Foundational research mapping the origins of bci",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=bci",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_f82a905b66987ade"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_f82a905b66987ade",
+        "event_title": "Foundational research mapping the origins of bci",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=bci",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "humanoid_robotics",
+    "topic_name": "人形机器人",
+    "first_emergence_date": "2000-10-31",
+    "current_stage": "S6",
+    "total_evidence_count": 6,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2000-10-31",
+        "trigger_evidence_id": "ev_hist_f31012b0b1dc8329",
+        "trigger_evidence_title": "Honda Unveils ASIMO, the World’s Most Advanced Humanoid Robot",
+        "trigger_evidence_url": "https://global.honda/newsroom/worldnews/2000/c001120.html",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_f31012b0b1dc8329"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S6",
+        "transition_date": "2026-03-10",
+        "trigger_evidence_id": "ev_humanoid_figure_funding_2026",
+        "trigger_evidence_title": "Figure AI 完成 26 亿美元 C 轮融资 估值突破 200 亿美元",
+        "trigger_evidence_url": "https://www.figure.ai/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_f31012b0b1dc8329",
+          "ev_hist_d9a4fc2d3381db59",
+          "ev_humanoid_figure_funding_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2000-10-31",
+        "evidence_id": "ev_hist_f31012b0b1dc8329",
+        "event_title": "Honda Unveils ASIMO, the World’s Most Advanced Humanoid Robot",
+        "source_name": "company",
+        "source_url": "https://global.honda/newsroom/worldnews/2000/c001120.html",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2012-10-24",
+        "evidence_id": "ev_hist_d9a4fc2d3381db59",
+        "event_title": "DARPA Robotics Challenge launched to develop human-supervised robots",
+        "source_name": "official",
+        "source_url": "https://www.darpa.mil/program/darpa-robotics-challenge",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-03-10",
+        "evidence_id": "ev_humanoid_figure_funding_2026",
+        "event_title": "Figure AI 完成 26 亿美元 C 轮融资 估值突破 200 亿美元",
+        "source_name": "company",
+        "source_url": "https://www.figure.ai/",
+        "affected_layer": [
+          "capital",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-05-20",
+        "evidence_id": "ev_humanoid_china_policy_2026",
+        "event_title": "工信部印发《人形机器人创新发展指导意见》推动2027年产业化",
+        "source_name": "official",
+        "source_url": "https://www.miit.gov.cn/",
+        "affected_layer": [
+          "perception",
+          "reality"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-06-15",
+        "evidence_id": "ev_humanoid_tesla_optimus_gen3_2026",
+        "event_title": "Tesla Optimus Gen-3 量产启动 Fremont 工厂首批 1000 台出厂",
+        "source_name": "official",
+        "source_url": "https://ir.tesla.com/sec-filings",
+        "affected_layer": [
+          "reality",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": false
+      }
+    ]
+  },
+  {
+    "topic_id": "innovative_drug_license_out",
+    "topic_name": "创新药对外授权",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S6",
+    "total_evidence_count": 4,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_74e5acf3063e1222",
+        "trigger_evidence_title": "Foundational research mapping the origins of innovative_drug_license_out",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=innovative_drug_license_out",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_74e5acf3063e1222"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-04-15",
+        "trigger_evidence_id": "ev_licout_nmpa_policy_2026",
+        "trigger_evidence_title": "NMPA 发布《鼓励创新药国际化发展若干措施》简化出海审评流程",
+        "trigger_evidence_url": "https://www.nmpa.gov.cn/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_74e5acf3063e1222",
+          "ev_licout_nmpa_policy_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S4",
+        "to_stage": "S6",
+        "transition_date": "2026-05-22",
+        "trigger_evidence_id": "ev_licout_fda_approval_2026",
+        "trigger_evidence_title": "FDA 批准首个中国自研 ADC 药物上市 百利天恒 BL-B01D1 获批全球销售",
+        "trigger_evidence_url": "https://www.fda.gov/drugs/new-drugs-fda-cders-new-molecular-entities-and-new-therapeutic-biological-products",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_74e5acf3063e1222",
+          "ev_licout_nmpa_policy_2026",
+          "ev_licout_fda_approval_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S4 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_74e5acf3063e1222",
+        "event_title": "Foundational research mapping the origins of innovative_drug_license_out",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=innovative_drug_license_out",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-04-15",
+        "evidence_id": "ev_licout_nmpa_policy_2026",
+        "event_title": "NMPA 发布《鼓励创新药国际化发展若干措施》简化出海审评流程",
+        "source_name": "official",
+        "source_url": "https://www.nmpa.gov.cn/",
+        "affected_layer": [
+          "perception",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-05-22",
+        "evidence_id": "ev_licout_fda_approval_2026",
+        "event_title": "FDA 批准首个中国自研 ADC 药物上市 百利天恒 BL-B01D1 获批全球销售",
+        "source_name": "official",
+        "source_url": "https://www.fda.gov/drugs/new-drugs-fda-cders-new-molecular-entities-and-new-therapeutic-biological-products",
+        "affected_layer": [
+          "reality",
+          "pricing"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-06-30",
+        "evidence_id": "ev_licout_total_deal_2026",
+        "event_title": "2026 上半年中国创新药 License-out 交易额累计超 150 亿美元 同比增长 65%",
+        "source_name": "academic",
+        "source_url": "https://www.pharmcube.com/",
+        "affected_layer": [
+          "capital",
+          "reality"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": false
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_blockchain_crypto_market",
+    "topic_name": "区块链与加密资产",
+    "first_emergence_date": "2008-10-31",
+    "current_stage": "S6",
+    "total_evidence_count": 4,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2008-10-31",
+        "trigger_evidence_id": "ev_hist_0e46aca4dbc5a030",
+        "trigger_evidence_title": "Bitcoin: A Peer-to-Peer Electronic Cash System (Satoshi Nakamoto)",
+        "trigger_evidence_url": "https://bitcoin.org/bitcoin.pdf",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_0e46aca4dbc5a030"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S6",
+        "transition_date": "2026-06-01",
+        "trigger_evidence_id": "ev_crypto_btc_etf_2026",
+        "trigger_evidence_title": "BTC 现货 ETF 全球 AUM 突破 1500 亿美元 BlackRock IBIT 单品规模超 800 亿",
+        "trigger_evidence_url": "https://www.blackrock.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_0e46aca4dbc5a030",
+          "ev_hist_d4d1505106896162",
+          "ev_crypto_regulation_framework_2026",
+          "ev_crypto_btc_etf_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2008-10-31",
+        "evidence_id": "ev_hist_0e46aca4dbc5a030",
+        "event_title": "Bitcoin: A Peer-to-Peer Electronic Cash System (Satoshi Nakamoto)",
+        "source_name": "academic",
+        "source_url": "https://bitcoin.org/bitcoin.pdf",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2013-12-01",
+        "evidence_id": "ev_hist_d4d1505106896162",
+        "event_title": "Ethereum Whitepaper: A Next-Generation Smart Contract and Decentralized Application Platform",
+        "source_name": "academic",
+        "source_url": "https://ethereum.org/en/whitepaper/",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-05-10",
+        "evidence_id": "ev_crypto_regulation_framework_2026",
+        "event_title": "美国 SEC 发布加密资产监管框架正式稿 合规交易所牌照审批启动",
+        "source_name": "official",
+        "source_url": "https://www.sec.gov/",
+        "affected_layer": [
+          "perception",
+          "reality"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-06-01",
+        "evidence_id": "ev_crypto_btc_etf_2026",
+        "event_title": "BTC 现货 ETF 全球 AUM 突破 1500 亿美元 BlackRock IBIT 单品规模超 800 亿",
+        "source_name": "company",
+        "source_url": "https://www.blackrock.com/",
+        "affected_layer": [
+          "capital",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_luxury_consumer",
+    "topic_name": "高端消费",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S6",
+    "total_evidence_count": 3,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_c02af092e16bf78d",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_luxury_consumer",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_luxury_consumer",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_c02af092e16bf78d"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-05-15",
+        "trigger_evidence_id": "ev_luxury_baijiu_recovery_2026",
+        "trigger_evidence_title": "茅台/五粮液 Q2 营收双双超预期 高端白酒批价企稳回升",
+        "trigger_evidence_url": "https://www.eastmoney.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_c02af092e16bf78d",
+          "ev_luxury_baijiu_recovery_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S4",
+        "to_stage": "S6",
+        "transition_date": "2026-07-01",
+        "trigger_evidence_id": "ev_luxury_hainan_dutyfree_2026",
+        "trigger_evidence_title": "海南离岛免税购物上半年销售额突破 600 亿元 同比增长 25%",
+        "trigger_evidence_url": "https://www.haikou.gov.cn/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_c02af092e16bf78d",
+          "ev_luxury_baijiu_recovery_2026",
+          "ev_luxury_hainan_dutyfree_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S4 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_c02af092e16bf78d",
+        "event_title": "Foundational research mapping the origins of provisional_luxury_consumer",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_luxury_consumer",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-05-15",
+        "evidence_id": "ev_luxury_baijiu_recovery_2026",
+        "event_title": "茅台/五粮液 Q2 营收双双超预期 高端白酒批价企稳回升",
+        "source_name": "company",
+        "source_url": "https://www.eastmoney.com/",
+        "affected_layer": [
+          "capital",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-07-01",
+        "evidence_id": "ev_luxury_hainan_dutyfree_2026",
+        "event_title": "海南离岛免税购物上半年销售额突破 600 亿元 同比增长 25%",
+        "source_name": "official",
+        "source_url": "https://www.haikou.gov.cn/",
+        "affected_layer": [
+          "reality",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_low_altitude_economy",
+    "topic_name": "低空经济",
+    "first_emergence_date": "2016-01-06",
+    "current_stage": "S6",
+    "total_evidence_count": 5,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2016-01-06",
+        "trigger_evidence_id": "ev_hist_c73a2baf76a25df5",
+        "trigger_evidence_title": "EHang 184, World’s First Passenger Drone, Debuts at CES",
+        "trigger_evidence_url": "https://www.ehang.com/news/16.html",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_c73a2baf76a25df5"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-04-01",
+        "trigger_evidence_id": "ev_lowalt_policy_pilot_2026",
+        "trigger_evidence_title": "国务院印发低空经济发展纲要 20 个城市列入低空飞行试点",
+        "trigger_evidence_url": "https://www.gov.cn/zhengce/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_c73a2baf76a25df5",
+          "ev_hist_532abf457690b8b3",
+          "ev_lowalt_ehang_cert_2026",
+          "ev_lowalt_policy_pilot_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S4",
+        "to_stage": "S6",
+        "transition_date": "2026-05-10",
+        "trigger_evidence_id": "ev_lowalt_investment_2026",
+        "trigger_evidence_title": "低空经济产业基金规模突破 500 亿元 深圳/合肥/成都三城投资领跑",
+        "trigger_evidence_url": "https://36kr.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_c73a2baf76a25df5",
+          "ev_hist_532abf457690b8b3",
+          "ev_lowalt_ehang_cert_2026",
+          "ev_lowalt_policy_pilot_2026",
+          "ev_lowalt_investment_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S4 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2016-01-06",
+        "evidence_id": "ev_hist_c73a2baf76a25df5",
+        "event_title": "EHang 184, World’s First Passenger Drone, Debuts at CES",
+        "source_name": "company",
+        "source_url": "https://www.ehang.com/news/16.html",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2016-10-27",
+        "evidence_id": "ev_hist_532abf457690b8b3",
+        "event_title": "Uber Elevate: Fast-Forwarding to a Future of On-Demand Urban Air Transportation",
+        "source_name": "company",
+        "source_url": "https://www.uber.com/elevate.pdf",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-03-20",
+        "evidence_id": "ev_lowalt_ehang_cert_2026",
+        "event_title": "亿航智能 EH216-S 获中国民航局生产许可证 深圳商业运营首航",
+        "source_name": "official",
+        "source_url": "https://www.caac.gov.cn/",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-04-01",
+        "evidence_id": "ev_lowalt_policy_pilot_2026",
+        "event_title": "国务院印发低空经济发展纲要 20 个城市列入低空飞行试点",
+        "source_name": "official",
+        "source_url": "https://www.gov.cn/zhengce/",
+        "affected_layer": [
+          "perception",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-05-10",
+        "evidence_id": "ev_lowalt_investment_2026",
+        "event_title": "低空经济产业基金规模突破 500 亿元 深圳/合肥/成都三城投资领跑",
+        "source_name": "company",
+        "source_url": "https://36kr.com/",
+        "affected_layer": [
+          "capital",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_new_energy_industry",
+    "topic_name": "新能源产业",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S6",
+    "total_evidence_count": 4,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_812852629cbd178f",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_new_energy_industry",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_new_energy_industry",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_812852629cbd178f"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-03-01",
+        "trigger_evidence_id": "ev_newenergy_policy_dual_carbon_2026",
+        "trigger_evidence_title": "国家能源局发布《2026年能源工作指导意见》非化石能源发电占比目标 42%",
+        "trigger_evidence_url": "https://www.nea.gov.cn/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_812852629cbd178f",
+          "ev_newenergy_policy_dual_carbon_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S4",
+        "to_stage": "S6",
+        "transition_date": "2026-06-20",
+        "trigger_evidence_id": "ev_newenergy_solar_shipment_2026",
+        "trigger_evidence_title": "2026 上半年全球光伏组件出货量 450GW 同比增长 35% 中国占比 82%",
+        "trigger_evidence_url": "https://www.iea.org/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_812852629cbd178f",
+          "ev_newenergy_policy_dual_carbon_2026",
+          "ev_newenergy_solar_shipment_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S4 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_812852629cbd178f",
+        "event_title": "Foundational research mapping the origins of provisional_new_energy_industry",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_new_energy_industry",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-03-01",
+        "evidence_id": "ev_newenergy_policy_dual_carbon_2026",
+        "event_title": "国家能源局发布《2026年能源工作指导意见》非化石能源发电占比目标 42%",
+        "source_name": "official",
+        "source_url": "https://www.nea.gov.cn/",
+        "affected_layer": [
+          "perception",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-06-20",
+        "evidence_id": "ev_newenergy_solar_shipment_2026",
+        "event_title": "2026 上半年全球光伏组件出货量 450GW 同比增长 35% 中国占比 82%",
+        "source_name": "academic",
+        "source_url": "https://www.iea.org/",
+        "affected_layer": [
+          "reality",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-07-05",
+        "evidence_id": "ev_newenergy_storage_catl_2026",
+        "event_title": "宁德时代发布神行钠电池 量产成本低于磷酸铁锂 30% 储能电站加速部署",
+        "source_name": "company",
+        "source_url": "https://www.catl.com/",
+        "affected_layer": [
+          "reality",
+          "capital"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": false
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_commercial_space",
+    "topic_name": "商业航天",
+    "first_emergence_date": "2008-09-28",
+    "current_stage": "S6",
+    "total_evidence_count": 4,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2008-09-28",
+        "trigger_evidence_id": "ev_hist_63839fae0b49b162",
+        "trigger_evidence_title": "SpaceX Successfully Launches Falcon 1, First Privately Developed Liquid Fueled Rocket to Orbit",
+        "trigger_evidence_url": "https://www.spacex.com/news/2008/09/28/falcon-1-flight-4",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_63839fae0b49b162"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-04-20",
+        "trigger_evidence_id": "ev_space_starlink_revenue_2026",
+        "trigger_evidence_title": "SpaceX Starlink 年化营收突破 120 亿美元 全球用户超 500 万",
+        "trigger_evidence_url": "https://www.spacex.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_63839fae0b49b162",
+          "ev_space_starlink_revenue_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S4",
+        "to_stage": "S6",
+        "transition_date": "2026-06-01",
+        "trigger_evidence_id": "ev_space_china_launch_2026",
+        "trigger_evidence_title": "蓝箭航天朱雀三号可复用火箭首飞成功 中国商业航天进入降本期",
+        "trigger_evidence_url": "https://www.cnsa.gov.cn/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_63839fae0b49b162",
+          "ev_space_starlink_revenue_2026",
+          "ev_space_satellite_policy_2026",
+          "ev_space_china_launch_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S4 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2008-09-28",
+        "evidence_id": "ev_hist_63839fae0b49b162",
+        "event_title": "SpaceX Successfully Launches Falcon 1, First Privately Developed Liquid Fueled Rocket to Orbit",
+        "source_name": "company",
+        "source_url": "https://www.spacex.com/news/2008/09/28/falcon-1-flight-4",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-04-20",
+        "evidence_id": "ev_space_starlink_revenue_2026",
+        "event_title": "SpaceX Starlink 年化营收突破 120 亿美元 全球用户超 500 万",
+        "source_name": "company",
+        "source_url": "https://www.spacex.com/",
+        "affected_layer": [
+          "capital",
+          "reality"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-05-10",
+        "evidence_id": "ev_space_satellite_policy_2026",
+        "event_title": "国家航天局发布《商业航天发展规划》鼓励民营企业参与卫星互联网组网",
+        "source_name": "official",
+        "source_url": "https://www.cnsa.gov.cn/",
+        "affected_layer": [
+          "perception",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-06-01",
+        "evidence_id": "ev_space_china_launch_2026",
+        "event_title": "蓝箭航天朱雀三号可复用火箭首飞成功 中国商业航天进入降本期",
+        "source_name": "official",
+        "source_url": "https://www.cnsa.gov.cn/",
+        "affected_layer": [
+          "reality",
+          "pricing"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_quantum_computing",
+    "topic_name": "量子计算",
+    "first_emergence_date": "1982-04-01",
+    "current_stage": "S4",
+    "total_evidence_count": 4,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "1982-04-01",
+        "trigger_evidence_id": "ev_hist_05a7a46d3f07f855",
+        "trigger_evidence_title": "Quantum Mechanical Models of Turing Machines that Dissipate No Energy",
+        "trigger_evidence_url": "https://link.springer.com/article/10.1007/BF02650179",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_05a7a46d3f07f855"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-04-20",
+        "trigger_evidence_id": "ev_quantum_china_network_2026",
+        "trigger_evidence_title": "中国量子通信干线京沪广三城互联网络 总距离超 4600 公里",
+        "trigger_evidence_url": "https://www.cas.cn/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_05a7a46d3f07f855",
+          "ev_hist_6bf8ddd97c74be09",
+          "ev_quantum_ibm_condor_2026",
+          "ev_quantum_china_network_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S4",
+    "evidence_timeline": [
+      {
+        "event_date": "1982-04-01",
+        "evidence_id": "ev_hist_05a7a46d3f07f855",
+        "event_title": "Quantum Mechanical Models of Turing Machines that Dissipate No Energy",
+        "source_name": "academic",
+        "source_url": "https://link.springer.com/article/10.1007/BF02650179",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "1994-11-20",
+        "evidence_id": "ev_hist_6bf8ddd97c74be09",
+        "event_title": "Shor's Algorithm for Quantum Computation",
+        "source_name": "academic",
+        "source_url": "https://ieeexplore.ieee.org/document/365700",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-01-15",
+        "evidence_id": "ev_quantum_ibm_condor_2026",
+        "event_title": "IBM Quantum Condor 1121 量子比特处理器完成首个实用级量子化学模拟",
+        "source_name": "academic",
+        "source_url": "https://www.ibm.com/quantum",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-04-20",
+        "evidence_id": "ev_quantum_china_network_2026",
+        "event_title": "中国量子通信干线京沪广三城互联网络 总距离超 4600 公里",
+        "source_name": "official",
+        "source_url": "https://www.cas.cn/",
+        "affected_layer": [
+          "reality",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_innovative_drug_clinical_development",
+    "topic_name": "创新药临床研发",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S3",
+    "total_evidence_count": 1,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_a4cd3c67603b7cce",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_innovative_drug_clinical_development",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_innovative_drug_clinical_development",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_a4cd3c67603b7cce"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_a4cd3c67603b7cce",
+        "event_title": "Foundational research mapping the origins of provisional_innovative_drug_clinical_development",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_innovative_drug_clinical_development",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_ai_foundation_models",
+    "topic_name": "基础大模型",
+    "first_emergence_date": "2017-06-12",
+    "current_stage": "S6",
+    "total_evidence_count": 5,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2017-06-12",
+        "trigger_evidence_id": "ev_hist_a7468c6851652691",
+        "trigger_evidence_title": "Attention Is All You Need (Transformer Architecture)",
+        "trigger_evidence_url": "https://arxiv.org/abs/1706.03762",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_a7468c6851652691"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S6",
+        "transition_date": "2026-06-20",
+        "trigger_evidence_id": "ev_llm_claude_opus4_2026",
+        "trigger_evidence_title": "Anthropic 发布 Claude Opus 4 具备 extended thinking 与 agentic coding 能力",
+        "trigger_evidence_url": "https://www.anthropic.com/news/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_a7468c6851652691",
+          "ev_hist_2cab3ea10b8b7ae2",
+          "ev_llm_enterprise_adoption_2026",
+          "ev_llm_claude_opus4_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2017-06-12",
+        "evidence_id": "ev_hist_a7468c6851652691",
+        "event_title": "Attention Is All You Need (Transformer Architecture)",
+        "source_name": "academic",
+        "source_url": "https://arxiv.org/abs/1706.03762",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2020-05-28",
+        "evidence_id": "ev_hist_2cab3ea10b8b7ae2",
+        "event_title": "Language Models are Few-Shot Learners (GPT-3)",
+        "source_name": "academic",
+        "source_url": "https://arxiv.org/abs/2005.14165",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-05-15",
+        "evidence_id": "ev_llm_enterprise_adoption_2026",
+        "event_title": "McKinsey 报告显示全球企业大模型采纳率从 33% 升至 72% 年化 API 支出超 200 亿美元",
+        "source_name": "academic",
+        "source_url": "https://www.mckinsey.com/capabilities/quantumblack/our-insights",
+        "affected_layer": [
+          "pricing",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-06-20",
+        "evidence_id": "ev_llm_claude_opus4_2026",
+        "event_title": "Anthropic 发布 Claude Opus 4 具备 extended thinking 与 agentic coding 能力",
+        "source_name": "company",
+        "source_url": "https://www.anthropic.com/news/",
+        "affected_layer": [
+          "reality",
+          "capital"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-07-01",
+        "evidence_id": "ev_llm_deepseek_v3_2026",
+        "event_title": "DeepSeek-V3 发布 MMLU 95.2% 性能超越 GPT-4o 训练成本仅 550 万美元",
+        "source_name": "company",
+        "source_url": "https://www.deepseek.com/",
+        "affected_layer": [
+          "reality",
+          "pricing"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": false
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_semiconductor_advanced_manufacturing",
+    "topic_name": "半导体先进制造",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S6",
+    "total_evidence_count": 4,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_1215bb2319840e92",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_semiconductor_advanced_manufacturing",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_semiconductor_advanced_manufacturing",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_1215bb2319840e92"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-03-15",
+        "trigger_evidence_id": "ev_semi_chips_act_2026",
+        "trigger_evidence_title": "CHIPS 法案二期拨款 250 亿美元 Intel/Samsung 美国本土先进制程厂获批",
+        "trigger_evidence_url": "https://www.commerce.gov/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_1215bb2319840e92",
+          "ev_semi_chips_act_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S4",
+        "to_stage": "S6",
+        "transition_date": "2026-06-10",
+        "trigger_evidence_id": "ev_semi_tsmc_2nm_2026",
+        "trigger_evidence_title": "TSMC N2 制程进入风险量产 苹果/NVIDIA 已锁定首批产能",
+        "trigger_evidence_url": "https://www.tsmc.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_1215bb2319840e92",
+          "ev_semi_chips_act_2026",
+          "ev_semi_smic_expansion_2026",
+          "ev_semi_tsmc_2nm_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S4 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_1215bb2319840e92",
+        "event_title": "Foundational research mapping the origins of provisional_semiconductor_advanced_manufacturing",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_semiconductor_advanced_manufacturing",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-03-15",
+        "evidence_id": "ev_semi_chips_act_2026",
+        "event_title": "CHIPS 法案二期拨款 250 亿美元 Intel/Samsung 美国本土先进制程厂获批",
+        "source_name": "official",
+        "source_url": "https://www.commerce.gov/",
+        "affected_layer": [
+          "perception",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-05-05",
+        "evidence_id": "ev_semi_smic_expansion_2026",
+        "event_title": "中芯国际天津 12 英寸晶圆厂投产 成熟制程月产能增加 10 万片",
+        "source_name": "company",
+        "source_url": "https://www.smics.com/",
+        "affected_layer": [
+          "reality",
+          "capital"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-06-10",
+        "evidence_id": "ev_semi_tsmc_2nm_2026",
+        "event_title": "TSMC N2 制程进入风险量产 苹果/NVIDIA 已锁定首批产能",
+        "source_name": "company",
+        "source_url": "https://www.tsmc.com/",
+        "affected_layer": [
+          "reality",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_semiconductor_memory_market",
+    "topic_name": "存储芯片",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S6",
+    "total_evidence_count": 8,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_36d0480599298233",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_semiconductor_memory_market",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_semiconductor_memory_market",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_36d0480599298233"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S4",
+        "to_stage": "S5",
+        "transition_date": "2026-08-01",
+        "trigger_evidence_id": "ev_mem_price_surge",
+        "trigger_evidence_title": "2026存储芯片进入超级周期，DRAM与NAND现货价持续罕见飙升",
+        "trigger_evidence_url": "https://36kr.com/p/memory_super_cycle",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_36d0480599298233",
+          "ev_mem_cxmt_wafer_expansion_2026",
+          "ev_mem_hbm_capacity_shift",
+          "ev_mem_price_surge"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-08-05",
+        "trigger_evidence_id": "ev_mem_cxmt_wafer_expansion_2026",
+        "trigger_evidence_title": "国产存储芯片龙头长鑫存储与兆易创新扩建12英寸DRAM晶圆产能",
+        "trigger_evidence_url": "http://www.sse.com.cn/disclosure/listedinfo/announcement/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_36d0480599298233",
+          "ev_mem_cxmt_wafer_expansion_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S5",
+        "to_stage": "S6",
+        "transition_date": "2026-08-05",
+        "trigger_evidence_id": "ev_mem_downstream_cost",
+        "trigger_evidence_title": "智能手机告别低价内卷，存储成本失控引发终端集体涨价",
+        "trigger_evidence_url": "https://36kr.com/p/smartphone_cost",
+        "gate_unlocked": "all_gates_cleared + scaling_adopted",
+        "cumulative_evidence_ids": [
+          "ev_hist_36d0480599298233",
+          "ev_mem_cxmt_wafer_expansion_2026",
+          "ev_mem_hbm_capacity_shift",
+          "ev_mem_price_surge",
+          "ev_mem_downstream_cost"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S4 → S3 → S5 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_36d0480599298233",
+        "event_title": "Foundational research mapping the origins of provisional_semiconductor_memory_market",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_semiconductor_memory_market",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-07-15",
+        "evidence_id": "ev_mem_hbm_capacity_shift",
+        "event_title": "全球存储三巨头产能战略调整，HBM需求爆发重构供给侧",
+        "source_name": "company",
+        "source_url": "https://yicai.com/news/hbm_shift",
+        "affected_layer": [
+          "reality",
+          "capital"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-08-01",
+        "evidence_id": "ev_mem_price_surge",
+        "event_title": "2026存储芯片进入超级周期，DRAM与NAND现货价持续罕见飙升",
+        "source_name": "official",
+        "source_url": "https://36kr.com/p/memory_super_cycle",
+        "affected_layer": [
+          "pricing"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S5",
+        "max_allowed_after": "S5",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-08-05",
+        "evidence_id": "ev_mem_cxmt_wafer_expansion_2026",
+        "event_title": "国产存储芯片龙头长鑫存储与兆易创新扩建12英寸DRAM晶圆产能",
+        "source_name": "official",
+        "source_url": "http://www.sse.com.cn/disclosure/listedinfo/announcement/",
+        "affected_layer": [
+          "reality",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-08-05",
+        "evidence_id": "ev_mem_downstream_cost",
+        "event_title": "智能手机告别低价内卷，存储成本失控引发终端集体涨价",
+        "source_name": "official",
+        "source_url": "https://36kr.com/p/smartphone_cost",
+        "affected_layer": [
+          "pricing",
+          "reality"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-08-06",
+        "evidence_id": "ev_mem_miit_policy_support_2026",
+        "event_title": "工信部印发《存储芯片产业链自主可控与高质量发展行动方案》",
+        "source_name": "official",
+        "source_url": "https://www.miit.gov.cn/jgsj/kjs/wjfb/art/2026/art_memory_policy.html",
+        "affected_layer": [
+          "perception",
+          "capital",
+          "reality"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": false
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_china_ip_policy",
+    "topic_name": "中国知识产权政策",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S3",
+    "total_evidence_count": 1,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_83e93178b90884c2",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_china_ip_policy",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_china_ip_policy",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_83e93178b90884c2"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_83e93178b90884c2",
+        "event_title": "Foundational research mapping the origins of provisional_china_ip_policy",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_china_ip_policy",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_additive_manufacturing",
+    "topic_name": "增材制造",
+    "first_emergence_date": "2014-04-07",
+    "current_stage": "S3",
+    "total_evidence_count": 6,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S2",
+        "transition_date": "2014-04-07",
+        "trigger_evidence_id": "ev_probe_7df310a0927544bd",
+        "trigger_evidence_title": "Metal Additive Manufacturing: A Review",
+        "trigger_evidence_url": "https://doi.org/10.1007/s11665-014-0958-z",
+        "gate_unlocked": "first_evidence → hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_probe_7df310a0927544bd"
+        ],
+        "gate_state": {
+          "hasStableLabel": false,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S2",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_fe0eda7c3e4457d2",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_additive_manufacturing",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_additive_manufacturing",
+        "gate_unlocked": "stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_probe_7df310a0927544bd",
+          "ev_hist_fe0eda7c3e4457d2"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S2 → S3",
+    "evidence_timeline": [
+      {
+        "event_date": "2014-04-07",
+        "evidence_id": "ev_probe_7df310a0927544bd",
+        "event_title": "Metal Additive Manufacturing: A Review",
+        "source_name": "academic",
+        "source_url": "https://doi.org/10.1007/s11665-014-0958-z",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S2",
+        "max_allowed_after": "S2",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_fe0eda7c3e4457d2",
+        "event_title": "Foundational research mapping the origins of provisional_additive_manufacturing",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_additive_manufacturing",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2016-07-20",
+        "evidence_id": "ev_probe_73a9f86d483f295c",
+        "event_title": "Additive manufacturing of metals",
+        "source_name": "academic",
+        "source_url": "https://doi.org/10.1016/j.actamat.2016.07.019",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2017-10-12",
+        "evidence_id": "ev_probe_68a3ff38a4f2a25a",
+        "event_title": "Additive manufacturing of metallic components – Process, structure and properties",
+        "source_name": "academic",
+        "source_url": "https://doi.org/10.1016/j.pmatsci.2017.10.001",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2018-02-13",
+        "evidence_id": "ev_probe_5df83a9e30fc2404",
+        "event_title": "Additive manufacturing (3D printing): A review of materials, methods, applications and challenges",
+        "source_name": "academic",
+        "source_url": "https://doi.org/10.1016/j.compositesb.2018.02.012",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2020-08-11",
+        "evidence_id": "ev_probe_b4a6b7fb21b57408",
+        "event_title": "Grain refinement of stainless steel in ultrasound-assisted additive manufacturing",
+        "source_name": "academic",
+        "source_url": "http://arxiv.org/abs/2008.04485v3",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_china_social_security_policy",
+    "topic_name": "社会保障政策",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S3",
+    "total_evidence_count": 1,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_0de5d94c96161154",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_china_social_security_policy",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_china_social_security_policy",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_0de5d94c96161154"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_0de5d94c96161154",
+        "event_title": "Foundational research mapping the origins of provisional_china_social_security_policy",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_china_social_security_policy",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_advanced_packaging",
+    "topic_name": "Advanced Packaging",
+    "first_emergence_date": "1990-01-01",
+    "current_stage": "S3",
+    "total_evidence_count": 5,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S2",
+        "transition_date": "1990-01-01",
+        "trigger_evidence_id": "ev_probe_280ad78fc7ee6bec",
+        "trigger_evidence_title": "Advanced mammalian gene transfer: high titre retroviral vectors with multiple drug selection markers and a complementary",
+        "trigger_evidence_url": "https://doi.org/10.1093/nar/18.12.3587",
+        "gate_unlocked": "first_evidence → hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_probe_280ad78fc7ee6bec"
+        ],
+        "gate_state": {
+          "hasStableLabel": false,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S2",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_99a2294c2928084d",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_advanced_packaging",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_advanced_packaging",
+        "gate_unlocked": "stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_probe_280ad78fc7ee6bec",
+          "ev_probe_6218c5bf8d0ecac4",
+          "ev_hist_99a2294c2928084d"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S2 → S3",
+    "evidence_timeline": [
+      {
+        "event_date": "1990-01-01",
+        "evidence_id": "ev_probe_280ad78fc7ee6bec",
+        "event_title": "Advanced mammalian gene transfer: high titre retroviral vectors with multiple drug selection markers and a complementary",
+        "source_name": "academic",
+        "source_url": "https://doi.org/10.1093/nar/18.12.3587",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S2",
+        "max_allowed_after": "S2",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2008-12-16",
+        "evidence_id": "ev_probe_6218c5bf8d0ecac4",
+        "event_title": "Materials for Advanced Packaging",
+        "source_name": "academic",
+        "source_url": "https://doi.org/10.1007/978-0-387-78219-5",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S2",
+        "max_allowed_after": "S2",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_99a2294c2928084d",
+        "event_title": "Foundational research mapping the origins of provisional_advanced_packaging",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_advanced_packaging",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2022-01-18",
+        "evidence_id": "ev_probe_75aff8f0c1fc0fc5",
+        "event_title": "Recent Advances and Trends in Advanced Packaging",
+        "source_name": "academic",
+        "source_url": "https://doi.org/10.1109/tcpmt.2022.3144461",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2023-05-22",
+        "evidence_id": "ev_probe_917b988735767e6c",
+        "event_title": "Challenges and prospects for advanced packaging",
+        "source_name": "academic",
+        "source_url": "https://doi.org/10.1016/j.fmre.2023.04.014",
+        "affected_layer": [
+          "reality",
+          "name"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_ai_agents",
+    "topic_name": "AI 智能体",
+    "first_emergence_date": "2023-03-30",
+    "current_stage": "S6",
+    "total_evidence_count": 6,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2023-03-30",
+        "trigger_evidence_id": "ev_hist_7fc08de27bce1b0c",
+        "trigger_evidence_title": "Auto-GPT: An Autonomous GPT-4 Experiment",
+        "trigger_evidence_url": "https://github.com/Significant-Gravitas/AutoGPT",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_7fc08de27bce1b0c"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S6",
+        "transition_date": "2026-06-05",
+        "trigger_evidence_id": "ev_agent_enterprise_deploy_2026",
+        "trigger_evidence_title": "Salesforce / ServiceNow / SAP 等企业级 AI Agent 平台营收季增 40%",
+        "trigger_evidence_url": "https://www.salesforce.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_7fc08de27bce1b0c",
+          "ev_hist_efc9ff30e0690f22",
+          "ev_agent_mcp_standard_2026",
+          "ev_agent_enterprise_deploy_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2023-03-30",
+        "evidence_id": "ev_hist_7fc08de27bce1b0c",
+        "event_title": "Auto-GPT: An Autonomous GPT-4 Experiment",
+        "source_name": "academic",
+        "source_url": "https://github.com/Significant-Gravitas/AutoGPT",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2023-04-07",
+        "evidence_id": "ev_hist_efc9ff30e0690f22",
+        "event_title": "Generative Agents: Interactive Simulacra of Human Behavior",
+        "source_name": "academic",
+        "source_url": "https://arxiv.org/abs/2304.03442",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-04-10",
+        "evidence_id": "ev_agent_mcp_standard_2026",
+        "event_title": "Anthropic MCP 协议成为行业标准 GitHub Stars 超 50K 主流 IDE 全部集成",
+        "source_name": "company",
+        "source_url": "https://github.com/modelcontextprotocol",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-06-05",
+        "evidence_id": "ev_agent_enterprise_deploy_2026",
+        "event_title": "Salesforce / ServiceNow / SAP 等企业级 AI Agent 平台营收季增 40%",
+        "source_name": "company",
+        "source_url": "https://www.salesforce.com/",
+        "affected_layer": [
+          "capital",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-07-15",
+        "evidence_id": "ev_agent_china_regulation_2026",
+        "event_title": "中国网信办发布《生成式人工智能智能体管理暂行办法》",
+        "source_name": "official",
+        "source_url": "https://www.cac.gov.cn/",
+        "affected_layer": [
+          "perception",
+          "reality"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": false
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_smart_manufacturing",
+    "topic_name": "智能制造",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S6",
+    "total_evidence_count": 3,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_fb708bb2041e0d62",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_smart_manufacturing",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_smart_manufacturing",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_fb708bb2041e0d62"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S6",
+        "transition_date": "2026-06-20",
+        "trigger_evidence_id": "ev_smartmfg_vision_market_2026",
+        "trigger_evidence_title": "全球机器视觉市场规模突破 200 亿美元 中国市场占比升至 28%",
+        "trigger_evidence_url": "https://www.marketsandmarkets.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_fb708bb2041e0d62",
+          "ev_smartmfg_industrial_iot_2026",
+          "ev_smartmfg_vision_market_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_fb708bb2041e0d62",
+        "event_title": "Foundational research mapping the origins of provisional_smart_manufacturing",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_smart_manufacturing",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-05-01",
+        "evidence_id": "ev_smartmfg_industrial_iot_2026",
+        "event_title": "中国工业互联网平台注册企业超 200 万家 标识解析体系年调用量超 4000 亿次",
+        "source_name": "official",
+        "source_url": "https://www.miit.gov.cn/",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": false
+      },
+      {
+        "event_date": "2026-06-20",
+        "evidence_id": "ev_smartmfg_vision_market_2026",
+        "event_title": "全球机器视觉市场规模突破 200 亿美元 中国市场占比升至 28%",
+        "source_name": "academic",
+        "source_url": "https://www.marketsandmarkets.com/",
+        "affected_layer": [
+          "capital",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      }
+    ]
+  },
+  {
+    "topic_id": "provisional_computing_infrastructure",
+    "topic_name": "算力基础设施",
+    "first_emergence_date": "2015-06-01",
+    "current_stage": "S6",
+    "total_evidence_count": 4,
+    "transitions": [
+      {
+        "from_stage": "S0",
+        "to_stage": "S3",
+        "transition_date": "2015-06-01",
+        "trigger_evidence_id": "ev_hist_4b5e90bfe73258bd",
+        "trigger_evidence_title": "Foundational research mapping the origins of provisional_computing_infrastructure",
+        "trigger_evidence_url": "https://scholar.google.com/scholar?q=provisional_computing_infrastructure",
+        "gate_unlocked": "first_evidence → stable_label (perception) + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_4b5e90bfe73258bd"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": false,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S3",
+        "to_stage": "S4",
+        "transition_date": "2026-04-10",
+        "trigger_evidence_id": "ev_compute_liquid_cool_2026",
+        "trigger_evidence_title": "全球液冷数据中心市场规模突破 150 亿美元 浸没式液冷渗透率达 18%",
+        "trigger_evidence_url": "https://www.idc.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_4b5e90bfe73258bd",
+          "ev_compute_liquid_cool_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": false,
+          "hasHardRealityEvidence": true
+        }
+      },
+      {
+        "from_stage": "S4",
+        "to_stage": "S6",
+        "transition_date": "2026-05-20",
+        "trigger_evidence_id": "ev_compute_nvidia_gb200_2026",
+        "trigger_evidence_title": "NVIDIA GB200 NVL72 机架正式量产 全球 AI 算力需求年增长 150%",
+        "trigger_evidence_url": "https://www.nvidia.com/",
+        "gate_unlocked": "stable_label (perception) + capital_confirmation + pricing_adoption + hard_reality_evidence",
+        "cumulative_evidence_ids": [
+          "ev_hist_4b5e90bfe73258bd",
+          "ev_compute_liquid_cool_2026",
+          "ev_compute_nvidia_gb200_2026"
+        ],
+        "gate_state": {
+          "hasStableLabel": true,
+          "hasCapitalConfirmation": true,
+          "hasPricingAdoption": true,
+          "hasHardRealityEvidence": true
+        }
+      }
+    ],
+    "evolution_path": "S0 → S3 → S4 → S6",
+    "evidence_timeline": [
+      {
+        "event_date": "2015-06-01",
+        "evidence_id": "ev_hist_4b5e90bfe73258bd",
+        "event_title": "Foundational research mapping the origins of provisional_computing_infrastructure",
+        "source_name": "academic",
+        "source_url": "https://scholar.google.com/scholar?q=provisional_computing_infrastructure",
+        "affected_layer": [
+          "reality",
+          "perception"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S3",
+        "max_allowed_after": "S3",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-04-10",
+        "evidence_id": "ev_compute_liquid_cool_2026",
+        "event_title": "全球液冷数据中心市场规模突破 150 亿美元 浸没式液冷渗透率达 18%",
+        "source_name": "academic",
+        "source_url": "https://www.idc.com/",
+        "affected_layer": [
+          "reality",
+          "capital"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S4",
+        "max_allowed_after": "S4",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-05-20",
+        "evidence_id": "ev_compute_nvidia_gb200_2026",
+        "event_title": "NVIDIA GB200 NVL72 机架正式量产 全球 AI 算力需求年增长 150%",
+        "source_name": "company",
+        "source_url": "https://www.nvidia.com/",
+        "affected_layer": [
+          "reality",
+          "pricing"
+        ],
+        "evidence_strength": "E3",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": true
+      },
+      {
+        "event_date": "2026-06-15",
+        "evidence_id": "ev_compute_dc_china_2026",
+        "event_title": "东数西算工程二期启动 8 大国家算力枢纽新增 200 万标准机架",
+        "source_name": "official",
+        "source_url": "https://www.ndrc.gov.cn/",
+        "affected_layer": [
+          "perception",
+          "capital"
+        ],
+        "evidence_strength": "E4",
+        "stage_after": "S6",
+        "max_allowed_after": "S6",
+        "caused_transition": false
+      }
+    ]
+  }
+]

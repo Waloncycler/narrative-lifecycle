@@ -31,6 +31,7 @@ export function buildStageSnapshot(artifacts: DiffArtifacts, context: RunContext
       current_stage: card.current_stage,
       gate_stage: card.stage_snapshot.current_stage,
       max_allowed_stage: card.stage_snapshot.max_allowed_stage,
+      gate_input: card.stage_snapshot.gate_input,
       strongest_branch: strongest ? `${strongest.branch_name} (${strongest.current_stage})` : 'no independent branch',
       weakest_layer: weakest,
       data_confidence: confidenceBand(card.data_confidence),

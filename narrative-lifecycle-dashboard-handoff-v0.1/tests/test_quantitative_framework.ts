@@ -69,6 +69,7 @@ describe('quantitative framework', () => {
         hasCapitalConfirmation: true,
         hasPricingAdoption: false,
         hasHardRealityEvidence: false,
+        independentSourceCount: 3,
       },
       dataConfidence: 70,
       frictionSupport: 20,

@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260807T104219308_d64410",
-  "generated_at": "2026-08-07T10:42:19.308Z",
-  "report_id": "weekly_brief_run_20260807T104219308_d64410",
+  "run_id": "run_20260807T110116510_df7d22",
+  "generated_at": "2026-08-07T11:01:16.510Z",
+  "report_id": "weekly_brief_run_20260807T110116510_df7d22",
   "source_artifacts": [
     "outputs/dashboard_cards/bci.json",
     "outputs/dashboard_cards/humanoid_robotics.json",
@@ -57,8 +57,8 @@
     }
   ],
   "stage_change_summary": {
-    "previous_snapshot_id": "stage_snapshot_run_20260807T103040276_f48611",
-    "current_snapshot_id": "stage_snapshot_run_20260807T104219308_d64410",
+    "previous_snapshot_id": "stage_snapshot_run_20260807T105949459_8de5d8",
+    "current_snapshot_id": "stage_snapshot_run_20260807T110116510_df7d22",
     "upgrade_count": 0,
     "downgrade_count": 0,
     "evidence_added_count": 0,
@@ -241,7 +241,7 @@
     {
       "action": "request_more_evidence",
       "topic_id": "bci",
-      "reason": "Missing pricing adoption; Missing hard reality evidence.",
+      "reason": "Missing pricing adoption; Missing hard reality evidence; Missing at least 3 independent sources.",
       "evidence_ids": [
         "bci_parent_label",
         "bci_parent_capital"

@@ -39,6 +39,7 @@ export interface StageSnapshotTopic {
   strongest_branch: string;
   weakest_layer: string;
   data_confidence: DataConfidenceBand;
+  gate_input?: import('../domain/stages').StageGateInput;
   evidence_ids: string[];
   score_id: string;
   dashboard_card_id: string;

@@ -458,3 +458,63 @@
   positive_or_negative: neutral
   confidence: 45
   schema_version: 0.9-autonomous-research
+- evidence_id: direct_clinicaltrials_1qgnpdu
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  event_date: 2024-04-15
+  event_title: Mirror Neuron Network Based Motor Imagery Training to Improve Brain
+    Computer Interface Performance in Spinal Cord Injury Patients
+  event_summary: WITHDRAWN · Spinal Cord Injuries
+  event_type: DIRECT_SOURCE_RECORD
+  source_name: 美国临床试验注册平台
+  source_url: https://clinicaltrials.gov/study/NCT03098927
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - reality
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2024-04-15
+  branch_coverage_score: 35
+  interpretation: A term-addressable original-source record may be relevant to
+    this Topic or Branch, but it is a review candidate rather than proof of any
+    lifecycle stage.
+  limitation: API metadata and title are insufficient to establish pricing,
+    adoption, revenue, scale, or a Stage transition. Verify the original record
+    and retain Parent/Branch separation. Branch mapping remains a separate
+    reviewable graph proposal and cannot upgrade the parent narrative.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative.
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: direct_clinicaltrials_1t1huht
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  event_date: 2026-06-05
+  event_title: Impact of rTMS on BCI Control in Upper Limb Motor Rehabilitation of
+    Patients With Chronic Stroke
+  event_summary: RECRUITING · Chonic Stroke Patients With Motor Impairment of Upper Limb
+  event_type: DIRECT_SOURCE_RECORD
+  source_name: 美国临床试验注册平台
+  source_url: https://clinicaltrials.gov/study/NCT06951035
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - reality
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-06-05
+  branch_coverage_score: 35
+  interpretation: A term-addressable original-source record may be relevant to
+    this Topic or Branch, but it is a review candidate rather than proof of any
+    lifecycle stage.
+  limitation: API metadata and title are insufficient to establish pricing,
+    adoption, revenue, scale, or a Stage transition. Verify the original record
+    and retain Parent/Branch separation. Branch mapping remains a separate
+    reviewable graph proposal and cannot upgrade the parent narrative.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative.
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research

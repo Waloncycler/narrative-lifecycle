@@ -1163,5 +1163,525 @@
     ],
     "stage_effect": "fills_gap",
     "confidence": 92
+  },
+  {
+    "evidence_id": "ev_hist_f82a905b66987ade",
+    "topic_id": "bci",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.167Z",
+    "event_title": "Foundational research mapping the origins of bci",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=bci",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_f31012b0b1dc8329",
+    "topic_id": "humanoid_robotics",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2000-10-31",
+    "available_at": "2026-08-07T10:50:47.167Z",
+    "event_title": "Honda Unveils ASIMO, the World’s Most Advanced Humanoid Robot",
+    "event_type": "disclosure",
+    "source_name": "company",
+    "source_url": "https://global.honda/newsroom/worldnews/2000/c001120.html",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_d9a4fc2d3381db59",
+    "topic_id": "humanoid_robotics",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2012-10-24",
+    "available_at": "2026-08-07T10:50:47.167Z",
+    "event_title": "DARPA Robotics Challenge launched to develop human-supervised robots",
+    "event_type": "disclosure",
+    "source_name": "official",
+    "source_url": "https://www.darpa.mil/program/darpa-robotics-challenge",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_74e5acf3063e1222",
+    "topic_id": "innovative_drug_license_out",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.167Z",
+    "event_title": "Foundational research mapping the origins of innovative_drug_license_out",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=innovative_drug_license_out",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_0e46aca4dbc5a030",
+    "topic_id": "provisional_blockchain_crypto_market",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2008-10-31",
+    "available_at": "2026-08-07T10:50:47.167Z",
+    "event_title": "Bitcoin: A Peer-to-Peer Electronic Cash System (Satoshi Nakamoto)",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://bitcoin.org/bitcoin.pdf",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_d4d1505106896162",
+    "topic_id": "provisional_blockchain_crypto_market",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2013-12-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Ethereum Whitepaper: A Next-Generation Smart Contract and Decentralized Application Platform",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://ethereum.org/en/whitepaper/",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_c02af092e16bf78d",
+    "topic_id": "provisional_luxury_consumer",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_luxury_consumer",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_luxury_consumer",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_c73a2baf76a25df5",
+    "topic_id": "provisional_low_altitude_economy",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2016-01-06",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "EHang 184, World’s First Passenger Drone, Debuts at CES",
+    "event_type": "disclosure",
+    "source_name": "company",
+    "source_url": "https://www.ehang.com/news/16.html",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_532abf457690b8b3",
+    "topic_id": "provisional_low_altitude_economy",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2016-10-27",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Uber Elevate: Fast-Forwarding to a Future of On-Demand Urban Air Transportation",
+    "event_type": "disclosure",
+    "source_name": "company",
+    "source_url": "https://www.uber.com/elevate.pdf",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_812852629cbd178f",
+    "topic_id": "provisional_new_energy_industry",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_new_energy_industry",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_new_energy_industry",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_63839fae0b49b162",
+    "topic_id": "provisional_commercial_space",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2008-09-28",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "SpaceX Successfully Launches Falcon 1, First Privately Developed Liquid Fueled Rocket to Orbit",
+    "event_type": "disclosure",
+    "source_name": "company",
+    "source_url": "https://www.spacex.com/news/2008/09/28/falcon-1-flight-4",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_05a7a46d3f07f855",
+    "topic_id": "provisional_quantum_computing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "1982-04-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Quantum Mechanical Models of Turing Machines that Dissipate No Energy",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://link.springer.com/article/10.1007/BF02650179",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_6bf8ddd97c74be09",
+    "topic_id": "provisional_quantum_computing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "1994-11-20",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Shor's Algorithm for Quantum Computation",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://ieeexplore.ieee.org/document/365700",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_a4cd3c67603b7cce",
+    "topic_id": "provisional_innovative_drug_clinical_development",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_innovative_drug_clinical_development",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_innovative_drug_clinical_development",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_a7468c6851652691",
+    "topic_id": "provisional_ai_foundation_models",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2017-06-12",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Attention Is All You Need (Transformer Architecture)",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://arxiv.org/abs/1706.03762",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_2cab3ea10b8b7ae2",
+    "topic_id": "provisional_ai_foundation_models",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2020-05-28",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Language Models are Few-Shot Learners (GPT-3)",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://arxiv.org/abs/2005.14165",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_1215bb2319840e92",
+    "topic_id": "provisional_semiconductor_advanced_manufacturing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_semiconductor_advanced_manufacturing",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_semiconductor_advanced_manufacturing",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_36d0480599298233",
+    "topic_id": "provisional_semiconductor_memory_market",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_semiconductor_memory_market",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_semiconductor_memory_market",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_83e93178b90884c2",
+    "topic_id": "provisional_china_ip_policy",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_china_ip_policy",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_china_ip_policy",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_fe0eda7c3e4457d2",
+    "topic_id": "provisional_additive_manufacturing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_additive_manufacturing",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_additive_manufacturing",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_0de5d94c96161154",
+    "topic_id": "provisional_china_social_security_policy",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_china_social_security_policy",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_china_social_security_policy",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_99a2294c2928084d",
+    "topic_id": "provisional_advanced_packaging",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_advanced_packaging",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_advanced_packaging",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_7fc08de27bce1b0c",
+    "topic_id": "provisional_ai_agents",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2023-03-30",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Auto-GPT: An Autonomous GPT-4 Experiment",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://github.com/Significant-Gravitas/AutoGPT",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_efc9ff30e0690f22",
+    "topic_id": "provisional_ai_agents",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2023-04-07",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Generative Agents: Interactive Simulacra of Human Behavior",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://arxiv.org/abs/2304.03442",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_fb708bb2041e0d62",
+    "topic_id": "provisional_smart_manufacturing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_smart_manufacturing",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_smart_manufacturing",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_hist_4b5e90bfe73258bd",
+    "topic_id": "provisional_computing_infrastructure",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2015-06-01",
+    "available_at": "2026-08-07T10:50:47.168Z",
+    "event_title": "Foundational research mapping the origins of provisional_computing_infrastructure",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://scholar.google.com/scholar?q=provisional_computing_infrastructure",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "perception"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 85,
+    "schema_version": "0.9-autonomous-research"
   }
 ]

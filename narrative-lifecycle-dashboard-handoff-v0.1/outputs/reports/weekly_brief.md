@@ -2,8 +2,8 @@
 
 ## 1. Executive Summary
 
-- report_id: weekly_brief_run_20260807T104219308_d64410
-- generated_at: 2026-08-07T10:42:19.308Z
+- report_id: weekly_brief_run_20260807T110116510_df7d22
+- generated_at: 2026-08-07T11:01:16.510Z
 - rule_version: narrative-lifecycle-rules-v0.1
 - dashboard_card_count: 3
 - score_count: 3
@@ -35,9 +35,9 @@
 
 ## 3. Stage Changes
 
-- previous_snapshot_id: stage_snapshot_run_20260807T103040276_f48611
-- current_snapshot_id: stage_snapshot_run_20260807T104219308_d64410
-No narrative state changes detected compared with stage_snapshot_run_20260807T103040276_f48611.
+- previous_snapshot_id: stage_snapshot_run_20260807T105949459_8de5d8
+- current_snapshot_id: stage_snapshot_run_20260807T110116510_df7d22
+No narrative state changes detected compared with stage_snapshot_run_20260807T105949459_8de5d8.
 
 ### Upgrades
 - none
@@ -95,7 +95,7 @@ No narrative state changes detected compared with stage_snapshot_run_20260807T10
 
 ## 8. Next Operator Actions
 
-- request_more_evidence: bci; reason=Missing pricing adoption; Missing hard reality evidence.; evidence_ids=bci_parent_label, bci_parent_capital
+- request_more_evidence: bci; reason=Missing pricing adoption; Missing hard reality evidence; Missing at least 3 independent sources.; evidence_ids=bci_parent_label, bci_parent_capital
 - monitor: humanoid_robotics; reason=S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=humanoid_parent_label, humanoid_parent_capital, humanoid_parent_pricing, humanoid_parent_reality
 - monitor: innovative_drug_license_out; reason=S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=licenseout_parent_label, licenseout_parent_capital, licenseout_parent_pricing, licenseout_parent_reality
 - track: bci; reason=Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.; evidence_ids=bci_parent_label, bci_parent_capital, bci_branch_label_pricing, bci_e001

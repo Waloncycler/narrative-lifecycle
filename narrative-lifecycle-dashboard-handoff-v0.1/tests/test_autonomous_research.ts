@@ -135,7 +135,9 @@ describe('autonomous research publication', () => {
       evidence: [
         evidence({ evidence_id: 'parent_label', affected_layer: ['perception'] }),
         evidence({ evidence_id: 'parent_capital', affected_layer: ['capital'] }),
-        evidence({ evidence_id: 'branch_all_gates', parent_or_branch: 'branch', branch_id: 'medical_rehab', affected_layer: ['perception', 'capital', 'pricing', 'reality'], evidence_strength: 'E4', branch_coverage_score: 80 }),
+        evidence({ evidence_id: 'branch_all_gates', parent_or_branch: 'branch', branch_id: 'medical_rehab', affected_layer: ['perception', 'capital', 'pricing', 'reality'], evidence_strength: 'E4', branch_coverage_score: 80, source_url: 'u1' }),
+        evidence({ evidence_id: 'branch_capital2', parent_or_branch: 'branch', branch_id: 'medical_rehab', affected_layer: ['capital'], evidence_strength: 'E4', branch_coverage_score: 80, source_url: 'u2' }),
+        evidence({ evidence_id: 'branch_reality3', parent_or_branch: 'branch', branch_id: 'medical_rehab', affected_layer: ['reality'], evidence_strength: 'E4', branch_coverage_score: 80, source_url: 'u3' }),
       ],
     });
     const topic = state.snapshot.topics[0];

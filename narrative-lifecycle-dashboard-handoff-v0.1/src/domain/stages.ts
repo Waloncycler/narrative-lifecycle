@@ -27,11 +27,13 @@ export interface StageGateInput {
   hasCapitalConfirmation: boolean;
   hasPricingAdoption: boolean;
   hasHardRealityEvidence: boolean;
+  independentSourceCount: number;
 }
 
 export interface StageSnapshot {
   current_stage: string;
   max_allowed_stage: string;
+  gate_input?: StageGateInput;
   why_not_higher_stage: string;
   evidence_ids: string[];
   data_confidence_cap_applied: boolean;

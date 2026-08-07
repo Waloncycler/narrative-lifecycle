@@ -90,7 +90,9 @@ describe('v0.4 product core scenarios', () => {
 
     const branch = classifyStage({
       evidence: [
-        evidence({ evidence_id: 'branch_s6', affected_layer: ['perception', 'capital', 'pricing', 'reality'], stage_effect: 'supports_S6', parent_or_branch: 'branch', branch_id: 'medical_rehab' }),
+        evidence({ evidence_id: 'branch_s6', affected_layer: ['perception', 'capital', 'pricing', 'reality'], stage_effect: 'supports_S6', parent_or_branch: 'branch', branch_id: 'medical_rehab', event_title: 't1', source_url: 'u1' }),
+        evidence({ evidence_id: 'branch_s6_2', affected_layer: ['reality'], stage_effect: 'supports_S6', parent_or_branch: 'branch', branch_id: 'medical_rehab', event_title: 't2', source_url: 'u2' }),
+        evidence({ evidence_id: 'branch_s6_3', affected_layer: ['reality'], stage_effect: 'supports_S6', parent_or_branch: 'branch', branch_id: 'medical_rehab', event_title: 't3', source_url: 'u3' }),
       ],
       scope: 'branch',
       branchId: 'medical_rehab',
@@ -105,10 +107,10 @@ describe('v0.4 product core scenarios', () => {
   it('allows E4 reality evidence to move S5 to S6 when all parent gates exist', () => {
     const result = classifyStage({
       evidence: [
-        evidence({ evidence_id: 'label', affected_layer: ['perception'], stage_effect: 'supports_S4' }),
-        evidence({ evidence_id: 'capital', affected_layer: ['capital'], stage_effect: 'supports_S4' }),
-        evidence({ evidence_id: 'pricing', affected_layer: ['pricing'], stage_effect: 'supports_S5' }),
-        evidence({ evidence_id: 'reality_e4', evidence_strength: 'E4', affected_layer: ['reality'], stage_effect: 'supports_S6' }),
+        evidence({ evidence_id: 'label', affected_layer: ['perception'], stage_effect: 'supports_S4', event_title: 't1', source_url: 'u1' }),
+        evidence({ evidence_id: 'capital', affected_layer: ['capital'], stage_effect: 'supports_S4', event_title: 't2', source_url: 'u2' }),
+        evidence({ evidence_id: 'pricing', affected_layer: ['pricing'], stage_effect: 'supports_S5', event_title: 't3', source_url: 'u3' }),
+        evidence({ evidence_id: 'reality_e4', evidence_strength: 'E4', affected_layer: ['reality'], stage_effect: 'supports_S6', event_title: 't4', source_url: 'u4' }),
       ],
       scope: 'parent',
       requestedStage: 'S6',

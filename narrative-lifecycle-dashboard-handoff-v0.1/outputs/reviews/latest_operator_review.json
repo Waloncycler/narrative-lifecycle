@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260807T104133539_4bca70",
-  "generated_at": "2026-08-07T10:41:33.773Z",
-  "review_id": "operator_review_run_20260807T104133539_4bca70",
+  "run_id": "run_20260807T123504493_fba2e3",
+  "generated_at": "2026-08-07T12:35:04.800Z",
+  "review_id": "operator_review_run_20260807T123504493_fba2e3",
   "status": "ok",
   "source_artifacts": [
     "outputs/operator_runs/run_20260802T181123872_9133dd/run_manifest.json",
@@ -274,17 +274,29 @@
     "outputs/operator_runs/run_20260807T103017741_9a0f3e/weekly_brief.json",
     "outputs/operator_runs/run_20260807T104133539_4bca70/run_manifest.json",
     "outputs/operator_runs/run_20260807T104133539_4bca70/stage_diff.json",
-    "outputs/operator_runs/run_20260807T104133539_4bca70/weekly_brief.json"
+    "outputs/operator_runs/run_20260807T104133539_4bca70/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T105211593_d3cab6/run_manifest.json",
+    "outputs/operator_runs/run_20260807T105211593_d3cab6/stage_diff.json",
+    "outputs/operator_runs/run_20260807T105211593_d3cab6/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T111845405_1d5fa8/run_manifest.json",
+    "outputs/operator_runs/run_20260807T111845405_1d5fa8/stage_diff.json",
+    "outputs/operator_runs/run_20260807T111845405_1d5fa8/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T112535077_6229f3/run_manifest.json",
+    "outputs/operator_runs/run_20260807T112535077_6229f3/stage_diff.json",
+    "outputs/operator_runs/run_20260807T112535077_6229f3/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T123504493_fba2e3/run_manifest.json",
+    "outputs/operator_runs/run_20260807T123504493_fba2e3/stage_diff.json",
+    "outputs/operator_runs/run_20260807T123504493_fba2e3/weekly_brief.json"
   ],
   "review_window": {
     "first_run_id": "run_20260802T181123872_9133dd",
-    "last_run_id": "run_20260807T104133539_4bca70",
+    "last_run_id": "run_20260807T123504493_fba2e3",
     "first_started_at": "2026-08-02T18:11:23.872Z",
-    "last_completed_at": "2026-08-07T10:41:33.664Z"
+    "last_completed_at": "2026-08-07T12:35:04.684Z"
   },
   "run_summary": {
-    "run_count": 89,
-    "successful_run_count": 89,
+    "run_count": 93,
+    "successful_run_count": 93,
     "failed_run_count": 0
   },
   "runs": [
@@ -1088,6 +1100,42 @@
       "guardrail_status": "ok",
       "has_stage_diff": true,
       "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "started_at": "2026-08-07T10:52:11.593Z",
+      "completed_at": "2026-08-07T10:52:11.724Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T111845405_1d5fa8",
+      "started_at": "2026-08-07T11:18:45.405Z",
+      "completed_at": "2026-08-07T11:18:45.555Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T112535077_6229f3",
+      "started_at": "2026-08-07T11:25:35.077Z",
+      "completed_at": "2026-08-07T11:25:35.228Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "started_at": "2026-08-07T12:35:04.493Z",
+      "completed_at": "2026-08-07T12:35:04.684Z",
+      "status": "ok",
+      "guardrail_status": "review_required",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
     }
   ],
   "stage_trends": {
@@ -1357,6 +1405,76 @@
         ],
         "branch_id": null,
         "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_innovative_drug_clinical_development",
+        "topic_name": "创新药临床研发",
+        "change_type": "stage_upgrade",
+        "previous_value": "S2",
+        "current_value": "S3",
+        "evidence_ids": [
+          "ev_hist_a4cd3c67603b7cce"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_china_ip_policy",
+        "topic_name": "中国知识产权政策",
+        "change_type": "stage_upgrade",
+        "previous_value": "S2",
+        "current_value": "S3",
+        "evidence_ids": [
+          "ev_hist_83e93178b90884c2"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_additive_manufacturing",
+        "topic_name": "增材制造",
+        "change_type": "stage_upgrade",
+        "previous_value": "S2",
+        "current_value": "S3",
+        "evidence_ids": [
+          "ev_hist_fe0eda7c3e4457d2"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_china_social_security_policy",
+        "topic_name": "社会保障政策",
+        "change_type": "stage_upgrade",
+        "previous_value": "S2",
+        "current_value": "S3",
+        "evidence_ids": [
+          "ev_hist_0de5d94c96161154"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_advanced_packaging",
+        "topic_name": "Advanced Packaging",
+        "change_type": "stage_upgrade",
+        "previous_value": "S2",
+        "current_value": "S3",
+        "evidence_ids": [
+          "ev_hist_99a2294c2928084d"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
       }
     ],
     "downgrades": [
@@ -1372,6 +1490,232 @@
           "bci_parent_capital_synchron_20251106",
           "bci_parent_policy_label_20250730"
         ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "humanoid_robotics",
+        "topic_name": "人形机器人",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "innovative_drug_license_out",
+        "topic_name": "创新药对外授权",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_blockchain_crypto_market",
+        "topic_name": "区块链与加密资产",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_luxury_consumer",
+        "topic_name": "高端消费",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_low_altitude_economy",
+        "topic_name": "低空经济",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_new_energy_industry",
+        "topic_name": "新能源产业",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_commercial_space",
+        "topic_name": "商业航天",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_quantum_computing",
+        "topic_name": "量子计算",
+        "change_type": "stage_downgrade",
+        "previous_value": "S4",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_innovative_drug_clinical_development",
+        "topic_name": "创新药临床研发",
+        "change_type": "stage_downgrade",
+        "previous_value": "S3",
+        "current_value": "S2",
+        "evidence_ids": [
+          "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+          "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6",
+          "wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6",
+          "wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6",
+          "wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_ai_foundation_models",
+        "topic_name": "基础大模型",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_semiconductor_advanced_manufacturing",
+        "topic_name": "半导体先进制造",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_semiconductor_memory_market",
+        "topic_name": "存储芯片",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_china_ip_policy",
+        "topic_name": "中国知识产权政策",
+        "change_type": "stage_downgrade",
+        "previous_value": "S3",
+        "current_value": "S2",
+        "evidence_ids": [
+          "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_additive_manufacturing",
+        "topic_name": "增材制造",
+        "change_type": "stage_downgrade",
+        "previous_value": "S3",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_china_social_security_policy",
+        "topic_name": "社会保障政策",
+        "change_type": "stage_downgrade",
+        "previous_value": "S3",
+        "current_value": "S2",
+        "evidence_ids": [
+          "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_ai_agents",
+        "topic_name": "AI 智能体",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_smart_manufacturing",
+        "topic_name": "智能制造",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_computing_infrastructure",
+        "topic_name": "算力基础设施",
+        "change_type": "stage_downgrade",
+        "previous_value": "S6",
+        "current_value": "S0",
+        "evidence_ids": [],
         "branch_id": null,
         "reactivation_record_id": null
       }
@@ -1649,6 +1993,252 @@
         ],
         "branch_id": null,
         "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "bci",
+        "topic_name": "脑机接口",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_f82a905b66987ade"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "humanoid_robotics",
+        "topic_name": "人形机器人",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_d9a4fc2d3381db59",
+          "ev_hist_f31012b0b1dc8329"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "innovative_drug_license_out",
+        "topic_name": "创新药对外授权",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_74e5acf3063e1222"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_blockchain_crypto_market",
+        "topic_name": "区块链与加密资产",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_0e46aca4dbc5a030",
+          "ev_hist_d4d1505106896162"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_luxury_consumer",
+        "topic_name": "高端消费",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_c02af092e16bf78d"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_low_altitude_economy",
+        "topic_name": "低空经济",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_532abf457690b8b3",
+          "ev_hist_c73a2baf76a25df5"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_new_energy_industry",
+        "topic_name": "新能源产业",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_812852629cbd178f"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_commercial_space",
+        "topic_name": "商业航天",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_63839fae0b49b162"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_quantum_computing",
+        "topic_name": "量子计算",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_05a7a46d3f07f855",
+          "ev_hist_6bf8ddd97c74be09"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_innovative_drug_clinical_development",
+        "topic_name": "创新药临床研发",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_a4cd3c67603b7cce"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_ai_foundation_models",
+        "topic_name": "基础大模型",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_2cab3ea10b8b7ae2",
+          "ev_hist_a7468c6851652691"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_semiconductor_advanced_manufacturing",
+        "topic_name": "半导体先进制造",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_1215bb2319840e92"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_semiconductor_memory_market",
+        "topic_name": "存储芯片",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_36d0480599298233"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_china_ip_policy",
+        "topic_name": "中国知识产权政策",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_83e93178b90884c2"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_additive_manufacturing",
+        "topic_name": "增材制造",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_fe0eda7c3e4457d2"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_china_social_security_policy",
+        "topic_name": "社会保障政策",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_0de5d94c96161154"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_advanced_packaging",
+        "topic_name": "Advanced Packaging",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_99a2294c2928084d"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_ai_agents",
+        "topic_name": "AI 智能体",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_7fc08de27bce1b0c",
+          "ev_hist_efc9ff30e0690f22"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_smart_manufacturing",
+        "topic_name": "智能制造",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_fb708bb2041e0d62"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T105211593_d3cab6",
+        "generated_at": "2026-08-07T10:52:11.593Z",
+        "topic_id": "provisional_computing_infrastructure",
+        "topic_name": "算力基础设施",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_hist_4b5e90bfe73258bd"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
       }
     ],
     "removed": [
@@ -1685,6 +2275,282 @@
         "evidence_ids": [
           "direct_arxiv_mn8gv5",
           "ev_probe_889c5c2d51bd842b"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "bci",
+        "topic_name": "脑机接口",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_f82a905b66987ade"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "humanoid_robotics",
+        "topic_name": "人形机器人",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_d9a4fc2d3381db59",
+          "ev_hist_f31012b0b1dc8329",
+          "ev_humanoid_china_policy_2026",
+          "ev_humanoid_figure_funding_2026",
+          "ev_humanoid_tesla_optimus_gen3_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "innovative_drug_license_out",
+        "topic_name": "创新药对外授权",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_74e5acf3063e1222",
+          "ev_licout_fda_approval_2026",
+          "ev_licout_nmpa_policy_2026",
+          "ev_licout_total_deal_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_blockchain_crypto_market",
+        "topic_name": "区块链与加密资产",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_crypto_btc_etf_2026",
+          "ev_crypto_regulation_framework_2026",
+          "ev_hist_0e46aca4dbc5a030",
+          "ev_hist_d4d1505106896162"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_luxury_consumer",
+        "topic_name": "高端消费",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_c02af092e16bf78d",
+          "ev_luxury_baijiu_recovery_2026",
+          "ev_luxury_hainan_dutyfree_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_low_altitude_economy",
+        "topic_name": "低空经济",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_532abf457690b8b3",
+          "ev_hist_c73a2baf76a25df5",
+          "ev_lowalt_ehang_cert_2026",
+          "ev_lowalt_investment_2026",
+          "ev_lowalt_policy_pilot_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_new_energy_industry",
+        "topic_name": "新能源产业",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_812852629cbd178f",
+          "ev_newenergy_policy_dual_carbon_2026",
+          "ev_newenergy_solar_shipment_2026",
+          "ev_newenergy_storage_catl_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_commercial_space",
+        "topic_name": "商业航天",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_63839fae0b49b162",
+          "ev_space_china_launch_2026",
+          "ev_space_satellite_policy_2026",
+          "ev_space_starlink_revenue_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_quantum_computing",
+        "topic_name": "量子计算",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_05a7a46d3f07f855",
+          "ev_hist_6bf8ddd97c74be09",
+          "ev_quantum_china_network_2026",
+          "ev_quantum_ibm_condor_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_innovative_drug_clinical_development",
+        "topic_name": "创新药临床研发",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_a4cd3c67603b7cce"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_ai_foundation_models",
+        "topic_name": "基础大模型",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_2cab3ea10b8b7ae2",
+          "ev_hist_a7468c6851652691",
+          "ev_llm_claude_opus4_2026",
+          "ev_llm_deepseek_v3_2026",
+          "ev_llm_enterprise_adoption_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_semiconductor_advanced_manufacturing",
+        "topic_name": "半导体先进制造",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_1215bb2319840e92",
+          "ev_semi_chips_act_2026",
+          "ev_semi_smic_expansion_2026",
+          "ev_semi_tsmc_2nm_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_semiconductor_memory_market",
+        "topic_name": "存储芯片",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_36d0480599298233",
+          "ev_mem_cxmt_wafer_expansion_2026",
+          "ev_mem_miit_policy_support_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_china_ip_policy",
+        "topic_name": "中国知识产权政策",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_83e93178b90884c2"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_additive_manufacturing",
+        "topic_name": "增材制造",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_fe0eda7c3e4457d2",
+          "ev_probe_5df83a9e30fc2404",
+          "ev_probe_68a3ff38a4f2a25a",
+          "ev_probe_73a9f86d483f295c",
+          "ev_probe_7df310a0927544bd",
+          "ev_probe_b4a6b7fb21b57408"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_china_social_security_policy",
+        "topic_name": "社会保障政策",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_0de5d94c96161154"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_ai_agents",
+        "topic_name": "AI 智能体",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_agent_china_regulation_2026",
+          "ev_agent_enterprise_deploy_2026",
+          "ev_agent_mcp_standard_2026",
+          "ev_hist_7fc08de27bce1b0c",
+          "ev_hist_efc9ff30e0690f22"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_smart_manufacturing",
+        "topic_name": "智能制造",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_hist_fb708bb2041e0d62",
+          "ev_smartmfg_industrial_iot_2026",
+          "ev_smartmfg_vision_market_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T123504493_fba2e3",
+        "generated_at": "2026-08-07T12:35:04.494Z",
+        "topic_id": "provisional_computing_infrastructure",
+        "topic_name": "算力基础设施",
+        "change_type": "evidence_removed",
+        "evidence_ids": [
+          "ev_compute_dc_china_2026",
+          "ev_compute_liquid_cool_2026",
+          "ev_compute_nvidia_gb200_2026",
+          "ev_hist_4b5e90bfe73258bd"
         ],
         "branch_id": null,
         "reactivation_record_id": null
@@ -2025,6 +2891,361 @@
       ],
       "branch_id": null,
       "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "generated_at": "2026-08-07T10:52:11.593Z",
+      "topic_id": "bci",
+      "topic_name": "脑机接口",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing pricing adoption; Missing hard reality evidence.",
+      "current_value": "Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_hist_f82a905b66987ade"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "generated_at": "2026-08-07T10:52:11.593Z",
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "topic_name": "创新药临床研发",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_hist_a4cd3c67603b7cce"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "generated_at": "2026-08-07T10:52:11.593Z",
+      "topic_id": "provisional_china_ip_policy",
+      "topic_name": "中国知识产权政策",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_hist_83e93178b90884c2"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "generated_at": "2026-08-07T10:52:11.593Z",
+      "topic_id": "provisional_additive_manufacturing",
+      "topic_name": "增材制造",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_hist_fe0eda7c3e4457d2"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "generated_at": "2026-08-07T10:52:11.593Z",
+      "topic_id": "provisional_china_social_security_policy",
+      "topic_name": "社会保障政策",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_hist_0de5d94c96161154"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "generated_at": "2026-08-07T10:52:11.593Z",
+      "topic_id": "provisional_advanced_packaging",
+      "topic_name": "Advanced Packaging",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_hist_99a2294c2928084d"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T111845405_1d5fa8",
+      "generated_at": "2026-08-07T11:18:45.405Z",
+      "topic_id": "provisional_china_ip_policy",
+      "topic_name": "中国知识产权政策",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources.",
+      "evidence_ids": [
+        "ev_hist_83e93178b90884c2",
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T111845405_1d5fa8",
+      "generated_at": "2026-08-07T11:18:45.405Z",
+      "topic_id": "provisional_china_social_security_policy",
+      "topic_name": "社会保障政策",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources.",
+      "evidence_ids": [
+        "ev_hist_0de5d94c96161154",
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "bci",
+      "topic_name": "脑机接口",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing pricing adoption.",
+      "current_value": "Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "bci_parent_capital_synchron_20251106",
+        "bci_parent_policy_label_20250730"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药对外授权",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "区块链与加密资产",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "高端消费",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "低空经济",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "新能源产业",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "商业航天",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_quantum_computing",
+      "topic_name": "量子计算",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing pricing adoption.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "topic_name": "创新药临床研发",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_ai_foundation_models",
+      "topic_name": "基础大模型",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_semiconductor_advanced_manufacturing",
+      "topic_name": "半导体先进制造",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_semiconductor_memory_market",
+      "topic_name": "存储芯片",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is the highest stage modeled in the current schema.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_china_ip_policy",
+      "topic_name": "中国知识产权政策",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources.",
+      "current_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_additive_manufacturing",
+      "topic_name": "增材制造",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing capital confirmation; Missing pricing adoption.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_china_social_security_policy",
+      "topic_name": "社会保障政策",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources.",
+      "current_value": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_smart_manufacturing",
+      "topic_name": "智能制造",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_computing_infrastructure",
+      "topic_name": "算力基础设施",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "current_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
     }
   ],
   "data_confidence_changes": [
@@ -2306,6 +3527,242 @@
       ],
       "branch_id": null,
       "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "generated_at": "2026-08-07T10:52:11.593Z",
+      "topic_id": "provisional_china_ip_policy",
+      "topic_name": "中国知识产权政策",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_hist_83e93178b90884c2"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T105211593_d3cab6",
+      "generated_at": "2026-08-07T10:52:11.593Z",
+      "topic_id": "provisional_china_social_security_policy",
+      "topic_name": "社会保障政策",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_hist_0de5d94c96161154"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药对外授权",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "区块链与加密资产",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "高端消费",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "低空经济",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "新能源产业",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "商业航天",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_quantum_computing",
+      "topic_name": "量子计算",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_ai_foundation_models",
+      "topic_name": "基础大模型",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_semiconductor_advanced_manufacturing",
+      "topic_name": "半导体先进制造",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_semiconductor_memory_market",
+      "topic_name": "存储芯片",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_china_ip_policy",
+      "topic_name": "中国知识产权政策",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_additive_manufacturing",
+      "topic_name": "增材制造",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_china_social_security_policy",
+      "topic_name": "社会保障政策",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_smart_manufacturing",
+      "topic_name": "智能制造",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "topic_id": "provisional_computing_infrastructure",
+      "topic_name": "算力基础设施",
+      "change_type": "data_confidence_changed",
+      "previous_value": "medium",
+      "current_value": "low",
+      "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
     }
   ],
   "branch_mutation_changes": [
@@ -2410,6 +3867,14 @@
       "previous_value": "true",
       "current_value": "false",
       "evidence_ids": []
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "generated_at": "2026-08-07T12:35:04.494Z",
+      "change_type": "evidence_ids_visible",
+      "previous_value": "true",
+      "current_value": "false",
+      "evidence_ids": []
     }
   ],
   "failure_case_hits": [
@@ -2442,24 +3907,36 @@
       "run_id": "run_20260807T102443050_f3c588",
       "status": "review_required",
       "issue": "guardrail regression: parent_branch_separation_preserved"
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "status": "review_required",
+      "issue": "run manifest reported guardrail review required"
+    },
+    {
+      "run_id": "run_20260807T123504493_fba2e3",
+      "status": "review_required",
+      "issue": "guardrail regression: evidence_ids_visible"
     }
   ],
   "repeated_issues": [
     {
       "issue": "run manifest reported guardrail review required",
-      "count": 3,
+      "count": 4,
       "run_ids": [
         "run_20260802T182646779_3913e9",
         "run_20260807T093409754_8847fb",
-        "run_20260807T102443050_f3c588"
+        "run_20260807T102443050_f3c588",
+        "run_20260807T123504493_fba2e3"
       ]
     },
     {
       "issue": "guardrail regression: evidence_ids_visible",
-      "count": 2,
+      "count": 3,
       "run_ids": [
         "run_20260802T182646779_3913e9",
-        "run_20260807T093409754_8847fb"
+        "run_20260807T093409754_8847fb",
+        "run_20260807T123504493_fba2e3"
       ]
     }
   ],
@@ -2467,7 +3944,7 @@
     {
       "topic_id": "bci",
       "topic_name": "脑机接口",
-      "consecutive_run_count": 55,
+      "consecutive_run_count": 57,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -2523,14 +4000,16 @@
         "run_20260807T095712116_45d145",
         "run_20260807T100945041_a87ed1",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T104133539_4bca70"
+        "run_20260807T104133539_4bca70",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
       "current_stage": "S4"
     },
     {
       "topic_id": "humanoid_robotics",
       "topic_name": "人形机器人",
-      "consecutive_run_count": 56,
+      "consecutive_run_count": 58,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -2587,14 +4066,16 @@
         "run_20260807T095712116_45d145",
         "run_20260807T095906361_27e52a",
         "run_20260807T100945041_a87ed1",
-        "run_20260807T102652092_8bbd48"
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "innovative_drug_license_out",
       "topic_name": "创新药对外授权",
-      "consecutive_run_count": 55,
+      "consecutive_run_count": 57,
       "run_ids": [
         "run_20260802T183030393_2e4435",
         "run_20260802T183223529_e223a1",
@@ -2650,14 +4131,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_blockchain_crypto_market",
       "topic_name": "区块链与加密资产",
-      "consecutive_run_count": 34,
+      "consecutive_run_count": 36,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -2692,14 +4175,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_luxury_consumer",
       "topic_name": "高端消费",
-      "consecutive_run_count": 34,
+      "consecutive_run_count": 36,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -2734,14 +4219,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_low_altitude_economy",
       "topic_name": "低空经济",
-      "consecutive_run_count": 34,
+      "consecutive_run_count": 36,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -2776,14 +4263,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_new_energy_industry",
       "topic_name": "新能源产业",
-      "consecutive_run_count": 61,
+      "consecutive_run_count": 63,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -2845,14 +4334,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_commercial_space",
       "topic_name": "商业航天",
-      "consecutive_run_count": 61,
+      "consecutive_run_count": 63,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -2914,14 +4405,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_quantum_computing",
       "topic_name": "量子计算",
-      "consecutive_run_count": 32,
+      "consecutive_run_count": 34,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2954,14 +4447,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S4"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_innovative_drug_clinical_development",
       "topic_name": "创新药临床研发",
-      "consecutive_run_count": 59,
+      "consecutive_run_count": 61,
       "run_ids": [
         "run_20260802T182405982_052013",
         "run_20260802T182601304_177bdf",
@@ -3021,14 +4516,16 @@
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e",
-        "run_20260807T104133539_4bca70"
+        "run_20260807T104133539_4bca70",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_ai_foundation_models",
       "topic_name": "基础大模型",
-      "consecutive_run_count": 32,
+      "consecutive_run_count": 34,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -3061,14 +4558,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_semiconductor_advanced_manufacturing",
       "topic_name": "半导体先进制造",
-      "consecutive_run_count": 32,
+      "consecutive_run_count": 34,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -3101,14 +4600,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_semiconductor_memory_market",
       "topic_name": "存储芯片",
-      "consecutive_run_count": 18,
+      "consecutive_run_count": 20,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -3127,14 +4628,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e",
-        "run_20260807T104133539_4bca70"
+        "run_20260807T104133539_4bca70",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S4"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_china_ip_policy",
       "topic_name": "中国知识产权政策",
-      "consecutive_run_count": 80,
+      "consecutive_run_count": 81,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -3215,14 +4718,15 @@
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e",
-        "run_20260807T104133539_4bca70"
+        "run_20260807T104133539_4bca70",
+        "run_20260807T112535077_6229f3"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_additive_manufacturing",
       "topic_name": "增材制造",
-      "consecutive_run_count": 32,
+      "consecutive_run_count": 34,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -3255,14 +4759,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e",
-        "run_20260807T104133539_4bca70"
+        "run_20260807T104133539_4bca70",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S2"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_china_social_security_policy",
       "topic_name": "社会保障政策",
-      "consecutive_run_count": 80,
+      "consecutive_run_count": 81,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -3343,25 +4849,15 @@
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e",
-        "run_20260807T104133539_4bca70"
-      ],
-      "current_stage": "S2"
-    },
-    {
-      "topic_id": "provisional_advanced_packaging",
-      "topic_name": "Advanced Packaging",
-      "consecutive_run_count": 3,
-      "run_ids": [
-        "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e",
-        "run_20260807T104133539_4bca70"
+        "run_20260807T104133539_4bca70",
+        "run_20260807T112535077_6229f3"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_ai_agents",
       "topic_name": "AI 智能体",
-      "consecutive_run_count": 28,
+      "consecutive_run_count": 30,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -3390,14 +4886,16 @@
         "run_20260807T073542612_372da6",
         "run_20260807T095712116_45d145",
         "run_20260807T100945041_a87ed1",
-        "run_20260807T102652092_8bbd48"
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_smart_manufacturing",
       "topic_name": "智能制造",
-      "consecutive_run_count": 59,
+      "consecutive_run_count": 61,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -3457,14 +4955,16 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
     },
     {
       "topic_id": "provisional_computing_infrastructure",
       "topic_name": "算力基础设施",
-      "consecutive_run_count": 32,
+      "consecutive_run_count": 34,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -3497,9 +4997,24 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
       ],
-      "current_stage": "S6"
+      "current_stage": "S0"
+    },
+    {
+      "topic_id": "provisional_advanced_packaging",
+      "topic_name": "Advanced Packaging",
+      "consecutive_run_count": 5,
+      "run_ids": [
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T104133539_4bca70",
+        "run_20260807T111845405_1d5fa8",
+        "run_20260807T112535077_6229f3"
+      ],
+      "current_stage": "S3"
     }
   ],
   "high_priority_operator_alerts": [
@@ -3535,6 +5050,16 @@
     },
     {
       "priority": "high",
+      "category": "guardrail_regression",
+      "message": "evidence_ids_visible requires operator review.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
       "category": "stage_downgrade",
       "message": "脑机接口 moved S6 -> S4.",
       "run_ids": [
@@ -3547,11 +5072,375 @@
       ]
     },
     {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "人形机器人 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "创新药对外授权 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "区块链与加密资产 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "高端消费 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "低空经济 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "新能源产业 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "商业航天 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "量子计算 moved S4 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "创新药临床研发 moved S3 -> S2.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": [
+        "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6"
+      ]
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "基础大模型 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "半导体先进制造 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "存储芯片 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "中国知识产权政策 moved S3 -> S2.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "增材制造 moved S3 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "社会保障政策 moved S3 -> S2.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "AI 智能体 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "智能制造 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "stage_downgrade",
+      "message": "算力基础设施 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
       "priority": "medium",
       "category": "data_confidence_drop",
       "message": "AI 智能体 confidence moved medium -> low.",
       "run_ids": [
         "run_20260807T103017741_9a0f3e"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "人形机器人 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "创新药对外授权 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "区块链与加密资产 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "高端消费 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "低空经济 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "新能源产业 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "商业航天 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "量子计算 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "基础大模型 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "半导体先进制造 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "存储芯片 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "中国知识产权政策 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "增材制造 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "社会保障政策 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "AI 智能体 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "智能制造 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "medium",
+      "category": "data_confidence_drop",
+      "message": "算力基础设施 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
       ],
       "research_only_action": "review",
       "evidence_ids": []
@@ -3612,6 +5501,26 @@
       "message": "guardrail regression: parent_branch_separation_preserved",
       "run_ids": [
         "run_20260807T102443050_f3c588"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "failed_run",
+      "message": "run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "failed_run",
+      "message": "guardrail regression: evidence_ids_visible",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
       ],
       "research_only_action": "review",
       "evidence_ids": []
@@ -3719,6 +5628,14 @@
     },
     {
       "action": "flag_risk",
+      "reason": "evidence_ids_visible requires operator review.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
       "reason": "脑机接口 moved S6 -> S4.",
       "run_ids": [
         "run_20260807T103017741_9a0f3e"
@@ -3729,10 +5646,304 @@
       ]
     },
     {
+      "action": "flag_risk",
+      "reason": "人形机器人 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "创新药对外授权 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "区块链与加密资产 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "高端消费 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "低空经济 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "新能源产业 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "商业航天 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "量子计算 moved S4 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "创新药临床研发 moved S3 -> S2.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": [
+        "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6"
+      ]
+    },
+    {
+      "action": "flag_risk",
+      "reason": "基础大模型 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "半导体先进制造 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "存储芯片 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "中国知识产权政策 moved S3 -> S2.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "action": "flag_risk",
+      "reason": "增材制造 moved S3 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "社会保障政策 moved S3 -> S2.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "action": "flag_risk",
+      "reason": "AI 智能体 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "智能制造 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "算力基础设施 moved S6 -> S0.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
       "action": "review",
       "reason": "AI 智能体 confidence moved medium -> low.",
       "run_ids": [
         "run_20260807T103017741_9a0f3e"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "人形机器人 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "创新药对外授权 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "区块链与加密资产 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "高端消费 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "低空经济 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "新能源产业 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "商业航天 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "量子计算 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "基础大模型 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "半导体先进制造 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "存储芯片 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "中国知识产权政策 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "action": "review",
+      "reason": "增材制造 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "社会保障政策 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "action": "review",
+      "reason": "AI 智能体 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "智能制造 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "算力基础设施 confidence moved medium -> low.",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
       ],
       "evidence_ids": []
     },
@@ -3781,6 +5992,22 @@
       "reason": "guardrail regression: parent_branch_separation_preserved",
       "run_ids": [
         "run_20260807T102443050_f3c588"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "guardrail regression: evidence_ids_visible",
+      "run_ids": [
+        "run_20260807T123504493_fba2e3"
       ],
       "evidence_ids": []
     },
@@ -3853,7 +6080,8 @@
       "run_ids": [
         "run_20260802T182646779_3913e9",
         "run_20260807T093409754_8847fb",
-        "run_20260807T102443050_f3c588"
+        "run_20260807T102443050_f3c588",
+        "run_20260807T123504493_fba2e3"
       ],
       "evidence_ids": []
     },
@@ -3862,7 +6090,8 @@
       "reason": "Repeated issue: guardrail regression: evidence_ids_visible",
       "run_ids": [
         "run_20260802T182646779_3913e9",
-        "run_20260807T093409754_8847fb"
+        "run_20260807T093409754_8847fb",
+        "run_20260807T123504493_fba2e3"
       ],
       "evidence_ids": []
     }
