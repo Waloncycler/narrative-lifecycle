@@ -13,6 +13,148 @@ Evidence 是系统的入口。所有阶段、diff、weekly brief、pilot 和 rep
 
 本指南只讲第一步：如何录入好证据。
 
+## 不手写 YAML：Intake Workbench
+
+交互式本地 Workbench：
+
+```bash
+npm run intake:workbench
+```
+
+功能：
+
+- 拖拽 TXT、Markdown、HTML、DOCX、文本型 PDF。
+- 粘贴文本。
+- 左侧查看原文、段落和引用高亮。
+- 右侧编辑 Evidence Cards。
+- 选择 Topic、Alias、Branch、Reactivation、Provisional 或 Unresolved 状态。
+- 修改 E0-E4、Scope、Affected Layer、Summary、Interpretation、Limitation。
+- 接受、修改、拒绝或拆分。
+- 一键 Validate / Import / Weekly。
+- 查看导入后 Evidence、Diff、Stage、Data Confidence 和 `why_not_higher_stage`。
+
+静态 CLI Workbench：
+
+运行：
+
+```bash
+npm run intake:prepare -- --file data/intake/examples/bci_branch_note.md
+```
+
+支持第一版格式：
+
+- TXT
+- Markdown
+- DOCX
+- HTML
+- 文本型 PDF
+- pasted text
+
+Workbench 会生成候选 Evidence Cards，但不会正式导入。每张卡必须人工 review：
+
+- accept: 接受候选。
+- modify: 修改字段后接受。
+- reject: 拒绝。
+- split: 拆成多条 evidence。
+
+确认后运行：
+
+```bash
+npm run intake:apply -- --decisions outputs/intake/latest_review_decisions.yaml
+```
+
+系统会继续使用现有 Schema Validator、Parent/Branch Guardrail、Duplicate Detection 和 Evidence Import。导入成功后自动运行 weekly。
+
+## 校准候选质量
+
+运行 Topic/Branch 解析：
+
+```bash
+npm run topic:validate
+```
+
+输出：
+
+- `outputs/intake/latest_topic_resolution_audit.json`
+- `outputs/intake/latest_unresolved_queue.json`
+
+解析状态含义：
+
+- `existing_topic`: 匹配现有 canonical topic。
+- `alias_of`: 命中 alias，需要 audit，但不是新主题。
+- `new_branch`: 可能是现有 parent 下的新分支，不能升级 parent。
+- `reactivation`: 命中 Narrative Memory，应按旧主题再激活处理。
+- `new_provisional_topic`: 新主题候选，默认 provisional，不能继承高阶段。
+- `unresolved`: 无法判断，不能强行映射。
+
+运行 Review Feedback 评估：
+
+```bash
+npm run intake:evaluate -- --decisions outputs/intake/latest_review_decisions.yaml
+```
+
+重点看：
+
+- acceptance / modification / rejection / split rate
+- field accuracy
+- review time
+- duplicate prevention
+- Parent/Branch error rate
+- AI shadow difference count
+
+AI shadow 只是候选差异提示；它不能自动 import、创建 active topic、升级 stage 或修改规则。
+
+## Real AI Shadow Validation
+
+v0.5.7 可以接入 provider-neutral 模型适配器，对同一份文档同时生成 rule-based 与 AI-shadow 候选：
+
+```bash
+npm run intake:prepare -- --text "这里粘贴原文"
+npm run intake:ai-shadow
+npm run topic:validate
+```
+
+如果要跑 50 份本地 pilot 文档评估：
+
+```bash
+npm run intake:ai-evaluate
+```
+
+模型配置通过环境变量提供：
+
+```bash
+NARRATIVE_AI_SHADOW_PROVIDER=custom
+NARRATIVE_AI_SHADOW_ENDPOINT=https://example.com/v1/chat/completions
+NARRATIVE_AI_SHADOW_API_KEY=...
+NARRATIVE_AI_SHADOW_MODEL=...
+```
+
+没有配置模型时，系统会自动 fallback 到 rule-based candidate。这不是错误，而是安全模式。输出仍会记录：
+
+- AI 是否可用。
+- 是否 fallback。
+- 引用是否能在原文中找到。
+- Topic/Branch/Scope/Strength/Limitation 与规则候选哪里不同。
+- 是否有 unsupported claim 或 E3/E4 夸大。
+
+输出文件：
+
+- `outputs/intake/latest_ai_shadow_validation_report.md`
+- `outputs/intake/latest_ai_shadow_audit.json`
+- `outputs/intake/latest_real_ai_shadow_evaluation.md`
+
+AI-shadow 仍然只是草稿。正式 evidence 必须由人选择 rule、AI、merge、manual 或 unresolved，并继续通过现有 validator/import/weekly。
+
+### 中文政策文本
+
+例如国务院关于《中医药振兴发展“十五五”规划》的批复，系统会识别为政策类候选，强度通常可到 E3，但 Topic Resolver 会保守处理：
+
+```text
+traditional_chinese_medicine_revival
+```
+
+如果 registry 里还没有正式 active topic，它会进入 `new_provisional_topic`，不能继承高阶段，也不能自动进入 active topic。研究者需要先 audit 这个主题是否真要纳入系统，再决定是否添加 canonical topic、alias 或 branch。
+
 ## Evidence 必填含义
 
 - `evidence_id`: 稳定唯一 ID。

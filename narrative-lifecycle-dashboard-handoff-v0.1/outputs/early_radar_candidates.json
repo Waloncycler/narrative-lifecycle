@@ -10,8 +10,8 @@
     "signal_origin": "reality_catch_up",
     "reactivation_record_id": "reactivation_bci_S4",
     "narrative_delta_score": 42,
-    "early_opportunity_score": 52,
-    "data_confidence": 74,
+    "early_opportunity_score": 50,
+    "data_confidence": 70,
     "why_early": "Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.",
     "why_not_confirmed": "Missing pricing adoption; Missing hard reality evidence.",
     "next_triggers": [

@@ -1,0 +1,218 @@
+{
+  "artifact_type": "weekly_brief",
+  "schema_version": "1.0.0",
+  "producer_version": "0.4.0",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "run_id": "run_20260802T182646779_3913e9",
+  "generated_at": "2026-08-02T18:26:46.779Z",
+  "report_id": "weekly_brief_run_20260802T182646779_3913e9",
+  "source_artifacts": [
+    "data/sample_evidence/manual_imported_evidence.yaml",
+    "data/audit/evidence_import_audit.jsonl",
+    "data/audit/operational_evidence_admission.jsonl",
+    "data/live_evidence/automated_evidence.yaml",
+    "outputs/operator_runs/latest_stage_snapshot.json",
+    "outputs/operator_runs/latest_stage_diff.json"
+  ],
+  "executive_summary": {
+    "dashboard_card_count": 4,
+    "score_count": 1,
+    "golden_case_passed": 0,
+    "golden_case_total": 0,
+    "early_radar_candidate_count": 0,
+    "system_status": "review_required",
+    "rule_version": "narrative-lifecycle-rules-v0.1"
+  },
+  "stage_snapshot": [
+    {
+      "topic_id": "bci",
+      "topic_name": "Brain-computer interface",
+      "current_stage": "S0",
+      "parent_narrative": "Brain-computer interface",
+      "strongest_branch": "medical rehabilitation (S2)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "Humanoid robotics",
+      "current_stage": "S0",
+      "parent_narrative": "Humanoid robotics",
+      "strongest_branch": "actuator (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "Innovative drug license-out",
+      "current_stage": "S0",
+      "parent_narrative": "Innovative drug license-out",
+      "strongest_branch": "ADC license-out (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "topic_name": "Innovative Drug Clinical Development",
+      "current_stage": "S2",
+      "parent_narrative": "Innovative Drug Clinical Development",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 60
+    }
+  ],
+  "stage_change_summary": {
+    "previous_snapshot_id": "stage_snapshot_run_20260802T182601304_177bdf",
+    "current_snapshot_id": "stage_snapshot_run_20260802T182646779_3913e9",
+    "upgrade_count": 0,
+    "downgrade_count": 0,
+    "evidence_added_count": 0,
+    "branch_mutation_candidate_count": 0,
+    "guardrail_regression_count": 1
+  },
+  "stage_changes": [
+    {
+      "topic_id": "bci",
+      "topic_name": "Brain-computer interface",
+      "previous_stage": "S0",
+      "current_stage": "S0",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "Humanoid robotics",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "Innovative drug license-out",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "topic_name": "Innovative Drug Clinical Development",
+      "previous_stage": "S2",
+      "current_stage": "S2",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    }
+  ],
+  "strongest_evidence": [
+    {
+      "evidence_id": "import_bci_medical_rehab_followup_001",
+      "evidence_strength": "E2",
+      "affected_layer": [
+        "reality",
+        "feedback"
+      ],
+      "topic": "Brain-computer interface",
+      "interpretation": "Supports the medical rehabilitation branch only."
+    },
+    {
+      "evidence_id": "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+      "evidence_strength": "E3",
+      "affected_layer": [
+        "reality",
+        "feedback"
+      ],
+      "topic": "Innovative Drug Clinical Development",
+      "interpretation": "Source record was deterministically normalized from a provenance-complete primary/official source. Topic and Stage remain rule-governed."
+    },
+    {
+      "evidence_id": "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6",
+      "evidence_strength": "E3",
+      "affected_layer": [
+        "reality",
+        "feedback"
+      ],
+      "topic": "Innovative Drug Clinical Development",
+      "interpretation": "Source record was deterministically normalized from a provenance-complete primary/official source. Topic and Stage remain rule-governed."
+    }
+  ],
+  "why_not_higher": [
+    {
+      "topic_id": "bci",
+      "topic_name": "Brain-computer interface",
+      "current_stage": "S0",
+      "why_not_higher_stage": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [
+        "import_bci_medical_rehab_followup_001"
+      ]
+    },
+    {
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "topic_name": "Innovative Drug Clinical Development",
+      "current_stage": "S2",
+      "why_not_higher_stage": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6"
+      ]
+    }
+  ],
+  "early_radar_candidates": [],
+  "guardrail_check": {
+    "no_trading_advice": true,
+    "research_only_actions": true,
+    "parent_branch_separation_preserved": true,
+    "evidence_ids_visible": false,
+    "why_not_higher_present": true,
+    "data_confidence_present": true
+  },
+  "next_operator_actions": [
+    {
+      "action": "flag_risk",
+      "reason": "Guardrail regression requires review: evidence_ids_visible.",
+      "evidence_ids": []
+    }
+  ],
+  "artifact_index": [
+    "outputs/operator_runs/latest_run.json",
+    "outputs/operator_runs/latest_stage_snapshot.json",
+    "outputs/operator_runs/latest_stage_diff.json",
+    "outputs/operator_runs/latest_weekly_brief.json"
+  ]
+}

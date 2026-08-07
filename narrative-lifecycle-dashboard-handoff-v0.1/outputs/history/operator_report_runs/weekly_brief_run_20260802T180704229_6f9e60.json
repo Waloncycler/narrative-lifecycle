@@ -1,0 +1,814 @@
+{
+  "artifact_type": "weekly_brief",
+  "schema_version": "1.0.0",
+  "producer_version": "0.4.0",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "run_id": "run_20260802T180704229_6f9e60",
+  "generated_at": "2026-08-02T18:07:04.229Z",
+  "report_id": "weekly_brief_run_20260802T180704229_6f9e60",
+  "source_artifacts": [
+    "data/sample_evidence/manual_imported_evidence.yaml",
+    "data/live_evidence/automated_evidence.yaml",
+    "outputs/operator_runs/latest_stage_snapshot.json",
+    "outputs/operator_runs/latest_stage_diff.json"
+  ],
+  "executive_summary": {
+    "dashboard_card_count": 7,
+    "score_count": 5,
+    "golden_case_passed": 0,
+    "golden_case_total": 0,
+    "early_radar_candidate_count": 0,
+    "system_status": "ok",
+    "rule_version": "narrative-lifecycle-rules-v0.1"
+  },
+  "stage_snapshot": [
+    {
+      "topic_id": "bci",
+      "topic_name": "Brain-computer interface",
+      "current_stage": "S0",
+      "parent_narrative": "Brain-computer interface",
+      "strongest_branch": "medical rehabilitation (S2)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "Humanoid robotics",
+      "current_stage": "S3",
+      "parent_narrative": "Humanoid robotics",
+      "strongest_branch": "actuator (S0)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 60
+    },
+    {
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "Blockchain Crypto Market",
+      "current_stage": "S4",
+      "parent_narrative": "Blockchain Crypto Market",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 60
+    },
+    {
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "Luxury Consumer",
+      "current_stage": "S3",
+      "parent_narrative": "Luxury Consumer",
+      "strongest_branch": "Ai Adoption (S0)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "Low Altitude Economy",
+      "current_stage": "S0",
+      "parent_narrative": "Low Altitude Economy",
+      "strongest_branch": "Urban Uav Infrastructure (S3)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "New Energy Industry",
+      "current_stage": "S3",
+      "parent_narrative": "New Energy Industry",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 60
+    },
+    {
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "Commercial Space",
+      "current_stage": "S3",
+      "parent_narrative": "Commercial Space",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 35
+    }
+  ],
+  "stage_change_summary": {
+    "previous_snapshot_id": null,
+    "current_snapshot_id": "stage_snapshot_run_20260802T180704229_6f9e60",
+    "upgrade_count": 0,
+    "downgrade_count": 0,
+    "evidence_added_count": 0,
+    "branch_mutation_candidate_count": 0,
+    "guardrail_regression_count": 0
+  },
+  "stage_changes": [
+    {
+      "topic_id": "bci",
+      "topic_name": "Brain-computer interface",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "Humanoid robotics",
+      "previous_stage": null,
+      "current_stage": "S3",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_p_3910776673064073_f_rss-5d13fdbc1def",
+        "wm_direct36_kr_feed-https_36kr_com_p_3910776673064073_f_rss-ea37ba91fe57",
+        "wm_direct36_kr_feed-https_36kr_com_p_3919378312670857_f_rss-5d13fdbc1def",
+        "wm_direct36_kr_feed-https_36kr_com_p_3919378312670857_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-338358d264b4",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-47dc74ac0385",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-71c26cd2c2b2",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-c1ec88bec06a"
+      ],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "Blockchain Crypto Market",
+      "previous_stage": null,
+      "current_stage": "S4",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [
+        "wm_direct_coin_gecko_trending-aave-0df08821affb",
+        "wm_direct_coin_gecko_trending-aave-38f2da72466d",
+        "wm_direct_coin_gecko_trending-aave-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-aave-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-aave-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-0df08821affb",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-36b0c186c966",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-38f2da72466d",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-akedo-38f2da72466d",
+        "wm_direct_coin_gecko_trending-akedo-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-algorand-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-arbitrum-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-arbitrum-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-arcium-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-arcium-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bitcoin-0df08821affb",
+        "wm_direct_coin_gecko_trending-bitcoin-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-bitcoin-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bitcoin-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bittensor-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bless_2-36b0c186c966",
+        "wm_direct_coin_gecko_trending-bless_2-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-bless_2-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bless_2-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bonk-0df08821affb",
+        "wm_direct_coin_gecko_trending-bonk-38f2da72466d",
+        "wm_direct_coin_gecko_trending-bonk-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-cardano-0df08821affb",
+        "wm_direct_coin_gecko_trending-cardano-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-cash_cat-0df08821affb",
+        "wm_direct_coin_gecko_trending-cash_cat-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-cash_cat-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-catecoin_3-0df08821affb",
+        "wm_direct_coin_gecko_trending-catecoin_3-36b0c186c966",
+        "wm_direct_coin_gecko_trending-catecoin_3-38f2da72466d",
+        "wm_direct_coin_gecko_trending-catecoin_3-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-catecoin_3-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-catecoin_3-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-catecoin_3-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-chainlink-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-coti-0df08821affb",
+        "wm_direct_coin_gecko_trending-coti-38f2da72466d",
+        "wm_direct_coin_gecko_trending-coti-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-ethereum-0df08821affb",
+        "wm_direct_coin_gecko_trending-ethereum-38f2da72466d",
+        "wm_direct_coin_gecko_trending-ethereum-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-ethereum-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-ethereum-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-grvt-0df08821affb",
+        "wm_direct_coin_gecko_trending-grvt-38f2da72466d",
+        "wm_direct_coin_gecko_trending-grvt-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-grvt-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-grvt-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-grvt-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-helium-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-helium-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-hyperliquid-36b0c186c966",
+        "wm_direct_coin_gecko_trending-hyperliquid-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-lighter-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-mantra-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-monad-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-monad-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pi_network-0df08821affb",
+        "wm_direct_coin_gecko_trending-pi_network-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pi_network-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pons-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pons-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-0df08821affb",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-36b0c186c966",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pump_fun-0df08821affb",
+        "wm_direct_coin_gecko_trending-pump_fun-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pump_fun-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-pump_fun-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pump_fun-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-ripple-0df08821affb",
+        "wm_direct_coin_gecko_trending-ripple-38f2da72466d",
+        "wm_direct_coin_gecko_trending-ripple-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-shiba_inu-0df08821affb",
+        "wm_direct_coin_gecko_trending-shiba_inu-38f2da72466d",
+        "wm_direct_coin_gecko_trending-shiba_inu-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-shiba_inu-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-shiba_inu-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-shiba_inu-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-solana-38f2da72466d",
+        "wm_direct_coin_gecko_trending-solana-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-what_if_3-d9a016d5dad4",
+        "wm_direct_coinbase_spot_price-btc_usd-0f07247f870b",
+        "wm_direct_coinbase_spot_price-btc_usd-523cce65d75d",
+        "wm_direct_coinbase_spot_price-btc_usd-614b0e768c0d",
+        "wm_direct_coinbase_spot_price-btc_usd-61ab4f3c5c9c",
+        "wm_direct_coinbase_spot_price-btc_usd-809ebe30b1c2",
+        "wm_direct_coinbase_spot_price-btc_usd-a422413115c4",
+        "wm_direct_coinbase_spot_price-btc_usd-ba5afd4ca74f",
+        "wm_direct_coinbase_spot_price-btc_usd-bc56c4f749ee",
+        "wm_direct_coinbase_spot_price-btc_usd-ccff588d10b7",
+        "wm_direct_coinbase_spot_price-btc_usd-e74e5e2ba868",
+        "wm_direct_coinbase_spot_price-btc_usd-f89b7cc6b7b0"
+      ],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "Luxury Consumer",
+      "previous_stage": null,
+      "current_stage": "S3",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_p_3919225763540611_f_rss-284091cad426"
+      ],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "Low Altitude Economy",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "New Energy Industry",
+      "previous_stage": null,
+      "current_stage": "S3",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922078266420608_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922089781538183_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922137591786886_f_rss-9a43e53dd5c7"
+      ],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "Commercial Space",
+      "previous_stage": null,
+      "current_stage": "S3",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922077104664199_f_rss-9a43e53dd5c7"
+      ],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    }
+  ],
+  "strongest_evidence": [
+    {
+      "evidence_id": "import_bci_medical_rehab_followup_001",
+      "evidence_strength": "E2",
+      "affected_layer": [
+        "reality",
+        "feedback"
+      ],
+      "topic": "Brain-computer interface",
+      "interpretation": "Supports the medical rehabilitation branch only."
+    },
+    {
+      "evidence_id": "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-338358d264b4",
+      "evidence_strength": "E2",
+      "affected_layer": [
+        "perception",
+        "feedback"
+      ],
+      "topic": "Humanoid robotics",
+      "interpretation": "Another sequential fuel surcharge cut signals easing jet fuel cost pressure on Chinese airlines."
+    },
+    {
+      "evidence_id": "wm_direct36_kr_feed-https_36kr_com_p_3910776673064073_f_rss-5d13fdbc1def",
+      "evidence_strength": "E1",
+      "affected_layer": [
+        "perception",
+        "feedback"
+      ],
+      "topic": "Humanoid robotics",
+      "interpretation": "External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved."
+    },
+    {
+      "evidence_id": "wm_direct_coin_gecko_trending-aave-0df08821affb",
+      "evidence_strength": "E1",
+      "affected_layer": [
+        "perception",
+        "capital"
+      ],
+      "topic": "Blockchain Crypto Market",
+      "interpretation": "External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved."
+    },
+    {
+      "evidence_id": "wm_direct_coin_gecko_trending-aave-38f2da72466d",
+      "evidence_strength": "E1",
+      "affected_layer": [
+        "perception",
+        "capital"
+      ],
+      "topic": "Blockchain Crypto Market",
+      "interpretation": "External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved."
+    },
+    {
+      "evidence_id": "wm_direct36_kr_feed-https_36kr_com_p_3919225763540611_f_rss-284091cad426",
+      "evidence_strength": "E1",
+      "affected_layer": [
+        "perception",
+        "feedback"
+      ],
+      "topic": "Luxury Consumer",
+      "interpretation": "The H1 result marks a return to topline growth, signaling stabilization after prior declines."
+    },
+    {
+      "evidence_id": "wm_direct36_kr_feed-https_36kr_com_p_3919271016263303_f_rss-284091cad426",
+      "evidence_strength": "E1",
+      "affected_layer": [
+        "perception",
+        "feedback"
+      ],
+      "topic": "Low Altitude Economy",
+      "interpretation": "Network scale and coverage metrics demonstrate operational maturity."
+    },
+    {
+      "evidence_id": "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922078266420608_f_rss-9a43e53dd5c7",
+      "evidence_strength": "E1",
+      "affected_layer": [
+        "perception",
+        "feedback"
+      ],
+      "topic": "New Energy Industry",
+      "interpretation": "External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved."
+    },
+    {
+      "evidence_id": "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922089781538183_f_rss-9a43e53dd5c7",
+      "evidence_strength": "E1",
+      "affected_layer": [
+        "perception",
+        "feedback"
+      ],
+      "topic": "New Energy Industry",
+      "interpretation": "External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved."
+    },
+    {
+      "evidence_id": "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922077104664199_f_rss-9a43e53dd5c7",
+      "evidence_strength": "E1",
+      "affected_layer": [
+        "perception",
+        "feedback"
+      ],
+      "topic": "Commercial Space",
+      "interpretation": "External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved."
+    }
+  ],
+  "why_not_higher": [
+    {
+      "topic_id": "bci",
+      "topic_name": "Brain-computer interface",
+      "current_stage": "S0",
+      "why_not_higher_stage": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [
+        "import_bci_medical_rehab_followup_001"
+      ]
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "Humanoid robotics",
+      "current_stage": "S3",
+      "why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_p_3910776673064073_f_rss-5d13fdbc1def",
+        "wm_direct36_kr_feed-https_36kr_com_p_3910776673064073_f_rss-ea37ba91fe57",
+        "wm_direct36_kr_feed-https_36kr_com_p_3919378312670857_f_rss-5d13fdbc1def",
+        "wm_direct36_kr_feed-https_36kr_com_p_3919378312670857_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-338358d264b4",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-47dc74ac0385",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-71c26cd2c2b2",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-c1ec88bec06a"
+      ]
+    },
+    {
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "Blockchain Crypto Market",
+      "current_stage": "S4",
+      "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct_coin_gecko_trending-aave-0df08821affb",
+        "wm_direct_coin_gecko_trending-aave-38f2da72466d",
+        "wm_direct_coin_gecko_trending-aave-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-aave-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-aave-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-0df08821affb",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-36b0c186c966",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-38f2da72466d",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-akedo-38f2da72466d",
+        "wm_direct_coin_gecko_trending-akedo-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-algorand-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-arbitrum-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-arbitrum-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-arcium-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-arcium-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bitcoin-0df08821affb",
+        "wm_direct_coin_gecko_trending-bitcoin-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-bitcoin-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bitcoin-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bittensor-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bless_2-36b0c186c966",
+        "wm_direct_coin_gecko_trending-bless_2-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-bless_2-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bless_2-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bonk-0df08821affb",
+        "wm_direct_coin_gecko_trending-bonk-38f2da72466d",
+        "wm_direct_coin_gecko_trending-bonk-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-cardano-0df08821affb",
+        "wm_direct_coin_gecko_trending-cardano-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-cash_cat-0df08821affb",
+        "wm_direct_coin_gecko_trending-cash_cat-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-cash_cat-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-catecoin_3-0df08821affb",
+        "wm_direct_coin_gecko_trending-catecoin_3-36b0c186c966",
+        "wm_direct_coin_gecko_trending-catecoin_3-38f2da72466d",
+        "wm_direct_coin_gecko_trending-catecoin_3-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-catecoin_3-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-catecoin_3-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-catecoin_3-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-chainlink-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-coti-0df08821affb",
+        "wm_direct_coin_gecko_trending-coti-38f2da72466d",
+        "wm_direct_coin_gecko_trending-coti-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-ethereum-0df08821affb",
+        "wm_direct_coin_gecko_trending-ethereum-38f2da72466d",
+        "wm_direct_coin_gecko_trending-ethereum-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-ethereum-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-ethereum-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-grvt-0df08821affb",
+        "wm_direct_coin_gecko_trending-grvt-38f2da72466d",
+        "wm_direct_coin_gecko_trending-grvt-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-grvt-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-grvt-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-grvt-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-helium-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-helium-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-hyperliquid-36b0c186c966",
+        "wm_direct_coin_gecko_trending-hyperliquid-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-lighter-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-mantra-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-monad-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-monad-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pi_network-0df08821affb",
+        "wm_direct_coin_gecko_trending-pi_network-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pi_network-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pons-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pons-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-0df08821affb",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-36b0c186c966",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pump_fun-0df08821affb",
+        "wm_direct_coin_gecko_trending-pump_fun-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pump_fun-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-pump_fun-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pump_fun-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-ripple-0df08821affb",
+        "wm_direct_coin_gecko_trending-ripple-38f2da72466d",
+        "wm_direct_coin_gecko_trending-ripple-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-shiba_inu-0df08821affb",
+        "wm_direct_coin_gecko_trending-shiba_inu-38f2da72466d",
+        "wm_direct_coin_gecko_trending-shiba_inu-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-shiba_inu-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-shiba_inu-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-shiba_inu-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-solana-38f2da72466d",
+        "wm_direct_coin_gecko_trending-solana-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-what_if_3-d9a016d5dad4",
+        "wm_direct_coinbase_spot_price-btc_usd-0f07247f870b",
+        "wm_direct_coinbase_spot_price-btc_usd-523cce65d75d",
+        "wm_direct_coinbase_spot_price-btc_usd-614b0e768c0d",
+        "wm_direct_coinbase_spot_price-btc_usd-61ab4f3c5c9c",
+        "wm_direct_coinbase_spot_price-btc_usd-809ebe30b1c2",
+        "wm_direct_coinbase_spot_price-btc_usd-a422413115c4",
+        "wm_direct_coinbase_spot_price-btc_usd-ba5afd4ca74f",
+        "wm_direct_coinbase_spot_price-btc_usd-bc56c4f749ee",
+        "wm_direct_coinbase_spot_price-btc_usd-ccff588d10b7",
+        "wm_direct_coinbase_spot_price-btc_usd-e74e5e2ba868",
+        "wm_direct_coinbase_spot_price-btc_usd-f89b7cc6b7b0"
+      ]
+    },
+    {
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "Luxury Consumer",
+      "current_stage": "S3",
+      "why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_p_3919225763540611_f_rss-284091cad426"
+      ]
+    },
+    {
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "Low Altitude Economy",
+      "current_stage": "S0",
+      "why_not_higher_stage": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_p_3919271016263303_f_rss-284091cad426"
+      ]
+    },
+    {
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "New Energy Industry",
+      "current_stage": "S3",
+      "why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922078266420608_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922089781538183_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922137591786886_f_rss-9a43e53dd5c7"
+      ]
+    },
+    {
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "Commercial Space",
+      "current_stage": "S3",
+      "why_not_higher_stage": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922077104664199_f_rss-9a43e53dd5c7"
+      ]
+    }
+  ],
+  "early_radar_candidates": [],
+  "guardrail_check": {
+    "no_trading_advice": true,
+    "research_only_actions": true,
+    "parent_branch_separation_preserved": true,
+    "evidence_ids_visible": true,
+    "why_not_higher_present": true,
+    "data_confidence_present": true
+  },
+  "next_operator_actions": [
+    {
+      "action": "validate",
+      "topic_id": "bci",
+      "reason": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [
+        "import_bci_medical_rehab_followup_001"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "humanoid_robotics",
+      "reason": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_p_3910776673064073_f_rss-5d13fdbc1def",
+        "wm_direct36_kr_feed-https_36kr_com_p_3910776673064073_f_rss-ea37ba91fe57",
+        "wm_direct36_kr_feed-https_36kr_com_p_3919378312670857_f_rss-5d13fdbc1def",
+        "wm_direct36_kr_feed-https_36kr_com_p_3919378312670857_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-338358d264b4",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-47dc74ac0385",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-71c26cd2c2b2",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_p_3920241240419720_f_rss-c1ec88bec06a"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "provisional_blockchain_crypto_market",
+      "reason": "Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct_coin_gecko_trending-aave-0df08821affb",
+        "wm_direct_coin_gecko_trending-aave-38f2da72466d",
+        "wm_direct_coin_gecko_trending-aave-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-aave-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-aave-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-0df08821affb",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-36b0c186c966",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-38f2da72466d",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-aerodrome_finance-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-akedo-38f2da72466d",
+        "wm_direct_coin_gecko_trending-akedo-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-algorand-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-arbitrum-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-arbitrum-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-arcium-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-arcium-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bitcoin-0df08821affb",
+        "wm_direct_coin_gecko_trending-bitcoin-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-bitcoin-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bitcoin-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bittensor-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bless_2-36b0c186c966",
+        "wm_direct_coin_gecko_trending-bless_2-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-bless_2-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-bless_2-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-bonk-0df08821affb",
+        "wm_direct_coin_gecko_trending-bonk-38f2da72466d",
+        "wm_direct_coin_gecko_trending-bonk-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-cardano-0df08821affb",
+        "wm_direct_coin_gecko_trending-cardano-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-cash_cat-0df08821affb",
+        "wm_direct_coin_gecko_trending-cash_cat-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-cash_cat-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-catecoin_3-0df08821affb",
+        "wm_direct_coin_gecko_trending-catecoin_3-36b0c186c966",
+        "wm_direct_coin_gecko_trending-catecoin_3-38f2da72466d",
+        "wm_direct_coin_gecko_trending-catecoin_3-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-catecoin_3-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-catecoin_3-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-catecoin_3-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-chainlink-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-coti-0df08821affb",
+        "wm_direct_coin_gecko_trending-coti-38f2da72466d",
+        "wm_direct_coin_gecko_trending-coti-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-ethereum-0df08821affb",
+        "wm_direct_coin_gecko_trending-ethereum-38f2da72466d",
+        "wm_direct_coin_gecko_trending-ethereum-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-ethereum-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-ethereum-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-grvt-0df08821affb",
+        "wm_direct_coin_gecko_trending-grvt-38f2da72466d",
+        "wm_direct_coin_gecko_trending-grvt-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-grvt-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-grvt-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-grvt-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-helium-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-helium-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-hyperliquid-36b0c186c966",
+        "wm_direct_coin_gecko_trending-hyperliquid-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-lighter-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-mantra-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-monad-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-monad-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pi_network-0df08821affb",
+        "wm_direct_coin_gecko_trending-pi_network-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pi_network-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pons-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pons-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-0df08821affb",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-36b0c186c966",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pudgy_penguins-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-pump_fun-0df08821affb",
+        "wm_direct_coin_gecko_trending-pump_fun-38f2da72466d",
+        "wm_direct_coin_gecko_trending-pump_fun-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-pump_fun-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-pump_fun-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-ripple-0df08821affb",
+        "wm_direct_coin_gecko_trending-ripple-38f2da72466d",
+        "wm_direct_coin_gecko_trending-ripple-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-shiba_inu-0df08821affb",
+        "wm_direct_coin_gecko_trending-shiba_inu-38f2da72466d",
+        "wm_direct_coin_gecko_trending-shiba_inu-d3e12ac1aad8",
+        "wm_direct_coin_gecko_trending-shiba_inu-d9a016d5dad4",
+        "wm_direct_coin_gecko_trending-shiba_inu-f96bf61e582b",
+        "wm_direct_coin_gecko_trending-shiba_inu-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-solana-38f2da72466d",
+        "wm_direct_coin_gecko_trending-solana-fd64b974b79f",
+        "wm_direct_coin_gecko_trending-what_if_3-d9a016d5dad4",
+        "wm_direct_coinbase_spot_price-btc_usd-0f07247f870b",
+        "wm_direct_coinbase_spot_price-btc_usd-523cce65d75d",
+        "wm_direct_coinbase_spot_price-btc_usd-614b0e768c0d",
+        "wm_direct_coinbase_spot_price-btc_usd-61ab4f3c5c9c",
+        "wm_direct_coinbase_spot_price-btc_usd-809ebe30b1c2",
+        "wm_direct_coinbase_spot_price-btc_usd-a422413115c4",
+        "wm_direct_coinbase_spot_price-btc_usd-ba5afd4ca74f",
+        "wm_direct_coinbase_spot_price-btc_usd-bc56c4f749ee",
+        "wm_direct_coinbase_spot_price-btc_usd-ccff588d10b7",
+        "wm_direct_coinbase_spot_price-btc_usd-e74e5e2ba868",
+        "wm_direct_coinbase_spot_price-btc_usd-f89b7cc6b7b0"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "provisional_luxury_consumer",
+      "reason": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_p_3919225763540611_f_rss-284091cad426"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "provisional_low_altitude_economy",
+      "reason": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_p_3919271016263303_f_rss-284091cad426"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "provisional_new_energy_industry",
+      "reason": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922078266420608_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922089781538183_f_rss-9a43e53dd5c7",
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922137591786886_f_rss-9a43e53dd5c7"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "provisional_commercial_space",
+      "reason": "Missing capital confirmation; Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "wm_direct36_kr_feed-https_36kr_com_newsflashes_3922077104664199_f_rss-9a43e53dd5c7"
+      ]
+    }
+  ],
+  "artifact_index": [
+    "outputs/operator_runs/latest_run.json",
+    "outputs/operator_runs/latest_stage_snapshot.json",
+    "outputs/operator_runs/latest_stage_diff.json",
+    "outputs/operator_runs/latest_weekly_brief.json"
+  ]
+}

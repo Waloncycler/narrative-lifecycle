@@ -3,6 +3,7 @@ import { dirname, resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { parse, stringify } from 'yaml';
+import { normalizeEvidenceImport } from '../application/evidence_import_normalizer';
 import type { EvidenceNode } from '../domain/evidence';
 import { validateEvidenceImportDrafts } from '../domain/evidence_import_rules';
 import type {
@@ -21,6 +22,7 @@ export const ACCEPTED_IMPORT_DIR = 'data/imports/accepted';
 export const REJECTED_IMPORT_DIR = 'data/imports/rejected';
 export const MANUAL_IMPORTED_EVIDENCE_PATH = 'data/sample_evidence/manual_imported_evidence.yaml';
 export const EVIDENCE_IMPORT_AUDIT_PATH = 'data/audit/evidence_import_audit.jsonl';
+export const OPERATIONAL_EVIDENCE_ADMISSION_PATH = 'data/audit/operational_evidence_admission.jsonl';
 
 export function loadEvidenceImportDraft(repoRoot: string, sourceFile = DEFAULT_EVIDENCE_IMPORT_FILE): EvidenceImportDraft[] {
   const value = parse(readFileSync(resolve(repoRoot, sourceFile), 'utf8')) as EvidenceImportDraft | EvidenceImportDraft[];
@@ -36,13 +38,15 @@ export function parseEvidenceImportArgs(argv: string[]): { file: string } {
 }
 
 function loadExistingEvidenceIds(repoRoot: string): Set<string> {
-  const directory = resolve(repoRoot, 'data/sample_evidence');
-  if (!existsSync(directory)) return new Set();
   const ids = new Set<string>();
-  for (const file of readdirSync(directory).filter((item) => item.endsWith('.yaml') || item.endsWith('.yml'))) {
-    if (file === 'manual_imported_evidence.yaml') continue;
-    const rows = parse(readFileSync(resolve(directory, file), 'utf8')) as EvidenceNode[];
-    for (const row of rows) ids.add(row.evidence_id);
+  const directories = ['data/sample_evidence', 'data/live_evidence'];
+  for (const relativeDirectory of directories) {
+    const directory = resolve(repoRoot, relativeDirectory);
+    if (!existsSync(directory)) continue;
+    for (const file of readdirSync(directory).filter((item) => item.endsWith('.yaml') || item.endsWith('.yml'))) {
+      const rows = parse(readFileSync(resolve(directory, file), 'utf8')) as EvidenceNode[];
+      for (const row of rows) ids.add(row.evidence_id);
+    }
   }
   return ids;
 }
@@ -73,6 +77,38 @@ export function validateEvidenceImport(input: {
     existingEvidenceIds: loadExistingEvidenceIds(input.repoRoot),
     schemaErrors: schemaErrors(input.repoRoot, input.drafts),
   });
+}
+
+/** A duplicate import is idempotent only if every persisted Evidence Node is
+ * byte-for-byte equivalent after normalization. Reusing an id for changed
+ * content remains a validation failure and requires an explicit correction. */
+export function isIdempotentEvidenceImport(input: {
+  repoRoot: string;
+  drafts: EvidenceImportDraft[];
+  sourceFile: string;
+}): boolean {
+  const fixturePath = resolve(input.repoRoot, MANUAL_IMPORTED_EVIDENCE_PATH);
+  if (!existsSync(fixturePath)) return false;
+  const existing = parse(readFileSync(fixturePath, 'utf8')) as EvidenceNode[];
+  const existingById = new Map(existing.map((item) => [item.evidence_id, item]));
+  const normalized = normalizeEvidenceImport({
+    drafts: input.drafts,
+    sourceFile: input.sourceFile,
+    importedAt: '1970-01-01T00:00:00.000Z',
+  });
+  return normalized.length === input.drafts.length && normalized.every((item) => {
+    const current = existingById.get(item.evidence.evidence_id);
+    return current !== undefined && stableJson(current) === stableJson(item.evidence);
+  });
+}
+
+function stableJson(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(stableJson).join(',')}]`;
+  if (value && typeof value === 'object') {
+    const record = value as Record<string, unknown>;
+    return `{${Object.keys(record).sort().map((key) => `${JSON.stringify(key)}:${stableJson(record[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
 }
 
 function writeJson(repoRoot: string, relativePath: string, value: unknown): string {
@@ -184,6 +220,25 @@ export function writeEvidenceImportAudit(repoRoot: string, record: EvidenceImpor
   return EVIDENCE_IMPORT_AUDIT_PATH;
 }
 
+function writeOperationalEvidenceAdmission(repoRoot: string, input: {
+  importId: string;
+  admittedAt: string;
+  sourceFile: string;
+  evidenceIds: string[];
+}): string {
+  const path = resolve(repoRoot, OPERATIONAL_EVIDENCE_ADMISSION_PATH);
+  mkdirSync(dirname(path), { recursive: true });
+  appendFileSync(path, `${JSON.stringify({
+    admission_id: `manual_import_${input.importId}_${input.admittedAt.replace(/[-:.TZ]/g, '')}`,
+    admitted_at: input.admittedAt,
+    admission_type: 'manual_import',
+    source_file: input.sourceFile,
+    evidence_ids: input.evidenceIds,
+    policy_version: 'v0.9-controlled-autonomous-research-loop',
+  })}\n`);
+  return OPERATIONAL_EVIDENCE_ADMISSION_PATH;
+}
+
 export function writeRejectedEvidenceImport(repoRoot: string, report: EvidenceValidationReport, sourceBody: string): EvidenceImportReport {
   const importId = importIdFromReport(report);
   const rejectedCopyPath = `${REJECTED_IMPORT_DIR}/${importId}.yaml`;
@@ -220,7 +275,10 @@ export function writeAcceptedEvidenceImport(repoRoot: string, report: EvidenceVa
 
   const fixturePath = resolve(repoRoot, MANUAL_IMPORTED_EVIDENCE_PATH);
   mkdirSync(dirname(fixturePath), { recursive: true });
-  writeFileSync(fixturePath, stringify(fixtureRows));
+  const existingRows = existsSync(fixturePath)
+    ? parse(readFileSync(fixturePath, 'utf8')) as EvidenceNode[]
+    : [];
+  writeFileSync(fixturePath, stringify(mergeEvidenceRows(existingRows, fixtureRows)));
 
   const auditLogPath = writeEvidenceImportAudit(repoRoot, {
     import_id: importId,
@@ -232,6 +290,12 @@ export function writeAcceptedEvidenceImport(repoRoot: string, report: EvidenceVa
     validation_errors: [],
     operator_action: 'evidence_import',
     rule_version: RULE_VERSION,
+  });
+  writeOperationalEvidenceAdmission(repoRoot, {
+    importId,
+    admittedAt: normalized[0]?.imported_at ?? report.generated_at,
+    sourceFile: report.source_file,
+    evidenceIds: normalized.map((item) => item.evidence.evidence_id),
   });
 
   const importReport: EvidenceImportReport = {
@@ -245,4 +309,10 @@ export function writeAcceptedEvidenceImport(repoRoot: string, report: EvidenceVa
   writeJson(repoRoot, `${IMPORT_OUTPUT_DIR}/evidence_import_report.json`, importReport);
   writeMarkdown(repoRoot, `${IMPORT_OUTPUT_DIR}/evidence_import_report.md`, renderEvidenceImportMarkdown(importReport));
   return importReport;
+}
+
+export function mergeEvidenceRows(existingRows: EvidenceNode[], incomingRows: EvidenceNode[]): EvidenceNode[] {
+  const mergedRows = new Map(existingRows.map((row) => [row.evidence_id, row]));
+  for (const row of incomingRows) mergedRows.set(row.evidence_id, row);
+  return [...mergedRows.values()];
 }

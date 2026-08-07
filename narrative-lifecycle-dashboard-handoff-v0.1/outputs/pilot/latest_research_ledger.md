@@ -2,9 +2,9 @@
 
 ## 1. Run Context
 
-- ledger_id: research_ledger_run_20260713T035113631_508dfa
-- run_id: run_20260713T035113631_508dfa
-- generated_at: 2026-07-13T03:51:14.089Z
+- ledger_id: research_ledger_run_20260802T183425585_8587af
+- run_id: run_20260802T183425585_8587af
+- generated_at: 2026-08-02T18:34:25.714Z
 - status: ok
 - pilot_topic_count: 10
 
@@ -14,7 +14,7 @@
   - current_hypothesis: 脑机接口 BCI remains in S4 until new evidence changes the persisted artifacts.
   - competing_hypothesis: 脑机接口 BCI may be a narrower branch event rather than a parent narrative transition.
   - current_stage: S4
-  - latest_artifact_stage: S4
+  - latest_artifact_stage: S0
   - posterior_direction: unchanged
   - event_intensity: medium
   - tail_structure: normal
@@ -29,7 +29,7 @@
   - current_hypothesis: 人形机器人 / 具身智能 remains in S5-S6 until new evidence changes the persisted artifacts.
   - competing_hypothesis: 人形机器人 / 具身智能 may be a narrower branch event rather than a parent narrative transition.
   - current_stage: S5-S6
-  - latest_artifact_stage: S5-S6
+  - latest_artifact_stage: S0
   - posterior_direction: unchanged
   - event_intensity: medium
   - tail_structure: normal
@@ -44,7 +44,7 @@
   - current_hypothesis: 创新药 License-out remains in S5-S6 until new evidence changes the persisted artifacts.
   - competing_hypothesis: 创新药 License-out may be a narrower branch event rather than a parent narrative transition.
   - current_stage: S5-S6
-  - latest_artifact_stage: S5-S6
+  - latest_artifact_stage: S0
   - posterior_direction: unchanged
   - event_intensity: medium
   - tail_structure: normal
@@ -170,7 +170,7 @@
 - false_positive_count: 0
 - missed_change_count: 0
 - falsification_count: 0
-- consecutive_no_change_runs: 22
+- consecutive_no_change_runs: 7
 
 ## 4. Guardrails
 
@@ -182,9 +182,9 @@
 
 ## 5. Source Artifacts
 
-- outputs/runs/latest_run.json
-- outputs/reports/weekly_brief.json
-- outputs/diffs/latest_stage_diff.json
+- outputs/operator_runs/latest_run.json
+- outputs/operator_runs/latest_weekly_brief.json
+- outputs/operator_runs/latest_stage_diff.json
 - outputs/reviews/latest_operator_review.json
 - data/pilot/pilot_topics.yaml
 - data/pilot/operator_observations.yaml

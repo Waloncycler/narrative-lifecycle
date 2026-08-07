@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "NarrativeGraphPromotionReport",
+  "additionalProperties": false,
+  "required": ["artifact_type", "schema_version", "producer_version", "report_id", "run_id", "generated_at", "policy_id", "items", "summary", "guardrail_check"],
+  "properties": {
+    "artifact_type": { "const": "narrative_graph_promotion_report" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "type": "string" },
+    "report_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "policy_id": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["node_kind", "node_id", "parent_topic_id", "previous_status", "next_status", "decision", "supporting_evidence_ids", "independent_source_count", "reasons", "guardrail_check"],
+        "properties": {
+          "node_kind": { "enum": ["topic", "branch"] },
+          "node_id": { "type": "string" },
+          "parent_topic_id": { "type": "string" },
+          "previous_status": { "enum": ["provisional", "watch"] },
+          "next_status": { "enum": ["active", null] },
+          "decision": { "enum": ["activated", "held"] },
+          "supporting_evidence_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+          "independent_source_count": { "type": "integer", "minimum": 0 },
+          "reasons": { "type": "array", "items": { "type": "string" } },
+          "guardrail_check": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["evidence_table_only", "parent_evidence_required", "branch_does_not_upgrade_parent", "conflict_checked", "no_trading_advice"],
+            "properties": {
+              "evidence_table_only": { "const": true },
+              "parent_evidence_required": { "type": "boolean" },
+              "branch_does_not_upgrade_parent": { "const": true },
+              "conflict_checked": { "const": true },
+              "no_trading_advice": { "const": true }
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provisional_topics_activated", "watch_branches_activated", "held_count"],
+      "properties": {
+        "provisional_topics_activated": { "type": "integer", "minimum": 0 },
+        "watch_branches_activated": { "type": "integer", "minimum": 0 },
+        "held_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_table_required", "stage_first_score_second", "parent_branch_separation", "no_model_stage_or_score_control", "no_trading_advice"],
+      "properties": {
+        "evidence_table_required": { "const": true },
+        "stage_first_score_second": { "const": true },
+        "parent_branch_separation": { "const": true },
+        "no_model_stage_or_score_control": { "const": true },
+        "no_trading_advice": { "const": true }
+      }
+    }
+  }
+}

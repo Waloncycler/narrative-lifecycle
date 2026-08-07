@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "TopicResolutionAudit",
+  "additionalProperties": false,
+  "required": ["audit_id", "generated_at", "session_id", "resolutions", "unresolved_queue", "registry_validation", "guardrail_check"],
+  "properties": {
+    "audit_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "session_id": { "type": ["string", "null"] },
+    "resolutions": { "type": "array", "items": { "$ref": "#/$defs/resolution" } },
+    "unresolved_queue": { "type": "array", "items": { "$ref": "#/$defs/resolution" } },
+    "registry_validation": { "type": "object", "additionalProperties": true },
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["no_forced_mapping", "provisional_topics_do_not_inherit_stage", "topic_changes_require_audit", "branch_changes_do_not_upgrade_parent"],
+      "properties": {
+        "no_forced_mapping": { "type": "boolean" },
+        "provisional_topics_do_not_inherit_stage": { "type": "boolean" },
+        "topic_changes_require_audit": { "type": "boolean" },
+        "branch_changes_do_not_upgrade_parent": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "status", "resolved_topic_id", "resolved_branch_id", "provisional_topic_id", "reason", "confidence", "audit_required", "alternatives"],
+      "properties": {
+        "candidate_id": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["existing_topic", "alias_of", "new_branch", "reactivation", "new_provisional_topic", "unresolved"] },
+        "resolved_topic_id": { "type": ["string", "null"] },
+        "resolved_branch_id": { "type": ["string", "null"] },
+        "provisional_topic_id": { "type": ["string", "null"] },
+        "reason": { "type": "string", "minLength": 1 },
+        "confidence": { "enum": ["low", "medium", "high"] },
+        "audit_required": { "type": "boolean" },
+        "alternatives": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+      }
+    }
+  }
+}

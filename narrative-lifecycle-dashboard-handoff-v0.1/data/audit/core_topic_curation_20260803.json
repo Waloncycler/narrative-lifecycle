@@ -1,0 +1,29 @@
+{
+  "artifact_type": "core_topic_curation_audit",
+  "generated_at": "2026-08-03T16:50:00.000Z",
+  "change_type": "operator_curated_monitoring_baseline",
+  "topic_ids": [
+    "provisional_blockchain_crypto_market",
+    "provisional_luxury_consumer",
+    "provisional_low_altitude_economy",
+    "provisional_new_energy_industry",
+    "provisional_commercial_space",
+    "provisional_quantum_computing",
+    "provisional_ai_foundation_models",
+    "provisional_semiconductor_advanced_manufacturing",
+    "provisional_semiconductor_memory_market",
+    "provisional_additive_manufacturing",
+    "provisional_ai_agents",
+    "provisional_smart_manufacturing",
+    "provisional_computing_infrastructure"
+  ],
+  "reason": "Market-recognizable themes are added to the monitored core so coverage can begin before a new evidence chain accumulates.",
+  "guardrail_check": {
+    "operator_curation_only": true,
+    "all_topics_start_at_s0": true,
+    "no_evidence_inherited": true,
+    "no_stage_or_score_upgrade": true,
+    "parent_branch_separation": true,
+    "no_trading_advice": true
+  }
+}

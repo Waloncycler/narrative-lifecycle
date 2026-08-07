@@ -1,0 +1,690 @@
+atlas_version: v0.13.2
+sources:
+  - source_id: gov_cn
+    display_name_zh: 中国政府网
+    display_name_en: State Council of the People's Republic of China
+    operator: 国务院办公厅
+    authority_tier: statutory
+    domains: [technology, health, energy, financial, cross_industry]
+    coverage_layers: [name, reality, friction]
+    access_mode: rss_or_html
+    base_url: https://www.gov.cn/
+    terms_url: https://www.gov.cn/zhengce/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: miit
+    display_name_zh: 工业和信息化部
+    display_name_en: Ministry of Industry and Information Technology
+    operator: 工业和信息化部
+    authority_tier: regulator
+    domains: [technology, energy, cross_industry]
+    coverage_layers: [name, reality, friction]
+    access_mode: rss_or_html
+    base_url: https://www.miit.gov.cn/
+    terms_url: https://www.miit.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: ndrc
+    display_name_zh: 国家发展和改革委员会
+    display_name_en: National Development and Reform Commission
+    operator: 国家发展和改革委员会
+    authority_tier: regulator
+    domains: [energy, financial, cross_industry]
+    coverage_layers: [capital, reality, friction]
+    access_mode: rss_or_html
+    base_url: https://www.ndrc.gov.cn/
+    terms_url: https://www.ndrc.gov.cn/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: nmpa
+    display_name_zh: 国家药品监督管理局
+    display_name_en: National Medical Products Administration
+    operator: 国家药品监督管理局
+    authority_tier: regulator
+    domains: [health]
+    coverage_layers: [reality, friction]
+    access_mode: search_bridge
+    base_url: https://www.nmpa.gov.cn/
+    terms_url: https://www.nmpa.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: cde
+    display_name_zh: 药品审评中心
+    display_name_en: Center for Drug Evaluation
+    operator: 国家药品监督管理局药品审评中心
+    authority_tier: regulator
+    domains: [health]
+    coverage_layers: [reality, friction]
+    access_mode: search_bridge
+    base_url: https://www.cde.org.cn/
+    terms_url: https://www.cde.org.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: nea_china
+    display_name_zh: 国家能源局
+    display_name_en: National Energy Administration
+    operator: 国家能源局
+    authority_tier: regulator
+    domains: [energy]
+    coverage_layers: [reality, capital, friction]
+    access_mode: rss_or_html
+    base_url: https://www.nea.gov.cn/
+    terms_url: https://www.nea.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: nbs_china
+    display_name_zh: 国家统计局
+    display_name_en: National Bureau of Statistics of China
+    operator: 国家统计局
+    authority_tier: statutory
+    domains: [financial, cross_industry]
+    coverage_layers: [reality, pricing, data_confidence]
+    access_mode: search_bridge
+    base_url: https://www.stats.gov.cn/
+    terms_url: https://www.stats.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: false
+    languages: [zh]
+  - source_id: pboc
+    display_name_zh: 中国人民银行
+    display_name_en: People's Bank of China
+    operator: 中国人民银行
+    authority_tier: regulator
+    domains: [financial]
+    coverage_layers: [capital, pricing, friction]
+    access_mode: rss_or_html
+    base_url: http://www.pbc.gov.cn/
+    terms_url: http://www.pbc.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: false
+    languages: [zh]
+  - source_id: cnipa
+    display_name_zh: 国家知识产权局
+    display_name_en: China National Intellectual Property Administration
+    operator: 国家知识产权局
+    authority_tier: regulator
+    domains: [technology, health, energy]
+    coverage_layers: [name, reality, data_confidence]
+    access_mode: search_bridge
+    base_url: https://www.cnipa.gov.cn/
+    terms_url: https://www.cnipa.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: mofcom
+    display_name_zh: 商务部
+    display_name_en: Ministry of Commerce
+    operator: 中华人民共和国商务部
+    authority_tier: regulator
+    domains: [financial, cross_industry]
+    coverage_layers: [reality, friction, capital]
+    access_mode: rss_or_html
+    base_url: http://www.mofcom.gov.cn/
+    terms_url: http://www.mofcom.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: csrc
+    display_name_zh: 中国证监会
+    display_name_en: China Securities Regulatory Commission
+    operator: 中国证券监督管理委员会
+    authority_tier: regulator
+    domains: [financial]
+    coverage_layers: [capital, friction, reality]
+    access_mode: rss_or_html
+    base_url: http://www.csrc.gov.cn/
+    terms_url: http://www.csrc.gov.cn/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: false
+    languages: [zh]
+  - source_id: cninfo
+    display_name_zh: 巨潮资讯网
+    display_name_en: CNINFO Listed Company Disclosures
+    operator: 深圳证券信息有限公司
+    authority_tier: filing
+    domains: [financial, technology, health, energy]
+    coverage_layers: [capital, reality, friction]
+    access_mode: manual_review
+    base_url: http://www.cninfo.com.cn/
+    terms_url: http://www.cninfo.com.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: sse_disclosures
+    display_name_zh: 上海证券交易所上市公司公告
+    display_name_en: Shanghai Stock Exchange Listed Company Disclosures
+    operator: 上海证券交易所
+    authority_tier: filing
+    domains: [technology, health, energy, financial]
+    coverage_layers: [capital, reality, friction]
+    access_mode: search_bridge
+    base_url: https://www.sse.com.cn/disclosure/listedinfo/announcement/
+    terms_url: https://www.sse.com.cn/aboutus/legal/disclaimer/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: hkexnews
+    display_name_zh: 香港交易所披露易
+    display_name_en: HKEXnews Listed Company Disclosures
+    operator: 香港交易及结算所有限公司
+    authority_tier: filing
+    domains: [technology, health, energy, financial]
+    coverage_layers: [capital, reality, friction]
+    access_mode: search_bridge
+    base_url: https://www1.hkexnews.hk/index.htm
+    terms_url: https://www.hkex.com.hk/Global/Exchange/Terms-and-Disclaimer?sc_lang=en
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh, en]
+  - source_id: federal_register
+    display_name_zh: 美国联邦公报
+    display_name_en: Federal Register Documents API
+    operator: Office of the Federal Register / National Archives
+    authority_tier: statutory
+    domains: [technology, health, energy, financial, cross_industry]
+    coverage_layers: [name, reality, friction]
+    access_mode: direct_api
+    base_url: https://www.federalregister.gov/api/v1/
+    terms_url: https://www.federalregister.gov/developers/documentation/api/v1
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: samr
+    display_name_zh: 国家市场监督管理总局
+    display_name_en: State Administration for Market Regulation
+    operator: 国家市场监督管理总局
+    authority_tier: regulator
+    domains: [technology, health, energy, financial, cross_industry]
+    coverage_layers: [reality, friction]
+    access_mode: search_bridge
+    base_url: https://www.samr.gov.cn/
+    terms_url: https://www.samr.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: cac_china
+    display_name_zh: 国家互联网信息办公室
+    display_name_en: Cyberspace Administration of China
+    operator: 国家互联网信息办公室
+    authority_tier: regulator
+    domains: [technology, financial, cross_industry]
+    coverage_layers: [name, reality, friction]
+    access_mode: search_bridge
+    base_url: https://www.cac.gov.cn/
+    terms_url: https://www.cac.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: us_commerce_bis
+    display_name_zh: 美国商务部工业和安全局
+    display_name_en: U.S. Bureau of Industry and Security
+    operator: U.S. Department of Commerce
+    authority_tier: regulator
+    domains: [technology, energy, financial]
+    coverage_layers: [reality, friction, capital]
+    access_mode: search_bridge
+    base_url: https://www.bis.gov/
+    terms_url: https://www.commerce.gov/website-privacy-policy
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: us_ftc
+    display_name_zh: 美国联邦贸易委员会
+    display_name_en: U.S. Federal Trade Commission
+    operator: U.S. Federal Trade Commission
+    authority_tier: regulator
+    domains: [technology, health, financial, cross_industry]
+    coverage_layers: [friction, reality]
+    access_mode: search_bridge
+    base_url: https://www.ftc.gov/
+    terms_url: https://www.ftc.gov/policy-notices/privacy-policy
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: sec_edgar
+    display_name_zh: 美国证券交易委员会 EDGAR
+    display_name_en: SEC EDGAR Data APIs
+    operator: U.S. Securities and Exchange Commission
+    authority_tier: filing
+    domains: [financial, technology, health, energy]
+    coverage_layers: [capital, reality, friction]
+    access_mode: direct_api
+    base_url: https://data.sec.gov/
+    terms_url: https://www.sec.gov/about/developer-resources
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: usaspending
+    display_name_zh: 美国政府支出公开数据
+    display_name_en: USAspending.gov
+    operator: U.S. Department of the Treasury
+    authority_tier: statutory
+    domains: [technology, health, energy, cross_industry]
+    coverage_layers: [capital, reality]
+    access_mode: direct_api
+    base_url: https://api.usaspending.gov/
+    terms_url: https://www.usaspending.gov/about/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: fred
+    display_name_zh: 圣路易斯联储 FRED
+    display_name_en: Federal Reserve Economic Data
+    operator: Federal Reserve Bank of St. Louis
+    authority_tier: statutory
+    domains: [financial, cross_industry]
+    coverage_layers: [pricing, capital, reality]
+    access_mode: direct_api
+    base_url: https://fred.stlouisfed.org/
+    terms_url: https://fred.stlouisfed.org/docs/api/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: false
+    languages: [en]
+  - source_id: eia
+    display_name_zh: 美国能源信息署
+    display_name_en: U.S. Energy Information Administration
+    operator: U.S. Energy Information Administration
+    authority_tier: statutory
+    domains: [energy]
+    coverage_layers: [reality, pricing]
+    access_mode: direct_api
+    base_url: https://www.eia.gov/opendata/
+    terms_url: https://www.eia.gov/opendata/documentation.php
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: world_bank
+    display_name_zh: 世界银行公开数据
+    display_name_en: World Bank Open Data
+    operator: World Bank
+    authority_tier: intergovernmental
+    domains: [financial, cross_industry]
+    coverage_layers: [reality, pricing, data_confidence]
+    access_mode: direct_api
+    base_url: https://api.worldbank.org/
+    terms_url: https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: false
+    languages: [en]
+  - source_id: imf
+    display_name_zh: 国际货币基金组织
+    display_name_en: International Monetary Fund
+    operator: International Monetary Fund
+    authority_tier: intergovernmental
+    domains: [financial, cross_industry]
+    coverage_layers: [pricing, reality]
+    access_mode: direct_api
+    base_url: https://www.imf.org/
+    terms_url: https://www.imf.org/en/About/Copyright-and-Usage
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: false
+    languages: [en]
+  - source_id: bis
+    display_name_zh: 国际清算银行
+    display_name_en: Bank for International Settlements
+    operator: Bank for International Settlements
+    authority_tier: intergovernmental
+    domains: [financial]
+    coverage_layers: [capital, pricing, data_confidence]
+    access_mode: direct_api
+    base_url: https://www.bis.org/statistics/
+    terms_url: https://www.bis.org/terms_conditions.htm
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: false
+    languages: [en]
+  - source_id: eurostat
+    display_name_zh: 欧盟统计局
+    display_name_en: Eurostat
+    operator: European Commission
+    authority_tier: statutory
+    domains: [financial, energy, cross_industry]
+    coverage_layers: [reality, pricing]
+    access_mode: direct_api
+    base_url: https://ec.europa.eu/eurostat/
+    terms_url: https://ec.europa.eu/info/legal-notice_en
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: false
+    languages: [en]
+  - source_id: un_comtrade
+    display_name_zh: 联合国商品贸易统计数据库
+    display_name_en: UN Comtrade
+    operator: United Nations Statistics Division
+    authority_tier: intergovernmental
+    domains: [financial, energy, technology]
+    coverage_layers: [reality, pricing]
+    access_mode: direct_api
+    base_url: https://comtradeapi.un.org/
+    terms_url: https://comtradeapi.un.org/public/v1/preview/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: wto
+    display_name_zh: 世界贸易组织
+    display_name_en: World Trade Organization
+    operator: World Trade Organization
+    authority_tier: intergovernmental
+    domains: [financial, technology, energy]
+    coverage_layers: [friction, reality]
+    access_mode: search_bridge
+    base_url: https://www.wto.org/
+    terms_url: https://www.wto.org/english/res_e/publications_e/terms_e.htm
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: wipo
+    display_name_zh: 世界知识产权组织
+    display_name_en: World Intellectual Property Organization
+    operator: World Intellectual Property Organization
+    authority_tier: intergovernmental
+    domains: [technology, health, energy]
+    coverage_layers: [name, reality, data_confidence]
+    access_mode: search_bridge
+    base_url: https://www.wipo.int/
+    terms_url: https://www.wipo.int/tools/en/disclaim.html
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: clinicaltrials
+    display_name_zh: 美国临床试验注册平台
+    display_name_en: ClinicalTrials.gov
+    operator: U.S. National Library of Medicine
+    authority_tier: statutory
+    domains: [health]
+    coverage_layers: [reality, data_confidence]
+    access_mode: direct_api
+    base_url: https://clinicaltrials.gov/api/v2/
+    terms_url: https://clinicaltrials.gov/data-api/about-api
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: openfda
+    display_name_zh: 美国食品药品监督管理局开放数据
+    display_name_en: openFDA
+    operator: U.S. Food and Drug Administration
+    authority_tier: regulator
+    domains: [health]
+    coverage_layers: [reality, friction]
+    access_mode: direct_api
+    base_url: https://api.fda.gov/
+    terms_url: https://open.fda.gov/apis/authentication/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: pubmed
+    display_name_zh: PubMed 文献数据库
+    display_name_en: PubMed
+    operator: U.S. National Library of Medicine
+    authority_tier: academic
+    domains: [health]
+    coverage_layers: [reality, data_confidence]
+    access_mode: direct_api
+    base_url: https://eutils.ncbi.nlm.nih.gov/
+    terms_url: https://www.ncbi.nlm.nih.gov/home/about/policies/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: crossref
+    display_name_zh: Crossref 文献元数据
+    display_name_en: Crossref REST API
+    operator: Crossref
+    authority_tier: academic
+    domains: [technology, health, energy, cross_industry]
+    coverage_layers: [name, reality, data_confidence]
+    access_mode: direct_api
+    base_url: https://api.crossref.org/
+    terms_url: https://www.crossref.org/documentation/retrieve-metadata/rest-api/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: openalex
+    display_name_zh: OpenAlex 学术图谱
+    display_name_en: OpenAlex
+    operator: OurResearch
+    authority_tier: academic
+    domains: [technology, health, energy, cross_industry]
+    coverage_layers: [name, reality, momentum]
+    access_mode: direct_api
+    base_url: https://api.openalex.org/
+    terms_url: https://docs.openalex.org/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: europe_pmc
+    display_name_zh: Europe PMC 生命科学文献库
+    display_name_en: Europe PMC REST API
+    operator: EMBL-EBI / Europe PMC partners
+    authority_tier: academic
+    domains: [health]
+    coverage_layers: [reality, data_confidence]
+    access_mode: direct_api
+    base_url: https://www.ebi.ac.uk/europepmc/
+    terms_url: https://dev.europepmc.org/RestfulWebService
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: arxiv
+    display_name_zh: arXiv 预印本平台
+    display_name_en: arXiv API
+    operator: Cornell University
+    authority_tier: academic
+    domains: [technology, health, energy]
+    coverage_layers: [name, reality, momentum]
+    access_mode: direct_api
+    base_url: https://export.arxiv.org/
+    terms_url: https://info.arxiv.org/help/api/terms.html
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: who
+    display_name_zh: 世界卫生组织
+    display_name_en: World Health Organization
+    operator: World Health Organization
+    authority_tier: intergovernmental
+    domains: [health]
+    coverage_layers: [reality, friction]
+    access_mode: direct_api
+    base_url: https://www.who.int/
+    terms_url: https://www.who.int/about/policies/publishing/copyright
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: nasa
+    display_name_zh: 美国国家航空航天局
+    display_name_en: National Aeronautics and Space Administration
+    operator: National Aeronautics and Space Administration
+    authority_tier: statutory
+    domains: [technology, energy]
+    coverage_layers: [reality, data_confidence]
+    access_mode: direct_api
+    base_url: https://api.nasa.gov/
+    terms_url: https://www.nasa.gov/nasa-brand-center/images-and-media/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: us_doe
+    display_name_zh: 美国能源部
+    display_name_en: U.S. Department of Energy
+    operator: U.S. Department of Energy
+    authority_tier: statutory
+    domains: [energy, technology]
+    coverage_layers: [capital, reality, friction]
+    access_mode: rss_or_html
+    base_url: https://www.energy.gov/
+    terms_url: https://www.energy.gov/about-us/web-policies
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: usgs_minerals
+    display_name_zh: 美国地质调查局矿产数据
+    display_name_en: U.S. Geological Survey Minerals
+    operator: U.S. Geological Survey
+    authority_tier: statutory
+    domains: [energy, technology]
+    coverage_layers: [reality, pricing]
+    access_mode: search_bridge
+    base_url: https://www.usgs.gov/centers/national-minerals-information-center
+    terms_url: https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: github
+    display_name_zh: GitHub 开源项目数据
+    display_name_en: GitHub REST API
+    operator: GitHub
+    authority_tier: company
+    domains: [technology]
+    coverage_layers: [reality, momentum]
+    access_mode: direct_api
+    base_url: https://api.github.com/
+    terms_url: https://docs.github.com/en/rest
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E1
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: huggingface
+    display_name_zh: Hugging Face 模型平台
+    display_name_en: Hugging Face Hub API
+    operator: Hugging Face
+    authority_tier: company
+    domains: [technology]
+    coverage_layers: [reality, momentum]
+    access_mode: direct_api
+    base_url: https://huggingface.co/api/
+    terms_url: https://huggingface.co/terms-of-service
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E1
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]

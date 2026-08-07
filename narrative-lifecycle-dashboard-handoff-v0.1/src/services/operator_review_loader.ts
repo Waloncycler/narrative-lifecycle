@@ -21,8 +21,10 @@ function optionalJson<T>(path: string): T | null {
 }
 
 export function loadOperatorReviewArtifacts(repoRoot: string): OperatorReviewRunArtifact[] {
-  const runsRoot = resolve(repoRoot, 'outputs/runs');
+  const operatorRunsRoot = resolve(repoRoot, 'outputs/operator_runs');
+  const runsRoot = hasRunArtifacts(operatorRunsRoot) ? operatorRunsRoot : resolve(repoRoot, 'outputs/runs');
   if (!existsSync(runsRoot)) return [];
+  const relativeRoot = runsRoot.endsWith('/operator_runs') ? 'outputs/operator_runs' : 'outputs/runs';
 
   return readdirSync(runsRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory() && entry.name.startsWith('run_'))
@@ -33,9 +35,9 @@ export function loadOperatorReviewArtifacts(repoRoot: string): OperatorReviewRun
       const stageDiffPath = resolve(runRoot, 'stage_diff.json');
       const weeklyBriefPath = resolve(runRoot, 'weekly_brief.json');
       const sourceArtifacts = [
-        `outputs/runs/${entry.name}/run_manifest.json`,
-        ...(existsSync(stageDiffPath) ? [`outputs/runs/${entry.name}/stage_diff.json`] : []),
-        ...(existsSync(weeklyBriefPath) ? [`outputs/runs/${entry.name}/weekly_brief.json`] : []),
+        `${relativeRoot}/${entry.name}/run_manifest.json`,
+        ...(existsSync(stageDiffPath) ? [`${relativeRoot}/${entry.name}/stage_diff.json`] : []),
+        ...(existsSync(weeklyBriefPath) ? [`${relativeRoot}/${entry.name}/weekly_brief.json`] : []),
       ];
       return {
         manifest: readJson<RunManifest>(manifestPath),
@@ -46,6 +48,11 @@ export function loadOperatorReviewArtifacts(repoRoot: string): OperatorReviewRun
     })
     .filter((artifact): artifact is OperatorReviewRunArtifact => artifact !== null)
     .sort((a, b) => a.manifest.started_at.localeCompare(b.manifest.started_at));
+}
+
+function hasRunArtifacts(root: string): boolean {
+  return existsSync(root) && readdirSync(root, { withFileTypes: true })
+    .some((entry) => entry.isDirectory() && entry.name.startsWith('run_') && existsSync(resolve(root, entry.name, 'run_manifest.json')));
 }
 
 export function runEntry(artifact: OperatorReviewRunArtifact): OperatorReviewRunEntry {

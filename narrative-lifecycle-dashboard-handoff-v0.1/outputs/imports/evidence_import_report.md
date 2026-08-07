@@ -2,28 +2,29 @@
 
 ## Summary
 
-- import_id: import_20260713
-- source_file: data/imports/evidence_draft.invalid.yaml
-- status: failed
-- accepted_count: 0
-- rejected_count: 1
+- import_id: import_20260804
+- source_file: outputs/intake/reviewed_evidence_draft.yaml
+- status: passed
+- accepted_count: 2
+- rejected_count: 0
 
 ## Accepted Evidence
 
-- none
+- direct_clinicaltrials_1eos217
+- direct_clinicaltrials_1mkte81
 
 ## Rejected Evidence
 
-- invalid_parent_branch_trade_001
+- none
 
 ## Written Artifacts
 
-- accepted_copy_path: none
-- rejected_copy_path: data/imports/rejected/import_20260713.yaml
-- fixture_target_path: none
-- audit_log_path: none
+- accepted_copy_path: data/imports/accepted/import_20260804.yaml
+- rejected_copy_path: none
+- fixture_target_path: data/sample_evidence/manual_imported_evidence.yaml
+- audit_log_path: data/audit/evidence_import_audit.jsonl
 
 ## Next Operator Actions
 
-- request_more_evidence: fix validation errors before importing.
+- validate: run npm run pipeline and npm run report after reviewing imported evidence.
 

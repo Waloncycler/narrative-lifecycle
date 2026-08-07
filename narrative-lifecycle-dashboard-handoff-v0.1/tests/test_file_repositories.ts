@@ -31,9 +31,11 @@ describe('file repositories', () => {
       'innovative_drug_license_out',
     ]);
     expect(evidence.length).toBeGreaterThanOrEqual(12);
-    expect(new Set(evidence.map((item) => item.topic_id))).toEqual(
-      new Set(['bci', 'humanoid_robotics', 'innovative_drug_license_out']),
-    );
+    const evidenceTopics = new Set(evidence.map((item) => item.topic_id));
+    expect(evidenceTopics.has('bci')).toBe(true);
+    expect(evidenceTopics.has('humanoid_robotics')).toBe(true);
+    expect(evidenceTopics.has('innovative_drug_license_out')).toBe(true);
+    expect(evidenceTopics.size).toBeGreaterThanOrEqual(3);
     expect(evidence.filter((item) => item.parent_or_branch === 'parent').length).toBeGreaterThanOrEqual(10);
     expect(evidence.filter((item) => item.parent_or_branch === 'branch').length).toBeGreaterThanOrEqual(3);
     expect(failureCases.length).toBeGreaterThanOrEqual(5);

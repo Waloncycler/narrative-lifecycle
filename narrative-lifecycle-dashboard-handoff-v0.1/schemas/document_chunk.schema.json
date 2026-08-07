@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "DocumentChunk",
+  "additionalProperties": false,
+  "required": ["chunk_id", "raw_document_id", "index", "text", "start_offset", "end_offset"],
+  "properties": {
+    "chunk_id": { "type": "string", "minLength": 1 },
+    "raw_document_id": { "type": "string", "minLength": 1 },
+    "index": { "type": "integer", "minimum": 0 },
+    "text": { "type": "string" },
+    "start_offset": { "type": "integer", "minimum": 0 },
+    "end_offset": { "type": "integer", "minimum": 0 }
+  }
+}

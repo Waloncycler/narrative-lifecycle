@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IntakeLearningCycle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cycle_id", "cycle_version", "generated_at", "profile_id", "baseline_profile_id", "source_evaluation_ids", "observed_session_count", "observed_candidate_count", "proposals", "active_learning_queue", "promotion_gates", "promotion_status", "rollback_profile_id", "next_cycle_actions", "guardrail_check"],
+  "properties": {
+    "cycle_id": {"type": "string", "minLength": 1},
+    "cycle_version": {"const": "v0.7.3"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "profile_id": {"type": "string", "minLength": 1},
+    "baseline_profile_id": {"type": ["string", "null"]},
+    "source_evaluation_ids": {"type": "array", "items": {"type": "string"}},
+    "observed_session_count": {"type": "integer", "minimum": 0},
+    "observed_candidate_count": {"type": "integer", "minimum": 0},
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["proposal_id", "kind", "target", "observation_count", "support_rate", "status", "rationale", "example_candidate_ids", "allowed_effect", "requires_human_approval"],
+        "properties": {
+          "proposal_id": {"type": "string"},
+          "kind": {"enum": ["field_guidance", "topic_mapping", "rejection_pattern", "guardrail_warning"]},
+          "target": {"type": "string"},
+          "observation_count": {"type": "integer", "minimum": 0},
+          "support_rate": {"type": "number", "minimum": 0, "maximum": 1},
+          "status": {"enum": ["collecting", "shadow_ready", "blocked"]},
+          "rationale": {"type": "string"},
+          "example_candidate_ids": {"type": "array", "items": {"type": "string"}},
+          "allowed_effect": {"enum": ["advisory_context_only", "auto_apply"]},
+          "requires_human_approval": {"type": "boolean"}
+        }
+      }
+    },
+    "active_learning_queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["candidate_id", "priority_score", "priority_band", "components", "reasons", "required_action"],
+        "properties": {
+          "candidate_id": {"type": "string"},
+          "priority_score": {"type": "number", "minimum": 0, "maximum": 100},
+          "priority_band": {"enum": ["low", "medium", "high"]},
+          "components": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["uncertainty", "rule_agent_disagreement", "historical_error_density", "novelty", "stage_impact_risk"],
+            "properties": {
+              "uncertainty": {"type": "number", "minimum": 0, "maximum": 100},
+              "rule_agent_disagreement": {"type": "number", "minimum": 0, "maximum": 100},
+              "historical_error_density": {"type": "number", "minimum": 0, "maximum": 100},
+              "novelty": {"type": "number", "minimum": 0, "maximum": 100},
+              "stage_impact_risk": {"type": "number", "minimum": 0, "maximum": 100}
+            }
+          },
+          "reasons": {"type": "array", "items": {"type": "string"}},
+          "required_action": {"const": "review"}
+        }
+      }
+    },
+    "promotion_gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["metric", "actual", "threshold", "passed"],
+        "properties": {
+          "metric": {"type": "string"},
+          "actual": {"type": ["number", "string"]},
+          "threshold": {"type": "string"},
+          "passed": {"type": "boolean"}
+        }
+      }
+    },
+    "promotion_status": {"enum": ["insufficient_history", "blocked", "auto_eligible"]},
+    "rollback_profile_id": {"type": ["string", "null"]},
+    "next_cycle_actions": {"type": "array", "items": {"type": "string"}},
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["advisory_only", "no_auto_rule_mutation", "no_auto_stage_change", "no_auto_topic_activation", "no_auto_import", "parent_branch_separation", "no_trading_advice"],
+      "properties": {
+        "advisory_only": {"type": "boolean"},
+        "no_auto_rule_mutation": {"type": "boolean"},
+        "no_auto_stage_change": {"type": "boolean"},
+        "no_auto_topic_activation": {"type": "boolean"},
+        "no_auto_import": {"type": "boolean"},
+        "parent_branch_separation": {"const": true},
+        "no_trading_advice": {"const": true}
+      }
+    }
+  }
+}

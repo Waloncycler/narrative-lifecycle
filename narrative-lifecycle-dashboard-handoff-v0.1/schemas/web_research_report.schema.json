@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "WebResearchReport",
+  "additionalProperties": false,
+  "required": ["artifact_type", "schema_version", "producer_version", "research_id", "generated_at", "status", "provider", "queries", "lead_count", "leads", "errors", "guardrail_check"],
+  "properties": {
+    "artifact_type": { "const": "web_research_report" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "type": "string", "minLength": 1 },
+    "research_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["completed", "unconfigured", "degraded"] },
+    "provider": { "enum": ["disabled", "free", "gdelt", "wikipedia", "hn", "duckduckgo", "reddit", "arxiv", "openalex", "archive", "brave", "tavily", "mcp_bridge"] },
+    "queries": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["query_id", "query", "topic_id", "purpose"], "properties": { "query_id": { "type": "string" }, "query": { "type": "string" }, "topic_id": { "type": ["string", "null"] }, "branch_id": { "type": ["string", "null"] }, "candidate_node_id": { "type": ["string", "null"] }, "campaign_task_id": { "type": ["string", "null"] }, "source_ids": { "type": "array", "items": { "type": "string" } }, "source_domains": { "type": "array", "items": { "type": "string" } }, "purpose": { "enum": ["evidence_discovery", "name_validation"] } } } },
+    "lead_count": { "type": "integer", "minimum": 0 },
+    "leads": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["lead_id", "query_id", "topic_id", "title", "url", "source_name", "source_domain", "snippet", "published_at", "retrieved_at", "rank", "evidence_eligibility", "next_action"], "properties": { "lead_id": { "type": "string" }, "query_id": { "type": "string" }, "topic_id": { "type": ["string", "null"] }, "branch_id": { "type": ["string", "null"] }, "candidate_node_id": { "type": ["string", "null"] }, "title": { "type": "string" }, "url": { "type": "string", "format": "uri" }, "source_name": { "type": "string" }, "source_domain": { "type": "string" }, "snippet": { "type": "string" }, "published_at": { "type": ["string", "null"] }, "retrieved_at": { "type": "string", "format": "date-time" }, "rank": { "type": "integer", "minimum": 1 }, "evidence_eligibility": { "const": "context_only" }, "next_action": { "enum": ["review_source", "validate_market_name"] } } } },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "guardrail_check": { "type": "object", "additionalProperties": false, "required": ["search_snippets_not_formal_evidence", "evidence_table_required_for_stage", "parent_branch_separation", "no_auto_import", "no_trading_advice"], "properties": { "search_snippets_not_formal_evidence": { "const": true }, "evidence_table_required_for_stage": { "const": true }, "parent_branch_separation": { "const": true }, "no_auto_import": { "const": true }, "no_trading_advice": { "const": true } } }
+  }
+}

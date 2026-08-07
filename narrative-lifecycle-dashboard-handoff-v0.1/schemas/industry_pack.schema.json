@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IndustryPack",
+  "type": "object",
+  "required": ["industry_id", "display_name", "aliases", "topic_hints", "branch_hints", "hard_evidence_hints", "forbidden_inferences"],
+  "properties": {
+    "industry_id": {"type": "string", "minLength": 1},
+    "display_name": {"type": "string", "minLength": 1},
+    "aliases": {"type": "array", "items": {"type": "string"}},
+    "topic_hints": {"type": "array", "items": {"type": "string"}},
+    "branch_hints": {"type": "array", "items": {"type": "string"}},
+    "hard_evidence_hints": {"type": "array", "items": {"type": "string"}},
+    "forbidden_inferences": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

@@ -18,6 +18,64 @@
 
 ## 1. 录入证据
 
+如果你不想手写 YAML，优先启动交互式 Intake Workbench：
+
+```bash
+npm run intake:workbench
+```
+
+打开终端显示的本地地址，通常是：
+
+```text
+http://localhost:4177
+```
+
+你可以拖拽 TXT、Markdown、HTML、DOCX、文本型 PDF，或直接粘贴文本。右侧 Evidence Cards 支持修改 Topic、Branch、Scope、E0-E4、Affected Layer、Summary、Interpretation 和 Limitation，然后点击 `Validate / Import / Weekly`。所有正式导入仍会经过现有 Validator、Duplicate Detection、Parent/Branch Guardrail 和 Evidence Import。
+
+CLI 兼容路径仍然可用：
+
+```bash
+npm run intake:prepare -- --file data/intake/examples/bci_branch_note.md
+```
+
+打开：
+
+```text
+outputs/intake/latest_workbench.html
+```
+
+左侧是原文和高亮引用，右侧是候选 Evidence Cards。把 review template 改成 accept、modify、reject 或 split：
+
+```text
+outputs/intake/latest_review_decisions.yaml
+```
+
+确认后运行：
+
+```bash
+npm run intake:apply -- --decisions outputs/intake/latest_review_decisions.yaml
+```
+
+它会先走现有 Evidence Import，成功后自动运行 weekly。
+
+检查 Topic/Branch 是否被安全解析：
+
+```bash
+npm run topic:validate
+```
+
+如果候选是 `unresolved` 或 `new_provisional_topic`，不要强行映射成高阶段主题；先补人工判断，或把它留在 provisional queue。
+
+评估这次候选质量：
+
+```bash
+npm run intake:evaluate -- --decisions outputs/intake/latest_review_decisions.yaml
+```
+
+重点看 acceptance rate、modification rate、field accuracy、review time、duplicate prevention 和 Parent/Branch error rate。
+
+### 手写 YAML
+
 复制 `data/imports/evidence_draft.example.yaml`，新增一条 evidence。
 
 最重要字段：
@@ -120,4 +178,9 @@ npm run weekly
 npm run review
 npm run pilot:review
 npm run replay
+npm run intake:workbench
+npm run intake:prepare -- --file data/intake/examples/bci_branch_note.md
+npm run intake:apply -- --decisions outputs/intake/latest_review_decisions.yaml
+npm run topic:validate
+npm run intake:evaluate -- --decisions outputs/intake/latest_review_decisions.yaml
 ```

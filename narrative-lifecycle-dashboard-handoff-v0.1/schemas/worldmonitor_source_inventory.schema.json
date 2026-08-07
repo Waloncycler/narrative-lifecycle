@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "WorldMonitorSourceInventory",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "producer_version",
+    "generated_at",
+    "reference_root",
+    "production_configured",
+    "service_count",
+    "operation_count",
+    "pollable_operation_count",
+    "candidate_operation_count",
+    "context_only_operation_count",
+    "unsupported_operation_count",
+    "sandbox_operation_count",
+    "operations",
+    "guardrail_check"
+  ],
+  "properties": {
+    "artifact_type": { "const": "worldmonitor_source_inventory" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "reference_root": { "type": "string", "minLength": 1 },
+    "production_configured": { "type": "boolean" },
+    "service_count": { "type": "integer", "minimum": 0 },
+    "operation_count": { "type": "integer", "minimum": 0 },
+    "pollable_operation_count": { "type": "integer", "minimum": 0 },
+    "candidate_operation_count": { "type": "integer", "minimum": 0 },
+    "context_only_operation_count": { "type": "integer", "minimum": 0 },
+    "unsupported_operation_count": { "type": "integer", "minimum": 0 },
+    "sandbox_operation_count": { "type": "integer", "minimum": 0 },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "service",
+          "method",
+          "path",
+          "summary",
+          "description",
+          "required_parameters",
+          "optional_parameters",
+          "domain",
+          "evidence_eligibility",
+          "auth_requirement",
+          "access_state",
+          "sandbox_fixture",
+          "production_url",
+          "normalizer_id",
+          "normalizer_version",
+          "governance"
+        ],
+        "properties": {
+          "operation_id": { "type": "string", "minLength": 1 },
+          "service": { "type": "string", "minLength": 1 },
+          "method": { "type": "string", "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+          "path": { "type": "string", "minLength": 1 },
+          "post_body": { "type": "string", "minLength": 1 },
+          "content_type": { "type": "string", "minLength": 1 },
+          "request_headers": {
+            "type": "object",
+            "additionalProperties": { "type": "string", "minLength": 1 }
+          },
+          "summary": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "required_parameters": { "type": "array", "items": { "type": "string" } },
+          "optional_parameters": { "type": "array", "items": { "type": "string" } },
+          "domain": {
+            "type": "string",
+            "enum": ["geopolitics", "financial", "energy", "infrastructure", "health", "climate", "technology", "research", "osint"]
+          },
+          "evidence_eligibility": { "type": "string", "enum": ["candidate", "context_only", "unsupported"] },
+          "auth_requirement": { "type": "string", "enum": ["public_no_key", "worldmonitor_key", "source_parameters"] },
+          "access_state": {
+            "type": "string",
+            "enum": ["sandbox_available", "production_ready", "requires_key", "requires_parameters", "manual_request", "unsupported"]
+          },
+          "sandbox_fixture": { "type": ["string", "null"], "format": "uri" },
+          "production_url": { "type": "string", "format": "uri" },
+          "normalizer_id": { "type": "string", "minLength": 1 },
+          "normalizer_version": { "const": "1.0.0" },
+          "governance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_class",
+              "governance_state",
+              "terms_status",
+              "license_id",
+              "terms_url",
+              "attribution_required",
+              "redistribution_allowed",
+              "sensitivity",
+              "raw_payload_policy",
+              "retention_days",
+              "freshness_window_hours",
+              "automated_polling_allowed",
+              "observation_window",
+              "absence_assertion_allowed"
+            ],
+            "properties": {
+              "source_class": { "type": "string", "enum": ["direct_public", "worldmonitor_hosted"] },
+              "governance_state": { "type": "string", "enum": ["research_ready", "review_required", "restricted", "blocked"] },
+              "terms_status": { "type": "string", "enum": ["public_documented", "provider_terms_apply", "entitlement_required", "unknown"] },
+              "license_id": { "type": "string", "minLength": 1 },
+              "terms_url": { "type": ["string", "null"], "format": "uri" },
+              "attribution_required": { "type": "boolean" },
+              "redistribution_allowed": { "type": "boolean" },
+              "sensitivity": { "type": "string", "enum": ["public", "potential_pii", "operational", "restricted"] },
+              "raw_payload_policy": { "type": "string", "enum": ["transient_hash_only", "sanitized_cache", "prohibited"] },
+              "retention_days": { "type": "integer", "minimum": 0 },
+              "freshness_window_hours": { "type": ["number", "null"], "minimum": 0 },
+              "automated_polling_allowed": { "type": "boolean" }
+              ,
+              "observation_window": { "type": "string", "enum": ["sliding_time", "active_set", "top_n", "time_series", "unknown"] },
+              "absence_assertion_allowed": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["catalog_is_not_connectivity_claim", "sandbox_is_not_live_evidence", "human_review_required", "no_trading_advice"],
+      "properties": {
+        "catalog_is_not_connectivity_claim": { "const": true },
+        "sandbox_is_not_live_evidence": { "const": true },
+        "human_review_required": { "type": "boolean" },
+        "no_trading_advice": { "const": true }
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NarrativeDiscoveryReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_type", "schema_version", "producer_version", "report_id", "generated_at", "session_id", "records", "summary", "guardrail_check"],
+  "properties": {
+    "artifact_type": {"const": "narrative_discovery_report"},
+    "schema_version": {"const": "1.0.0"},
+    "producer_version": {"type": "string"},
+    "report_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "session_id": {"type": "string", "minLength": 1},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}},
+    "summary": {"type": "object", "additionalProperties": false, "required": ["existing_branch_count", "new_branch_count", "provisional_topic_count", "reactivation_count", "unresolved_count"], "properties": {"existing_branch_count": {"type": "integer", "minimum": 0}, "new_branch_count": {"type": "integer", "minimum": 0}, "provisional_topic_count": {"type": "integer", "minimum": 0}, "reactivation_count": {"type": "integer", "minimum": 0}, "unresolved_count": {"type": "integer", "minimum": 0}}},
+    "guardrail_check": {"$ref": "#/$defs/guardrails"}
+  },
+  "$defs": {
+    "record": {
+      "type": "object", "additionalProperties": false,
+      "required": ["discovery_id", "resolution", "topic_id", "topic_name", "branch_id", "branch_name", "scope", "confidence", "parent_match_score", "branch_novelty_score", "support_count", "independent_document_count", "registration_action", "reason", "uncertainty_notes", "evidence_refs", "audit_required", "guardrail_check"],
+      "properties": {
+        "discovery_id": {"type": "string", "minLength": 1},
+        "resolution": {"enum": ["existing_branch", "new_branch", "new_provisional_topic", "reactivation", "unresolved"]},
+        "topic_id": {"type": ["string", "null"]}, "topic_name": {"type": ["string", "null"]},
+        "branch_id": {"type": ["string", "null"]}, "branch_name": {"type": ["string", "null"]},
+        "scope": {"enum": ["parent", "branch", null]}, "confidence": {"enum": ["low", "medium", "high"]},
+        "parent_match_score": {"type": "number", "minimum": 0, "maximum": 1}, "branch_novelty_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "support_count": {"type": "integer", "minimum": 0}, "independent_document_count": {"type": "integer", "minimum": 0},
+        "registration_action": {"enum": ["watch_branch", "provisional_topic", "provisional_topic_and_watch_branch", "none"]}, "reason": {"type": "string", "minLength": 1},
+        "uncertainty_notes": {"type": "array", "items": {"type": "string"}},
+        "evidence_refs": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["candidate_id", "raw_document_id", "provenance_id", "quote"], "properties": {"candidate_id": {"type": "string"}, "raw_document_id": {"type": "string"}, "provenance_id": {"type": "string"}, "quote": {"type": "string", "minLength": 1}}}},
+        "audit_required": {"const": true}, "guardrail_check": {"$ref": "#/$defs/record_guardrails"}
+      }
+    },
+    "record_guardrails": {"type": "object", "additionalProperties": false, "required": ["source_quotes_present", "duplicate_checked", "narrative_memory_checked", "parent_stage_unchanged", "branch_evidence_isolated", "provisional_does_not_inherit_stage", "no_trading_advice"], "properties": {"source_quotes_present": {"type": "boolean"}, "duplicate_checked": {"type": "boolean"}, "narrative_memory_checked": {"type": "boolean"}, "parent_stage_unchanged": {"const": true}, "branch_evidence_isolated": {"type": "boolean"}, "provisional_does_not_inherit_stage": {"type": "boolean"}, "no_trading_advice": {"type": "boolean"}}},
+    "guardrails": {"type": "object", "additionalProperties": false, "required": ["source_quotes_present", "no_forced_mapping", "parent_stage_unchanged", "branch_evidence_isolated", "provisional_does_not_inherit_stage", "no_trading_advice"], "properties": {"source_quotes_present": {"type": "boolean"}, "no_forced_mapping": {"type": "boolean"}, "parent_stage_unchanged": {"const": true}, "branch_evidence_isolated": {"type": "boolean"}, "provisional_does_not_inherit_stage": {"type": "boolean"}, "no_trading_advice": {"type": "boolean"}}}
+  }
+}

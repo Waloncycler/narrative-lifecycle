@@ -1,0 +1,702 @@
+{
+  "artifact_type": "weekly_brief",
+  "schema_version": "1.0.0",
+  "producer_version": "0.4.0",
+  "rule_version": "narrative-lifecycle-rules-v0.1",
+  "run_id": "run_20260803T165438102_7b3187",
+  "generated_at": "2026-08-03T16:54:38.102Z",
+  "report_id": "weekly_brief_run_20260803T165438102_7b3187",
+  "source_artifacts": [
+    "data/sample_evidence/manual_imported_evidence.yaml",
+    "data/audit/evidence_import_audit.jsonl",
+    "data/audit/operational_evidence_admission.jsonl",
+    "data/live_evidence/automated_evidence.yaml",
+    "outputs/operator_runs/latest_stage_snapshot.json",
+    "outputs/operator_runs/latest_stage_diff.json"
+  ],
+  "executive_summary": {
+    "dashboard_card_count": 19,
+    "score_count": 4,
+    "golden_case_passed": 0,
+    "golden_case_total": 0,
+    "early_radar_candidate_count": 0,
+    "system_status": "review_required",
+    "rule_version": "narrative-lifecycle-rules-v0.1"
+  },
+  "stage_snapshot": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口",
+      "current_stage": "S4",
+      "parent_narrative": "脑机接口",
+      "strongest_branch": "脑机接口医疗康复 (S2)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 60
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人",
+      "current_stage": "S0",
+      "parent_narrative": "人形机器人",
+      "strongest_branch": "人形机器人执行器 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药对外授权",
+      "current_stage": "S0",
+      "parent_narrative": "创新药对外授权",
+      "strongest_branch": "ADC 对外授权 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "区块链与加密资产",
+      "current_stage": "S0",
+      "parent_narrative": "区块链与加密资产",
+      "strongest_branch": "设备制造 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "高端消费",
+      "current_stage": "S0",
+      "parent_narrative": "高端消费",
+      "strongest_branch": "AI 应用 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "低空经济",
+      "current_stage": "S0",
+      "parent_narrative": "低空经济",
+      "strongest_branch": "城市低空基础设施 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "新能源产业",
+      "current_stage": "S0",
+      "parent_narrative": "新能源产业",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "商业航天",
+      "current_stage": "S0",
+      "parent_narrative": "商业航天",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_quantum_computing",
+      "topic_name": "量子计算",
+      "current_stage": "S0",
+      "parent_narrative": "量子计算",
+      "strongest_branch": "量子材料 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "topic_name": "创新药临床研发",
+      "current_stage": "S2",
+      "parent_narrative": "创新药临床研发",
+      "strongest_branch": "NCT07530367 (S2)",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 60
+    },
+    {
+      "topic_id": "provisional_ai_foundation_models",
+      "topic_name": "基础大模型",
+      "current_stage": "S0",
+      "parent_narrative": "基础大模型",
+      "strongest_branch": "视频生成 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_semiconductor_advanced_manufacturing",
+      "topic_name": "半导体先进制造",
+      "current_stage": "S0",
+      "parent_narrative": "半导体先进制造",
+      "strongest_branch": "轻量智造还将沿着轻量化制造 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_semiconductor_memory_market",
+      "topic_name": "存储芯片",
+      "current_stage": "S0",
+      "parent_narrative": "存储芯片",
+      "strongest_branch": "A股价格表现 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_china_ip_policy",
+      "topic_name": "中国知识产权政策",
+      "current_stage": "S2",
+      "parent_narrative": "中国知识产权政策",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_additive_manufacturing",
+      "topic_name": "增材制造",
+      "current_stage": "S0",
+      "parent_narrative": "增材制造",
+      "strongest_branch": "中小型桌面 3D 打印 (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_china_social_security_policy",
+      "topic_name": "社会保障政策",
+      "current_stage": "S2",
+      "parent_narrative": "社会保障政策",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "policy_perception",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "current_stage": "S0",
+      "parent_narrative": "AI 智能体",
+      "strongest_branch": "into multi-level tree that ranges from fine-grained diagnostic (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_smart_manufacturing",
+      "topic_name": "智能制造",
+      "current_stage": "S0",
+      "parent_narrative": "智能制造",
+      "strongest_branch": "no independent branch",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    },
+    {
+      "topic_id": "provisional_computing_infrastructure",
+      "topic_name": "算力基础设施",
+      "current_stage": "S0",
+      "parent_narrative": "算力基础设施",
+      "strongest_branch": "AI infrastructure (S0)",
+      "weakest_layer": "parent Evidence Table",
+      "data_confidence": 35
+    }
+  ],
+  "stage_change_summary": {
+    "previous_snapshot_id": "stage_snapshot_run_20260803T164847275_f36227",
+    "current_snapshot_id": "stage_snapshot_run_20260803T165438102_7b3187",
+    "upgrade_count": 0,
+    "downgrade_count": 0,
+    "evidence_added_count": 0,
+    "branch_mutation_candidate_count": 0,
+    "guardrail_regression_count": 0
+  },
+  "stage_changes": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口",
+      "previous_stage": "S4",
+      "current_stage": "S4",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人",
+      "previous_stage": "S0",
+      "current_stage": "S0",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药对外授权",
+      "previous_stage": "S0",
+      "current_stage": "S0",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "区块链与加密资产",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "高端消费",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "低空经济",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "新能源产业",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "商业航天",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_quantum_computing",
+      "topic_name": "量子计算",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "topic_name": "创新药临床研发",
+      "previous_stage": "S2",
+      "current_stage": "S2",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_ai_foundation_models",
+      "topic_name": "基础大模型",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_semiconductor_advanced_manufacturing",
+      "topic_name": "半导体先进制造",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_semiconductor_memory_market",
+      "topic_name": "存储芯片",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_china_ip_policy",
+      "topic_name": "中国知识产权政策",
+      "previous_stage": "S2",
+      "current_stage": "S2",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_additive_manufacturing",
+      "topic_name": "增材制造",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_china_social_security_policy",
+      "topic_name": "社会保障政策",
+      "previous_stage": "S2",
+      "current_stage": "S2",
+      "change_type": "no_change",
+      "detected_changes": [
+        "no_change"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "Detected: no change. Comparison uses persisted artifacts only.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_smart_manufacturing",
+      "topic_name": "智能制造",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "topic_id": "provisional_computing_infrastructure",
+      "topic_name": "算力基础设施",
+      "previous_stage": null,
+      "current_stage": "S0",
+      "change_type": "initial_snapshot",
+      "detected_changes": [
+        "initial_snapshot"
+      ],
+      "new_evidence_ids": [],
+      "removed_evidence_ids": [],
+      "change_reason": "No previous snapshot found. Current run saved as baseline.",
+      "priority": "low",
+      "research_only_action": "observe",
+      "branch_id": null,
+      "reactivation_record_id": null
+    }
+  ],
+  "strongest_evidence": [
+    {
+      "evidence_id": "bci_parent_policy_label_20250730",
+      "evidence_strength": "E3",
+      "affected_layer": [
+        "perception"
+      ],
+      "topic": "脑机接口",
+      "interpretation": "该来源确认“脑机接口”是跨部门产业政策采用的稳定中文主题名称；它支持整体主题的认知与命名层，不单独证明商业化或收入。"
+    },
+    {
+      "evidence_id": "bci_parent_capital_synchron_20251106",
+      "evidence_strength": "E2",
+      "affected_layer": [
+        "capital"
+      ],
+      "topic": "脑机接口",
+      "interpretation": "这是一项可引用的产业资本确认，补足整体脑机接口主题的资本层；不代表医疗康复或任一产品分支已实现规模化采用。"
+    },
+    {
+      "evidence_id": "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+      "evidence_strength": "E3",
+      "affected_layer": [
+        "reality",
+        "feedback"
+      ],
+      "topic": "创新药临床研发",
+      "interpretation": "Source record was deterministically normalized from a provenance-complete primary/official source. Topic and Stage remain rule-governed."
+    },
+    {
+      "evidence_id": "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6",
+      "evidence_strength": "E3",
+      "affected_layer": [
+        "reality",
+        "feedback"
+      ],
+      "topic": "创新药临床研发",
+      "interpretation": "Source record was deterministically normalized from a provenance-complete primary/official source. Topic and Stage remain rule-governed."
+    },
+    {
+      "evidence_id": "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0",
+      "evidence_strength": "E3",
+      "affected_layer": [
+        "friction",
+        "reality"
+      ],
+      "topic": "中国知识产权政策",
+      "interpretation": "Source record was deterministically normalized from a provenance-complete primary/official source. Topic and Stage remain rule-governed."
+    },
+    {
+      "evidence_id": "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0",
+      "evidence_strength": "E3",
+      "affected_layer": [
+        "friction",
+        "reality"
+      ],
+      "topic": "社会保障政策",
+      "interpretation": "Source record was deterministically normalized from a provenance-complete primary/official source. Topic and Stage remain rule-governed."
+    }
+  ],
+  "why_not_higher": [
+    {
+      "topic_id": "bci",
+      "topic_name": "脑机接口",
+      "current_stage": "S4",
+      "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "bci_parent_capital_synchron_20251106",
+        "bci_parent_policy_label_20250730",
+        "import_bci_medical_rehab_followup_001"
+      ]
+    },
+    {
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "topic_name": "创新药临床研发",
+      "current_stage": "S2",
+      "why_not_higher_stage": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct07299019-ae3d22a59c8c",
+        "wm_direct_clinical_trials_gov_studies-nct07469566-ae3d22a59c8c",
+        "wm_direct_clinical_trials_gov_studies-nct07530367-ae3d22a59c8c",
+        "wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct07741877-ae3d22a59c8c",
+        "wm_direct_clinical_trials_gov_studies-nct07742956-ae3d22a59c8c"
+      ]
+    },
+    {
+      "topic_id": "provisional_china_ip_policy",
+      "topic_name": "中国知识产权政策",
+      "current_stage": "S2",
+      "why_not_higher_stage": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "topic_id": "provisional_china_social_security_policy",
+      "topic_name": "社会保障政策",
+      "current_stage": "S2",
+      "why_not_higher_stage": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ]
+    }
+  ],
+  "early_radar_candidates": [],
+  "guardrail_check": {
+    "no_trading_advice": true,
+    "research_only_actions": true,
+    "parent_branch_separation_preserved": true,
+    "evidence_ids_visible": false,
+    "why_not_higher_present": true,
+    "data_confidence_present": true
+  },
+  "next_operator_actions": [
+    {
+      "action": "validate",
+      "topic_id": "bci",
+      "reason": "Missing pricing adoption; Missing hard reality evidence.",
+      "evidence_ids": [
+        "bci_parent_capital_synchron_20251106",
+        "bci_parent_policy_label_20250730",
+        "import_bci_medical_rehab_followup_001"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "provisional_innovative_drug_clinical_development",
+      "reason": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct07299019-ae3d22a59c8c",
+        "wm_direct_clinical_trials_gov_studies-nct07469566-ae3d22a59c8c",
+        "wm_direct_clinical_trials_gov_studies-nct07530367-ae3d22a59c8c",
+        "wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6",
+        "wm_direct_clinical_trials_gov_studies-nct07741877-ae3d22a59c8c",
+        "wm_direct_clinical_trials_gov_studies-nct07742956-ae3d22a59c8c"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "provisional_china_ip_policy",
+      "reason": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0"
+      ]
+    },
+    {
+      "action": "validate",
+      "topic_id": "provisional_china_social_security_policy",
+      "reason": "Missing stable label; Missing capital confirmation; Missing pricing adoption.",
+      "evidence_ids": [
+        "wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0"
+      ]
+    }
+  ],
+  "artifact_index": [
+    "outputs/operator_runs/latest_run.json",
+    "outputs/operator_runs/latest_stage_snapshot.json",
+    "outputs/operator_runs/latest_stage_diff.json",
+    "outputs/operator_runs/latest_weekly_brief.json"
+  ]
+}

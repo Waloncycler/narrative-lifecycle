@@ -13,7 +13,10 @@ const repoRoot = resolve(here, '..');
 
 describe('evidence import validator', () => {
   it('accepts valid manual evidence drafts and validates them against the import schema', () => {
-    const drafts = loadEvidenceImportDraft(repoRoot, 'data/imports/evidence_draft.example.yaml');
+    const drafts = loadEvidenceImportDraft(repoRoot, 'data/imports/evidence_draft.example.yaml').map((draft) => ({
+      ...draft,
+      evidence_id: 'validator_bci_medical_rehab_followup_001',
+    }));
     const report = validateEvidenceImport({
       repoRoot,
       drafts,
@@ -27,7 +30,7 @@ describe('evidence import validator', () => {
 
     expect(ajv.compile(schema)(drafts)).toBe(true);
     expect(report.status).toBe('passed');
-    expect(report.accepted_evidence_ids).toContain('import_bci_medical_rehab_followup_001');
+    expect(report.accepted_evidence_ids).toContain('validator_bci_medical_rehab_followup_001');
     expect(Object.values(report.guardrail_check).every(Boolean)).toBe(true);
   });
 

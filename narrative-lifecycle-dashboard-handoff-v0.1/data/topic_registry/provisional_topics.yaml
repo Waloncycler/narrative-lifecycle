@@ -1,0 +1,142 @@
+- provisional_topic_id: provisional_fusion_energy_supply_chain
+  proposed_name: Fusion energy supply chain
+  source_candidate_id: pilot_seed
+  created_at: 2026-07-13T00:00:00.000Z
+  status: provisional
+  reason: Pilot topic remains provisional until enough canonical evidence exists.
+- provisional_topic_id: provisional_quantum_computing
+  proposed_name: Quantum Computing
+  source_candidate_id: candidate_raw_ac1f6748a9_0
+  created_at: 2026-08-02T17:10:20.926Z
+  status: promoted
+  reason: Operator-curated into the monitored core at S0; no evidence, score, or
+    lifecycle stage was inherited.
+- provisional_topic_id: provisional_innovative_drug_clinical_development
+  proposed_name: Innovative Drug Clinical Development
+  source_candidate_id: candidate_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6
+  created_at: 2026-08-02T18:10:00.000Z
+  status: promoted
+  reason: Deterministic ClinicalTrials.gov event mapping corrected an earlier
+    model-led topic mismatch; the topic remains provisional pending further
+    review.
+- provisional_topic_id: provisional_semiconductor_ip_policy
+  proposed_name: Semiconductor Ip Policy
+  source_candidate_id: candidate_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202608_content_7077398_htm-b2a41e2a27b0
+  created_at: 2026-08-03T10:21:14.650Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_semiconductor_ip_policy;
+    keep as provisional S0 until audited.
+- provisional_topic_id: provisional_china_macro_policy
+  proposed_name: China Macro Policy
+  source_candidate_id: candidate_direct_ndrc_news-https_www_ndrc_gov_cn_xwdt_wszb_7yxwfbh-ae39e069497b
+  created_at: 2026-08-03T10:21:14.650Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_china_macro_policy; keep as
+    provisional S0 until audited.
+- provisional_topic_id: provisional_biopharma_annual_reporting
+  proposed_name: Biopharma Annual Reporting
+  source_candidate_id: candidate_direct_sse_announcements-disclosure_listedinfo_announcement_c_new_2026_08_04_600201_20260804_pk01_pdf-958ac3691269
+  created_at: 2026-08-03T10:21:14.650Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_biopharma_annual_reporting;
+    keep as provisional S0 until audited.
+- provisional_topic_id: provisional_semiconductor_memory_market
+  proposed_name: Semiconductor Memory Market
+  source_candidate_id: candidate_direct36_kr_feed-https_36kr_com_p_3923603053686151_f_rss-bbeee189df63
+  created_at: 2026-08-03T10:21:14.650Z
+  status: promoted
+  reason: Operator-curated into the monitored core at S0; no evidence, score, or
+    lifecycle stage was inherited.
+- provisional_topic_id: provisional_china_ip_policy
+  proposed_name: China Ip Policy
+  source_candidate_id: candidate_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0
+  created_at: 2026-08-03T10:21:14.650Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_china_ip_policy; keep as
+    provisional S0 until audited.
+- provisional_topic_id: provisional_additive_manufacturing
+  proposed_name: Additive Manufacturing
+  source_candidate_id: candidate_direct36_kr_feed-https_36kr_com_p_3923371035831684_f_rss-bbeee189df63
+  created_at: 2026-08-03T10:21:14.650Z
+  status: promoted
+  reason: Operator-curated into the monitored core at S0; no evidence, score, or
+    lifecycle stage was inherited.
+- provisional_topic_id: provisional_china_social_security_policy
+  proposed_name: China Social Security Policy
+  source_candidate_id: candidate_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0
+  created_at: 2026-08-03T10:21:14.650Z
+  status: provisional
+  reason: Model proposed provisional topic
+    provisional_china_social_security_policy; keep as provisional S0 until
+    audited.
+- provisional_topic_id: provisional_infectious_disease_outbreaks
+  proposed_name: Infectious Disease Outbreaks
+  source_candidate_id: candidate_direct_whodisease_outbreaks-2026_don614-e4b3d927c668
+  created_at: 2026-08-03T15:57:51.257Z
+  status: provisional
+  reason: Model proposed provisional topic
+    provisional_infectious_disease_outbreaks; keep as provisional S0 until
+    audited.
+- provisional_topic_id: provisional_advanced_packaging
+  proposed_name: Advanced Packaging
+  source_candidate_id: candidate_direct_github_vtofqh
+  created_at: 2026-08-03T16:26:33.137Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_advanced_packaging; keep as
+    provisional S0 until audited.
+- provisional_topic_id: provisional_ai_agents
+  proposed_name: Ai Agents
+  source_candidate_id: candidate_direct_arxiv_g8x9j4
+  created_at: 2026-08-03T16:26:59.482Z
+  status: promoted
+  reason: Operator-curated into the monitored core at S0; no evidence, score, or
+    lifecycle stage was inherited.
+- provisional_topic_id: provisional_smart_manufacturing
+  proposed_name: Smart Manufacturing
+  source_candidate_id: candidate_direct_github_1hu2we5
+  created_at: 2026-08-03T16:29:34.450Z
+  status: promoted
+  reason: Operator-curated into the monitored core at S0; no evidence, score, or
+    lifecycle stage was inherited.
+- provisional_topic_id: provisional_computing_infrastructure
+  proposed_name: Computing Infrastructure
+  source_candidate_id: candidate_direct_github_9qy5p
+  created_at: 2026-08-03T16:29:55.924Z
+  status: promoted
+  reason: Operator-curated into the monitored core at S0; no evidence, score, or
+    lifecycle stage was inherited.
+- provisional_topic_id: provisional_wind_power
+  proposed_name: Wind Power
+  source_candidate_id: candidate_direct_sec_edgar_1bbd1jt
+  created_at: 2026-08-03T17:14:40.034Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_wind_power; keep as
+    provisional S0 until audited.
+- provisional_topic_id: provisional_real_estate_new_model
+  proposed_name: Real Estate New Model
+  source_candidate_id: candidate_direct_sec_edgar_1e1zn8b
+  created_at: 2026-08-03T17:14:40.034Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_real_estate_new_model; keep
+    as provisional S0 until audited.
+- provisional_topic_id: provisional_new_energy_storage
+  proposed_name: New Energy Storage
+  source_candidate_id: candidate_direct_sec_edgar_13qm4z2
+  created_at: 2026-08-03T17:20:12.390Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_new_energy_storage; keep as
+    provisional S0 until audited.
+- provisional_topic_id: provisional_cross_border_ecommerce
+  proposed_name: Cross Border Ecommerce
+  source_candidate_id: candidate_direct_sec_edgar_14zwlkz
+  created_at: 2026-08-03T17:25:47.785Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_cross_border_ecommerce;
+    keep as provisional S0 until audited.
+- provisional_topic_id: provisional_antibody_drug_conjugates
+  proposed_name: Antibody Drug Conjugates
+  source_candidate_id: candidate_direct_clinicaltrials_1eonn67
+  created_at: 2026-08-04T01:25:54.929Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_antibody_drug_conjugates;
+    keep as provisional S0 until audited.

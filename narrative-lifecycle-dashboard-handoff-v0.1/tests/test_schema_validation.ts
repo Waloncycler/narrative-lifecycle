@@ -57,6 +57,12 @@ describe('schema validation', () => {
       replayCase: JSON.parse(readFileSync(resolve(schemaDir, 'replay_case.schema.json'), 'utf8')),
       topicList: JSON.parse(readFileSync(resolve(schemaDir, 'topic_list.schema.json'), 'utf8')),
       evaluationResult: JSON.parse(readFileSync(resolve(schemaDir, 'evaluation_result.schema.json'), 'utf8')),
+      canonicalTopicRegistry: JSON.parse(readFileSync(resolve(schemaDir, 'canonical_topic_registry.schema.json'), 'utf8')),
+      aliasRegistry: JSON.parse(readFileSync(resolve(schemaDir, 'alias_registry.schema.json'), 'utf8')),
+      branchRegistry: JSON.parse(readFileSync(resolve(schemaDir, 'branch_registry.schema.json'), 'utf8')),
+      provisionalTopicRegistry: JSON.parse(readFileSync(resolve(schemaDir, 'provisional_topic_registry.schema.json'), 'utf8')),
+      narrativeMemory: JSON.parse(readFileSync(resolve(schemaDir, 'narrative_memory.schema.json'), 'utf8')),
+      companyResearchRegistry: JSON.parse(readFileSync(resolve(schemaDir, 'company_research_registry.schema.json'), 'utf8')),
     };
 
     const validators = {
@@ -68,6 +74,12 @@ describe('schema validation', () => {
       replayCase: ajv.compile(schemas.replayCase),
       topicList: ajv.compile(schemas.topicList),
       evaluationResult: ajv.compile(schemas.evaluationResult),
+      canonicalTopicRegistry: ajv.compile(schemas.canonicalTopicRegistry),
+      aliasRegistry: ajv.compile(schemas.aliasRegistry),
+      branchRegistry: ajv.compile(schemas.branchRegistry),
+      provisionalTopicRegistry: ajv.compile(schemas.provisionalTopicRegistry),
+      narrativeMemory: ajv.compile(schemas.narrativeMemory),
+      companyResearchRegistry: ajv.compile(schemas.companyResearchRegistry),
     };
 
     const validate = (validator: ReturnType<typeof ajv.compile>, value: unknown, label: string) => {
@@ -85,6 +97,15 @@ describe('schema validation', () => {
     const topics = parse(readFileSync(resolve(repoRoot, 'data/seed_topics.yaml'), 'utf8')) as unknown[];
     validate(validators.topicList, topics, 'data/seed_topics.yaml');
     for (const topic of topics) validate(validators.topic, topic, 'data/seed_topics.yaml');
+
+    validate(validators.canonicalTopicRegistry, parse(readFileSync(resolve(repoRoot, 'data/topic_registry/canonical_topics.yaml'), 'utf8')), 'data/topic_registry/canonical_topics.yaml');
+    validate(validators.aliasRegistry, parse(readFileSync(resolve(repoRoot, 'data/topic_registry/aliases.yaml'), 'utf8')), 'data/topic_registry/aliases.yaml');
+    validate(validators.branchRegistry, parse(readFileSync(resolve(repoRoot, 'data/topic_registry/branches.yaml'), 'utf8')), 'data/topic_registry/branches.yaml');
+    validate(validators.provisionalTopicRegistry, parse(readFileSync(resolve(repoRoot, 'data/topic_registry/provisional_topics.yaml'), 'utf8')), 'data/topic_registry/provisional_topics.yaml');
+    validate(validators.companyResearchRegistry, parse(readFileSync(resolve(repoRoot, 'data/company_registry/core_companies.yaml'), 'utf8')), 'data/company_registry/core_companies.yaml');
+    for (const memory of parse(readFileSync(resolve(repoRoot, 'data/topic_registry/narrative_memory.yaml'), 'utf8')) as unknown[]) {
+      validate(validators.narrativeMemory, memory, 'data/topic_registry/narrative_memory.yaml');
+    }
 
     for (const fileName of readdirSync(resolve(repoRoot, 'data/failure_cases')).filter((file) => file.endsWith('.yaml'))) {
       const failureCase = parse(readFileSync(resolve(repoRoot, 'data/failure_cases', fileName), 'utf8'));

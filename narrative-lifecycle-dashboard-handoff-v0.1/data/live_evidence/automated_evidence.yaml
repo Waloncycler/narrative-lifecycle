@@ -1,0 +1,391 @@
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: null
+  event_date: 2026-07-31
+  event_title: Testing Two Different Treatment Schedules of Dabrafenib and
+    Trametinib for Skin Cancer Which Has Spread
+  event_summary: "status ACTIVE_NOT_RECRUITING; conditions: Stage III Cutaneous
+    Melanoma AJCC v7, Stage IV Cutaneous Melanoma AJCC v6 and v7, Unresectable
+    Melanoma; type INTERVENTIONAL; enrollment 280."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT02196181
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: upgrade_parent
+  parent_or_branch: parent
+  available_at: 2026-07-31
+  branch_coverage_score: 0
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    f11e0084f0e68e9cdd57c73d0f394a9cd04722034250ce888a7f1713e5c0785a.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: null
+  event_date: 2026-07-31
+  event_title: Testing Pembrolizumab Versus Observation in Patients With Merkel
+    Cell Carcinoma After Surgery, STAMP Trial
+  event_summary: "status ACTIVE_NOT_RECRUITING; conditions: Pathologic Stage I
+    Cutaneous Merkel Cell Carcinoma AJCC v8, Pathologic Stage II Cutaneous
+    Merkel Cell Carcinoma AJCC v8, Pathologic Stage III Cutaneous Merkel Cell
+    Carcinoma AJCC v8; type INTERVENTIONAL; enrollment 280."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT03712605
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: upgrade_parent
+  parent_or_branch: parent
+  available_at: 2026-07-31
+  branch_coverage_score: 0
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    f11e0084f0e68e9cdd57c73d0f394a9cd04722034250ce888a7f1713e5c0785a.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: null
+  event_date: 2026-07-31
+  event_title: "Paclitaxel Oral Solution in HER2-Positive Breast Cancer
+    Neoadjuvant Therapy: A Dose-Finding Study"
+  event_summary: "status NOT_YET_RECRUITING; conditions: HER2 + Breast Cancer;
+    type INTERVENTIONAL; enrollment 30."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT07739511
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: upgrade_parent
+  parent_or_branch: parent
+  available_at: 2026-07-31
+  branch_coverage_score: 0
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    f11e0084f0e68e9cdd57c73d0f394a9cd04722034250ce888a7f1713e5c0785a.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: null
+  event_date: 2026-07-31
+  event_title: Chemoradiotherapy With or Without Atezolizumab in Treating Patients
+    With Localized Muscle Invasive Bladder Cancer
+  event_summary: "status ACTIVE_NOT_RECRUITING; conditions: Bladder Urothelial
+    Carcinoma, Muscle Invasive Bladder Carcinoma, Stage II Bladder Cancer AJCC
+    v8, Stage IIIA Bladder Cancer AJCC v8; type INTERVENTIONAL; enrollment 475."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT03775265
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: upgrade_parent
+  parent_or_branch: parent
+  available_at: 2026-07-31
+  branch_coverage_score: 0
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    f11e0084f0e68e9cdd57c73d0f394a9cd04722034250ce888a7f1713e5c0785a.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: null
+  event_date: 2026-07-31
+  event_title: A Study to Compare Standard Therapy to Treat Hodgkin Lymphoma to
+    the Use of Two Drugs, Brentuximab Vedotin and Nivolumab
+  event_summary: "status RECRUITING; conditions: Lugano Classification Limited
+    Stage Hodgkin Lymphoma AJCC v8; type INTERVENTIONAL; enrollment 1875."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT05675410
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: upgrade_parent
+  parent_or_branch: parent
+  available_at: 2026-07-31
+  branch_coverage_score: 0
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    f11e0084f0e68e9cdd57c73d0f394a9cd04722034250ce888a7f1713e5c0785a.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0
+  topic_id: provisional_china_ip_policy
+  branch_id: null
+  event_date: 2026-08-03
+  event_title: 国务院关于印发《知识产权保护和运用“十五五”规划》的通知
+  event_summary: 中国政府官方公告 2026-08-03; 原始来源 https://www.gov.cn/zhengce/.
+  event_type: GOVERNMENT_POLICY_UPDATE
+  source_name: Direct public / GovCnPolicy
+  source_url: https://www.gov.cn/zhengce/content/202607/content_7077199.htm
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - friction
+    - reality
+  stage_effect: watch_upgrade_parent
+  parent_or_branch: parent
+  available_at: 2026-08-03
+  branch_coverage_score: 0
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from govcn_policy_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    b2a41e2a27b0ce87110b37d7d0b3dacedade0a869ec497c89026e5fe36d3f64a.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0
+  topic_id: provisional_china_social_security_policy
+  branch_id: null
+  event_date: 2026-08-02
+  event_title: 什么是企业年金？新发布的《规程》对用人单位和职工有什么影响？记者采访了人力资源社会保障部养老保险司有关负责人、企业年金管理机构和社保专家等。
+  event_summary: 中国政府官方公告 2026-08-02; 原始来源 https://www.gov.cn/zhengce/.
+  event_type: GOVERNMENT_POLICY_UPDATE
+  source_name: Direct public / GovCnPolicy
+  source_url: https://www.gov.cn/zhengce/202608/content_7077335.htm
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - friction
+    - reality
+  stage_effect: watch_upgrade_parent
+  parent_or_branch: parent
+  available_at: 2026-08-02
+  branch_coverage_score: 0
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from govcn_policy_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    b2a41e2a27b0ce87110b37d7d0b3dacedade0a869ec497c89026e5fe36d3f64a.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct07530367-ae3d22a59c8c
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: provisional_innovative_drug_clinical_development_nct07530367
+  event_date: 2026-08-03
+  event_title: Tofacitinib Plus Imatinib in Moderate-to-Severe Palmoplantar Pustulosis
+  event_summary: "status NOT_YET_RECRUITING; conditions: Palmoplantar Pustulosis
+    (PPP); type INTERVENTIONAL; enrollment 135."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT07530367
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-03
+  branch_coverage_score: 35
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    ae3d22a59c8c5e78c793b6ef01b4ed992edc6f14c3a3b6e71f00c3ef950a26de. Branch
+    evidence cannot upgrade the parent narrative by itself. Automatically
+    published under policy v0.9-autonomous-research-default; deterministic Stage
+    Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct07741877-ae3d22a59c8c
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: provisional_innovative_drug_clinical_development_nct07741877
+  event_date: 2026-08-03
+  event_title: A Study of Lifileucel (Tumor-infiltrating Lymphocytes) in Adults
+    With Advanced Soft Tissue Sarcoma
+  event_summary: "status NOT_YET_RECRUITING; conditions: Sarcoma, Soft Tissue
+    Sarcoma (STS), Advanced Soft Tissue Sarcoma, Undifferentiated Pleomorphic
+    Sarcoma (UPS), Dedifferentiated Liposarcoma (DDLPS); type INTERVENTIONAL;
+    enrollment 80."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT07741877
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-03
+  branch_coverage_score: 35
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    ae3d22a59c8c5e78c793b6ef01b4ed992edc6f14c3a3b6e71f00c3ef950a26de. Branch
+    evidence cannot upgrade the parent narrative by itself. Automatically
+    published under policy v0.9-autonomous-research-default; deterministic Stage
+    Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct07742956-ae3d22a59c8c
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: provisional_innovative_drug_clinical_development_alk201
+  event_date: 2026-08-03
+  event_title: Phase II Clinical Study to Evaluate the Safety, Tolerability,
+    Pharmacokinetics and Antitumor Activity of ALK201 for Injection in
+    Combination With Ivonescimab Injection in sqNSCLC Participants.
+  event_summary: "status NOT_YET_RECRUITING; conditions: NSCLC (Advanced Non-small
+    Cell Lung Cancer); type INTERVENTIONAL; enrollment 156."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT07742956
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-03
+  branch_coverage_score: 35
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    ae3d22a59c8c5e78c793b6ef01b4ed992edc6f14c3a3b6e71f00c3ef950a26de. Branch
+    evidence cannot upgrade the parent narrative by itself. Automatically
+    published under policy v0.9-autonomous-research-default; deterministic Stage
+    Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct07469566-ae3d22a59c8c
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: provisional_innovative_drug_clinical_development_nct07469566
+  event_date: 2026-08-03
+  event_title: Characterization of the Natural History of Microduplication Syndrome 7q11.23
+  event_summary: "status RECRUITING; conditions: 7q11.23 Microduplication Syndrome
+    (7DUP), Autism Spectrum Disorder (ASD), Neurodevelopmental Disorders (NDD);
+    type INTERVENTIONAL; enrollment 15."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT07469566
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-03
+  branch_coverage_score: 35
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    ae3d22a59c8c5e78c793b6ef01b4ed992edc6f14c3a3b6e71f00c3ef950a26de. Branch
+    evidence cannot upgrade the parent narrative by itself. Automatically
+    published under policy v0.9-autonomous-research-default; deterministic Stage
+    Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_clinical_trials_gov_studies-nct07299019-ae3d22a59c8c
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_id: provisional_innovative_drug_clinical_development_nct07299019
+  event_date: 2026-08-03
+  event_title: A Study of Orelabrutinib in Patients With Secondary Progressive
+    Multiple Sclerosis
+  event_summary: "status RECRUITING; conditions: Secondary Progressive Multiple
+    Sclerosis; type INTERVENTIONAL; enrollment 990."
+  event_type: CLINICAL_TRIAL_UPDATE
+  source_name: Direct public / ClinicalTrialsGov
+  source_url: https://clinicaltrials.gov/study/NCT07299019
+  source_type: official
+  evidence_strength: E3
+  affected_layer:
+    - reality
+    - feedback
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-03
+  branch_coverage_score: 35
+  interpretation: Source record was deterministically normalized from a
+    provenance-complete primary/official source. Topic and Stage remain
+    rule-governed.
+  limitation: "Rule-verified source record from clinical_trial_update 1.0.0; it
+    supports only the quoted fact and cannot by itself bypass Stage Gates.
+    Payload hash:
+    ae3d22a59c8c5e78c793b6ef01b4ed992edc6f14c3a3b6e71f00c3ef950a26de. Branch
+    evidence cannot upgrade the parent narrative by itself. Automatically
+    published under policy v0.9-autonomous-research-default; deterministic Stage
+    Gate remains authoritative."
+  positive_or_negative: positive
+  confidence: 85
+  schema_version: 0.9-autonomous-research

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CompanyResearchRegistry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["registry_version", "companies"],
+  "properties": {
+    "registry_version": { "type": "string", "minLength": 1 },
+    "companies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["company_id", "display_name_zh", "display_name_en", "market", "official_source_url", "disclosure_source_ids", "coverage_node_ids", "aliases", "status"],
+        "properties": {
+          "company_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "display_name_zh": { "type": "string", "minLength": 1 },
+          "display_name_en": { "type": "string", "minLength": 1 },
+          "market": { "enum": ["china", "hong_kong", "us", "global", "private"] },
+          "official_source_url": { "type": "string", "format": "uri" },
+          "disclosure_source_ids": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z0-9_]+$" } },
+          "coverage_node_ids": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z0-9_]+$" } },
+          "aliases": { "type": "array", "items": { "type": "string" } },
+          "status": { "enum": ["curated", "watch"] }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "WorldMonitorSyncReport",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "producer_version",
+    "sync_id",
+    "generated_at",
+    "mode",
+    "requested_operation_count",
+    "completed_operation_count",
+    "failed_operation_count",
+    "skipped_operation_count",
+    "payload_record_count",
+    "candidate_count",
+    "new_fact_count",
+    "updated_fact_count",
+    "material_update_count",
+    "suppressed_update_count",
+    "unchanged_fact_count",
+    "not_observed_fact_count",
+    "fact_state_id",
+    "intake_session_id",
+    "records",
+    "guardrail_check"
+  ],
+  "properties": {
+    "artifact_type": { "const": "worldmonitor_sync_report" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "type": "string", "minLength": 1 },
+    "sync_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "mode": { "type": "string", "enum": ["sandbox", "live"] },
+    "requested_operation_count": { "type": "integer", "minimum": 0 },
+    "completed_operation_count": { "type": "integer", "minimum": 0 },
+    "failed_operation_count": { "type": "integer", "minimum": 0 },
+    "skipped_operation_count": { "type": "integer", "minimum": 0 },
+    "payload_record_count": { "type": "integer", "minimum": 0 },
+    "candidate_count": { "type": "integer", "minimum": 0 },
+    "new_fact_count": { "type": "integer", "minimum": 0 },
+    "updated_fact_count": { "type": "integer", "minimum": 0 },
+    "material_update_count": { "type": "integer", "minimum": 0 },
+    "suppressed_update_count": { "type": "integer", "minimum": 0 },
+    "unchanged_fact_count": { "type": "integer", "minimum": 0 },
+    "not_observed_fact_count": { "type": "integer", "minimum": 0 },
+    "fact_state_id": { "type": ["string", "null"] },
+    "intake_session_id": { "type": ["string", "null"] },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "fetched_at",
+          "mode",
+          "status",
+          "http_status",
+          "access_state",
+          "evidence_eligibility",
+          "source_url",
+          "payload_hash",
+          "record_count",
+          "candidate_count",
+          "selected_candidate_count",
+          "degraded",
+          "stale",
+          "message",
+          "governance_state",
+          "raw_payload_retained"
+        ],
+        "properties": {
+          "operation_id": { "type": "string", "minLength": 1 },
+          "fetched_at": { "type": "string", "format": "date-time" },
+          "mode": { "type": "string", "enum": ["sandbox", "live"] },
+          "status": { "type": "string", "enum": ["ok", "skipped", "failed"] },
+          "http_status": { "type": ["integer", "null"] },
+          "access_state": {
+            "type": "string",
+            "enum": ["sandbox_available", "production_ready", "requires_key", "requires_parameters", "manual_request", "unsupported"]
+          },
+          "evidence_eligibility": { "type": "string", "enum": ["candidate", "context_only", "unsupported"] },
+          "source_url": { "type": "string", "format": "uri" },
+          "payload_hash": { "type": ["string", "null"] },
+          "record_count": { "type": "integer", "minimum": 0 },
+          "candidate_count": { "type": "integer", "minimum": 0 },
+          "selected_candidate_count": { "type": "integer", "minimum": 0 },
+          "degraded": { "type": "boolean" },
+          "stale": { "type": "boolean" },
+          "message": { "type": "string" },
+          "governance_state": { "type": "string", "enum": ["research_ready", "review_required", "restricted", "blocked"] },
+          "raw_payload_retained": { "const": false }
+        }
+      }
+    },
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sandbox_not_importable",
+        "context_only_not_scored",
+        "human_review_required",
+        "topic_resolver_required",
+        "duplicate_detection_required",
+        "parent_branch_separation",
+        "no_trading_advice"
+      ],
+      "properties": {
+        "sandbox_not_importable": { "const": true },
+        "context_only_not_scored": { "const": true },
+        "human_review_required": { "type": "boolean" },
+        "topic_resolver_required": { "const": true },
+        "duplicate_detection_required": { "const": true },
+        "parent_branch_separation": { "const": true },
+        "no_trading_advice": { "const": true }
+      }
+    }
+  }
+}

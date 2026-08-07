@@ -1,0 +1,24 @@
+- alias: 脑机接口
+  topic_id: bci
+  reason: 国家部委实施意见使用的规范中文名称。
+- alias: BCI
+  topic_id: bci
+  reason: Brain-computer interface 的常用英文缩写。
+- alias: brain-computer interface
+  topic_id: bci
+  reason: Common English expansion of BCI.
+- alias: neuro rehab
+  topic_id: bci
+  reason: Rehabilitation wording is an alias to BCI before branch resolution.
+- alias: 人形机器人
+  topic_id: humanoid_robotics
+  reason: 市场通行中文主题名称。
+- alias: embodied intelligence
+  topic_id: humanoid_robotics
+  reason: Common umbrella phrase for humanoid robotics research notes.
+- alias: 创新药对外授权
+  topic_id: innovative_drug_license_out
+  reason: 国内产业研究中对 license-out 的通行中文称谓。
+- alias: license out
+  topic_id: innovative_drug_license_out
+  reason: Alternate spelling of license-out.

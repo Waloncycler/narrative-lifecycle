@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "ReviewDecision",
+  "additionalProperties": true,
+  "required": ["candidate_id", "decision", "reviewer", "reviewed_at"],
+  "properties": {
+    "candidate_id": { "type": "string", "minLength": 1 },
+    "decision": { "enum": ["accept", "modify", "reject", "split"] },
+    "reviewer": { "type": "string", "minLength": 1 },
+    "reviewed_at": { "type": "string", "format": "date-time" },
+    "review_started_at": { "type": "string", "format": "date-time" },
+    "review_duration_seconds": { "type": "number", "minimum": 0 },
+    "modified_evidence": { "type": "object", "additionalProperties": true },
+    "split_evidence": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+    "rejection_reason": { "type": "string" },
+    "reviewer_note": { "type": "string" }
+  }
+}

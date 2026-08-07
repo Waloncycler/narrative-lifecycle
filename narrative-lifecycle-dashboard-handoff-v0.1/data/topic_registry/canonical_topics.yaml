@@ -1,0 +1,222 @@
+- topic_id: bci
+  topic_name: 脑机接口
+  market_name_zh: 脑机接口
+  market_name_en: Brain-computer interface
+  naming_status: verified
+  naming_sources:
+    - source_name: 工业和信息化部等七部门
+      source_url: https://www.miit.gov.cn/jgsj/kjs/wjfb/art/2025/art_438e059801414869abc50abdb06eeac6.html
+      available_at: 2025-07-30
+      source_quote: 关于推动脑机接口产业创新发展的实施意见
+  current_stage: S4
+  status: active
+- topic_id: humanoid_robotics
+  topic_name: 人形机器人
+  market_name_zh: 人形机器人
+  market_name_en: Humanoid robotics
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S5-S6
+  status: active
+- topic_id: innovative_drug_license_out
+  topic_name: 创新药对外授权
+  market_name_zh: 创新药对外授权
+  market_name_en: Innovative drug license-out
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S5-S6
+  status: active
+- topic_id: provisional_blockchain_crypto_market
+  topic_name: 区块链与加密资产
+  market_name_zh: 区块链与加密资产
+  market_name_en: Blockchain and crypto assets
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_luxury_consumer
+  topic_name: 高端消费
+  market_name_zh: 高端消费
+  market_name_en: Premium consumer
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_low_altitude_economy
+  topic_name: 低空经济
+  market_name_zh: 低空经济
+  market_name_en: Low-altitude economy
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_new_energy_industry
+  topic_name: 新能源产业
+  market_name_zh: 新能源产业
+  market_name_en: New energy industry
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_commercial_space
+  topic_name: 商业航天
+  market_name_zh: 商业航天
+  market_name_en: Commercial space
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_quantum_computing
+  topic_name: 量子计算
+  market_name_zh: 量子计算
+  market_name_en: Quantum computing
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_innovative_drug_clinical_development
+  topic_name: 创新药临床研发
+  market_name_zh: 创新药临床研发
+  market_name_en: Innovative drug clinical development
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_ai_foundation_models
+  topic_name: 基础大模型
+  market_name_zh: 基础大模型
+  market_name_en: Foundation models
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_semiconductor_advanced_manufacturing
+  topic_name: 半导体先进制造
+  market_name_zh: 半导体先进制造
+  market_name_en: Semiconductor advanced manufacturing
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_semiconductor_ip_policy
+  topic_name: 半导体知识产权政策
+  market_name_zh: 半导体知识产权政策
+  market_name_en: Semiconductor intellectual-property policy
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: provisional
+- topic_id: provisional_china_macro_policy
+  topic_name: 中国宏观政策
+  market_name_zh: 中国宏观政策
+  market_name_en: China macro policy
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: provisional
+- topic_id: provisional_biopharma_annual_reporting
+  topic_name: 生物医药年报
+  market_name_zh: 生物医药年报
+  market_name_en: Biopharma annual reporting
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: provisional
+- topic_id: provisional_semiconductor_memory_market
+  topic_name: 存储芯片
+  market_name_zh: 存储芯片
+  market_name_en: Semiconductor memory
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_china_ip_policy
+  topic_name: 中国知识产权政策
+  market_name_zh: 中国知识产权政策
+  market_name_en: China intellectual-property policy
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: provisional
+- topic_id: provisional_additive_manufacturing
+  topic_name: 增材制造
+  market_name_zh: 增材制造
+  market_name_en: Additive manufacturing
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_china_social_security_policy
+  topic_name: 社会保障政策
+  market_name_zh: 社会保障政策
+  market_name_en: China social-security policy
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: provisional
+- topic_id: provisional_infectious_disease_outbreaks
+  topic_name: Infectious Disease Outbreaks
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []
+- topic_id: provisional_advanced_packaging
+  topic_name: Advanced Packaging
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []
+- topic_id: provisional_ai_agents
+  topic_name: AI 智能体
+  market_name_zh: AI 智能体
+  market_name_en: AI agents
+  current_stage: S0
+  status: active
+  naming_status: provisional
+  naming_sources: []
+- topic_id: provisional_smart_manufacturing
+  topic_name: 智能制造
+  market_name_zh: 智能制造
+  market_name_en: Smart manufacturing
+  current_stage: S0
+  status: active
+  naming_status: provisional
+  naming_sources: []
+- topic_id: provisional_computing_infrastructure
+  topic_name: 算力基础设施
+  market_name_zh: 算力基础设施
+  market_name_en: Computing infrastructure
+  current_stage: S0
+  status: active
+  naming_status: provisional
+  naming_sources: []
+- topic_id: provisional_wind_power
+  topic_name: Wind Power
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []
+- topic_id: provisional_real_estate_new_model
+  topic_name: Real Estate New Model
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []
+- topic_id: provisional_new_energy_storage
+  topic_name: New Energy Storage
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []
+- topic_id: provisional_cross_border_ecommerce
+  topic_name: Cross Border Ecommerce
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []
+- topic_id: provisional_antibody_drug_conjugates
+  topic_name: Antibody Drug Conjugates
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []

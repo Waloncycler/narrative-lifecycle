@@ -22,9 +22,9 @@ export class YamlFileRepository {
     return parse(readFileSync(resolve(this.repoRoot, relativePath), 'utf8')) as T;
   }
 
-  readYamlDirectory<T>(relativeDirectory: string): T[] {
+  readYamlDirectory<T>(relativeDirectory: string, fileFilter: (file: string) => boolean = () => true): T[] {
     return readdirSync(resolve(this.repoRoot, relativeDirectory))
-      .filter((file) => file.endsWith('.yaml') || file.endsWith('.yml'))
+      .filter((file) => (file.endsWith('.yaml') || file.endsWith('.yml')) && fileFilter(file))
       .sort()
       .flatMap((file) => {
         const value = this.readYamlFile<T | T[]>(`${relativeDirectory}/${file}`);
@@ -37,7 +37,10 @@ export class FileEvidenceRepository {
   constructor(private readonly files: YamlFileRepository) {}
 
   listSampleEvidence(): EvidenceNode[] {
-    return this.files.readYamlDirectory<EvidenceNode>('data/sample_evidence');
+    // Golden cases use frozen fixture files only. Imported/manual evidence is
+    // intentionally kept out of the baseline so live research cannot rewrite
+    // the regression target.
+    return this.files.readYamlDirectory<EvidenceNode>('data/sample_evidence', (file) => file.endsWith('_evidence_sample.yaml'));
   }
 }
 

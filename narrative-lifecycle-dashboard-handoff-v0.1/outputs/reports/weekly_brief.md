@@ -2,8 +2,8 @@
 
 ## 1. Executive Summary
 
-- report_id: weekly_brief_run_20260713T035113631_508dfa
-- generated_at: 2026-07-13T03:51:13.631Z
+- report_id: weekly_brief_run_20260807T073128528_e95d36
+- generated_at: 2026-08-07T07:31:28.528Z
 - rule_version: narrative-lifecycle-rules-v0.1
 - dashboard_card_count: 3
 - score_count: 3
@@ -19,7 +19,7 @@
   - parent_narrative: 脑机接口 BCI
   - strongest_branch: bci medical rehab (S5-S6)
   - weakest_layer: policy_perception
-  - data_confidence: 74
+  - data_confidence: 70
 - 人形机器人 / 具身智能 (humanoid_robotics)
   - current_stage: S5-S6
   - parent_narrative: 人形机器人 / 具身智能
@@ -35,9 +35,9 @@
 
 ## 3. Stage Changes
 
-- previous_snapshot_id: stage_snapshot_run_20260713T035057514_3ac02b
-- current_snapshot_id: stage_snapshot_run_20260713T035113631_508dfa
-No narrative state changes detected compared with stage_snapshot_run_20260713T035057514_3ac02b.
+- previous_snapshot_id: stage_snapshot_run_20260807T072944527_bfd921
+- current_snapshot_id: stage_snapshot_run_20260807T073128528_e95d36
+No narrative state changes detected compared with stage_snapshot_run_20260807T072944527_bfd921.
 
 ### Upgrades
 - none
@@ -56,8 +56,8 @@ No narrative state changes detected compared with stage_snapshot_run_20260713T03
 
 ## 4. Strongest Evidence
 
-- bci_parent_label: 脑机接口 BCI; strength=score_74; layer=perception; interpretation=Supports parent narrative label stability.
-- bci_parent_capital: 脑机接口 BCI; strength=score_74; layer=perception; interpretation=Supports S4 capital confirmation for the parent narrative.
+- bci_e001: 脑机接口 BCI; strength=score_70; layer=reality; interpretation=Supports medical rehabilitation BCI branch validation.
+- bci_parent_label: 脑机接口 BCI; strength=score_70; layer=perception; interpretation=Supports parent narrative label stability.
 - humanoid_parent_pricing: 人形机器人 / 具身智能; strength=score_70; layer=pricing; interpretation=Supports pricing adoption for the parent narrative.
 - humanoid_e001: 人形机器人 / 具身智能; strength=score_70; layer=reality; interpretation=Supports reality validation in a core branch.
 - licenseout_parent_pricing: 创新药 License-out; strength=score_70; layer=pricing; interpretation=Supports pricing adoption through deal structure.
@@ -67,7 +67,7 @@ No narrative state changes detected compared with stage_snapshot_run_20260713T03
 
 - 脑机接口 BCI (S4)
   - why_not_higher_stage: Upgrade is capped by required checks: old theme reactivation; branch reality upgrade; pricing adoption insufficient; parent reality insufficient; medical branch validation cannot represent whole BCI; revenue/payment/listed-asset mapping still missing.
-  - evidence_ids: bci_parent_label, bci_parent_capital, bci_branch_label_pricing, bci_e001, import_bci_medical_rehab_followup_001
+  - evidence_ids: bci_parent_label, bci_parent_capital, bci_branch_label_pricing, bci_e001
 - 人形机器人 / 具身智能 (S5-S6)
   - why_not_higher_stage: Upgrade is capped by required checks: pricing adoption; reality validation; valuation friction; S7A/S7C potential; S7B risk for crowded edge assets.
   - evidence_ids: humanoid_parent_label, humanoid_parent_capital, humanoid_parent_pricing, humanoid_parent_reality, humanoid_e001
@@ -81,7 +81,7 @@ No narrative state changes detected compared with stage_snapshot_run_20260713T03
   - candidate_id: radar_bci
   - reason: Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.
   - reactivation_record_id: reactivation_bci_S4
-  - evidence_ids: bci_parent_label, bci_parent_capital, bci_branch_label_pricing, bci_e001, import_bci_medical_rehab_followup_001
+  - evidence_ids: bci_parent_label, bci_parent_capital, bci_branch_label_pricing, bci_e001
   - research_only_action: early research
 
 ## 7. Guardrail Check
@@ -98,7 +98,7 @@ No narrative state changes detected compared with stage_snapshot_run_20260713T03
 - request_more_evidence: bci; reason=Missing pricing adoption; Missing hard reality evidence.; evidence_ids=bci_parent_label, bci_parent_capital
 - monitor: humanoid_robotics; reason=S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=humanoid_parent_label, humanoid_parent_capital, humanoid_parent_pricing, humanoid_parent_reality
 - monitor: innovative_drug_license_out; reason=S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=licenseout_parent_label, licenseout_parent_capital, licenseout_parent_pricing, licenseout_parent_reality
-- track: bci; reason=Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.; evidence_ids=bci_parent_label, bci_parent_capital, bci_branch_label_pricing, bci_e001, import_bci_medical_rehab_followup_001
+- track: bci; reason=Old theme reactivation has new branch reality evidence, but parent gates remain incomplete.; evidence_ids=bci_parent_label, bci_parent_capital, bci_branch_label_pricing, bci_e001
 
 ## 9. Artifact Index
 

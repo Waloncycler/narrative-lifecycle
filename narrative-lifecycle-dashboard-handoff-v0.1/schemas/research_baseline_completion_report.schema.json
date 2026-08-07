@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResearchBaselineCompletionReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_type", "schema_version", "producer_version", "baseline_plan_id", "generated_at", "source_snapshot_id", "items", "summary", "guardrail_check"],
+  "properties": {
+    "artifact_type": { "const": "research_baseline_completion_report" }, "schema_version": { "const": "1.0.0" }, "producer_version": { "type": "string", "minLength": 1 }, "baseline_plan_id": { "type": "string", "minLength": 1 }, "generated_at": { "type": "string", "format": "date-time" }, "source_snapshot_id": { "type": ["string", "null"] },
+    "items": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["item_id", "kind", "priority", "topic_id", "branch_id", "display_name_zh", "required_layers", "rationale", "suggested_query", "next_action", "evidence_eligibility"], "properties": { "item_id": { "type": "string" }, "kind": { "enum": ["parent_evidence_baseline", "topic_name_verification", "branch_name_verification"] }, "priority": { "enum": ["high", "medium"] }, "topic_id": { "type": "string" }, "branch_id": { "type": ["string", "null"] }, "display_name_zh": { "type": "string" }, "required_layers": { "type": "array", "items": { "enum": ["name", "capital", "pricing", "reality", "momentum", "friction", "data_confidence"] } }, "rationale": { "type": "string" }, "suggested_query": { "type": "string" }, "next_action": { "enum": ["research_original_sources", "validate_market_name"] }, "evidence_eligibility": { "const": "context_only" } } } },
+    "summary": { "type": "object", "additionalProperties": false, "required": ["parent_evidence_baseline_count", "topic_name_verification_count", "branch_name_verification_count", "high_priority_count"], "properties": { "parent_evidence_baseline_count": { "type": "integer", "minimum": 0 }, "topic_name_verification_count": { "type": "integer", "minimum": 0 }, "branch_name_verification_count": { "type": "integer", "minimum": 0 }, "high_priority_count": { "type": "integer", "minimum": 0 } } },
+    "guardrail_check": { "type": "object", "additionalProperties": false, "required": ["existing_stage_unchanged", "no_auto_evidence_import", "evidence_table_required_for_stage", "parent_branch_separation", "no_auto_registry_name_mutation", "no_trading_advice"], "properties": { "existing_stage_unchanged": { "const": true }, "no_auto_evidence_import": { "const": true }, "evidence_table_required_for_stage": { "const": true }, "parent_branch_separation": { "const": true }, "no_auto_registry_name_mutation": { "const": true }, "no_trading_advice": { "const": true } } }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "TopicRegistryValidationReport",
+  "additionalProperties": false,
+  "required": ["validation_id", "generated_at", "status", "topic_count", "alias_count", "branch_count", "provisional_topic_count", "unresolved_count", "errors", "warnings"],
+  "properties": {
+    "validation_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["passed", "failed"] },
+    "topic_count": { "type": "integer", "minimum": 0 },
+    "alias_count": { "type": "integer", "minimum": 0 },
+    "branch_count": { "type": "integer", "minimum": 0 },
+    "provisional_topic_count": { "type": "integer", "minimum": 0 },
+    "unresolved_count": { "type": "integer", "minimum": 0 },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}

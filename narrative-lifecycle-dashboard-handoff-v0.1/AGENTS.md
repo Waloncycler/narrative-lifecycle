@@ -72,3 +72,17 @@ Use a modular monolith first. Keep interfaces replaceable:
 - `DataSourceConnector`
 
 The system should support future migration from YAML/Markdown to SQLite/PostgreSQL and from simple rule tests to a web dashboard.
+
+## Mandatory UI Rules
+
+The UI is a research workbench, not a marketing page or trading terminal. All future interface changes must follow `docs/23_ui_design_system.md` and preserve these invariants:
+
+- Evidence-first hierarchy: source and citation remain primary; interpretation and impact remain secondary.
+- Keep the four-step workflow visible: record evidence, parse candidates, review/import, inspect changes.
+- Use the shared design tokens, semantic colors, spacing scale, stable card dimensions, and WCAG AA focus states defined in the UI design system.
+- Keep one primary action per region. Destructive or irreversible actions require explicit wording and confirmation.
+- Do not hide unresolved, provisional, low-confidence, branch, or guardrail states behind color alone.
+- Do not use nested cards, gradient backgrounds, oversized marketing hero sections, decorative blobs, or technical labels without a Chinese operator explanation.
+- Desktop must preserve the source/review split; mobile must collapse to a readable single column without horizontal clipping.
+- Every new screen must be checked at desktop and mobile widths, keyboard focus, long text, empty/loading/error states, and no-trading-advice language.
+- Self-iteration must use versioned human-review feedback as advisory context only; it must never silently mutate rules, registries, Stage, Score, or import permission.

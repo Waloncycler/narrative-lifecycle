@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "EvidenceIntakeApplyResult",
+  "additionalProperties": false,
+  "required": [
+    "session_id",
+    "topic_audit_id",
+    "generated_at",
+    "accepted_count",
+    "modified_count",
+    "split_count",
+    "rejected_count",
+    "duplicate_count",
+    "accepted_evidence_ids",
+    "evidence_draft_path",
+    "imported",
+    "import_status",
+    "import_id",
+    "weekly_run_id",
+    "stage_change_summary",
+    "guardrail_check"
+  ],
+  "properties": {
+    "session_id": { "type": "string", "minLength": 1 },
+    "topic_audit_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "accepted_count": { "type": "integer", "minimum": 0 },
+    "modified_count": { "type": "integer", "minimum": 0 },
+    "split_count": { "type": "integer", "minimum": 0 },
+    "rejected_count": { "type": "integer", "minimum": 0 },
+    "duplicate_count": { "type": "integer", "minimum": 0 },
+    "accepted_evidence_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "evidence_draft_path": { "type": ["string", "null"] },
+    "imported": { "type": "boolean" },
+    "import_status": { "type": "string" },
+    "import_id": { "type": ["string", "null"] },
+    "weekly_run_id": { "type": ["string", "null"] },
+    "stage_change_summary": {},
+    "pipeline_retry_count": { "type": "integer", "minimum": 0 },
+    "pipeline_error": { "type": ["string", "null"] },
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["human_review_required", "no_trading_advice", "duplicate_detection_applied", "parent_branch_guardrail_applied"],
+      "properties": {
+        "human_review_required": { "type": "boolean" },
+        "no_trading_advice": { "type": "boolean" },
+        "duplicate_detection_applied": { "type": "boolean" },
+        "parent_branch_guardrail_applied": { "type": "boolean" }
+      }
+    }
+  }
+}

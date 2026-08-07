@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "WorldMonitorFactState",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "producer_version",
+    "state_id",
+    "sync_id",
+    "generated_at",
+    "previous_state_id",
+    "observed_operation_ids",
+    "fact_count",
+    "new_fact_count",
+    "updated_fact_count",
+    "material_update_count",
+    "suppressed_update_count",
+    "unchanged_fact_count",
+    "not_observed_fact_count",
+    "facts",
+    "changes",
+    "guardrail_check"
+  ],
+  "properties": {
+    "artifact_type": { "const": "worldmonitor_fact_state" },
+    "schema_version": { "const": "1.0.0" },
+    "producer_version": { "type": "string", "minLength": 1 },
+    "state_id": { "type": "string", "minLength": 1 },
+    "sync_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "previous_state_id": { "type": ["string", "null"] },
+    "observed_operation_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "fact_count": { "type": "integer", "minimum": 0 },
+    "new_fact_count": { "type": "integer", "minimum": 0 },
+    "updated_fact_count": { "type": "integer", "minimum": 0 },
+    "material_update_count": { "type": "integer", "minimum": 0 },
+    "suppressed_update_count": { "type": "integer", "minimum": 0 },
+    "unchanged_fact_count": { "type": "integer", "minimum": 0 },
+    "not_observed_fact_count": { "type": "integer", "minimum": 0 },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fact_key",
+          "operation_id",
+          "upstream_record_id",
+          "title",
+          "event_at",
+          "available_at",
+          "source_url",
+          "normalizer_id",
+          "normalizer_version",
+          "content_fingerprint",
+          "metrics",
+          "first_seen_at",
+          "last_seen_at"
+        ],
+        "properties": {
+          "fact_key": { "type": "string", "minLength": 1 },
+          "operation_id": { "type": "string", "minLength": 1 },
+          "upstream_record_id": { "type": ["string", "null"] },
+          "title": { "type": "string", "minLength": 1 },
+          "event_at": { "type": "string", "format": "date-time" },
+          "available_at": { "type": "string", "format": "date-time" },
+          "source_url": { "type": "string" },
+          "normalizer_id": { "type": "string", "minLength": 1 },
+          "normalizer_version": { "type": "string", "minLength": 1 },
+          "content_fingerprint": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
+          "metrics": { "type": "object", "additionalProperties": { "type": "number" } },
+          "first_seen_at": { "type": "string", "format": "date-time" },
+          "last_seen_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fact_key",
+          "operation_id",
+          "change_type",
+          "previous_fingerprint",
+          "current_fingerprint",
+          "title",
+          "event_at",
+          "source_url",
+          "actionable",
+          "materiality_policy",
+          "materiality_reason",
+          "metric_deltas"
+        ],
+        "properties": {
+          "fact_key": { "type": "string", "minLength": 1 },
+          "operation_id": { "type": "string", "minLength": 1 },
+          "change_type": { "type": "string", "enum": ["new", "updated", "unchanged", "not_observed"] },
+          "previous_fingerprint": { "type": ["string", "null"] },
+          "current_fingerprint": { "type": ["string", "null"] },
+          "title": { "type": "string", "minLength": 1 },
+          "event_at": { "type": "string", "format": "date-time" },
+          "source_url": { "type": "string" },
+          "actionable": { "type": "boolean" },
+          "materiality_policy": { "type": "string", "minLength": 1 },
+          "materiality_reason": { "type": "string", "minLength": 1 },
+          "metric_deltas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["metric", "previous", "current", "absolute_delta", "relative_delta"],
+              "properties": {
+                "metric": { "type": "string", "minLength": 1 },
+                "previous": { "type": ["number", "null"] },
+                "current": { "type": ["number", "null"] },
+                "absolute_delta": { "type": ["number", "null"] },
+                "relative_delta": { "type": ["number", "null"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "guardrail_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unchanged_not_queued",
+        "not_observed_not_evidence",
+        "failed_source_not_treated_as_removal",
+        "human_review_required",
+        "no_trading_advice"
+      ],
+      "properties": {
+        "unchanged_not_queued": { "const": true },
+        "not_observed_not_evidence": { "const": true },
+        "failed_source_not_treated_as_removal": { "const": true },
+        "human_review_required": { "type": "boolean" },
+        "no_trading_advice": { "const": true }
+      }
+    }
+  }
+}

@@ -1,0 +1,220 @@
+- branch_id: bci_medical_rehab
+  topic_id: bci
+  branch_name: 脑机接口医疗康复
+  market_name_zh: 脑机接口医疗康复
+  market_name_en: BCI medical rehabilitation
+  naming_status: verified
+  naming_sources:
+    - source_name: 工业和信息化部等七部门
+      source_url: https://www.miit.gov.cn/jgsj/kjs/wjfb/art/2025/art_438e059801414869abc50abdb06eeac6.html
+      available_at: 2025-07-30
+      source_quote: 面向肢体运动、语言、感觉缺陷患者的康复需求
+  status: active
+- branch_id: humanoid_actuator
+  topic_id: humanoid_robotics
+  branch_name: 人形机器人执行器
+  market_name_zh: 人形机器人执行器
+  market_name_en: Humanoid robot actuators
+  naming_status: provisional
+  naming_sources: []
+  status: watch
+- branch_id: adc_license_out
+  topic_id: innovative_drug_license_out
+  branch_name: ADC 对外授权
+  market_name_zh: ADC 对外授权
+  market_name_en: ADC license-out
+  naming_status: provisional
+  naming_sources: []
+  status: active
+- branch_id: ai_adoption
+  topic_id: provisional_luxury_consumer
+  branch_name: AI 应用
+  market_name_zh: AI 应用
+  market_name_en: AI adoption
+  naming_status: provisional
+  naming_sources: []
+  status: active
+- branch_id: urban_uav_infrastructure
+  topic_id: provisional_low_altitude_economy
+  branch_name: 城市低空基础设施
+  market_name_zh: 城市低空基础设施
+  market_name_en: Urban UAV infrastructure
+  naming_status: provisional
+  naming_sources: []
+  status: active
+- branch_id: quantum_materials
+  topic_id: provisional_quantum_computing
+  branch_name: 量子材料
+  market_name_zh: 量子材料
+  market_name_en: Quantum materials
+  naming_status: provisional
+  naming_sources: []
+  status: watch
+- branch_id: video_generation
+  topic_id: provisional_ai_foundation_models
+  branch_name: 视频生成
+  market_name_zh: 视频生成
+  market_name_en: Video generation
+  naming_status: provisional
+  naming_sources: []
+  status: active
+- branch_id: a_share_price_action
+  topic_id: provisional_semiconductor_memory_market
+  branch_name: A股价格表现
+  market_name_zh: A股价格表现
+  market_name_en: A-share price action
+  naming_status: provisional
+  naming_sources: []
+  status: watch
+- branch_id: smb_desktop_3d_printing
+  topic_id: provisional_additive_manufacturing
+  branch_name: 中小型桌面 3D 打印
+  market_name_zh: 中小型桌面 3D 打印
+  market_name_en: SMB desktop 3D printing
+  naming_status: provisional
+  naming_sources: []
+  status: watch
+- branch_id: provisional_ai_foundation_models_branch_awhccv
+  topic_id: provisional_ai_foundation_models
+  branch_name: 第三个对话窗口里研究发布方案
+  naming_status: unresolved
+  naming_sources: []
+  status: watch
+- branch_id: provisional_innovative_drug_clinical_development_nct07530367
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: NCT07530367
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_innovative_drug_clinical_development_nct07741877
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: NCT07741877
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_semiconductor_advanced_manufacturing_branch_bkonti
+  topic_id: provisional_semiconductor_advanced_manufacturing
+  branch_name: 轻量智造还将沿着轻量化制造
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_innovative_drug_clinical_development_alk201
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: ALK201
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_innovative_drug_clinical_development_nct07469566
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: NCT07469566
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_foundation_models_branch_evhmt7
+  topic_id: provisional_ai_foundation_models
+  branch_name: Branch Evhmt7
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_innovative_drug_clinical_development_nct07299019
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: NCT07299019
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_foundation_models_branch_bmbjj5
+  topic_id: provisional_ai_foundation_models
+  branch_name: 百亿订单履约及算力产能持续扩张需求
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_blockchain_crypto_market_branch_1mjfs84
+  topic_id: provisional_blockchain_crypto_market
+  branch_name: 设备制造
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_low_altitude_economy_evtol_airworthiness
+  topic_id: provisional_low_altitude_economy
+  branch_name: Evtol Airworthiness
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_china_macro_policy_hainan_smart_transport
+  topic_id: provisional_china_macro_policy
+  branch_name: Hainan Smart Transport
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_bundibugyo_ebola_drc_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Bundibugyo Ebola Drc 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_bundibugyo_ebola_drc_uganda_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Bundibugyo Ebola Drc Uganda 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_hantavirus_cruise_ship_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Hantavirus Cruise Ship 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_nipah_india_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Nipah India 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_yellow_fever_global_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Yellow Fever Global 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_bci_psychiatric_depression
+  topic_id: bci
+  branch_name: Bci Psychiatric Depression
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: innovative_drug_license_out_gp2013
+  topic_id: innovative_drug_license_out
+  branch_name: GP2013
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_into_multi_level_tree_that_ranges_from_fine_grained_diagno
+  topic_id: provisional_ai_agents
+  branch_name: into multi-level tree that ranges from fine-grained diagnostic
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_varied_diagnostic
+  topic_id: provisional_ai_agents
+  branch_name: varied diagnostic
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_computing_infrastructure_ai_infrastructure
+  topic_id: provisional_computing_infrastructure
+  branch_name: AI infrastructure
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_computing_infrastructure_deploying_infrastructure
+  topic_id: provisional_computing_infrastructure
+  branch_name: deploying infrastructure
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_bci_als_communication
+  topic_id: bci
+  branch_name: Bci Als Communication
+  status: watch
+  naming_status: unresolved
+  naming_sources: []

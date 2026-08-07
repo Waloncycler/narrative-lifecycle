@@ -29,5 +29,6 @@
   { "file": "src/services/stage_diff_markdown_renderer.ts", "category": "renderer", "status": "legacy_active", "target_layer": "interface", "reason": "Markdown view model renderer." },
   { "file": "src/services/stage_history_writer.ts", "category": "infrastructure_io", "status": "legacy_active", "target_layer": "infrastructure", "reason": "Persists stage snapshot history." },
   { "file": "src/services/stage_snapshot_builder.ts", "category": "application_orchestration", "status": "legacy_active", "target_layer": "application", "reason": "Builds canonical snapshot from pipeline artifacts." },
-  { "file": "src/services/versioning_service.ts", "category": "deprecated", "status": "compat_wrapper", "target_layer": "domain", "reason": "Implementation moved to src/domain/versioning_service.ts." }
+  { "file": "src/services/versioning_service.ts", "category": "deprecated", "status": "compat_wrapper", "target_layer": "domain", "reason": "Implementation moved to src/domain/versioning_service.ts." },
+  { "file": "src/services/worldmonitor_intake_connector.ts", "category": "application_orchestration", "status": "legacy_active", "target_layer": "application", "reason": "Transforms World Monitor multi-domain intelligence signals into candidate evidence for intake review." }
 ]

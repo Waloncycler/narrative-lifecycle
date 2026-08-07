@@ -19,15 +19,15 @@ export class FilePilotRepository {
   }
 
   readLatestRun(): RunManifest {
-    return this.readJson('outputs/runs/latest_run.json');
+    return this.readOperationalOrLegacy('latest_run.json', 'outputs/runs/latest_run.json');
   }
 
   readWeeklyBrief(): WeeklyBrief {
-    return this.readJson('outputs/reports/weekly_brief.json');
+    return this.readOperationalOrLegacy('latest_weekly_brief.json', 'outputs/reports/weekly_brief.json');
   }
 
   readStageDiff(): StageDiff {
-    return this.readJson('outputs/diffs/latest_stage_diff.json');
+    return this.readOperationalOrLegacy('latest_stage_diff.json', 'outputs/diffs/latest_stage_diff.json');
   }
 
   readOperatorReview(): OperatorReview {
@@ -36,9 +36,9 @@ export class FilePilotRepository {
 
   sourceArtifacts(): string[] {
     return [
-      'outputs/runs/latest_run.json',
-      'outputs/reports/weekly_brief.json',
-      'outputs/diffs/latest_stage_diff.json',
+      existsSync(resolve(this.repoRoot, 'outputs/operator_runs/latest_run.json')) ? 'outputs/operator_runs/latest_run.json' : 'outputs/runs/latest_run.json',
+      existsSync(resolve(this.repoRoot, 'outputs/operator_runs/latest_weekly_brief.json')) ? 'outputs/operator_runs/latest_weekly_brief.json' : 'outputs/reports/weekly_brief.json',
+      existsSync(resolve(this.repoRoot, 'outputs/operator_runs/latest_stage_diff.json')) ? 'outputs/operator_runs/latest_stage_diff.json' : 'outputs/diffs/latest_stage_diff.json',
       'outputs/reviews/latest_operator_review.json',
       PILOT_TOPICS_PATH,
       PILOT_OBSERVATIONS_PATH,
@@ -72,6 +72,13 @@ export class FilePilotRepository {
 
   private readJson<T>(relativePath: string): T {
     return JSON.parse(readFileSync(resolve(this.repoRoot, relativePath), 'utf8')) as T;
+  }
+
+  private readOperationalOrLegacy<T>(operationalFile: string, legacyPath: string): T {
+    const operationalPath = resolve(this.repoRoot, 'outputs/operator_runs', operationalFile);
+    return existsSync(operationalPath)
+      ? JSON.parse(readFileSync(operationalPath, 'utf8')) as T
+      : this.readJson<T>(legacyPath);
   }
 
   private readYaml<T>(relativePath: string): T {

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "RawDocument",
+  "additionalProperties": false,
+  "required": ["raw_document_id", "source_name", "source_kind", "ingested_at", "text", "character_count"],
+  "properties": {
+    "raw_document_id": { "type": "string", "minLength": 1 },
+    "source_name": { "type": "string", "minLength": 1 },
+    "source_kind": { "enum": ["txt", "markdown", "docx", "html", "pdf", "pasted_text"] },
+    "ingested_at": { "type": "string", "format": "date-time" },
+    "text": { "type": "string" },
+    "character_count": { "type": "integer", "minimum": 0 }
+  }
+}

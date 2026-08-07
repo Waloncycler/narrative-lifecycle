@@ -3,11 +3,11 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260713T035113631_508dfa",
-  "generated_at": "2026-07-13T03:51:13.631Z",
-  "started_at": "2026-07-13T03:51:13.631Z",
+  "run_id": "run_20260807T073128528_e95d36",
+  "generated_at": "2026-08-07T07:31:28.528Z",
+  "started_at": "2026-08-07T07:31:28.528Z",
   "artifact_version": "0.4.0",
-  "completed_at": "2026-07-13T03:51:14.089Z",
+  "completed_at": "2026-08-07T07:31:28.798Z",
   "status": "ok",
   "commands": [
     "pipeline",
@@ -15,14 +15,14 @@
     "report"
   ],
   "artifacts": [
-    "outputs/runs/run_20260713T035113631_508dfa/stage_snapshot.json",
-    "outputs/runs/run_20260713T035113631_508dfa/stage_diff.json",
-    "outputs/runs/run_20260713T035113631_508dfa/stage_diff.md",
-    "outputs/runs/run_20260713T035113631_508dfa/weekly_brief.json",
-    "outputs/runs/run_20260713T035113631_508dfa/weekly_brief.md"
+    "outputs/runs/run_20260807T073128528_e95d36/stage_snapshot.json",
+    "outputs/runs/run_20260807T073128528_e95d36/stage_diff.json",
+    "outputs/runs/run_20260807T073128528_e95d36/stage_diff.md",
+    "outputs/runs/run_20260807T073128528_e95d36/weekly_brief.json",
+    "outputs/runs/run_20260807T073128528_e95d36/weekly_brief.md"
   ],
-  "previous_run_id": "run_20260713T035057514_3ac02b",
-  "current_snapshot_id": "stage_snapshot_run_20260713T035113631_508dfa",
-  "previous_snapshot_id": "stage_snapshot_run_20260713T035057514_3ac02b",
+  "previous_run_id": "run_20260807T072944527_bfd921",
+  "current_snapshot_id": "stage_snapshot_run_20260807T073128528_e95d36",
+  "previous_snapshot_id": "stage_snapshot_run_20260807T072944527_bfd921",
   "guardrail_status": "ok"
 }
