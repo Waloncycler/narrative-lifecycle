@@ -36,7 +36,7 @@ describe('interactive intake workbench', () => {
     const base = await listen(root);
     const page = await fetch(base);
     const html = await page.text();
-    expect(html).toContain('今日研究概览');
+    expect(html).toContain('研究概览');
     expect(html).toContain('当前还没有正式的周度研究结果');
     expect(html).toContain('aria-label="主导航"');
     expect(html).toContain('href="/queue">研究队列');
@@ -122,8 +122,12 @@ describe('interactive intake workbench', () => {
     };
     const bci = operationalSnapshot.topics.find((topic) => topic.topic_id === 'bci');
     expect(bci?.why_not_higher_stage).toContain('Missing pricing adoption');
+    // The operational Evidence Table carries a historical backfill for this
+    // branch (including a policy/perception signal), so it clears the stable-
+    // label gate at S3. The invariant under test is unchanged: this is branch
+    // evidence, and the parent above still holds at S4.
     expect(bci?.branches.find((branch) => branch.branch_id === 'bci_medical_rehab')).toMatchObject({
-      current_stage: 'S2',
+      current_stage: 'S3',
     });
     expect(bci?.branches.find((branch) => branch.branch_id === 'bci_medical_rehab')?.evidence_ids)
       .toContain('interactive_bci_medical_rehab_reviewed_001');
@@ -141,7 +145,7 @@ describe('interactive intake workbench', () => {
     expect(monitor.status).toBe('ready');
     expect(monitor.topics.map((topic) => topic.topic_id)).toContain('bci');
     const dashboard = await fetch(base).then((response) => response.text());
-    expect(dashboard).toContain('今日研究概览');
+    expect(dashboard).toContain('研究概览');
     expect(dashboard).toContain('系统健康与数据新鲜度');
     const changesPage = await fetch(`${base}/changes`).then((response) => response.text());
     expect(changesPage).toContain('变化中心');
@@ -172,8 +176,10 @@ describe('interactive intake workbench', () => {
     expect(sourcesPage).toContain('忽略轻微修订');
     expect(sourcesPage).toContain('不代表它已经成为正式证据');
     const topicPage = await fetch(`${base}/topics/bci`).then((response) => response.text());
-    expect(topicPage).toContain('整体主题与细分分支');
-    expect(topicPage).toContain('分支不自动升级整体主题');
+    // The topic detail page shows the parent/branch structure ("分支地图") and
+    // the isolation guardrail ("隔离验证" — branch stage never lifts the parent).
+    expect(topicPage).toContain('分支地图');
+    expect(topicPage).toContain('隔离验证');
     expect(topicPage).toContain('nav-link active" href="/topics" aria-current="page">主题');
     const queuePage = await fetch(`${base}/queue`).then((response) => response.text());
     expect(queuePage).toContain('研究待处理队列');

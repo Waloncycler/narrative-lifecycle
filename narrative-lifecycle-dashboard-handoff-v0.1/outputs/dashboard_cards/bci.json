@@ -12,6 +12,13 @@
   "stage_snapshot": {
     "current_stage": "S4",
     "max_allowed_stage": "S4",
+    "gate_input": {
+      "hasStableLabel": true,
+      "hasCapitalConfirmation": true,
+      "hasPricingAdoption": false,
+      "hasHardRealityEvidence": false,
+      "independentSourceCount": 2
+    },
     "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence; Missing at least 3 independent sources.",
     "evidence_ids": [
       "bci_parent_label",

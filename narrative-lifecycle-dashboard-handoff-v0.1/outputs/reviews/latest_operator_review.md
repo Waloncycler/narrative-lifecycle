@@ -2,673 +2,135 @@
 
 ## 1. Review Window
 
-- review_id: operator_review_run_20260807T123504493_fba2e3
-- generated_at: 2026-08-07T12:35:04.800Z
+- review_id: operator_review_run_20260807T141859227_d174fc
+- generated_at: 2026-08-07T14:18:59.995Z
 - status: ok
-- first_run_id: run_20260802T181123872_9133dd
-- last_run_id: run_20260807T123504493_fba2e3
-- run_count: 93
-- successful_run_count: 93
+- first_run_id: run_20260807T132013509_5a4aea
+- last_run_id: run_20260807T141859227_d174fc
+- run_count: 8
+- successful_run_count: 8
 - failed_run_count: 0
 
 ## 2. Stage Upgrade/Downgrade Trends
 
 ### Upgrades
-- run_20260803T145927354_a51824: 脑机接口; stage=S0 -> S4; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260807T102443050_f3c588: 脑机接口; stage=S4 -> S6; evidence_ids=ev_probe_cbbf4a76f9854c82
-- run_20260807T102443050_f3c588: 存储芯片; stage=S0 -> S4; evidence_ids=ev_mem_cxmt_wafer_expansion_2026, ev_mem_miit_policy_support_2026
-- run_20260807T102443050_f3c588: 增材制造; stage=S0 -> S2; evidence_ids=ev_probe_5df83a9e30fc2404, ev_probe_68a3ff38a4f2a25a, ev_probe_73a9f86d483f295c, ev_probe_7df310a0927544bd, ev_probe_b4a6b7fb21b57408
-- run_20260807T104133539_4bca70: 人形机器人; stage=S0 -> S6; evidence_ids=ev_humanoid_china_policy_2026, ev_humanoid_figure_funding_2026, ev_humanoid_tesla_optimus_gen3_2026
-- run_20260807T104133539_4bca70: 创新药对外授权; stage=S0 -> S6; evidence_ids=ev_licout_fda_approval_2026, ev_licout_nmpa_policy_2026, ev_licout_total_deal_2026
-- run_20260807T104133539_4bca70: 区块链与加密资产; stage=S0 -> S6; evidence_ids=ev_crypto_btc_etf_2026, ev_crypto_regulation_framework_2026
-- run_20260807T104133539_4bca70: 高端消费; stage=S0 -> S6; evidence_ids=ev_luxury_baijiu_recovery_2026, ev_luxury_hainan_dutyfree_2026
-- run_20260807T104133539_4bca70: 低空经济; stage=S0 -> S6; evidence_ids=ev_lowalt_ehang_cert_2026, ev_lowalt_investment_2026, ev_lowalt_policy_pilot_2026
-- run_20260807T104133539_4bca70: 新能源产业; stage=S0 -> S6; evidence_ids=ev_newenergy_policy_dual_carbon_2026, ev_newenergy_solar_shipment_2026, ev_newenergy_storage_catl_2026
-- run_20260807T104133539_4bca70: 商业航天; stage=S0 -> S6; evidence_ids=ev_space_china_launch_2026, ev_space_satellite_policy_2026, ev_space_starlink_revenue_2026
-- run_20260807T104133539_4bca70: 量子计算; stage=S0 -> S4; evidence_ids=ev_quantum_china_network_2026, ev_quantum_ibm_condor_2026
-- run_20260807T104133539_4bca70: 基础大模型; stage=S0 -> S6; evidence_ids=ev_llm_claude_opus4_2026, ev_llm_deepseek_v3_2026, ev_llm_enterprise_adoption_2026
-- run_20260807T104133539_4bca70: 半导体先进制造; stage=S0 -> S6; evidence_ids=ev_semi_chips_act_2026, ev_semi_smic_expansion_2026, ev_semi_tsmc_2nm_2026
-- run_20260807T104133539_4bca70: AI 智能体; stage=S0 -> S6; evidence_ids=ev_agent_china_regulation_2026, ev_agent_enterprise_deploy_2026, ev_agent_mcp_standard_2026
-- run_20260807T104133539_4bca70: 智能制造; stage=S0 -> S6; evidence_ids=ev_smartmfg_industrial_iot_2026, ev_smartmfg_vision_market_2026
-- run_20260807T104133539_4bca70: 算力基础设施; stage=S0 -> S6; evidence_ids=ev_compute_dc_china_2026, ev_compute_liquid_cool_2026, ev_compute_nvidia_gb200_2026
-- run_20260807T105211593_d3cab6: 创新药临床研发; stage=S2 -> S3; evidence_ids=ev_hist_a4cd3c67603b7cce
-- run_20260807T105211593_d3cab6: 中国知识产权政策; stage=S2 -> S3; evidence_ids=ev_hist_83e93178b90884c2
-- run_20260807T105211593_d3cab6: 增材制造; stage=S2 -> S3; evidence_ids=ev_hist_fe0eda7c3e4457d2
-- run_20260807T105211593_d3cab6: 社会保障政策; stage=S2 -> S3; evidence_ids=ev_hist_0de5d94c96161154
-- run_20260807T105211593_d3cab6: Advanced Packaging; stage=S2 -> S3; evidence_ids=ev_hist_99a2294c2928084d
+- run_20260807T133849680_a884aa: 存储芯片; stage=S4 -> S6; evidence_ids=ev_bf_provisional_semiconductor_memory_market_20230620_7b76959d, ev_bf_provisional_semiconductor_memory_market_20240319_2a442c15, ev_bf_provisional_semiconductor_memory_market_20240626_148da13c, ev_bf_provisional_semiconductor_memory_market_20241022_140a70b5, ev_bf_provisional_semiconductor_memory_market_20250514_e2d4fcee
 ### Downgrades
-- run_20260807T103017741_9a0f3e: 脑机接口; stage=S6 -> S4; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260807T123504493_fba2e3: 人形机器人; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 创新药对外授权; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 区块链与加密资产; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 高端消费; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 低空经济; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 新能源产业; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 商业航天; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 量子计算; stage=S4 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 创新药临床研发; stage=S3 -> S2; evidence_ids=wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6
-- run_20260807T123504493_fba2e3: 基础大模型; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 半导体先进制造; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 存储芯片; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 中国知识产权政策; stage=S3 -> S2; evidence_ids=wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0
-- run_20260807T123504493_fba2e3: 增材制造; stage=S3 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 社会保障政策; stage=S3 -> S2; evidence_ids=wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0
-- run_20260807T123504493_fba2e3: AI 智能体; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 智能制造; stage=S6 -> S0; evidence_ids=none
-- run_20260807T123504493_fba2e3: 算力基础设施; stage=S6 -> S0; evidence_ids=none
+- none
 
 ## 3. Evidence Added/Removed Trends
 
 ### Added
-- run_20260802T183030393_2e4435: Innovative Drug Clinical Development; evidence=none -> none; evidence_ids=wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6
-- run_20260803T145927354_a51824: 脑机接口; evidence=none -> none; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260807T102443050_f3c588: 脑机接口; evidence=none -> none; evidence_ids=ev_probe_cbbf4a76f9854c82
-- run_20260807T102443050_f3c588: 人形机器人; evidence=none -> none; evidence_ids=ev_probe_329791bdabd1e2a8
-- run_20260807T102443050_f3c588: 存储芯片; evidence=none -> none; evidence_ids=ev_mem_cxmt_wafer_expansion_2026, ev_mem_miit_policy_support_2026
-- run_20260807T102443050_f3c588: 增材制造; evidence=none -> none; evidence_ids=ev_probe_5df83a9e30fc2404, ev_probe_68a3ff38a4f2a25a, ev_probe_73a9f86d483f295c, ev_probe_7df310a0927544bd, ev_probe_b4a6b7fb21b57408
-- run_20260807T102443050_f3c588: AI 智能体; evidence=none -> none; evidence_ids=direct_arxiv_mn8gv5, ev_probe_889c5c2d51bd842b
-- run_20260807T104133539_4bca70: 人形机器人; evidence=none -> none; evidence_ids=ev_humanoid_china_policy_2026, ev_humanoid_figure_funding_2026, ev_humanoid_tesla_optimus_gen3_2026
-- run_20260807T104133539_4bca70: 创新药对外授权; evidence=none -> none; evidence_ids=ev_licout_fda_approval_2026, ev_licout_nmpa_policy_2026, ev_licout_total_deal_2026
-- run_20260807T104133539_4bca70: 区块链与加密资产; evidence=none -> none; evidence_ids=ev_crypto_btc_etf_2026, ev_crypto_regulation_framework_2026
-- run_20260807T104133539_4bca70: 高端消费; evidence=none -> none; evidence_ids=ev_luxury_baijiu_recovery_2026, ev_luxury_hainan_dutyfree_2026
-- run_20260807T104133539_4bca70: 低空经济; evidence=none -> none; evidence_ids=ev_lowalt_ehang_cert_2026, ev_lowalt_investment_2026, ev_lowalt_policy_pilot_2026
-- run_20260807T104133539_4bca70: 新能源产业; evidence=none -> none; evidence_ids=ev_newenergy_policy_dual_carbon_2026, ev_newenergy_solar_shipment_2026, ev_newenergy_storage_catl_2026
-- run_20260807T104133539_4bca70: 商业航天; evidence=none -> none; evidence_ids=ev_space_china_launch_2026, ev_space_satellite_policy_2026, ev_space_starlink_revenue_2026
-- run_20260807T104133539_4bca70: 量子计算; evidence=none -> none; evidence_ids=ev_quantum_china_network_2026, ev_quantum_ibm_condor_2026
-- run_20260807T104133539_4bca70: 基础大模型; evidence=none -> none; evidence_ids=ev_llm_claude_opus4_2026, ev_llm_deepseek_v3_2026, ev_llm_enterprise_adoption_2026
-- run_20260807T104133539_4bca70: 半导体先进制造; evidence=none -> none; evidence_ids=ev_semi_chips_act_2026, ev_semi_smic_expansion_2026, ev_semi_tsmc_2nm_2026
-- run_20260807T104133539_4bca70: AI 智能体; evidence=none -> none; evidence_ids=ev_agent_china_regulation_2026, ev_agent_enterprise_deploy_2026, ev_agent_mcp_standard_2026
-- run_20260807T104133539_4bca70: 智能制造; evidence=none -> none; evidence_ids=ev_smartmfg_industrial_iot_2026, ev_smartmfg_vision_market_2026
-- run_20260807T104133539_4bca70: 算力基础设施; evidence=none -> none; evidence_ids=ev_compute_dc_china_2026, ev_compute_liquid_cool_2026, ev_compute_nvidia_gb200_2026
-- run_20260807T105211593_d3cab6: 脑机接口; evidence=none -> none; evidence_ids=ev_hist_f82a905b66987ade
-- run_20260807T105211593_d3cab6: 人形机器人; evidence=none -> none; evidence_ids=ev_hist_d9a4fc2d3381db59, ev_hist_f31012b0b1dc8329
-- run_20260807T105211593_d3cab6: 创新药对外授权; evidence=none -> none; evidence_ids=ev_hist_74e5acf3063e1222
-- run_20260807T105211593_d3cab6: 区块链与加密资产; evidence=none -> none; evidence_ids=ev_hist_0e46aca4dbc5a030, ev_hist_d4d1505106896162
-- run_20260807T105211593_d3cab6: 高端消费; evidence=none -> none; evidence_ids=ev_hist_c02af092e16bf78d
-- run_20260807T105211593_d3cab6: 低空经济; evidence=none -> none; evidence_ids=ev_hist_532abf457690b8b3, ev_hist_c73a2baf76a25df5
-- run_20260807T105211593_d3cab6: 新能源产业; evidence=none -> none; evidence_ids=ev_hist_812852629cbd178f
-- run_20260807T105211593_d3cab6: 商业航天; evidence=none -> none; evidence_ids=ev_hist_63839fae0b49b162
-- run_20260807T105211593_d3cab6: 量子计算; evidence=none -> none; evidence_ids=ev_hist_05a7a46d3f07f855, ev_hist_6bf8ddd97c74be09
-- run_20260807T105211593_d3cab6: 创新药临床研发; evidence=none -> none; evidence_ids=ev_hist_a4cd3c67603b7cce
-- run_20260807T105211593_d3cab6: 基础大模型; evidence=none -> none; evidence_ids=ev_hist_2cab3ea10b8b7ae2, ev_hist_a7468c6851652691
-- run_20260807T105211593_d3cab6: 半导体先进制造; evidence=none -> none; evidence_ids=ev_hist_1215bb2319840e92
-- run_20260807T105211593_d3cab6: 存储芯片; evidence=none -> none; evidence_ids=ev_hist_36d0480599298233
-- run_20260807T105211593_d3cab6: 中国知识产权政策; evidence=none -> none; evidence_ids=ev_hist_83e93178b90884c2
-- run_20260807T105211593_d3cab6: 增材制造; evidence=none -> none; evidence_ids=ev_hist_fe0eda7c3e4457d2
-- run_20260807T105211593_d3cab6: 社会保障政策; evidence=none -> none; evidence_ids=ev_hist_0de5d94c96161154
-- run_20260807T105211593_d3cab6: Advanced Packaging; evidence=none -> none; evidence_ids=ev_hist_99a2294c2928084d
-- run_20260807T105211593_d3cab6: AI 智能体; evidence=none -> none; evidence_ids=ev_hist_7fc08de27bce1b0c, ev_hist_efc9ff30e0690f22
-- run_20260807T105211593_d3cab6: 智能制造; evidence=none -> none; evidence_ids=ev_hist_fb708bb2041e0d62
-- run_20260807T105211593_d3cab6: 算力基础设施; evidence=none -> none; evidence_ids=ev_hist_4b5e90bfe73258bd
+- run_20260807T133849680_a884aa: 脑机接口; evidence=none -> none; evidence_ids=ev_bf_bci_20230525_596a86e7, ev_bf_bci_20230823_0bb41e73, ev_bf_bci_20240129_5ebeecad, ev_bf_bci_20240517_ed154eef
+- run_20260807T133849680_a884aa: 人形机器人; evidence=none -> none; evidence_ids=ev_bf_humanoid_robotics_20230316_918ae0cf, ev_bf_humanoid_robotics_20230516_6197a421, ev_bf_humanoid_robotics_20231102_ab0f4cf5, ev_bf_humanoid_robotics_20240229_7f605c62, ev_bf_humanoid_robotics_20240513_68837d98, ev_bf_humanoid_robotics_20241106_f8f05f50
+- run_20260807T133849680_a884aa: 创新药对外授权; evidence=none -> none; evidence_ids=ev_bf_innovative_drug_license_out_20221222_f1022c9f, ev_bf_innovative_drug_license_out_20230801_2a9b5ef4, ev_bf_innovative_drug_license_out_20231211_5c2dbd93, ev_bf_innovative_drug_license_out_20240516_f0651413, ev_bf_innovative_drug_license_out_20250520_b9faaeb5
+- run_20260807T133849680_a884aa: 区块链与加密资产; evidence=none -> none; evidence_ids=ev_bf_provisional_blockchain_crypto_market_20221111_6c508eec, ev_bf_provisional_blockchain_crypto_market_20230615_e54fd8cd, ev_bf_provisional_blockchain_crypto_market_20240110_72f7a8e1, ev_bf_provisional_blockchain_crypto_market_20240314_089e97fb, ev_bf_provisional_blockchain_crypto_market_20250718_9978acbd
+- run_20260807T133849680_a884aa: 高端消费; evidence=none -> none; evidence_ids=ev_bf_provisional_luxury_consumer_20230108_f94b1769, ev_bf_provisional_luxury_consumer_20230410_85dd50fc, ev_bf_provisional_luxury_consumer_20240125_9cd2fcd5, ev_bf_provisional_luxury_consumer_20240815_cd37602d, ev_bf_provisional_luxury_consumer_20250117_ca00cb4b
+- run_20260807T133849680_a884aa: 低空经济; evidence=none -> none; evidence_ids=ev_bf_provisional_low_altitude_economy_20231013_52e503aa, ev_bf_provisional_low_altitude_economy_20231211_fd795af2, ev_bf_provisional_low_altitude_economy_20240327_ae9a5eac, ev_bf_provisional_low_altitude_economy_20241227_487ee2ec, ev_bf_provisional_low_altitude_economy_20250320_3fe2bb70
+- run_20260807T133849680_a884aa: 新能源产业; evidence=none -> none; evidence_ids=ev_bf_provisional_new_energy_industry_20230118_ff665b55, ev_bf_provisional_new_energy_industry_20230926_35d6d79c, ev_bf_provisional_new_energy_industry_20231205_a7a405cf, ev_bf_provisional_new_energy_industry_20240520_bcb67fd4, ev_bf_provisional_new_energy_industry_20250117_9642a08e
+- run_20260807T133849680_a884aa: 商业航天; evidence=none -> none; evidence_ids=ev_bf_provisional_commercial_space_20230420_8a2f5d57, ev_bf_provisional_commercial_space_20231214_4c8e6966, ev_bf_provisional_commercial_space_20240305_9611ce25, ev_bf_provisional_commercial_space_20241112_536f7ec3, ev_bf_provisional_commercial_space_20250120_2aaa7f00
+- run_20260807T133849680_a884aa: 量子计算; evidence=none -> none; evidence_ids=ev_bf_provisional_quantum_computing_20230614_e9884a71, ev_bf_provisional_quantum_computing_20231204_8cb743f7, ev_bf_provisional_quantum_computing_20241209_fff8c220, ev_bf_provisional_quantum_computing_20250219_005ac58c, ev_bf_provisional_quantum_computing_20250312_895a3b67
+- run_20260807T133849680_a884aa: 创新药临床研发; evidence=none -> none; evidence_ids=ev_bf_provisional_innovative_drug_clinical_development_20230220_11a041ea, ev_bf_provisional_innovative_drug_clinical_development_20230714_a7054210, ev_bf_provisional_innovative_drug_clinical_development_20240910_3c8957a8, ev_bf_provisional_innovative_drug_clinical_development_20250602_47c22457
+- run_20260807T133849680_a884aa: 基础大模型; evidence=none -> none; evidence_ids=ev_bf_provisional_ai_foundation_models_20230314_94286f88, ev_bf_provisional_ai_foundation_models_20231115_7f77a0f7, ev_bf_provisional_ai_foundation_models_20240304_6f3ced61, ev_bf_provisional_ai_foundation_models_20240521_47eb33a5, ev_bf_provisional_ai_foundation_models_20250120_f292c40a
+- run_20260807T133849680_a884aa: 半导体先进制造; evidence=none -> none; evidence_ids=ev_bf_provisional_semiconductor_advanced_manufacturing_20221229_fe193464, ev_bf_provisional_semiconductor_advanced_manufacturing_20231017_6d21424b, ev_bf_provisional_semiconductor_advanced_manufacturing_20240124_86388e50, ev_bf_provisional_semiconductor_advanced_manufacturing_20240716_36f48ad0, ev_bf_provisional_semiconductor_advanced_manufacturing_20250415_adf2ad62
+- run_20260807T133849680_a884aa: 存储芯片; evidence=none -> none; evidence_ids=ev_bf_provisional_semiconductor_memory_market_20230620_7b76959d, ev_bf_provisional_semiconductor_memory_market_20240319_2a442c15, ev_bf_provisional_semiconductor_memory_market_20240626_148da13c, ev_bf_provisional_semiconductor_memory_market_20241022_140a70b5, ev_bf_provisional_semiconductor_memory_market_20250514_e2d4fcee
+- run_20260807T133849680_a884aa: 中国知识产权政策; evidence=none -> none; evidence_ids=ev_bf_provisional_china_ip_policy_20230116_e79c3d65, ev_bf_provisional_china_ip_policy_20231025_2ea0acc5, ev_bf_provisional_china_ip_policy_20240120_18717bbe, ev_bf_provisional_china_ip_policy_20250306_c4857833
+- run_20260807T133849680_a884aa: 增材制造; evidence=none -> none; evidence_ids=ev_bf_provisional_additive_manufacturing_20230510_6a6f3596, ev_bf_provisional_additive_manufacturing_20230912_d88fd2d7, ev_bf_provisional_additive_manufacturing_20240418_de2199f3, ev_bf_provisional_additive_manufacturing_20250225_6e6fcb90
+- run_20260807T133849680_a884aa: 社会保障政策; evidence=none -> none; evidence_ids=ev_bf_provisional_china_social_security_policy_20230224_ecf7cdf2, ev_bf_provisional_china_social_security_policy_20240913_78ec13cc, ev_bf_provisional_china_social_security_policy_20241215_659b07c5, ev_bf_provisional_china_social_security_policy_20250318_0229b0bc
+- run_20260807T133849680_a884aa: Advanced Packaging; evidence=none -> none; evidence_ids=ev_bf_provisional_advanced_packaging_20230705_20095cbf, ev_bf_provisional_advanced_packaging_20231120_a1b20a65, ev_bf_provisional_advanced_packaging_20240814_93f7f32a, ev_bf_provisional_advanced_packaging_20250506_a05a50b0
+- run_20260807T133849680_a884aa: AI 智能体; evidence=none -> none; evidence_ids=ev_bf_provisional_ai_agents_20230330_a6b5a862, ev_bf_provisional_ai_agents_20231106_2026418c, ev_bf_provisional_ai_agents_20241029_631c9bd1, ev_bf_provisional_ai_agents_20241125_d8a87be4, ev_bf_provisional_ai_agents_20250519_cdcc5928
+- run_20260807T133849680_a884aa: 智能制造; evidence=none -> none; evidence_ids=ev_bf_provisional_smart_manufacturing_20230926_bb4b018f, ev_bf_provisional_smart_manufacturing_20231228_c279227d, ev_bf_provisional_smart_manufacturing_20240313_86bcda6d, ev_bf_provisional_smart_manufacturing_20240822_19f8253b, ev_bf_provisional_smart_manufacturing_20250117_44ebd458
+- run_20260807T133849680_a884aa: 算力基础设施; evidence=none -> none; evidence_ids=ev_bf_provisional_computing_infrastructure_20230321_8d70baae, ev_bf_provisional_computing_infrastructure_20231008_d55db502, ev_bf_provisional_computing_infrastructure_20240124_38bc3562, ev_bf_provisional_computing_infrastructure_20240221_e425c2f1, ev_bf_provisional_computing_infrastructure_20250123_e8aa14ab
 ### Removed
-- run_20260807T103017741_9a0f3e: 脑机接口; evidence=none -> none; evidence_ids=ev_probe_cbbf4a76f9854c82
-- run_20260807T103017741_9a0f3e: 人形机器人; evidence=none -> none; evidence_ids=ev_probe_329791bdabd1e2a8
-- run_20260807T103017741_9a0f3e: AI 智能体; evidence=none -> none; evidence_ids=direct_arxiv_mn8gv5, ev_probe_889c5c2d51bd842b
-- run_20260807T123504493_fba2e3: 脑机接口; evidence=none -> none; evidence_ids=ev_hist_f82a905b66987ade
-- run_20260807T123504493_fba2e3: 人形机器人; evidence=none -> none; evidence_ids=ev_hist_d9a4fc2d3381db59, ev_hist_f31012b0b1dc8329, ev_humanoid_china_policy_2026, ev_humanoid_figure_funding_2026, ev_humanoid_tesla_optimus_gen3_2026
-- run_20260807T123504493_fba2e3: 创新药对外授权; evidence=none -> none; evidence_ids=ev_hist_74e5acf3063e1222, ev_licout_fda_approval_2026, ev_licout_nmpa_policy_2026, ev_licout_total_deal_2026
-- run_20260807T123504493_fba2e3: 区块链与加密资产; evidence=none -> none; evidence_ids=ev_crypto_btc_etf_2026, ev_crypto_regulation_framework_2026, ev_hist_0e46aca4dbc5a030, ev_hist_d4d1505106896162
-- run_20260807T123504493_fba2e3: 高端消费; evidence=none -> none; evidence_ids=ev_hist_c02af092e16bf78d, ev_luxury_baijiu_recovery_2026, ev_luxury_hainan_dutyfree_2026
-- run_20260807T123504493_fba2e3: 低空经济; evidence=none -> none; evidence_ids=ev_hist_532abf457690b8b3, ev_hist_c73a2baf76a25df5, ev_lowalt_ehang_cert_2026, ev_lowalt_investment_2026, ev_lowalt_policy_pilot_2026
-- run_20260807T123504493_fba2e3: 新能源产业; evidence=none -> none; evidence_ids=ev_hist_812852629cbd178f, ev_newenergy_policy_dual_carbon_2026, ev_newenergy_solar_shipment_2026, ev_newenergy_storage_catl_2026
-- run_20260807T123504493_fba2e3: 商业航天; evidence=none -> none; evidence_ids=ev_hist_63839fae0b49b162, ev_space_china_launch_2026, ev_space_satellite_policy_2026, ev_space_starlink_revenue_2026
-- run_20260807T123504493_fba2e3: 量子计算; evidence=none -> none; evidence_ids=ev_hist_05a7a46d3f07f855, ev_hist_6bf8ddd97c74be09, ev_quantum_china_network_2026, ev_quantum_ibm_condor_2026
-- run_20260807T123504493_fba2e3: 创新药临床研发; evidence=none -> none; evidence_ids=ev_hist_a4cd3c67603b7cce
-- run_20260807T123504493_fba2e3: 基础大模型; evidence=none -> none; evidence_ids=ev_hist_2cab3ea10b8b7ae2, ev_hist_a7468c6851652691, ev_llm_claude_opus4_2026, ev_llm_deepseek_v3_2026, ev_llm_enterprise_adoption_2026
-- run_20260807T123504493_fba2e3: 半导体先进制造; evidence=none -> none; evidence_ids=ev_hist_1215bb2319840e92, ev_semi_chips_act_2026, ev_semi_smic_expansion_2026, ev_semi_tsmc_2nm_2026
-- run_20260807T123504493_fba2e3: 存储芯片; evidence=none -> none; evidence_ids=ev_hist_36d0480599298233, ev_mem_cxmt_wafer_expansion_2026, ev_mem_miit_policy_support_2026
-- run_20260807T123504493_fba2e3: 中国知识产权政策; evidence=none -> none; evidence_ids=ev_hist_83e93178b90884c2
-- run_20260807T123504493_fba2e3: 增材制造; evidence=none -> none; evidence_ids=ev_hist_fe0eda7c3e4457d2, ev_probe_5df83a9e30fc2404, ev_probe_68a3ff38a4f2a25a, ev_probe_73a9f86d483f295c, ev_probe_7df310a0927544bd, ev_probe_b4a6b7fb21b57408
-- run_20260807T123504493_fba2e3: 社会保障政策; evidence=none -> none; evidence_ids=ev_hist_0de5d94c96161154
-- run_20260807T123504493_fba2e3: AI 智能体; evidence=none -> none; evidence_ids=ev_agent_china_regulation_2026, ev_agent_enterprise_deploy_2026, ev_agent_mcp_standard_2026, ev_hist_7fc08de27bce1b0c, ev_hist_efc9ff30e0690f22
-- run_20260807T123504493_fba2e3: 智能制造; evidence=none -> none; evidence_ids=ev_hist_fb708bb2041e0d62, ev_smartmfg_industrial_iot_2026, ev_smartmfg_vision_market_2026
-- run_20260807T123504493_fba2e3: 算力基础设施; evidence=none -> none; evidence_ids=ev_compute_dc_china_2026, ev_compute_liquid_cool_2026, ev_compute_nvidia_gb200_2026, ev_hist_4b5e90bfe73258bd
+- none
 
 ## 4. Why Not Higher And Data Confidence
 
 ### Why Not Higher Changes
-- run_20260803T145927354_a51824: 脑机接口; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> Missing pricing adoption; Missing hard reality evidence.; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260807T102443050_f3c588: 脑机接口; why_not_higher=Missing pricing adoption; Missing hard reality evidence. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_probe_cbbf4a76f9854c82
-- run_20260807T102443050_f3c588: 人形机器人; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> No evidence is available for this scope.; evidence_ids=ev_probe_329791bdabd1e2a8
-- run_20260807T102443050_f3c588: 存储芯片; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> Missing pricing adoption.; evidence_ids=ev_mem_cxmt_wafer_expansion_2026, ev_mem_miit_policy_support_2026
-- run_20260807T102443050_f3c588: 增材制造; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> Missing stable label; Missing capital confirmation; Missing pricing adoption.; evidence_ids=ev_probe_5df83a9e30fc2404, ev_probe_68a3ff38a4f2a25a, ev_probe_73a9f86d483f295c, ev_probe_7df310a0927544bd, ev_probe_b4a6b7fb21b57408
-- run_20260807T102443050_f3c588: AI 智能体; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> No evidence is available for this scope.; evidence_ids=direct_arxiv_mn8gv5, ev_probe_889c5c2d51bd842b
-- run_20260807T103017741_9a0f3e: 脑机接口; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> Missing pricing adoption; Missing hard reality evidence.; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260807T103017741_9a0f3e: 人形机器人; why_not_higher=No evidence is available for this scope. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T103017741_9a0f3e: AI 智能体; why_not_higher=No evidence is available for this scope. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T104133539_4bca70: 人形机器人; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_humanoid_china_policy_2026, ev_humanoid_figure_funding_2026, ev_humanoid_tesla_optimus_gen3_2026
-- run_20260807T104133539_4bca70: 创新药对外授权; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_licout_fda_approval_2026, ev_licout_nmpa_policy_2026, ev_licout_total_deal_2026
-- run_20260807T104133539_4bca70: 区块链与加密资产; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_crypto_btc_etf_2026, ev_crypto_regulation_framework_2026
-- run_20260807T104133539_4bca70: 高端消费; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_luxury_baijiu_recovery_2026, ev_luxury_hainan_dutyfree_2026
-- run_20260807T104133539_4bca70: 低空经济; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_lowalt_ehang_cert_2026, ev_lowalt_investment_2026, ev_lowalt_policy_pilot_2026
-- run_20260807T104133539_4bca70: 新能源产业; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_newenergy_policy_dual_carbon_2026, ev_newenergy_solar_shipment_2026, ev_newenergy_storage_catl_2026
-- run_20260807T104133539_4bca70: 商业航天; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_space_china_launch_2026, ev_space_satellite_policy_2026, ev_space_starlink_revenue_2026
-- run_20260807T104133539_4bca70: 量子计算; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> Missing pricing adoption.; evidence_ids=ev_quantum_china_network_2026, ev_quantum_ibm_condor_2026
-- run_20260807T104133539_4bca70: 基础大模型; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_llm_claude_opus4_2026, ev_llm_deepseek_v3_2026, ev_llm_enterprise_adoption_2026
-- run_20260807T104133539_4bca70: 半导体先进制造; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_semi_chips_act_2026, ev_semi_smic_expansion_2026, ev_semi_tsmc_2nm_2026
-- run_20260807T104133539_4bca70: AI 智能体; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_agent_china_regulation_2026, ev_agent_enterprise_deploy_2026, ev_agent_mcp_standard_2026
-- run_20260807T104133539_4bca70: 智能制造; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_smartmfg_industrial_iot_2026, ev_smartmfg_vision_market_2026
-- run_20260807T104133539_4bca70: 算力基础设施; why_not_higher=No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_compute_dc_china_2026, ev_compute_liquid_cool_2026, ev_compute_nvidia_gb200_2026
-- run_20260807T105211593_d3cab6: 脑机接口; why_not_higher=Missing pricing adoption; Missing hard reality evidence. -> Missing pricing adoption.; evidence_ids=ev_hist_f82a905b66987ade
-- run_20260807T105211593_d3cab6: 创新药临床研发; why_not_higher=Missing stable label; Missing capital confirmation; Missing pricing adoption. -> Missing capital confirmation; Missing pricing adoption.; evidence_ids=ev_hist_a4cd3c67603b7cce
-- run_20260807T105211593_d3cab6: 中国知识产权政策; why_not_higher=Missing stable label; Missing capital confirmation; Missing pricing adoption. -> Missing capital confirmation; Missing pricing adoption.; evidence_ids=ev_hist_83e93178b90884c2
-- run_20260807T105211593_d3cab6: 增材制造; why_not_higher=Missing stable label; Missing capital confirmation; Missing pricing adoption. -> Missing capital confirmation; Missing pricing adoption.; evidence_ids=ev_hist_fe0eda7c3e4457d2
-- run_20260807T105211593_d3cab6: 社会保障政策; why_not_higher=Missing stable label; Missing capital confirmation; Missing pricing adoption. -> Missing capital confirmation; Missing pricing adoption.; evidence_ids=ev_hist_0de5d94c96161154
-- run_20260807T105211593_d3cab6: Advanced Packaging; why_not_higher=Missing stable label; Missing capital confirmation; Missing pricing adoption. -> Missing capital confirmation; Missing pricing adoption.; evidence_ids=ev_hist_99a2294c2928084d
-- run_20260807T111845405_1d5fa8: 中国知识产权政策; why_not_higher=Missing capital confirmation; Missing pricing adoption. -> Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources.; evidence_ids=ev_hist_83e93178b90884c2, wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0
-- run_20260807T111845405_1d5fa8: 社会保障政策; why_not_higher=Missing capital confirmation; Missing pricing adoption. -> Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources.; evidence_ids=ev_hist_0de5d94c96161154, wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0
-- run_20260807T123504493_fba2e3: 脑机接口; why_not_higher=Missing pricing adoption. -> Missing pricing adoption; Missing hard reality evidence.; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260807T123504493_fba2e3: 人形机器人; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 创新药对外授权; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 区块链与加密资产; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 高端消费; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 低空经济; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 新能源产业; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 商业航天; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 量子计算; why_not_higher=Missing pricing adoption. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 创新药临床研发; why_not_higher=Missing capital confirmation; Missing pricing adoption. -> Missing stable label; Missing capital confirmation; Missing pricing adoption.; evidence_ids=wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6
-- run_20260807T123504493_fba2e3: 基础大模型; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 半导体先进制造; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 存储芯片; why_not_higher=S6 is the highest stage modeled in the current schema. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 中国知识产权政策; why_not_higher=Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources. -> Missing stable label; Missing capital confirmation; Missing pricing adoption.; evidence_ids=wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0
-- run_20260807T123504493_fba2e3: 增材制造; why_not_higher=Missing capital confirmation; Missing pricing adoption. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 社会保障政策; why_not_higher=Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources. -> Missing stable label; Missing capital confirmation; Missing pricing adoption.; evidence_ids=wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0
-- run_20260807T123504493_fba2e3: AI 智能体; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 智能制造; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
-- run_20260807T123504493_fba2e3: 算力基础设施; why_not_higher=S6 is not safety; monitor continuity, friction, and S7 branch outcomes. -> No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.; evidence_ids=none
+- run_20260807T133849680_a884aa: 存储芯片; why_not_higher=Missing pricing adoption. -> S6 is not safety; monitor continuity, friction, and S7 branch outcomes.; evidence_ids=ev_bf_provisional_semiconductor_memory_market_20230620_7b76959d, ev_bf_provisional_semiconductor_memory_market_20240319_2a442c15, ev_bf_provisional_semiconductor_memory_market_20240626_148da13c, ev_bf_provisional_semiconductor_memory_market_20241022_140a70b5, ev_bf_provisional_semiconductor_memory_market_20250514_e2d4fcee
+- run_20260807T133849680_a884aa: 中国知识产权政策; why_not_higher=Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources. -> Missing capital confirmation; Missing pricing adoption.; evidence_ids=ev_bf_provisional_china_ip_policy_20230116_e79c3d65, ev_bf_provisional_china_ip_policy_20231025_2ea0acc5, ev_bf_provisional_china_ip_policy_20240120_18717bbe, ev_bf_provisional_china_ip_policy_20250306_c4857833
+- run_20260807T133849680_a884aa: 社会保障政策; why_not_higher=Missing capital confirmation; Missing pricing adoption; Missing at least 3 independent sources. -> Missing capital confirmation; Missing pricing adoption.; evidence_ids=ev_bf_provisional_china_social_security_policy_20230224_ecf7cdf2, ev_bf_provisional_china_social_security_policy_20240913_78ec13cc, ev_bf_provisional_china_social_security_policy_20241215_659b07c5, ev_bf_provisional_china_social_security_policy_20250318_0229b0bc
 ### Data Confidence Changes
-- run_20260803T145927354_a51824: 脑机接口; data_confidence=low -> medium; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260807T102443050_f3c588: 存储芯片; data_confidence=low -> medium; evidence_ids=ev_mem_cxmt_wafer_expansion_2026, ev_mem_miit_policy_support_2026
-- run_20260807T102443050_f3c588: 增材制造; data_confidence=low -> medium; evidence_ids=ev_probe_5df83a9e30fc2404, ev_probe_68a3ff38a4f2a25a, ev_probe_73a9f86d483f295c, ev_probe_7df310a0927544bd, ev_probe_b4a6b7fb21b57408
-- run_20260807T102443050_f3c588: AI 智能体; data_confidence=low -> medium; evidence_ids=direct_arxiv_mn8gv5, ev_probe_889c5c2d51bd842b
-- run_20260807T103017741_9a0f3e: AI 智能体; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T104133539_4bca70: 人形机器人; data_confidence=low -> medium; evidence_ids=ev_humanoid_china_policy_2026, ev_humanoid_figure_funding_2026, ev_humanoid_tesla_optimus_gen3_2026
-- run_20260807T104133539_4bca70: 创新药对外授权; data_confidence=low -> medium; evidence_ids=ev_licout_fda_approval_2026, ev_licout_nmpa_policy_2026, ev_licout_total_deal_2026
-- run_20260807T104133539_4bca70: 区块链与加密资产; data_confidence=low -> medium; evidence_ids=ev_crypto_btc_etf_2026, ev_crypto_regulation_framework_2026
-- run_20260807T104133539_4bca70: 高端消费; data_confidence=low -> medium; evidence_ids=ev_luxury_baijiu_recovery_2026, ev_luxury_hainan_dutyfree_2026
-- run_20260807T104133539_4bca70: 低空经济; data_confidence=low -> medium; evidence_ids=ev_lowalt_ehang_cert_2026, ev_lowalt_investment_2026, ev_lowalt_policy_pilot_2026
-- run_20260807T104133539_4bca70: 新能源产业; data_confidence=low -> medium; evidence_ids=ev_newenergy_policy_dual_carbon_2026, ev_newenergy_solar_shipment_2026, ev_newenergy_storage_catl_2026
-- run_20260807T104133539_4bca70: 商业航天; data_confidence=low -> medium; evidence_ids=ev_space_china_launch_2026, ev_space_satellite_policy_2026, ev_space_starlink_revenue_2026
-- run_20260807T104133539_4bca70: 量子计算; data_confidence=low -> medium; evidence_ids=ev_quantum_china_network_2026, ev_quantum_ibm_condor_2026
-- run_20260807T104133539_4bca70: 基础大模型; data_confidence=low -> medium; evidence_ids=ev_llm_claude_opus4_2026, ev_llm_deepseek_v3_2026, ev_llm_enterprise_adoption_2026
-- run_20260807T104133539_4bca70: 半导体先进制造; data_confidence=low -> medium; evidence_ids=ev_semi_chips_act_2026, ev_semi_smic_expansion_2026, ev_semi_tsmc_2nm_2026
-- run_20260807T104133539_4bca70: AI 智能体; data_confidence=low -> medium; evidence_ids=ev_agent_china_regulation_2026, ev_agent_enterprise_deploy_2026, ev_agent_mcp_standard_2026
-- run_20260807T104133539_4bca70: 智能制造; data_confidence=low -> medium; evidence_ids=ev_smartmfg_industrial_iot_2026, ev_smartmfg_vision_market_2026
-- run_20260807T104133539_4bca70: 算力基础设施; data_confidence=low -> medium; evidence_ids=ev_compute_dc_china_2026, ev_compute_liquid_cool_2026, ev_compute_nvidia_gb200_2026
-- run_20260807T105211593_d3cab6: 中国知识产权政策; data_confidence=low -> medium; evidence_ids=ev_hist_83e93178b90884c2
-- run_20260807T105211593_d3cab6: 社会保障政策; data_confidence=low -> medium; evidence_ids=ev_hist_0de5d94c96161154
-- run_20260807T123504493_fba2e3: 人形机器人; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 创新药对外授权; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 区块链与加密资产; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 高端消费; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 低空经济; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 新能源产业; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 商业航天; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 量子计算; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 基础大模型; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 半导体先进制造; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 存储芯片; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 中国知识产权政策; data_confidence=medium -> low; evidence_ids=wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0
-- run_20260807T123504493_fba2e3: 增材制造; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 社会保障政策; data_confidence=medium -> low; evidence_ids=wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0
-- run_20260807T123504493_fba2e3: AI 智能体; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 智能制造; data_confidence=medium -> low; evidence_ids=none
-- run_20260807T123504493_fba2e3: 算力基础设施; data_confidence=medium -> low; evidence_ids=none
+- none
 
 ## 5. Branch Mutation And Early Radar
 
 ### Branch Mutation Candidates
-- run_20260803T150734214_8eada8: 创新药临床研发; branch=none -> none; evidence_ids=wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6
-- run_20260803T161127643_e70d24: 脑机接口; branch=none -> none; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260803T162715060_7e8365: 创新药对外授权; branch=none -> none; evidence_ids=none
-- run_20260807T003337979_e4a9b9: 脑机接口; branch=none -> none; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- run_20260807T074058640_47a13c: AI 智能体; branch=none -> none; evidence_ids=none
-- run_20260807T102443050_f3c588: 存储芯片; branch=none -> none; evidence_ids=ev_mem_cxmt_wafer_expansion_2026, ev_mem_miit_policy_support_2026
+- none
 ### Early Radar Changes
 - none
 
 ## 6. Guardrail Regression History
 
-- run_20260802T182646779_3913e9: system; guardrail=true -> false; evidence_ids=none
-- run_20260807T093409754_8847fb: system; guardrail=true -> false; evidence_ids=none
-- run_20260807T102443050_f3c588: system; guardrail=true -> false; evidence_ids=none
-- run_20260807T123504493_fba2e3: system; guardrail=true -> false; evidence_ids=none
+- none
 
 ## 7. Failure-Case Hits And Repeated Issues
 
-- run_20260802T182646779_3913e9: review_required; issue=run manifest reported guardrail review required; command=none
-- run_20260802T182646779_3913e9: review_required; issue=guardrail regression: evidence_ids_visible; command=none
-- run_20260807T093409754_8847fb: review_required; issue=run manifest reported guardrail review required; command=none
-- run_20260807T093409754_8847fb: review_required; issue=guardrail regression: evidence_ids_visible; command=none
-- run_20260807T102443050_f3c588: review_required; issue=run manifest reported guardrail review required; command=none
-- run_20260807T102443050_f3c588: review_required; issue=guardrail regression: parent_branch_separation_preserved; command=none
-- run_20260807T123504493_fba2e3: review_required; issue=run manifest reported guardrail review required; command=none
-- run_20260807T123504493_fba2e3: review_required; issue=guardrail regression: evidence_ids_visible; command=none
+- none
 
 ### Repeated Issues
-- run manifest reported guardrail review required: count=4; run_ids=run_20260802T182646779_3913e9, run_20260807T093409754_8847fb, run_20260807T102443050_f3c588, run_20260807T123504493_fba2e3
-- guardrail regression: evidence_ids_visible: count=3; run_ids=run_20260802T182646779_3913e9, run_20260807T093409754_8847fb, run_20260807T123504493_fba2e3
+- none
 
 ## 8. Consecutive No Change Topics
 
-- 脑机接口: count=57; current_stage=S4; run_ids=run_20260802T181123872_9133dd, run_20260802T182405982_052013, run_20260802T182601304_177bdf, run_20260802T182646779_3913e9, run_20260802T183030393_2e4435, run_20260802T183223529_e223a1, run_20260802T183425585_8587af, run_20260803T102005206_b7d439, run_20260803T102115127_4f8caf, run_20260803T102622106_835385, run_20260803T150734214_8eada8, run_20260803T151231046_449540, run_20260803T155751616_12b590, run_20260803T155924164_972668, run_20260803T161428455_fc1cbc, run_20260803T161653796_7f35ca, run_20260803T162715060_7e8365, run_20260803T163003927_4c4fe9, run_20260803T163347191_1ab9d1, run_20260803T163603274_ca515a, run_20260803T163814181_bd83fb, run_20260803T164208089_22e527, run_20260803T164357261_0b7385, run_20260803T164520180_441d04, run_20260803T164728688_c7f4a0, run_20260803T164847275_f36227, run_20260803T165438102_7b3187, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T100945041_a87ed1, run_20260807T102652092_8bbd48, run_20260807T104133539_4bca70, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 人形机器人: count=58; current_stage=S0; run_ids=run_20260802T181123872_9133dd, run_20260802T182405982_052013, run_20260802T183030393_2e4435, run_20260802T183223529_e223a1, run_20260802T183425585_8587af, run_20260803T102005206_b7d439, run_20260803T102115127_4f8caf, run_20260803T102622106_835385, run_20260803T150734214_8eada8, run_20260803T151231046_449540, run_20260803T155751616_12b590, run_20260803T155924164_972668, run_20260803T161127643_e70d24, run_20260803T161428455_fc1cbc, run_20260803T161653796_7f35ca, run_20260803T162715060_7e8365, run_20260803T163003927_4c4fe9, run_20260803T163347191_1ab9d1, run_20260803T163603274_ca515a, run_20260803T163814181_bd83fb, run_20260803T164208089_22e527, run_20260803T164357261_0b7385, run_20260803T164520180_441d04, run_20260803T164728688_c7f4a0, run_20260803T164847275_f36227, run_20260803T165438102_7b3187, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102652092_8bbd48, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 创新药对外授权: count=57; current_stage=S0; run_ids=run_20260802T183030393_2e4435, run_20260802T183223529_e223a1, run_20260802T183425585_8587af, run_20260803T102005206_b7d439, run_20260803T102115127_4f8caf, run_20260803T102622106_835385, run_20260803T150734214_8eada8, run_20260803T151231046_449540, run_20260803T155751616_12b590, run_20260803T155924164_972668, run_20260803T161127643_e70d24, run_20260803T161428455_fc1cbc, run_20260803T161653796_7f35ca, run_20260803T163003927_4c4fe9, run_20260803T163347191_1ab9d1, run_20260803T163603274_ca515a, run_20260803T163814181_bd83fb, run_20260803T164208089_22e527, run_20260803T164357261_0b7385, run_20260803T164520180_441d04, run_20260803T164728688_c7f4a0, run_20260803T164847275_f36227, run_20260803T165438102_7b3187, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 区块链与加密资产: count=36; current_stage=S0; run_ids=run_20260802T181123872_9133dd, run_20260802T182405982_052013, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 高端消费: count=36; current_stage=S0; run_ids=run_20260802T181123872_9133dd, run_20260802T182405982_052013, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 低空经济: count=36; current_stage=S0; run_ids=run_20260802T181123872_9133dd, run_20260802T182405982_052013, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 新能源产业: count=63; current_stage=S0; run_ids=run_20260802T181123872_9133dd, run_20260802T182405982_052013, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052534932_a62571, run_20260804T052956780_7c9475, run_20260804T073449340_989e59, run_20260804T074557458_9984ee, run_20260804T112634483_d8a0a1, run_20260804T140446394_2fa736, run_20260804T142113863_9f856c, run_20260804T172637293_36de5c, run_20260804T194700914_b08555, run_20260804T200758282_fd85e2, run_20260804T233231065_d04c49, run_20260805T014732483_6b172c, run_20260805T020843653_d6d213, run_20260805T053713136_74714e, run_20260805T074843461_2126a4, run_20260805T080942026_2d06ce, run_20260805T113115092_d446b7, run_20260805T134834741_b4224b, run_20260805T140942232_6c48ec, run_20260805T174007533_a58cab, run_20260805T194916530_c1e583, run_20260805T201020198_374dc1, run_20260805T234030449_4ce13e, run_20260806T015043832_24a6db, run_20260806T021122785_326228, run_20260806T054028939_44be5c, run_20260806T075018969_5d8daa, run_20260806T081117643_851e2a, run_20260806T120936227_eaeacc, run_20260806T141857217_958b26, run_20260806T143528870_1ae755, run_20260806T182131305_3bf484, run_20260806T213116836_12da19, run_20260806T213118500_9f7e96, run_20260807T003337979_e4a9b9, run_20260807T031456092_849836, run_20260807T033204069_431d9e, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T093409754_8847fb, run_20260807T093410460_a5803e, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 商业航天: count=63; current_stage=S0; run_ids=run_20260802T181123872_9133dd, run_20260802T182405982_052013, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052534932_a62571, run_20260804T052956780_7c9475, run_20260804T073449340_989e59, run_20260804T074557458_9984ee, run_20260804T112634483_d8a0a1, run_20260804T140446394_2fa736, run_20260804T142113863_9f856c, run_20260804T172637293_36de5c, run_20260804T194700914_b08555, run_20260804T200758282_fd85e2, run_20260804T233231065_d04c49, run_20260805T014732483_6b172c, run_20260805T020843653_d6d213, run_20260805T053713136_74714e, run_20260805T074843461_2126a4, run_20260805T080942026_2d06ce, run_20260805T113115092_d446b7, run_20260805T134834741_b4224b, run_20260805T140942232_6c48ec, run_20260805T174007533_a58cab, run_20260805T194916530_c1e583, run_20260805T201020198_374dc1, run_20260805T234030449_4ce13e, run_20260806T015043832_24a6db, run_20260806T021122785_326228, run_20260806T054028939_44be5c, run_20260806T075018969_5d8daa, run_20260806T081117643_851e2a, run_20260806T120936227_eaeacc, run_20260806T141857217_958b26, run_20260806T143528870_1ae755, run_20260806T182131305_3bf484, run_20260806T213116836_12da19, run_20260806T213118500_9f7e96, run_20260807T003337979_e4a9b9, run_20260807T031456092_849836, run_20260807T033204069_431d9e, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T093409754_8847fb, run_20260807T093410460_a5803e, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 量子计算: count=34; current_stage=S0; run_ids=run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 创新药临床研发: count=61; current_stage=S2; run_ids=run_20260802T182405982_052013, run_20260802T182601304_177bdf, run_20260802T182646779_3913e9, run_20260802T183223529_e223a1, run_20260802T183425585_8587af, run_20260803T102005206_b7d439, run_20260803T102115127_4f8caf, run_20260803T102622106_835385, run_20260803T145927354_a51824, run_20260803T151231046_449540, run_20260803T155751616_12b590, run_20260803T155924164_972668, run_20260803T161127643_e70d24, run_20260803T161428455_fc1cbc, run_20260803T161653796_7f35ca, run_20260803T162715060_7e8365, run_20260803T163003927_4c4fe9, run_20260803T163347191_1ab9d1, run_20260803T163603274_ca515a, run_20260803T163814181_bd83fb, run_20260803T164208089_22e527, run_20260803T164357261_0b7385, run_20260803T164520180_441d04, run_20260803T164728688_c7f4a0, run_20260803T164847275_f36227, run_20260803T165438102_7b3187, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T104133539_4bca70, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 基础大模型: count=34; current_stage=S0; run_ids=run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 半导体先进制造: count=34; current_stage=S0; run_ids=run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 存储芯片: count=20; current_stage=S0; run_ids=run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T104133539_4bca70, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 中国知识产权政策: count=81; current_stage=S2; run_ids=run_20260803T102622106_835385, run_20260803T145927354_a51824, run_20260803T150734214_8eada8, run_20260803T151231046_449540, run_20260803T155751616_12b590, run_20260803T155924164_972668, run_20260803T161127643_e70d24, run_20260803T161428455_fc1cbc, run_20260803T161653796_7f35ca, run_20260803T162715060_7e8365, run_20260803T163003927_4c4fe9, run_20260803T163347191_1ab9d1, run_20260803T163603274_ca515a, run_20260803T163814181_bd83fb, run_20260803T164208089_22e527, run_20260803T164357261_0b7385, run_20260803T164520180_441d04, run_20260803T164728688_c7f4a0, run_20260803T164847275_f36227, run_20260803T165438102_7b3187, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052534932_a62571, run_20260804T052956780_7c9475, run_20260804T073449340_989e59, run_20260804T074557458_9984ee, run_20260804T112634483_d8a0a1, run_20260804T140446394_2fa736, run_20260804T142113863_9f856c, run_20260804T172637293_36de5c, run_20260804T194700914_b08555, run_20260804T200758282_fd85e2, run_20260804T233231065_d04c49, run_20260805T014732483_6b172c, run_20260805T020843653_d6d213, run_20260805T053713136_74714e, run_20260805T074843461_2126a4, run_20260805T080942026_2d06ce, run_20260805T113115092_d446b7, run_20260805T134834741_b4224b, run_20260805T140942232_6c48ec, run_20260805T174007533_a58cab, run_20260805T194916530_c1e583, run_20260805T201020198_374dc1, run_20260805T234030449_4ce13e, run_20260806T015043832_24a6db, run_20260806T021122785_326228, run_20260806T054028939_44be5c, run_20260806T075018969_5d8daa, run_20260806T081117643_851e2a, run_20260806T120936227_eaeacc, run_20260806T141857217_958b26, run_20260806T143528870_1ae755, run_20260806T182131305_3bf484, run_20260806T213116836_12da19, run_20260806T213118500_9f7e96, run_20260807T003337979_e4a9b9, run_20260807T031456092_849836, run_20260807T033204069_431d9e, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T093409754_8847fb, run_20260807T093410460_a5803e, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T104133539_4bca70, run_20260807T112535077_6229f3
-- 增材制造: count=34; current_stage=S0; run_ids=run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T104133539_4bca70, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 社会保障政策: count=81; current_stage=S2; run_ids=run_20260803T102622106_835385, run_20260803T145927354_a51824, run_20260803T150734214_8eada8, run_20260803T151231046_449540, run_20260803T155751616_12b590, run_20260803T155924164_972668, run_20260803T161127643_e70d24, run_20260803T161428455_fc1cbc, run_20260803T161653796_7f35ca, run_20260803T162715060_7e8365, run_20260803T163003927_4c4fe9, run_20260803T163347191_1ab9d1, run_20260803T163603274_ca515a, run_20260803T163814181_bd83fb, run_20260803T164208089_22e527, run_20260803T164357261_0b7385, run_20260803T164520180_441d04, run_20260803T164728688_c7f4a0, run_20260803T164847275_f36227, run_20260803T165438102_7b3187, run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052534932_a62571, run_20260804T052956780_7c9475, run_20260804T073449340_989e59, run_20260804T074557458_9984ee, run_20260804T112634483_d8a0a1, run_20260804T140446394_2fa736, run_20260804T142113863_9f856c, run_20260804T172637293_36de5c, run_20260804T194700914_b08555, run_20260804T200758282_fd85e2, run_20260804T233231065_d04c49, run_20260805T014732483_6b172c, run_20260805T020843653_d6d213, run_20260805T053713136_74714e, run_20260805T074843461_2126a4, run_20260805T080942026_2d06ce, run_20260805T113115092_d446b7, run_20260805T134834741_b4224b, run_20260805T140942232_6c48ec, run_20260805T174007533_a58cab, run_20260805T194916530_c1e583, run_20260805T201020198_374dc1, run_20260805T234030449_4ce13e, run_20260806T015043832_24a6db, run_20260806T021122785_326228, run_20260806T054028939_44be5c, run_20260806T075018969_5d8daa, run_20260806T081117643_851e2a, run_20260806T120936227_eaeacc, run_20260806T141857217_958b26, run_20260806T143528870_1ae755, run_20260806T182131305_3bf484, run_20260806T213116836_12da19, run_20260806T213118500_9f7e96, run_20260807T003337979_e4a9b9, run_20260807T031456092_849836, run_20260807T033204069_431d9e, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T093409754_8847fb, run_20260807T093410460_a5803e, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T104133539_4bca70, run_20260807T112535077_6229f3
-- AI 智能体: count=30; current_stage=S0; run_ids=run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T095712116_45d145, run_20260807T100945041_a87ed1, run_20260807T102652092_8bbd48, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 智能制造: count=61; current_stage=S0; run_ids=run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052534932_a62571, run_20260804T052956780_7c9475, run_20260804T073449340_989e59, run_20260804T074557458_9984ee, run_20260804T112634483_d8a0a1, run_20260804T140446394_2fa736, run_20260804T142113863_9f856c, run_20260804T172637293_36de5c, run_20260804T194700914_b08555, run_20260804T200758282_fd85e2, run_20260804T233231065_d04c49, run_20260805T014732483_6b172c, run_20260805T020843653_d6d213, run_20260805T053713136_74714e, run_20260805T074843461_2126a4, run_20260805T080942026_2d06ce, run_20260805T113115092_d446b7, run_20260805T134834741_b4224b, run_20260805T140942232_6c48ec, run_20260805T174007533_a58cab, run_20260805T194916530_c1e583, run_20260805T201020198_374dc1, run_20260805T234030449_4ce13e, run_20260806T015043832_24a6db, run_20260806T021122785_326228, run_20260806T054028939_44be5c, run_20260806T075018969_5d8daa, run_20260806T081117643_851e2a, run_20260806T120936227_eaeacc, run_20260806T141857217_958b26, run_20260806T143528870_1ae755, run_20260806T182131305_3bf484, run_20260806T213116836_12da19, run_20260806T213118500_9f7e96, run_20260807T003337979_e4a9b9, run_20260807T031456092_849836, run_20260807T033204069_431d9e, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T093409754_8847fb, run_20260807T093410460_a5803e, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- 算力基础设施: count=34; current_stage=S0; run_ids=run_20260803T172837060_f886f2, run_20260804T012931317_6cb3de, run_20260804T013251666_f8bd3d, run_20260804T013426328_24e440, run_20260804T014358118_c8ff39, run_20260804T052956780_7c9475, run_20260804T112634483_d8a0a1, run_20260804T172637293_36de5c, run_20260804T233231065_d04c49, run_20260805T053713136_74714e, run_20260805T113115092_d446b7, run_20260805T174007533_a58cab, run_20260805T234030449_4ce13e, run_20260806T054028939_44be5c, run_20260806T120936227_eaeacc, run_20260806T182131305_3bf484, run_20260807T003337979_e4a9b9, run_20260807T063406792_244249, run_20260807T070533932_d0d33a, run_20260807T070950972_c6be79, run_20260807T071041730_d55a60, run_20260807T071230185_7e17f2, run_20260807T071845297_7a67a7, run_20260807T073055977_631f1f, run_20260807T073542612_372da6, run_20260807T074058640_47a13c, run_20260807T095712116_45d145, run_20260807T095906361_27e52a, run_20260807T100945041_a87ed1, run_20260807T102443050_f3c588, run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
-- Advanced Packaging: count=5; current_stage=S3; run_ids=run_20260807T102652092_8bbd48, run_20260807T103017741_9a0f3e, run_20260807T104133539_4bca70, run_20260807T111845405_1d5fa8, run_20260807T112535077_6229f3
+- 脑机接口: count=6; current_stage=S4; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 人形机器人: count=6; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 创新药对外授权: count=5; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 区块链与加密资产: count=5; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 高端消费: count=5; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 低空经济: count=6; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 新能源产业: count=6; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 商业航天: count=6; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 量子计算: count=6; current_stage=S4; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 创新药临床研发: count=6; current_stage=S3; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 基础大模型: count=5; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 半导体先进制造: count=5; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 存储芯片: count=5; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 中国知识产权政策: count=6; current_stage=S3; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 增材制造: count=5; current_stage=S3; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 社会保障政策: count=6; current_stage=S3; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- Advanced Packaging: count=6; current_stage=S3; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- AI 智能体: count=5; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 智能制造: count=6; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 算力基础设施: count=5; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 固态电池: count=6; current_stage=S4; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 自动驾驶与 Robotaxi: count=6; current_stage=S6; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 可控核聚变与先进核能: count=6; current_stage=S4; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 空间计算与 XR: count=6; current_stage=S5; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
+- 合成生物学: count=6; current_stage=S4; run_ids=run_20260807T134447917_8723f7, run_20260807T135237175_38ad5d, run_20260807T135458076_445e77, run_20260807T135718584_43ad4b, run_20260807T141710327_2e720c, run_20260807T141859227_d174fc
 
 ## 9. High-Priority Operator Alerts
 
-- high: guardrail_regression; action=flag_risk; message=evidence_ids_visible requires operator review.; run_ids=run_20260802T182646779_3913e9
-- high: guardrail_regression; action=flag_risk; message=evidence_ids_visible requires operator review.; run_ids=run_20260807T093409754_8847fb
-- high: guardrail_regression; action=flag_risk; message=parent_branch_separation_preserved requires operator review.; run_ids=run_20260807T102443050_f3c588
-- high: guardrail_regression; action=flag_risk; message=evidence_ids_visible requires operator review.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=脑机接口 moved S6 -> S4.; run_ids=run_20260807T103017741_9a0f3e
-- high: stage_downgrade; action=flag_risk; message=人形机器人 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=创新药对外授权 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=区块链与加密资产 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=高端消费 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=低空经济 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=新能源产业 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=商业航天 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=量子计算 moved S4 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=创新药临床研发 moved S3 -> S2.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=基础大模型 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=半导体先进制造 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=存储芯片 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=中国知识产权政策 moved S3 -> S2.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=增材制造 moved S3 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=社会保障政策 moved S3 -> S2.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=AI 智能体 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=智能制造 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- high: stage_downgrade; action=flag_risk; message=算力基础设施 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=AI 智能体 confidence moved medium -> low.; run_ids=run_20260807T103017741_9a0f3e
-- medium: data_confidence_drop; action=review; message=人形机器人 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=创新药对外授权 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=区块链与加密资产 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=高端消费 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=低空经济 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=新能源产业 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=商业航天 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=量子计算 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=基础大模型 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=半导体先进制造 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=存储芯片 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=中国知识产权政策 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=增材制造 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=社会保障政策 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=AI 智能体 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=智能制造 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- medium: data_confidence_drop; action=review; message=算力基础设施 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3
-- high: failed_run; action=review; message=run manifest reported guardrail review required; run_ids=run_20260802T182646779_3913e9
-- high: failed_run; action=review; message=guardrail regression: evidence_ids_visible; run_ids=run_20260802T182646779_3913e9
-- high: failed_run; action=review; message=run manifest reported guardrail review required; run_ids=run_20260807T093409754_8847fb
-- high: failed_run; action=review; message=guardrail regression: evidence_ids_visible; run_ids=run_20260807T093409754_8847fb
-- high: failed_run; action=review; message=run manifest reported guardrail review required; run_ids=run_20260807T102443050_f3c588
-- high: failed_run; action=review; message=guardrail regression: parent_branch_separation_preserved; run_ids=run_20260807T102443050_f3c588
-- high: failed_run; action=review; message=run manifest reported guardrail review required; run_ids=run_20260807T123504493_fba2e3
-- high: failed_run; action=review; message=guardrail regression: evidence_ids_visible; run_ids=run_20260807T123504493_fba2e3
-- medium: branch_mutation; action=review; message=创新药临床研发 has branch mutation provisional_innovative_drug_clinical_development_nct07530367; parent stage remains artifact-derived.; run_ids=run_20260803T150734214_8eada8
-- medium: branch_mutation; action=review; message=脑机接口 has branch mutation provisional_bci_psychiatric_depression; parent stage remains artifact-derived.; run_ids=run_20260803T161127643_e70d24
-- medium: branch_mutation; action=review; message=创新药对外授权 has branch mutation innovative_drug_license_out_gp2013; parent stage remains artifact-derived.; run_ids=run_20260803T162715060_7e8365
-- medium: branch_mutation; action=review; message=脑机接口 has branch mutation provisional_bci_als_communication; parent stage remains artifact-derived.; run_ids=run_20260807T003337979_e4a9b9
-- medium: branch_mutation; action=review; message=AI 智能体 has branch mutation provisional_ai_agents_compute_budget_governance; parent stage remains artifact-derived.; run_ids=run_20260807T074058640_47a13c
-- medium: branch_mutation; action=review; message=存储芯片 has branch mutation provisional_hbm_high_bandwidth_memory; parent stage remains artifact-derived.; run_ids=run_20260807T102443050_f3c588
+- none
 
 ## 10. Research-Only Next Actions
 
-- flag_risk: evidence_ids_visible requires operator review.; run_ids=run_20260802T182646779_3913e9; evidence_ids=none
-- flag_risk: evidence_ids_visible requires operator review.; run_ids=run_20260807T093409754_8847fb; evidence_ids=none
-- flag_risk: parent_branch_separation_preserved requires operator review.; run_ids=run_20260807T102443050_f3c588; evidence_ids=none
-- flag_risk: evidence_ids_visible requires operator review.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 脑机接口 moved S6 -> S4.; run_ids=run_20260807T103017741_9a0f3e; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- flag_risk: 人形机器人 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 创新药对外授权 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 区块链与加密资产 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 高端消费 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 低空经济 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 新能源产业 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 商业航天 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 量子计算 moved S4 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 创新药临床研发 moved S3 -> S2.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6
-- flag_risk: 基础大模型 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 半导体先进制造 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 存储芯片 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 中国知识产权政策 moved S3 -> S2.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0
-- flag_risk: 增材制造 moved S3 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 社会保障政策 moved S3 -> S2.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0
-- flag_risk: AI 智能体 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 智能制造 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- flag_risk: 算力基础设施 moved S6 -> S0.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: AI 智能体 confidence moved medium -> low.; run_ids=run_20260807T103017741_9a0f3e; evidence_ids=none
-- review: 人形机器人 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 创新药对外授权 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 区块链与加密资产 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 高端消费 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 低空经济 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 新能源产业 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 商业航天 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 量子计算 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 基础大模型 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 半导体先进制造 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 存储芯片 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 中国知识产权政策 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=wm_direct_gov_cn_policy-https_www_gov_cn_zhengce_content_202607_content_7077199_htm-b2a41e2a27b0
-- review: 增材制造 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 社会保障政策 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=wm_direct_gov_cn_policy-202608_content_7077335_htm-b2a41e2a27b0
-- review: AI 智能体 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 智能制造 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 算力基础设施 confidence moved medium -> low.; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: run manifest reported guardrail review required; run_ids=run_20260802T182646779_3913e9; evidence_ids=none
-- review: guardrail regression: evidence_ids_visible; run_ids=run_20260802T182646779_3913e9; evidence_ids=none
-- review: run manifest reported guardrail review required; run_ids=run_20260807T093409754_8847fb; evidence_ids=none
-- review: guardrail regression: evidence_ids_visible; run_ids=run_20260807T093409754_8847fb; evidence_ids=none
-- review: run manifest reported guardrail review required; run_ids=run_20260807T102443050_f3c588; evidence_ids=none
-- review: guardrail regression: parent_branch_separation_preserved; run_ids=run_20260807T102443050_f3c588; evidence_ids=none
-- review: run manifest reported guardrail review required; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: guardrail regression: evidence_ids_visible; run_ids=run_20260807T123504493_fba2e3; evidence_ids=none
-- review: 创新药临床研发 has branch mutation provisional_innovative_drug_clinical_development_nct07530367; parent stage remains artifact-derived.; run_ids=run_20260803T150734214_8eada8; evidence_ids=wm_direct_clinical_trials_gov_studies-nct02196181-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03712605-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct03775265-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct05675410-f11e0084f0e6, wm_direct_clinical_trials_gov_studies-nct07739511-f11e0084f0e6
-- review: 脑机接口 has branch mutation provisional_bci_psychiatric_depression; parent stage remains artifact-derived.; run_ids=run_20260803T161127643_e70d24; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- review: 创新药对外授权 has branch mutation innovative_drug_license_out_gp2013; parent stage remains artifact-derived.; run_ids=run_20260803T162715060_7e8365; evidence_ids=none
-- review: 脑机接口 has branch mutation provisional_bci_als_communication; parent stage remains artifact-derived.; run_ids=run_20260807T003337979_e4a9b9; evidence_ids=bci_parent_capital_synchron_20251106, bci_parent_policy_label_20250730
-- review: AI 智能体 has branch mutation provisional_ai_agents_compute_budget_governance; parent stage remains artifact-derived.; run_ids=run_20260807T074058640_47a13c; evidence_ids=none
-- review: 存储芯片 has branch mutation provisional_hbm_high_bandwidth_memory; parent stage remains artifact-derived.; run_ids=run_20260807T102443050_f3c588; evidence_ids=ev_mem_cxmt_wafer_expansion_2026, ev_mem_miit_policy_support_2026
-- review: Repeated issue: run manifest reported guardrail review required; run_ids=run_20260802T182646779_3913e9, run_20260807T093409754_8847fb, run_20260807T102443050_f3c588, run_20260807T123504493_fba2e3; evidence_ids=none
-- review: Repeated issue: guardrail regression: evidence_ids_visible; run_ids=run_20260802T182646779_3913e9, run_20260807T093409754_8847fb, run_20260807T123504493_fba2e3; evidence_ids=none
+- observe: No additional historical review action required; continue artifact-based monitoring.
 
 ## 11. Source Artifacts
 
-- outputs/operator_runs/run_20260802T181123872_9133dd/run_manifest.json
-- outputs/operator_runs/run_20260802T181123872_9133dd/stage_diff.json
-- outputs/operator_runs/run_20260802T181123872_9133dd/weekly_brief.json
-- outputs/operator_runs/run_20260802T182405982_052013/run_manifest.json
-- outputs/operator_runs/run_20260802T182405982_052013/stage_diff.json
-- outputs/operator_runs/run_20260802T182405982_052013/weekly_brief.json
-- outputs/operator_runs/run_20260802T182601304_177bdf/run_manifest.json
-- outputs/operator_runs/run_20260802T182601304_177bdf/stage_diff.json
-- outputs/operator_runs/run_20260802T182601304_177bdf/weekly_brief.json
-- outputs/operator_runs/run_20260802T182646779_3913e9/run_manifest.json
-- outputs/operator_runs/run_20260802T182646779_3913e9/stage_diff.json
-- outputs/operator_runs/run_20260802T182646779_3913e9/weekly_brief.json
-- outputs/operator_runs/run_20260802T183030393_2e4435/run_manifest.json
-- outputs/operator_runs/run_20260802T183030393_2e4435/stage_diff.json
-- outputs/operator_runs/run_20260802T183030393_2e4435/weekly_brief.json
-- outputs/operator_runs/run_20260802T183223529_e223a1/run_manifest.json
-- outputs/operator_runs/run_20260802T183223529_e223a1/stage_diff.json
-- outputs/operator_runs/run_20260802T183223529_e223a1/weekly_brief.json
-- outputs/operator_runs/run_20260802T183425585_8587af/run_manifest.json
-- outputs/operator_runs/run_20260802T183425585_8587af/stage_diff.json
-- outputs/operator_runs/run_20260802T183425585_8587af/weekly_brief.json
-- outputs/operator_runs/run_20260803T102005206_b7d439/run_manifest.json
-- outputs/operator_runs/run_20260803T102005206_b7d439/stage_diff.json
-- outputs/operator_runs/run_20260803T102005206_b7d439/weekly_brief.json
-- outputs/operator_runs/run_20260803T102115127_4f8caf/run_manifest.json
-- outputs/operator_runs/run_20260803T102115127_4f8caf/stage_diff.json
-- outputs/operator_runs/run_20260803T102115127_4f8caf/weekly_brief.json
-- outputs/operator_runs/run_20260803T102622106_835385/run_manifest.json
-- outputs/operator_runs/run_20260803T102622106_835385/stage_diff.json
-- outputs/operator_runs/run_20260803T102622106_835385/weekly_brief.json
-- outputs/operator_runs/run_20260803T145927354_a51824/run_manifest.json
-- outputs/operator_runs/run_20260803T145927354_a51824/stage_diff.json
-- outputs/operator_runs/run_20260803T145927354_a51824/weekly_brief.json
-- outputs/operator_runs/run_20260803T150734214_8eada8/run_manifest.json
-- outputs/operator_runs/run_20260803T150734214_8eada8/stage_diff.json
-- outputs/operator_runs/run_20260803T150734214_8eada8/weekly_brief.json
-- outputs/operator_runs/run_20260803T151231046_449540/run_manifest.json
-- outputs/operator_runs/run_20260803T151231046_449540/stage_diff.json
-- outputs/operator_runs/run_20260803T151231046_449540/weekly_brief.json
-- outputs/operator_runs/run_20260803T155751616_12b590/run_manifest.json
-- outputs/operator_runs/run_20260803T155751616_12b590/stage_diff.json
-- outputs/operator_runs/run_20260803T155751616_12b590/weekly_brief.json
-- outputs/operator_runs/run_20260803T155924164_972668/run_manifest.json
-- outputs/operator_runs/run_20260803T155924164_972668/stage_diff.json
-- outputs/operator_runs/run_20260803T155924164_972668/weekly_brief.json
-- outputs/operator_runs/run_20260803T161127643_e70d24/run_manifest.json
-- outputs/operator_runs/run_20260803T161127643_e70d24/stage_diff.json
-- outputs/operator_runs/run_20260803T161127643_e70d24/weekly_brief.json
-- outputs/operator_runs/run_20260803T161428455_fc1cbc/run_manifest.json
-- outputs/operator_runs/run_20260803T161428455_fc1cbc/stage_diff.json
-- outputs/operator_runs/run_20260803T161428455_fc1cbc/weekly_brief.json
-- outputs/operator_runs/run_20260803T161653796_7f35ca/run_manifest.json
-- outputs/operator_runs/run_20260803T161653796_7f35ca/stage_diff.json
-- outputs/operator_runs/run_20260803T161653796_7f35ca/weekly_brief.json
-- outputs/operator_runs/run_20260803T162715060_7e8365/run_manifest.json
-- outputs/operator_runs/run_20260803T162715060_7e8365/stage_diff.json
-- outputs/operator_runs/run_20260803T162715060_7e8365/weekly_brief.json
-- outputs/operator_runs/run_20260803T163003927_4c4fe9/run_manifest.json
-- outputs/operator_runs/run_20260803T163003927_4c4fe9/stage_diff.json
-- outputs/operator_runs/run_20260803T163003927_4c4fe9/weekly_brief.json
-- outputs/operator_runs/run_20260803T163347191_1ab9d1/run_manifest.json
-- outputs/operator_runs/run_20260803T163347191_1ab9d1/stage_diff.json
-- outputs/operator_runs/run_20260803T163347191_1ab9d1/weekly_brief.json
-- outputs/operator_runs/run_20260803T163603274_ca515a/run_manifest.json
-- outputs/operator_runs/run_20260803T163603274_ca515a/stage_diff.json
-- outputs/operator_runs/run_20260803T163603274_ca515a/weekly_brief.json
-- outputs/operator_runs/run_20260803T163814181_bd83fb/run_manifest.json
-- outputs/operator_runs/run_20260803T163814181_bd83fb/stage_diff.json
-- outputs/operator_runs/run_20260803T163814181_bd83fb/weekly_brief.json
-- outputs/operator_runs/run_20260803T164208089_22e527/run_manifest.json
-- outputs/operator_runs/run_20260803T164208089_22e527/stage_diff.json
-- outputs/operator_runs/run_20260803T164208089_22e527/weekly_brief.json
-- outputs/operator_runs/run_20260803T164357261_0b7385/run_manifest.json
-- outputs/operator_runs/run_20260803T164357261_0b7385/stage_diff.json
-- outputs/operator_runs/run_20260803T164357261_0b7385/weekly_brief.json
-- outputs/operator_runs/run_20260803T164520180_441d04/run_manifest.json
-- outputs/operator_runs/run_20260803T164520180_441d04/stage_diff.json
-- outputs/operator_runs/run_20260803T164520180_441d04/weekly_brief.json
-- outputs/operator_runs/run_20260803T164728688_c7f4a0/run_manifest.json
-- outputs/operator_runs/run_20260803T164728688_c7f4a0/stage_diff.json
-- outputs/operator_runs/run_20260803T164728688_c7f4a0/weekly_brief.json
-- outputs/operator_runs/run_20260803T164847275_f36227/run_manifest.json
-- outputs/operator_runs/run_20260803T164847275_f36227/stage_diff.json
-- outputs/operator_runs/run_20260803T164847275_f36227/weekly_brief.json
-- outputs/operator_runs/run_20260803T165438102_7b3187/run_manifest.json
-- outputs/operator_runs/run_20260803T165438102_7b3187/stage_diff.json
-- outputs/operator_runs/run_20260803T165438102_7b3187/weekly_brief.json
-- outputs/operator_runs/run_20260803T172837060_f886f2/run_manifest.json
-- outputs/operator_runs/run_20260803T172837060_f886f2/stage_diff.json
-- outputs/operator_runs/run_20260803T172837060_f886f2/weekly_brief.json
-- outputs/operator_runs/run_20260804T012931317_6cb3de/run_manifest.json
-- outputs/operator_runs/run_20260804T012931317_6cb3de/stage_diff.json
-- outputs/operator_runs/run_20260804T012931317_6cb3de/weekly_brief.json
-- outputs/operator_runs/run_20260804T013251666_f8bd3d/run_manifest.json
-- outputs/operator_runs/run_20260804T013251666_f8bd3d/stage_diff.json
-- outputs/operator_runs/run_20260804T013251666_f8bd3d/weekly_brief.json
-- outputs/operator_runs/run_20260804T013426328_24e440/run_manifest.json
-- outputs/operator_runs/run_20260804T013426328_24e440/stage_diff.json
-- outputs/operator_runs/run_20260804T013426328_24e440/weekly_brief.json
-- outputs/operator_runs/run_20260804T014358118_c8ff39/run_manifest.json
-- outputs/operator_runs/run_20260804T014358118_c8ff39/stage_diff.json
-- outputs/operator_runs/run_20260804T014358118_c8ff39/weekly_brief.json
-- outputs/operator_runs/run_20260804T052534932_a62571/run_manifest.json
-- outputs/operator_runs/run_20260804T052534932_a62571/stage_diff.json
-- outputs/operator_runs/run_20260804T052534932_a62571/weekly_brief.json
-- outputs/operator_runs/run_20260804T052956780_7c9475/run_manifest.json
-- outputs/operator_runs/run_20260804T052956780_7c9475/stage_diff.json
-- outputs/operator_runs/run_20260804T052956780_7c9475/weekly_brief.json
-- outputs/operator_runs/run_20260804T073449340_989e59/run_manifest.json
-- outputs/operator_runs/run_20260804T073449340_989e59/stage_diff.json
-- outputs/operator_runs/run_20260804T073449340_989e59/weekly_brief.json
-- outputs/operator_runs/run_20260804T074557458_9984ee/run_manifest.json
-- outputs/operator_runs/run_20260804T074557458_9984ee/stage_diff.json
-- outputs/operator_runs/run_20260804T074557458_9984ee/weekly_brief.json
-- outputs/operator_runs/run_20260804T112634483_d8a0a1/run_manifest.json
-- outputs/operator_runs/run_20260804T112634483_d8a0a1/stage_diff.json
-- outputs/operator_runs/run_20260804T112634483_d8a0a1/weekly_brief.json
-- outputs/operator_runs/run_20260804T140446394_2fa736/run_manifest.json
-- outputs/operator_runs/run_20260804T140446394_2fa736/stage_diff.json
-- outputs/operator_runs/run_20260804T140446394_2fa736/weekly_brief.json
-- outputs/operator_runs/run_20260804T142113863_9f856c/run_manifest.json
-- outputs/operator_runs/run_20260804T142113863_9f856c/stage_diff.json
-- outputs/operator_runs/run_20260804T142113863_9f856c/weekly_brief.json
-- outputs/operator_runs/run_20260804T172637293_36de5c/run_manifest.json
-- outputs/operator_runs/run_20260804T172637293_36de5c/stage_diff.json
-- outputs/operator_runs/run_20260804T172637293_36de5c/weekly_brief.json
-- outputs/operator_runs/run_20260804T194700914_b08555/run_manifest.json
-- outputs/operator_runs/run_20260804T194700914_b08555/stage_diff.json
-- outputs/operator_runs/run_20260804T194700914_b08555/weekly_brief.json
-- outputs/operator_runs/run_20260804T200758282_fd85e2/run_manifest.json
-- outputs/operator_runs/run_20260804T200758282_fd85e2/stage_diff.json
-- outputs/operator_runs/run_20260804T200758282_fd85e2/weekly_brief.json
-- outputs/operator_runs/run_20260804T233231065_d04c49/run_manifest.json
-- outputs/operator_runs/run_20260804T233231065_d04c49/stage_diff.json
-- outputs/operator_runs/run_20260804T233231065_d04c49/weekly_brief.json
-- outputs/operator_runs/run_20260805T014732483_6b172c/run_manifest.json
-- outputs/operator_runs/run_20260805T014732483_6b172c/stage_diff.json
-- outputs/operator_runs/run_20260805T014732483_6b172c/weekly_brief.json
-- outputs/operator_runs/run_20260805T020843653_d6d213/run_manifest.json
-- outputs/operator_runs/run_20260805T020843653_d6d213/stage_diff.json
-- outputs/operator_runs/run_20260805T020843653_d6d213/weekly_brief.json
-- outputs/operator_runs/run_20260805T053713136_74714e/run_manifest.json
-- outputs/operator_runs/run_20260805T053713136_74714e/stage_diff.json
-- outputs/operator_runs/run_20260805T053713136_74714e/weekly_brief.json
-- outputs/operator_runs/run_20260805T074843461_2126a4/run_manifest.json
-- outputs/operator_runs/run_20260805T074843461_2126a4/stage_diff.json
-- outputs/operator_runs/run_20260805T074843461_2126a4/weekly_brief.json
-- outputs/operator_runs/run_20260805T080942026_2d06ce/run_manifest.json
-- outputs/operator_runs/run_20260805T080942026_2d06ce/stage_diff.json
-- outputs/operator_runs/run_20260805T080942026_2d06ce/weekly_brief.json
-- outputs/operator_runs/run_20260805T113115092_d446b7/run_manifest.json
-- outputs/operator_runs/run_20260805T113115092_d446b7/stage_diff.json
-- outputs/operator_runs/run_20260805T113115092_d446b7/weekly_brief.json
-- outputs/operator_runs/run_20260805T134834741_b4224b/run_manifest.json
-- outputs/operator_runs/run_20260805T134834741_b4224b/stage_diff.json
-- outputs/operator_runs/run_20260805T134834741_b4224b/weekly_brief.json
-- outputs/operator_runs/run_20260805T140942232_6c48ec/run_manifest.json
-- outputs/operator_runs/run_20260805T140942232_6c48ec/stage_diff.json
-- outputs/operator_runs/run_20260805T140942232_6c48ec/weekly_brief.json
-- outputs/operator_runs/run_20260805T174007533_a58cab/run_manifest.json
-- outputs/operator_runs/run_20260805T174007533_a58cab/stage_diff.json
-- outputs/operator_runs/run_20260805T174007533_a58cab/weekly_brief.json
-- outputs/operator_runs/run_20260805T194916530_c1e583/run_manifest.json
-- outputs/operator_runs/run_20260805T194916530_c1e583/stage_diff.json
-- outputs/operator_runs/run_20260805T194916530_c1e583/weekly_brief.json
-- outputs/operator_runs/run_20260805T201020198_374dc1/run_manifest.json
-- outputs/operator_runs/run_20260805T201020198_374dc1/stage_diff.json
-- outputs/operator_runs/run_20260805T201020198_374dc1/weekly_brief.json
-- outputs/operator_runs/run_20260805T234030449_4ce13e/run_manifest.json
-- outputs/operator_runs/run_20260805T234030449_4ce13e/stage_diff.json
-- outputs/operator_runs/run_20260805T234030449_4ce13e/weekly_brief.json
-- outputs/operator_runs/run_20260806T015043832_24a6db/run_manifest.json
-- outputs/operator_runs/run_20260806T015043832_24a6db/stage_diff.json
-- outputs/operator_runs/run_20260806T015043832_24a6db/weekly_brief.json
-- outputs/operator_runs/run_20260806T021122785_326228/run_manifest.json
-- outputs/operator_runs/run_20260806T021122785_326228/stage_diff.json
-- outputs/operator_runs/run_20260806T021122785_326228/weekly_brief.json
-- outputs/operator_runs/run_20260806T054028939_44be5c/run_manifest.json
-- outputs/operator_runs/run_20260806T054028939_44be5c/stage_diff.json
-- outputs/operator_runs/run_20260806T054028939_44be5c/weekly_brief.json
-- outputs/operator_runs/run_20260806T075018969_5d8daa/run_manifest.json
-- outputs/operator_runs/run_20260806T075018969_5d8daa/stage_diff.json
-- outputs/operator_runs/run_20260806T075018969_5d8daa/weekly_brief.json
-- outputs/operator_runs/run_20260806T081117643_851e2a/run_manifest.json
-- outputs/operator_runs/run_20260806T081117643_851e2a/stage_diff.json
-- outputs/operator_runs/run_20260806T081117643_851e2a/weekly_brief.json
-- outputs/operator_runs/run_20260806T120936227_eaeacc/run_manifest.json
-- outputs/operator_runs/run_20260806T120936227_eaeacc/stage_diff.json
-- outputs/operator_runs/run_20260806T120936227_eaeacc/weekly_brief.json
-- outputs/operator_runs/run_20260806T141857217_958b26/run_manifest.json
-- outputs/operator_runs/run_20260806T141857217_958b26/stage_diff.json
-- outputs/operator_runs/run_20260806T141857217_958b26/weekly_brief.json
-- outputs/operator_runs/run_20260806T143528870_1ae755/run_manifest.json
-- outputs/operator_runs/run_20260806T143528870_1ae755/stage_diff.json
-- outputs/operator_runs/run_20260806T143528870_1ae755/weekly_brief.json
-- outputs/operator_runs/run_20260806T182131305_3bf484/run_manifest.json
-- outputs/operator_runs/run_20260806T182131305_3bf484/stage_diff.json
-- outputs/operator_runs/run_20260806T182131305_3bf484/weekly_brief.json
-- outputs/operator_runs/run_20260806T213116836_12da19/run_manifest.json
-- outputs/operator_runs/run_20260806T213116836_12da19/stage_diff.json
-- outputs/operator_runs/run_20260806T213116836_12da19/weekly_brief.json
-- outputs/operator_runs/run_20260806T213118500_9f7e96/run_manifest.json
-- outputs/operator_runs/run_20260806T213118500_9f7e96/stage_diff.json
-- outputs/operator_runs/run_20260806T213118500_9f7e96/weekly_brief.json
-- outputs/operator_runs/run_20260807T003337979_e4a9b9/run_manifest.json
-- outputs/operator_runs/run_20260807T003337979_e4a9b9/stage_diff.json
-- outputs/operator_runs/run_20260807T003337979_e4a9b9/weekly_brief.json
-- outputs/operator_runs/run_20260807T031456092_849836/run_manifest.json
-- outputs/operator_runs/run_20260807T031456092_849836/stage_diff.json
-- outputs/operator_runs/run_20260807T031456092_849836/weekly_brief.json
-- outputs/operator_runs/run_20260807T033204069_431d9e/run_manifest.json
-- outputs/operator_runs/run_20260807T033204069_431d9e/stage_diff.json
-- outputs/operator_runs/run_20260807T033204069_431d9e/weekly_brief.json
-- outputs/operator_runs/run_20260807T063406792_244249/run_manifest.json
-- outputs/operator_runs/run_20260807T063406792_244249/stage_diff.json
-- outputs/operator_runs/run_20260807T063406792_244249/weekly_brief.json
-- outputs/operator_runs/run_20260807T070533932_d0d33a/run_manifest.json
-- outputs/operator_runs/run_20260807T070533932_d0d33a/stage_diff.json
-- outputs/operator_runs/run_20260807T070533932_d0d33a/weekly_brief.json
-- outputs/operator_runs/run_20260807T070950972_c6be79/run_manifest.json
-- outputs/operator_runs/run_20260807T070950972_c6be79/stage_diff.json
-- outputs/operator_runs/run_20260807T070950972_c6be79/weekly_brief.json
-- outputs/operator_runs/run_20260807T071041730_d55a60/run_manifest.json
-- outputs/operator_runs/run_20260807T071041730_d55a60/stage_diff.json
-- outputs/operator_runs/run_20260807T071041730_d55a60/weekly_brief.json
-- outputs/operator_runs/run_20260807T071230185_7e17f2/run_manifest.json
-- outputs/operator_runs/run_20260807T071230185_7e17f2/stage_diff.json
-- outputs/operator_runs/run_20260807T071230185_7e17f2/weekly_brief.json
-- outputs/operator_runs/run_20260807T071845297_7a67a7/run_manifest.json
-- outputs/operator_runs/run_20260807T071845297_7a67a7/stage_diff.json
-- outputs/operator_runs/run_20260807T071845297_7a67a7/weekly_brief.json
-- outputs/operator_runs/run_20260807T073055977_631f1f/run_manifest.json
-- outputs/operator_runs/run_20260807T073055977_631f1f/stage_diff.json
-- outputs/operator_runs/run_20260807T073055977_631f1f/weekly_brief.json
-- outputs/operator_runs/run_20260807T073542612_372da6/run_manifest.json
-- outputs/operator_runs/run_20260807T073542612_372da6/stage_diff.json
-- outputs/operator_runs/run_20260807T073542612_372da6/weekly_brief.json
-- outputs/operator_runs/run_20260807T074058640_47a13c/run_manifest.json
-- outputs/operator_runs/run_20260807T074058640_47a13c/stage_diff.json
-- outputs/operator_runs/run_20260807T074058640_47a13c/weekly_brief.json
-- outputs/operator_runs/run_20260807T093409754_8847fb/run_manifest.json
-- outputs/operator_runs/run_20260807T093409754_8847fb/stage_diff.json
-- outputs/operator_runs/run_20260807T093409754_8847fb/weekly_brief.json
-- outputs/operator_runs/run_20260807T093410460_a5803e/run_manifest.json
-- outputs/operator_runs/run_20260807T093410460_a5803e/stage_diff.json
-- outputs/operator_runs/run_20260807T093410460_a5803e/weekly_brief.json
-- outputs/operator_runs/run_20260807T095712116_45d145/run_manifest.json
-- outputs/operator_runs/run_20260807T095712116_45d145/stage_diff.json
-- outputs/operator_runs/run_20260807T095712116_45d145/weekly_brief.json
-- outputs/operator_runs/run_20260807T095906361_27e52a/run_manifest.json
-- outputs/operator_runs/run_20260807T095906361_27e52a/stage_diff.json
-- outputs/operator_runs/run_20260807T095906361_27e52a/weekly_brief.json
-- outputs/operator_runs/run_20260807T100945041_a87ed1/run_manifest.json
-- outputs/operator_runs/run_20260807T100945041_a87ed1/stage_diff.json
-- outputs/operator_runs/run_20260807T100945041_a87ed1/weekly_brief.json
-- outputs/operator_runs/run_20260807T102443050_f3c588/run_manifest.json
-- outputs/operator_runs/run_20260807T102443050_f3c588/stage_diff.json
-- outputs/operator_runs/run_20260807T102443050_f3c588/weekly_brief.json
-- outputs/operator_runs/run_20260807T102652092_8bbd48/run_manifest.json
-- outputs/operator_runs/run_20260807T102652092_8bbd48/stage_diff.json
-- outputs/operator_runs/run_20260807T102652092_8bbd48/weekly_brief.json
-- outputs/operator_runs/run_20260807T103017741_9a0f3e/run_manifest.json
-- outputs/operator_runs/run_20260807T103017741_9a0f3e/stage_diff.json
-- outputs/operator_runs/run_20260807T103017741_9a0f3e/weekly_brief.json
-- outputs/operator_runs/run_20260807T104133539_4bca70/run_manifest.json
-- outputs/operator_runs/run_20260807T104133539_4bca70/stage_diff.json
-- outputs/operator_runs/run_20260807T104133539_4bca70/weekly_brief.json
-- outputs/operator_runs/run_20260807T105211593_d3cab6/run_manifest.json
-- outputs/operator_runs/run_20260807T105211593_d3cab6/stage_diff.json
-- outputs/operator_runs/run_20260807T105211593_d3cab6/weekly_brief.json
-- outputs/operator_runs/run_20260807T111845405_1d5fa8/run_manifest.json
-- outputs/operator_runs/run_20260807T111845405_1d5fa8/stage_diff.json
-- outputs/operator_runs/run_20260807T111845405_1d5fa8/weekly_brief.json
-- outputs/operator_runs/run_20260807T112535077_6229f3/run_manifest.json
-- outputs/operator_runs/run_20260807T112535077_6229f3/stage_diff.json
-- outputs/operator_runs/run_20260807T112535077_6229f3/weekly_brief.json
-- outputs/operator_runs/run_20260807T123504493_fba2e3/run_manifest.json
-- outputs/operator_runs/run_20260807T123504493_fba2e3/stage_diff.json
-- outputs/operator_runs/run_20260807T123504493_fba2e3/weekly_brief.json
+- outputs/operator_runs/run_20260807T132013509_5a4aea/run_manifest.json
+- outputs/operator_runs/run_20260807T132013509_5a4aea/stage_diff.json
+- outputs/operator_runs/run_20260807T132013509_5a4aea/weekly_brief.json
+- outputs/operator_runs/run_20260807T133849680_a884aa/run_manifest.json
+- outputs/operator_runs/run_20260807T133849680_a884aa/stage_diff.json
+- outputs/operator_runs/run_20260807T133849680_a884aa/weekly_brief.json
+- outputs/operator_runs/run_20260807T134447917_8723f7/run_manifest.json
+- outputs/operator_runs/run_20260807T134447917_8723f7/stage_diff.json
+- outputs/operator_runs/run_20260807T134447917_8723f7/weekly_brief.json
+- outputs/operator_runs/run_20260807T135237175_38ad5d/run_manifest.json
+- outputs/operator_runs/run_20260807T135237175_38ad5d/stage_diff.json
+- outputs/operator_runs/run_20260807T135237175_38ad5d/weekly_brief.json
+- outputs/operator_runs/run_20260807T135458076_445e77/run_manifest.json
+- outputs/operator_runs/run_20260807T135458076_445e77/stage_diff.json
+- outputs/operator_runs/run_20260807T135458076_445e77/weekly_brief.json
+- outputs/operator_runs/run_20260807T135718584_43ad4b/run_manifest.json
+- outputs/operator_runs/run_20260807T135718584_43ad4b/stage_diff.json
+- outputs/operator_runs/run_20260807T135718584_43ad4b/weekly_brief.json
+- outputs/operator_runs/run_20260807T141710327_2e720c/run_manifest.json
+- outputs/operator_runs/run_20260807T141710327_2e720c/stage_diff.json
+- outputs/operator_runs/run_20260807T141710327_2e720c/weekly_brief.json
+- outputs/operator_runs/run_20260807T141859227_d174fc/run_manifest.json
+- outputs/operator_runs/run_20260807T141859227_d174fc/stage_diff.json
+- outputs/operator_runs/run_20260807T141859227_d174fc/weekly_brief.json
 

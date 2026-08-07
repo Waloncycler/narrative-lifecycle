@@ -74,7 +74,13 @@ function topicState(
   const topicEvidence = evidence.filter((item) => item.topic_id === topicId);
   const parentEvidence = topicEvidence.filter((item) => item.parent_or_branch === 'parent' || !item.branch_id);
   const branchIds = new Set([
-    ...registry.branches.filter((branch) => branch.topic_id === topicId).map((branch) => branch.branch_id),
+    // Archived branches are removed from the registry-derived set: they are
+    // discovery-layer artifacts kept only for recovery. A branch that still
+    // carries branch-scope Evidence is re-admitted through the evidence path
+    // below, so archiving never hides an evidenced branch.
+    ...registry.branches
+      .filter((branch) => branch.topic_id === topicId && branch.status !== 'archived')
+      .map((branch) => branch.branch_id),
     ...evidence.filter((item) => item.topic_id === topicId && item.parent_or_branch === 'branch' && item.branch_id).map((item) => item.branch_id as string),
   ]);
   const branches = [...branchIds].map((branchId) => branchState(branchId, evidence, registry, topicId));
@@ -96,6 +102,13 @@ function topicState(
       why_not_higher_stage: 'No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.',
       gate_why_not_higher_stage: 'No parent Evidence Table is available.',
       gate_evidence_ids: [],
+      gate_input: {
+        hasStableLabel: false,
+        hasCapitalConfirmation: false,
+        hasPricingAdoption: false,
+        hasHardRealityEvidence: false,
+        independentSourceCount: 0,
+      },
       branches,
     };
   }
@@ -127,6 +140,7 @@ function topicState(
     why_not_higher_stage: stage.why_not_higher_stage,
     gate_why_not_higher_stage: stage.why_not_higher_stage,
     gate_evidence_ids: stage.evidence_ids.sort(),
+    gate_input: stage.gate_input,
     branches,
   };
 }

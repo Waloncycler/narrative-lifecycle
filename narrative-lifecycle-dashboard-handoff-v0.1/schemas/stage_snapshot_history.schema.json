@@ -35,6 +35,7 @@
           "dashboard_card_id": { "type": "string", "minLength": 1 },
           "why_not_higher_stage": { "type": "string", "minLength": 1 },
           "gate_why_not_higher_stage": { "type": "string", "minLength": 1 },
+          "gate_input": { "$ref": "#/$defs/gateInput" },
           "branches": {
             "type": "array",
             "items": {
@@ -72,6 +73,18 @@
   "$defs": {
     "stage": { "type": "string", "enum": ["S0", "S1", "S2", "S3", "S4", "S4-S5", "S5", "S5-S6", "S6", "S6-S7A", "S7A", "S7B", "S7C"] },
     "evidenceIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "gateInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hasStableLabel", "hasCapitalConfirmation", "hasPricingAdoption", "hasHardRealityEvidence", "independentSourceCount"],
+      "properties": {
+        "hasStableLabel": { "type": "boolean" },
+        "hasCapitalConfirmation": { "type": "boolean" },
+        "hasPricingAdoption": { "type": "boolean" },
+        "hasHardRealityEvidence": { "type": "boolean" },
+        "independentSourceCount": { "type": "integer", "minimum": 0 }
+      }
+    },
     "guardrails": {
       "type": "object",
       "additionalProperties": false,

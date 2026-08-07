@@ -8,6 +8,13 @@
     "stage_snapshot": {
       "current_stage": "S4",
       "max_allowed_stage": "S4",
+      "gate_input": {
+        "hasStableLabel": true,
+        "hasCapitalConfirmation": true,
+        "hasPricingAdoption": false,
+        "hasHardRealityEvidence": false,
+        "independentSourceCount": 2
+      },
       "why_not_higher_stage": "Missing pricing adoption; Missing hard reality evidence; Missing at least 3 independent sources.",
       "evidence_ids": [
         "bci_parent_label",
@@ -25,6 +32,13 @@
     "stage_snapshot": {
       "current_stage": "S6",
       "max_allowed_stage": "S6",
+      "gate_input": {
+        "hasStableLabel": true,
+        "hasCapitalConfirmation": true,
+        "hasPricingAdoption": true,
+        "hasHardRealityEvidence": true,
+        "independentSourceCount": 4
+      },
       "why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
       "evidence_ids": [
         "humanoid_parent_label",
@@ -44,6 +58,13 @@
     "stage_snapshot": {
       "current_stage": "S6",
       "max_allowed_stage": "S6",
+      "gate_input": {
+        "hasStableLabel": true,
+        "hasCapitalConfirmation": true,
+        "hasPricingAdoption": true,
+        "hasHardRealityEvidence": true,
+        "independentSourceCount": 4
+      },
       "why_not_higher_stage": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
       "evidence_ids": [
         "licenseout_parent_label",

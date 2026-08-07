@@ -140,3 +140,10 @@
   status: provisional
   reason: Model proposed provisional topic provisional_antibody_drug_conjugates;
     keep as provisional S0 until audited.
+- provisional_topic_id: provisional_industrial_software
+  proposed_name: Industrial Software
+  source_candidate_id: candidate_direct_github_1rkr97a
+  created_at: 2026-08-07T14:18:40.302Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_industrial_software; keep
+    as provisional S0 until audited.

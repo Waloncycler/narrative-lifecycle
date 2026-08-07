@@ -443,10 +443,12 @@ export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string)
         <div class="panel-heading">
           <div><p class="eyebrow">量化引擎</p><h2>Quantitative Gates</h2></div>
         </div>
-        <div class="radar-container" id="radar-chart-root">
-           <!-- SVG drawn by JS -->
-           <svg class="radar-svg" viewBox="0 0 100 100" style="background: var(--nav); border: 1px solid var(--line); border-radius: 3px;"></svg>
+        <p class="gate-lede">四道硬门槛决定阶段上限：每达成一道，主题才能进入下一阶段。实心=已达成，空心=尚缺证据。</p>
+        <div class="radar-wrap">
+          <svg class="radar-svg" viewBox="0 0 260 260" role="img" aria-label="四道量化门槛雷达图"></svg>
         </div>
+        <div class="gate-checklist" id="gate-checklist-root"></div>
+        <p id="radar-empty-note" class="muted" style="display:none; margin-top: 10px;">尚无母主题证据表，四道量化门槛暂无法绘制。分支证据单独展示，且不会抬高父主题。</p>
         <div style="margin-top: 16px;">
           <p class="why">${friendlyReason(topic.why_not_higher_stage)}</p>
           <dl class="fact-list">
@@ -489,15 +491,25 @@ export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string)
             const root = document.getElementById('evolution-timeline-root');
             if (topicHistory && topicHistory.transitions && topicHistory.transitions.length > 0) {
               root.innerHTML = topicHistory.transitions.map(evt => {
-                const isJump = true; // Every transition is a stage jump in this dataset
+                // Interpolated rungs are filled steps on the continuous ladder
+                // that do not yet have their own distinct evidence; render them
+                // muted with a dashed marker and a "待补证据" note so the path
+                // stays continuous without overstating what the evidence proves.
+                const interp = Boolean(evt.interpolated);
                 const gate = evt.gate_unlocked || '';
-                const gatesHtml = gate ? '<div class="timeline-gates"><span class="timeline-gate unlocked">' + gate + '</span></div>' : '';
-                return '<div class="timeline-event ' + (isJump ? 'milestone' : '') + '">' +
+                const gatesHtml = interp
+                  ? '<div class="timeline-gates"><span class="timeline-gate pending">待补该阶段证据</span></div>'
+                  : (gate ? '<div class="timeline-gates"><span class="timeline-gate unlocked">' + gate + '</span></div>' : '');
+                const title = interp
+                  ? '连续阶段过渡（尚缺该步独立证据）'
+                  : (evt.trigger_evidence_title || 'Unknown Event');
+                const src = interp ? '' : '<p class="small" style="margin:0;color:var(--muted)">' + (evt.trigger_evidence_url || 'Unknown Source') + '</p>';
+                return '<div class="timeline-event ' + (interp ? 'interpolated' : 'milestone') + '">' +
                   '<span class="timeline-date">' + evt.transition_date.split('T')[0] + '</span>' +
                   '<div class="timeline-content">' +
                     '<span class="timeline-stage">' + evt.from_stage + ' → ' + evt.to_stage + '</span>' +
-                    '<h3 class="timeline-title">' + (evt.trigger_evidence_title || 'Unknown Event') + '</h3>' +
-                    '<p class="small" style="margin:0;color:var(--muted)">' + (evt.trigger_evidence_url || 'Unknown Source') + '</p>' +
+                    '<h3 class="timeline-title">' + title + '</h3>' +
+                    src +
                     gatesHtml +
                   '</div>' +
                 '</div>';
@@ -515,51 +527,80 @@ export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string)
           const res = await fetch('/api/monitor');
           if (res.ok) {
             const data = await res.json();
-            const topics = data.snapshot?.topics || [];
+            // /api/monitor returns the NarrativeMonitorModel with topics at the
+            // top level, not under a snapshot envelope.
+            const topics = data.topics || [];
             const t = topics.find(t => t.topic_id === topicId);
             const gate = t?.gate_input;
-            
+
             const svg = document.querySelector('.radar-svg');
+            const emptyNote = document.getElementById('radar-empty-note');
+            const checklist = document.getElementById('gate-checklist-root');
+            if (!gate && svg) {
+              // No parent Evidence Table: show why the radar is empty instead of
+              // a blank box.
+              if (emptyNote) emptyNote.style.display = 'block';
+              svg.style.display = 'none';
+              if (checklist) checklist.style.display = 'none';
+            }
             if (gate && svg) {
-              // Draw simple square radar for the 4 quantitative gates
-              // stable_label, capital, pricing, reality
-              const center = 50;
-              const radius = 40;
-              
-              // Draw axes
-              let axes = '';
-              const labels = ['Stable Label', 'Capital', 'Pricing', 'Hard Reality'];
-              const angles = [0, 90, 180, 270].map(a => (a - 90) * Math.PI / 180);
-              
-              angles.forEach((ang, i) => {
-                const x = center + radius * Math.cos(ang);
-                const y = center + radius * Math.sin(ang);
-                axes += '<line x1="50" y1="50" x2="' + x + '" y2="' + y + '" class="radar-axis" />';
-                
-                // label
-                const lx = center + (radius + 8) * Math.cos(ang);
-                const ly = center + (radius + 8) * Math.sin(ang);
-                axes += '<text x="' + lx + '" y="' + (ly + 3) + '" class="radar-label">' + labels[i] + '</text>';
-              });
-              
-              // Calculate points based on gate_input booleans
-              const vals = [
-                gate.hasStableLabel ? 1 : 0.1,
-                gate.hasCapitalConfirmation ? 1 : 0.1,
-                gate.hasPricingAdoption ? 1 : 0.1,
-                gate.hasHardRealityEvidence ? 1 : 0.1
+              if (emptyNote) emptyNote.style.display = 'none';
+
+              // Four quantitative gates, ordered by the stage each unlocks.
+              const GATES = [
+                { key: 'hasStableLabel', pillar: '名', name: '稳定标签', unlocks: 'S3', desc: '标签清晰、语言共享' },
+                { key: 'hasCapitalConfirmation', pillar: '资', name: '资本确认', unlocks: 'S4', desc: '龙头、量能、资金持续' },
+                { key: 'hasPricingAdoption', pillar: '价', name: '预期采纳', unlocks: 'S5', desc: '估值重构、机构建模' },
+                { key: 'hasHardRealityEvidence', pillar: '实', name: '硬现实', unlocks: 'S6', desc: '订单、收入、审批、交付' },
               ];
-              
-              let pts = '';
-              let dots = '';
-              vals.forEach((v, i) => {
-                const x = center + radius * v * Math.cos(angles[i]);
-                const y = center + radius * v * Math.sin(angles[i]);
-                pts += x + ',' + y + ' ';
-                dots += '<circle cx="' + x + '" cy="' + y + '" r="3" class="radar-point" />';
+
+              // Radar geometry in a 260x260 viewBox with a generous margin so
+              // labels never overflow the panel.
+              const cx = 130, cy = 132, rMax = 74, rMin = 20;
+              const angles = [ -Math.PI/2, 0, Math.PI/2, Math.PI ]; // top,right,bottom,left
+              const passed = GATES.map(g => Boolean(gate[g.key]));
+
+              // Concentric guide rings.
+              let rings = '';
+              [0.34, 0.67, 1].forEach(f => {
+                const pts = angles.map(a => (cx + rMax*f*Math.cos(a)).toFixed(1) + ',' + (cy + rMax*f*Math.sin(a)).toFixed(1)).join(' ');
+                rings += '<polygon points="' + pts + '" class="radar-ring" />';
               });
-              
-              svg.innerHTML = axes + '<polygon points="' + pts.trim() + '" class="radar-polygon" />' + dots;
+              // Axes + labels (label boxes kept inside the viewBox).
+              let axes = '';
+              const anchors = ['middle','start','middle','end'];
+              const dy = [ -12, 4, 20, 4 ];
+              angles.forEach((a, i) => {
+                const ax = cx + rMax*Math.cos(a), ay = cy + rMax*Math.sin(a);
+                axes += '<line x1="' + cx + '" y1="' + cy + '" x2="' + ax.toFixed(1) + '" y2="' + ay.toFixed(1) + '" class="radar-axis" />';
+                const lx = cx + (rMax+14)*Math.cos(a), ly = cy + (rMax+14)*Math.sin(a);
+                axes += '<text x="' + lx.toFixed(1) + '" y="' + (ly+dy[i]/3).toFixed(1) + '" text-anchor="' + anchors[i] + '" class="radar-label ' + (passed[i]?'on':'off') + '">' + GATES[i].pillar + ' ' + GATES[i].name + '</text>';
+                axes += '<text x="' + lx.toFixed(1) + '" y="' + (ly+dy[i]/3+11).toFixed(1) + '" text-anchor="' + anchors[i] + '" class="radar-sub">→ ' + GATES[i].unlocks + '</text>';
+              });
+              // Data polygon + points.
+              let dots = '';
+              const poly = angles.map((a, i) => {
+                const r = passed[i] ? rMax : rMin;
+                const x = cx + r*Math.cos(a), y = cy + r*Math.sin(a);
+                dots += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4.5" class="radar-point ' + (passed[i]?'on':'off') + '" />';
+                return x.toFixed(1) + ',' + y.toFixed(1);
+              }).join(' ');
+              svg.innerHTML = rings + axes + '<polygon points="' + poly + '" class="radar-polygon" />' + dots;
+
+              // Plain-language gate checklist beneath the radar.
+              if (checklist) {
+                checklist.style.display = 'grid';
+                checklist.innerHTML = GATES.map((g, i) => {
+                  const ok = passed[i];
+                  return '<div class="gate-row ' + (ok?'on':'off') + '">' +
+                    '<span class="gate-mark">' + (ok?'●':'○') + '</span>' +
+                    '<span class="gate-name"><strong>' + g.pillar + ' · ' + g.name + '</strong><small>' + g.desc + '</small></span>' +
+                    '<span class="gate-unlock">' + g.unlocks + '</span>' +
+                    '<span class="gate-state ' + (ok?'ok':'todo') + '">' + (ok?'已达成':'待证据') + '</span>' +
+                  '</div>';
+                }).join('') +
+                '<p class="gate-foot">独立来源 ' + (gate.independentSourceCount ?? 0) + ' 个 · 阶段上限取决于最后一道未达成的门槛。</p>';
+              }
             }
           }
         } catch (e) {
@@ -1063,6 +1104,10 @@ function styles(): string { return `
 .timeline-event { position: relative; margin-bottom: 24px; }
 .timeline-event::before { content: ''; position: absolute; left: -26px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); }
 .timeline-event.milestone::before { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px rgba(136,192,208,0.6); }
+.timeline-event.interpolated::before { background: var(--nav); border-color: #4c566a; border-style: dashed; }
+.timeline-event.interpolated .timeline-content { border-style: dashed; opacity: 0.78; }
+.timeline-event.interpolated .timeline-stage { background: transparent; border: 1px dashed #4c566a; color: var(--muted); }
+.timeline-gate.pending { border-style: dashed; border-color: var(--amber); color: var(--amber); }
 .timeline-date { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 4px; display: block; }
 .timeline-content { background: var(--nav); padding: 12px; border-radius: 3px; border: 1px solid var(--line); }
 .timeline-stage { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; background: var(--accent-soft); color: var(--accent); margin-bottom: 6px; }
@@ -1071,12 +1116,32 @@ function styles(): string { return `
 .timeline-gate { font-size: 9px; text-transform: uppercase; padding: 2px 4px; border-radius: 2px; border: 1px solid #4c566a; color: var(--muted); }
 .timeline-gate.unlocked { border-color: #a3be8c; color: #a3be8c; }
 
-.radar-container { position: relative; width: 100%; padding-bottom: 100%; }
-.radar-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
-.radar-axis { stroke: var(--line); stroke-width: 1; stroke-dasharray: 4 4; }
-.radar-polygon { fill: rgba(136, 192, 208, 0.2); stroke: var(--accent); stroke-width: 2; transition: all 0.3s ease; }
-.radar-point { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
-.radar-label { font-size: 10px; fill: var(--muted); font-weight: 600; text-transform: uppercase; text-anchor: middle; }
+.gate-lede { margin: 0 0 12px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.radar-wrap { width: 100%; max-width: 300px; margin: 0 auto; }
+.radar-svg { display: block; width: 100%; height: auto; overflow: hidden; }
+.radar-ring { fill: none; stroke: var(--line); stroke-width: 1; opacity: 0.5; }
+.radar-axis { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.7; }
+.radar-polygon { fill: rgba(136, 192, 208, 0.18); stroke: var(--accent); stroke-width: 2; transition: all 0.3s ease; }
+.radar-point.on { fill: var(--accent); stroke: var(--nav); stroke-width: 2; }
+.radar-point.off { fill: var(--nav); stroke: #4c566a; stroke-width: 2; }
+.radar-label { font-size: 11px; font-weight: 600; }
+.radar-label.on { fill: var(--accent); }
+.radar-label.off { fill: #6b7280; }
+.radar-sub { font-size: 9px; fill: var(--muted); text-anchor: inherit; }
+.gate-checklist { display: grid; gap: 6px; margin-top: 16px; }
+.gate-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--nav); }
+.gate-row.on { border-color: rgba(163, 190, 140, 0.4); }
+.gate-mark { flex: 0 0 auto; font-size: 13px; line-height: 1; }
+.gate-row.on .gate-mark { color: #a3be8c; }
+.gate-row.off .gate-mark { color: #4c566a; }
+.gate-name { flex: 1 1 auto; min-width: 0; display: grid; gap: 1px; }
+.gate-name strong { font-size: 12px; color: #eceff4; font-weight: 500; white-space: nowrap; }
+.gate-name small { font-size: 10px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gate-unlock { flex: 0 0 auto; font-size: 11px; font-weight: 600; color: var(--accent); font-family: ui-monospace, monospace; }
+.gate-state { flex: 0 0 auto; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 3px; border: 1px solid transparent; white-space: nowrap; }
+.gate-state.ok { color: #a3be8c; border-color: #a3be8c; }
+.gate-state.todo { color: var(--muted); border-color: #4c566a; }
+.gate-foot { margin: 8px 0 0; font-size: 10px; color: var(--muted); line-height: 1.5; }
 
 .three-column-grid { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 20px; align-items: start; }
 @media(max-width:1200px) { .three-column-grid { grid-template-columns: 1fr 1fr; } .three-column-grid > div:last-child { grid-column: 1 / -1; } }

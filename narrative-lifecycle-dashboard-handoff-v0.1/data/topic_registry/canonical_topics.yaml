@@ -220,3 +220,49 @@
   status: provisional
   naming_status: unresolved
   naming_sources: []
+- topic_id: provisional_solid_state_battery
+  topic_name: 固态电池
+  market_name_zh: 固态电池
+  market_name_en: Solid-state battery
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_autonomous_driving_robotaxi
+  topic_name: 自动驾驶与 Robotaxi
+  market_name_zh: 自动驾驶与 Robotaxi
+  market_name_en: Autonomous driving and robotaxi
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_nuclear_fusion_advanced_nuclear
+  topic_name: 可控核聚变与先进核能
+  market_name_zh: 可控核聚变与先进核能
+  market_name_en: Nuclear fusion and advanced nuclear
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_spatial_computing_xr
+  topic_name: 空间计算与 XR
+  market_name_zh: 空间计算与 XR
+  market_name_en: Spatial computing and XR
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_synthetic_biology
+  topic_name: 合成生物学
+  market_name_zh: 合成生物学
+  market_name_en: Synthetic biology
+  naming_status: provisional
+  naming_sources: []
+  current_stage: S0
+  status: active
+- topic_id: provisional_industrial_software
+  topic_name: Industrial Software
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []

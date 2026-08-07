@@ -33,6 +33,7 @@ export function buildNarrativeMonitor(input: {
     strongest_branch: topic.strongest_branch,
     weakest_layer: topic.weakest_layer,
     why_not_higher_stage: topic.why_not_higher_stage,
+    gate_input: topic.gate_input ?? null,
     change: input.diff?.topic_changes.find((change) => change.topic_id === topic.topic_id) ?? null,
     branches: topic.branches,
     evidence: input.weekly?.strongest_evidence.filter((item) => item.topic === topic.topic_name) ?? [],

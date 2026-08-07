@@ -1,0 +1,33 @@
+{
+  "artifact_type": "core_topic_curation_audit",
+  "generated_at": "2026-08-07T00:00:00.000Z",
+  "change_type": "operator_curated_monitoring_baseline",
+  "topic_ids": [
+    "provisional_solid_state_battery",
+    "provisional_autonomous_driving_robotaxi",
+    "provisional_nuclear_fusion_advanced_nuclear",
+    "provisional_spatial_computing_xr",
+    "provisional_synthetic_biology"
+  ],
+  "branch_ids": [
+    "provisional_ssb_semi_solid_mass_production",
+    "provisional_ssb_sulfide_electrolyte",
+    "provisional_robotaxi_commercial_operation",
+    "provisional_autonomous_driving_l3_regulation",
+    "provisional_fusion_magnetic_confinement",
+    "provisional_small_modular_reactor",
+    "provisional_xr_ai_smart_glasses",
+    "provisional_xr_spatial_content_ecosystem",
+    "provisional_synbio_ai_protein_design",
+    "provisional_synbio_biomanufacturing"
+  ],
+  "reason": "Coverage review of the existing 20 monitored topics found no representation for next-generation energy storage, autonomous mobility commercialisation, fusion/advanced fission driven by data-centre demand, spatial computing, or AI-driven biology. These five market-recognisable themes are added to the monitored core at S0 so recurring coverage can begin; branches are registered as watch only.",
+  "guardrail_check": {
+    "operator_curation_only": true,
+    "all_topics_start_at_s0": true,
+    "no_evidence_inherited": true,
+    "no_stage_or_score_upgrade": true,
+    "parent_branch_separation": true,
+    "no_trading_advice": true
+  }
+}
