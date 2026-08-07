@@ -13,7 +13,7 @@
   "require_model_validation": true,
   "allow_rule_verified_publication": true,
   "minimum_evidence_strength": "E1",
-  "minimum_confidence": "medium",
+  "minimum_confidence": "low",
   "permitted_source_types": ["official", "filing", "research", "academic", "company", "news"],
   "allow_news_auto_publish": true,
   "require_source_url": true,

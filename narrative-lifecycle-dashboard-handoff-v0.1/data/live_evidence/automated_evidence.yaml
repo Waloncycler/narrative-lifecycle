@@ -389,3 +389,72 @@
   positive_or_negative: positive
   confidence: 85
   schema_version: 0.9-autonomous-research
+- evidence_id: direct_arxiv_mn8gv5
+  topic_id: provisional_ai_agents
+  branch_id: provisional_ai_agents_compute_budget_governance
+  event_date: 2026-08-06
+  event_title: Resourced Authority A Mechanism-Design Model for Participatory
+    Governance of Deployed AI Agents
+  event_summary: We give a formal mechanism design model for the continuous
+    participatory governance of a deployed AI agent. The mechanism is built on
+    the principle that governance should control an AI agent through resource
+    allocation so as to make authorization self enforcing via compute budgets.
+    The mechanism seeks to establish the Safe AI paradigm that compute is an
+    effective governance lever. We situate our work as a compliance or commons
+    overlay on a deployer. One governance period is an extensive form game in
+    which verified human stakeholders arrive sequentially and contribute, on a
+    provision or a rejection market, in a governance currency that is
+    deliberately distinct from the agents compute. A fundi
+  event_type: DIRECT_SOURCE_RECORD
+  source_name: arXiv 预印本平台
+  source_url: http://arxiv.org/abs/2608.06353v1
+  source_type: academic
+  evidence_strength: E1
+  affected_layer:
+    - reality
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-06
+  branch_coverage_score: 35
+  interpretation: A term-addressable original-source record may be relevant to
+    this Topic or Branch, but it is a review candidate rather than proof of any
+    lifecycle stage.
+  limitation: API metadata and title are insufficient to establish pricing,
+    adoption, revenue, scale, or a Stage transition. Verify the original record
+    and retain Parent/Branch separation. Branch mapping remains a separate
+    reviewable graph proposal and cannot upgrade the parent narrative.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative.
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: direct_clinicaltrials_evl8sq
+  topic_id: bci
+  branch_id: provisional_bci_als_communication
+  event_date: 2013-07-12
+  event_title: Communication by Brain - Computer Interface in Amyotrophic Lateral
+    Sclerosis:Feasibility Study
+  event_summary: UNKNOWN · Amyotrophic Lateral Sclerosis
+  event_type: DIRECT_SOURCE_RECORD
+  source_name: 美国临床试验注册平台
+  source_url: https://clinicaltrials.gov/study/NCT01897818
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - reality
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2013-07-12
+  branch_coverage_score: 35
+  interpretation: A term-addressable original-source record may be relevant to
+    this Topic or Branch, but it is a review candidate rather than proof of any
+    lifecycle stage.
+  limitation: API metadata and title are insufficient to establish pricing,
+    adoption, revenue, scale, or a Stage transition. Verify the original record
+    and retain Parent/Branch separation. Branch mapping remains a separate
+    reviewable graph proposal and cannot upgrade the parent narrative.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative.
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research

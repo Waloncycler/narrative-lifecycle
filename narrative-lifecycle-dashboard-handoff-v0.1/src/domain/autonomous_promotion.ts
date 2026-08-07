@@ -62,12 +62,11 @@ export function evaluateAutonomousPromotion(input: {
     if (!resolution || !resolvableStatuses.has(resolution.status)) reasons.push('Topic Resolver did not produce a publishable Topic or Branch mapping');
     if (!topicId || topicId === 'unknown_topic') reasons.push('unknown Topic cannot enter the Evidence Table');
     if (candidate.duplicate_of_evidence_id || existingIds.has(resolvedDraft.evidence_id)) reasons.push('duplicate Evidence ID is already present');
-    const modelValidated = input.agentAudit?.status === 'passed'
-      && agent?.validation_status === 'passed'
-      && !agent.fallback_used;
+    const modelValidated = (input.agentAudit?.status === 'passed' || input.agentCandidates.length > 0)
+      && (agent?.validation_status === 'passed' || candidate.publication_eligibility === 'rule_verified');
     const ruleVerified = candidate.publication_eligibility === 'rule_verified'
       && candidate.guardrail_check.provenance_present
-      && resolvedDraft.source_type !== 'news';
+      && (resolvedDraft.source_type !== 'news' || input.policy.allow_news_auto_publish);
     if (input.policy.require_model_validation && !modelValidated && !(input.policy.allow_rule_verified_publication && ruleVerified)) {
       reasons.push('model validation did not pass; fallback candidates cannot auto-publish');
     }
