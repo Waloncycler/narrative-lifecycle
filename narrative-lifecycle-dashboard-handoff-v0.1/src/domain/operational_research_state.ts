@@ -54,7 +54,7 @@ export function buildOperationalResearchState(input: {
         no_trading_advice: true,
         research_only_actions: true,
         parent_branch_separation_preserved: topics.every((topic) => topic.branches.every((branch) => !topic.evidence_ids.includes(branch.evidence_ids[0] ?? '__none__'))),
-        evidence_ids_visible: topics.every((topic) => topic.evidence_ids.length > 0 || topic.branches.some((branch) => branch.evidence_ids.length > 0)),
+        evidence_ids_visible: topics.every((topic) => topic.current_stage === 'S0' || topic.evidence_ids.length > 0 || topic.branches.some((branch) => branch.evidence_ids.length > 0)),
         why_not_higher_present: topics.every((topic) => Boolean(topic.why_not_higher_stage)),
         data_confidence_present: topics.every((topic) => ['low', 'medium', 'high'].includes(topic.data_confidence)),
       },

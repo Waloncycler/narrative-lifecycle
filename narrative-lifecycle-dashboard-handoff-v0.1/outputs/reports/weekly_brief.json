@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260807T073128528_e95d36",
-  "generated_at": "2026-08-07T07:31:28.528Z",
-  "report_id": "weekly_brief_run_20260807T073128528_e95d36",
+  "run_id": "run_20260807T093527259_0fa20c",
+  "generated_at": "2026-08-07T09:35:27.259Z",
+  "report_id": "weekly_brief_run_20260807T093527259_0fa20c",
   "source_artifacts": [
     "outputs/dashboard_cards/bci.json",
     "outputs/dashboard_cards/humanoid_robotics.json",
@@ -57,8 +57,8 @@
     }
   ],
   "stage_change_summary": {
-    "previous_snapshot_id": "stage_snapshot_run_20260807T072944527_bfd921",
-    "current_snapshot_id": "stage_snapshot_run_20260807T073128528_e95d36",
+    "previous_snapshot_id": "stage_snapshot_run_20260807T073740561_b37f4a",
+    "current_snapshot_id": "stage_snapshot_run_20260807T093527259_0fa20c",
     "upgrade_count": 0,
     "downgrade_count": 0,
     "evidence_added_count": 0,

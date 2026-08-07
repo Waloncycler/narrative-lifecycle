@@ -2,7 +2,7 @@
 
 ## 1. Summary
 
-3 topics compared against stage_snapshot_run_20260807T072944527_bfd921.
+3 topics compared against stage_snapshot_run_20260807T073740561_b37f4a.
 
 - Status: ok
 - Upgrades: 0
@@ -45,6 +45,6 @@ None.
 
 ## 10. Snapshot Index
 
-- Previous: stage_snapshot_run_20260807T072944527_bfd921
-- Current: stage_snapshot_run_20260807T073128528_e95d36
-- Diff: stage_diff_run_20260807T073128528_e95d36
+- Previous: stage_snapshot_run_20260807T073740561_b37f4a
+- Current: stage_snapshot_run_20260807T093527259_0fa20c
+- Diff: stage_diff_run_20260807T093527259_0fa20c

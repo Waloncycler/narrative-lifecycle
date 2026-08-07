@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260807T073055977_631f1f",
-  "generated_at": "2026-08-07T07:30:56.194Z",
-  "review_id": "operator_review_run_20260807T073055977_631f1f",
+  "run_id": "run_20260807T093410460_a5803e",
+  "generated_at": "2026-08-07T09:34:10.636Z",
+  "review_id": "operator_review_run_20260807T093410460_a5803e",
   "status": "ok",
   "source_artifacts": [
     "outputs/operator_runs/run_20260802T181123872_9133dd/run_manifest.json",
@@ -241,17 +241,29 @@
     "outputs/operator_runs/run_20260807T071845297_7a67a7/weekly_brief.json",
     "outputs/operator_runs/run_20260807T073055977_631f1f/run_manifest.json",
     "outputs/operator_runs/run_20260807T073055977_631f1f/stage_diff.json",
-    "outputs/operator_runs/run_20260807T073055977_631f1f/weekly_brief.json"
+    "outputs/operator_runs/run_20260807T073055977_631f1f/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T073542612_372da6/run_manifest.json",
+    "outputs/operator_runs/run_20260807T073542612_372da6/stage_diff.json",
+    "outputs/operator_runs/run_20260807T073542612_372da6/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T074058640_47a13c/run_manifest.json",
+    "outputs/operator_runs/run_20260807T074058640_47a13c/stage_diff.json",
+    "outputs/operator_runs/run_20260807T074058640_47a13c/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T093409754_8847fb/run_manifest.json",
+    "outputs/operator_runs/run_20260807T093409754_8847fb/stage_diff.json",
+    "outputs/operator_runs/run_20260807T093409754_8847fb/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T093410460_a5803e/run_manifest.json",
+    "outputs/operator_runs/run_20260807T093410460_a5803e/stage_diff.json",
+    "outputs/operator_runs/run_20260807T093410460_a5803e/weekly_brief.json"
   ],
   "review_window": {
     "first_run_id": "run_20260802T181123872_9133dd",
-    "last_run_id": "run_20260807T073055977_631f1f",
+    "last_run_id": "run_20260807T093410460_a5803e",
     "first_started_at": "2026-08-02T18:11:23.872Z",
-    "last_completed_at": "2026-08-07T07:30:56.107Z"
+    "last_completed_at": "2026-08-07T09:34:10.590Z"
   },
   "run_summary": {
-    "run_count": 78,
-    "successful_run_count": 78,
+    "run_count": 82,
+    "successful_run_count": 82,
     "failed_run_count": 0
   },
   "runs": [
@@ -956,6 +968,42 @@
       "guardrail_status": "ok",
       "has_stage_diff": true,
       "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T073542612_372da6",
+      "started_at": "2026-08-07T07:35:42.612Z",
+      "completed_at": "2026-08-07T07:35:42.739Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T074058640_47a13c",
+      "started_at": "2026-08-07T07:40:58.640Z",
+      "completed_at": "2026-08-07T07:40:58.769Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T093409754_8847fb",
+      "started_at": "2026-08-07T09:34:09.754Z",
+      "completed_at": "2026-08-07T09:34:09.887Z",
+      "status": "ok",
+      "guardrail_status": "review_required",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T093410460_a5803e",
+      "started_at": "2026-08-07T09:34:10.460Z",
+      "completed_at": "2026-08-07T09:34:10.590Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
     }
   ],
   "stage_trends": {
@@ -1096,6 +1144,16 @@
       ],
       "branch_id": "provisional_bci_als_communication",
       "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T074058640_47a13c",
+      "generated_at": "2026-08-07T07:40:58.640Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "branch_mutation_candidate",
+      "evidence_ids": [],
+      "branch_id": "provisional_ai_agents_compute_budget_governance",
+      "reactivation_record_id": null
     }
   ],
   "early_radar_changes": [],
@@ -1103,6 +1161,14 @@
     {
       "run_id": "run_20260802T182646779_3913e9",
       "generated_at": "2026-08-02T18:26:46.780Z",
+      "change_type": "evidence_ids_visible",
+      "previous_value": "true",
+      "current_value": "false",
+      "evidence_ids": []
+    },
+    {
+      "run_id": "run_20260807T093409754_8847fb",
+      "generated_at": "2026-08-07T09:34:09.754Z",
       "change_type": "evidence_ids_visible",
       "previous_value": "true",
       "current_value": "false",
@@ -1119,14 +1185,41 @@
       "run_id": "run_20260802T182646779_3913e9",
       "status": "review_required",
       "issue": "guardrail regression: evidence_ids_visible"
+    },
+    {
+      "run_id": "run_20260807T093409754_8847fb",
+      "status": "review_required",
+      "issue": "run manifest reported guardrail review required"
+    },
+    {
+      "run_id": "run_20260807T093409754_8847fb",
+      "status": "review_required",
+      "issue": "guardrail regression: evidence_ids_visible"
     }
   ],
-  "repeated_issues": [],
+  "repeated_issues": [
+    {
+      "issue": "run manifest reported guardrail review required",
+      "count": 2,
+      "run_ids": [
+        "run_20260802T182646779_3913e9",
+        "run_20260807T093409754_8847fb"
+      ]
+    },
+    {
+      "issue": "guardrail regression: evidence_ids_visible",
+      "count": 2,
+      "run_ids": [
+        "run_20260802T182646779_3913e9",
+        "run_20260807T093409754_8847fb"
+      ]
+    }
+  ],
   "consecutive_no_change_topics": [
     {
       "topic_id": "bci",
       "topic_name": "脑机接口",
-      "consecutive_run_count": 49,
+      "consecutive_run_count": 51,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1176,14 +1269,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S4"
     },
     {
       "topic_id": "humanoid_robotics",
       "topic_name": "人形机器人",
-      "consecutive_run_count": 50,
+      "consecutive_run_count": 52,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1234,14 +1329,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "innovative_drug_license_out",
       "topic_name": "创新药对外授权",
-      "consecutive_run_count": 47,
+      "consecutive_run_count": 49,
       "run_ids": [
         "run_20260802T183030393_2e4435",
         "run_20260802T183223529_e223a1",
@@ -1289,14 +1386,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_blockchain_crypto_market",
       "topic_name": "区块链与加密资产",
-      "consecutive_run_count": 26,
+      "consecutive_run_count": 28,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1323,14 +1422,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_luxury_consumer",
       "topic_name": "高端消费",
-      "consecutive_run_count": 26,
+      "consecutive_run_count": 28,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1357,14 +1458,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_low_altitude_economy",
       "topic_name": "低空经济",
-      "consecutive_run_count": 26,
+      "consecutive_run_count": 28,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1391,14 +1494,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_new_energy_industry",
       "topic_name": "新能源产业",
-      "consecutive_run_count": 51,
+      "consecutive_run_count": 55,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1450,14 +1555,18 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c",
+        "run_20260807T093409754_8847fb",
+        "run_20260807T093410460_a5803e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_commercial_space",
       "topic_name": "商业航天",
-      "consecutive_run_count": 51,
+      "consecutive_run_count": 55,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1509,14 +1618,18 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c",
+        "run_20260807T093409754_8847fb",
+        "run_20260807T093410460_a5803e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_quantum_computing",
       "topic_name": "量子计算",
-      "consecutive_run_count": 24,
+      "consecutive_run_count": 26,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1541,14 +1654,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_innovative_drug_clinical_development",
       "topic_name": "创新药临床研发",
-      "consecutive_run_count": 50,
+      "consecutive_run_count": 52,
       "run_ids": [
         "run_20260802T182405982_052013",
         "run_20260802T182601304_177bdf",
@@ -1599,14 +1714,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_ai_foundation_models",
       "topic_name": "基础大模型",
-      "consecutive_run_count": 24,
+      "consecutive_run_count": 26,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1631,14 +1748,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_semiconductor_advanced_manufacturing",
       "topic_name": "半导体先进制造",
-      "consecutive_run_count": 24,
+      "consecutive_run_count": 26,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1663,14 +1782,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_semiconductor_memory_market",
       "topic_name": "存储芯片",
-      "consecutive_run_count": 10,
+      "consecutive_run_count": 12,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1681,14 +1802,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_china_ip_policy",
       "topic_name": "中国知识产权政策",
-      "consecutive_run_count": 69,
+      "consecutive_run_count": 73,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -1758,14 +1881,18 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c",
+        "run_20260807T093409754_8847fb",
+        "run_20260807T093410460_a5803e"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_additive_manufacturing",
       "topic_name": "增材制造",
-      "consecutive_run_count": 24,
+      "consecutive_run_count": 26,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1790,14 +1917,16 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_china_social_security_policy",
       "topic_name": "社会保障政策",
-      "consecutive_run_count": 69,
+      "consecutive_run_count": 73,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -1867,14 +1996,18 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c",
+        "run_20260807T093409754_8847fb",
+        "run_20260807T093410460_a5803e"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_ai_agents",
       "topic_name": "AI 智能体",
-      "consecutive_run_count": 24,
+      "consecutive_run_count": 25,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1899,14 +2032,15 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_smart_manufacturing",
       "topic_name": "智能制造",
-      "consecutive_run_count": 49,
+      "consecutive_run_count": 53,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1956,14 +2090,18 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c",
+        "run_20260807T093409754_8847fb",
+        "run_20260807T093410460_a5803e"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_computing_infrastructure",
       "topic_name": "算力基础设施",
-      "consecutive_run_count": 24,
+      "consecutive_run_count": 26,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1988,7 +2126,9 @@
         "run_20260807T071041730_d55a60",
         "run_20260807T071230185_7e17f2",
         "run_20260807T071845297_7a67a7",
-        "run_20260807T073055977_631f1f"
+        "run_20260807T073055977_631f1f",
+        "run_20260807T073542612_372da6",
+        "run_20260807T074058640_47a13c"
       ],
       "current_stage": "S0"
     }
@@ -2000,6 +2140,16 @@
       "message": "evidence_ids_visible requires operator review.",
       "run_ids": [
         "run_20260802T182646779_3913e9"
+      ],
+      "research_only_action": "flag_risk",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "guardrail_regression",
+      "message": "evidence_ids_visible requires operator review.",
+      "run_ids": [
+        "run_20260807T093409754_8847fb"
       ],
       "research_only_action": "flag_risk",
       "evidence_ids": []
@@ -2020,6 +2170,26 @@
       "message": "guardrail regression: evidence_ids_visible",
       "run_ids": [
         "run_20260802T182646779_3913e9"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "failed_run",
+      "message": "run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260807T093409754_8847fb"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
+    },
+    {
+      "priority": "high",
+      "category": "failed_run",
+      "message": "guardrail regression: evidence_ids_visible",
+      "run_ids": [
+        "run_20260807T093409754_8847fb"
       ],
       "research_only_action": "review",
       "evidence_ids": []
@@ -2075,6 +2245,16 @@
         "bci_parent_capital_synchron_20251106",
         "bci_parent_policy_label_20250730"
       ]
+    },
+    {
+      "priority": "medium",
+      "category": "branch_mutation",
+      "message": "AI 智能体 has branch mutation provisional_ai_agents_compute_budget_governance; parent stage remains artifact-derived.",
+      "run_ids": [
+        "run_20260807T074058640_47a13c"
+      ],
+      "research_only_action": "review",
+      "evidence_ids": []
     }
   ],
   "research_only_next_actions": [
@@ -2083,6 +2263,14 @@
       "reason": "evidence_ids_visible requires operator review.",
       "run_ids": [
         "run_20260802T182646779_3913e9"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "flag_risk",
+      "reason": "evidence_ids_visible requires operator review.",
+      "run_ids": [
+        "run_20260807T093409754_8847fb"
       ],
       "evidence_ids": []
     },
@@ -2099,6 +2287,22 @@
       "reason": "guardrail regression: evidence_ids_visible",
       "run_ids": [
         "run_20260802T182646779_3913e9"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260807T093409754_8847fb"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "guardrail regression: evidence_ids_visible",
+      "run_ids": [
+        "run_20260807T093409754_8847fb"
       ],
       "evidence_ids": []
     },
@@ -2145,6 +2349,32 @@
         "bci_parent_capital_synchron_20251106",
         "bci_parent_policy_label_20250730"
       ]
+    },
+    {
+      "action": "review",
+      "reason": "AI 智能体 has branch mutation provisional_ai_agents_compute_budget_governance; parent stage remains artifact-derived.",
+      "run_ids": [
+        "run_20260807T074058640_47a13c"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "Repeated issue: run manifest reported guardrail review required",
+      "run_ids": [
+        "run_20260802T182646779_3913e9",
+        "run_20260807T093409754_8847fb"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "action": "review",
+      "reason": "Repeated issue: guardrail regression: evidence_ids_visible",
+      "run_ids": [
+        "run_20260802T182646779_3913e9",
+        "run_20260807T093409754_8847fb"
+      ],
+      "evidence_ids": []
     }
   ]
 }

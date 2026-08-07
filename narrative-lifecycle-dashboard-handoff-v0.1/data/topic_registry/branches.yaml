@@ -218,3 +218,9 @@
   status: watch
   naming_status: unresolved
   naming_sources: []
+- branch_id: provisional_ai_agents_compute_budget_governance
+  topic_id: provisional_ai_agents
+  branch_name: Compute Budget Governance
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
