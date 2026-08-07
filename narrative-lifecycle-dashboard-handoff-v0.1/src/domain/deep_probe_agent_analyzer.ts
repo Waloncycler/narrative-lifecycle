@@ -160,11 +160,13 @@ const TOPIC_PATTERNS: Array<{ pattern: RegExp; topicId: string }> = [
   // China Social Security Policy / 社会保障政策
   { pattern: /(?:social\s*security|pension|retirement|养老|社保|退休|社会保障|医保|公积金)/i, topicId: 'provisional_china_social_security_policy' },
   // Nuclear Fusion & Advanced Nuclear / 可控核聚变与先进核能
-  { pattern: /(?:nuclear\s*fusion|fusion\s*(?:energy|reactor|power|ignition)|tokamak|stellarator|inertial\s*confinement|small\s*modular\s*reactor|\bsmr\b|iter|commonwealth\s*fusion|helion|核聚变|可控核聚变|托卡马克|人造太阳|聚变堆|先进核能|小型模块化反应堆|第四代核电|中核聚变|east装置)/i, topicId: 'provisional_nuclear_fusion_advanced_nuclear' },
+  { pattern: /(?:nuclear\s*fusion|tokamak|stellarator|smr|核聚变|可控核聚变|托卡马克|小型模块化反应堆|先进核能)/i, topicId: 'provisional_nuclear_fusion' },
   // Spatial Computing & XR / 空间计算与 XR
-  { pattern: /(?:spatial\s*comput|\bxr\b|\bvr\b|\bar\b\s*(?:glass|headset|device)|mixed\s*reality|vision\s*pro|meta\s*quest|orion|smart\s*glasses|head[\s-]*mounted\s*display|空间计算|混合现实|虚拟现实|增强现实|智能眼镜|ar眼镜|头显|元宇宙硬件)/i, topicId: 'provisional_spatial_computing_xr' },
+  { pattern: /(?:spatial\s*computing|vr|ar|xr|vision\s*pro|meta\s*orion|空间计算|增强现实|虚拟现实|混合现实)/i, topicId: 'provisional_spatial_computing_xr' },
   // Synthetic Biology / 合成生物学
-  { pattern: /(?:synthetic\s*biolog|synbio|protein\s*(?:design|folding|engineering)|alphafold|directed\s*evolution|cell[\s-]*free\s*system|biomanufactur|metabolic\s*engineering|gene\s*circuit|合成生物学|生物制造|蛋白质设计|蛋白质折叠|基因线路|细胞工厂|代谢工程|生物基材料)/i, topicId: 'provisional_synthetic_biology' },
+  { pattern: /(?:synthetic\s*biology|alphafold|protein\s*folding|bio[\s-]*manufacturing|合成生物|蛋白质折叠|生物制造|凯赛生物)/i, topicId: 'provisional_synthetic_biology' },
+  // World Models & Foundation Models / 世界模型与大模型
+  { pattern: /(?:world\s*model|foundation\s*model|agi|sora|gpt|世界模型|通用人工智能|大语言模型|基础模型)/i, topicId: 'provisional_world_models' },
 ];
 
 export function inferTopicFromText(text: string): string {

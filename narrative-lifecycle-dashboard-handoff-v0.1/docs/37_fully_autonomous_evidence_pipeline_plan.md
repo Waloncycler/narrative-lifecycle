@@ -21,11 +21,15 @@ Two observed defects, both confirmed against the live system on 2026-08-07:
 2. **Sources are too few / not flowing.** The system *catalogues* many sources
    but very little real evidence actually lands in the operational Evidence
    Table.
+3. **Narrative Coverage is Incomplete.** A review of the 20 active topics shows
+   strong coverage in AI, Space, and Biotech, but critical 2026 tech/macro
+   super-narratives (e.g., Solid-State Batteries, Robotaxi, Nuclear Fusion) are
+   missing.
 
 The goal is a **fully autonomous loop** that continuously scrapes a broad source
 set, analyzes each item into structured Evidence, and fills topic/branch
-timelines — with enough independent evidence per stage that transitions are
-robust and *continuous* (S0→S1→S2→…, never skipping a stage).
+timelines — while systematically expanding the topic universe so that no major
+market narrative is missed.
 
 ---
 
@@ -132,7 +136,28 @@ permission) exactly like the existing atlas entries (`docs/29`, `docs/35`).
 
 ---
 
-## 5. Analysis-method upgrades (make each row count for more)
+## 5. Topic & Narrative Universe Expansion (The "覆盖不全" fix)
+
+To ensure the system captures the full spectrum of 2026 market dynamics, the
+narrative universe must be expanded beyond the initial 20 topics.
+
+### 5.1 Immediate Topic Injections
+The following 5 critical tech/macro super-narratives will be immediately registered
+into `all_topics_evolution.json` and `deep_probe_agent_analyzer.ts`:
+1. **固态电池 (Solid-State Batteries):** Crucial next-gen energy storage.
+2. **自动驾驶与 Robotaxi (Autonomous Driving & Robotaxi):** FSD commercialization and Apollo Go (萝卜快跑) scaling.
+3. **可控核聚变与先进核能 (Nuclear Fusion & Advanced Nuclear):** Driven by massive AI data center energy demands.
+4. **空间计算与 XR (Spatial Computing & XR):** Following Apple Vision Pro and Meta Orion hardware cycles.
+5. **合成生物学 (Synthetic Biology):** AI-driven protein folding and bio-manufacturing.
+
+### 5.2 Automated Discovery (Future Phase)
+Future iterations of the pipeline will include a "Narrative Discovery" module
+that scans broad market indexes and industry reports to flag emerging topics
+that cross a minimum mention threshold but are not yet tracked by the system.
+
+---
+
+## 6. Analysis-method upgrades (make each row count for more)
 
 These were found during the 2026-08-07 review and matter more once volume rises.
 They are the "分析方法" optimizations. Each is a scoped task.
@@ -176,7 +201,7 @@ so naming/perception evidence is invisible to the S3 gate. Normalize `name` →
 
 ---
 
-## 6. Auto-fill & governance — how to automate responsibly
+## 7. Auto-fill & governance — how to automate responsibly
 
 The author wants *auto-fill* (自动填补). The system deliberately holds evidence
 for review. Reconcile with a **tiered trust ladder**, not by disabling review.
@@ -207,7 +232,7 @@ This gives "全自动" while keeping the property that makes the system trustwor
 
 ---
 
-## 7. Continuity as an acceptance criterion
+## 8. Continuity as an acceptance criterion
 
 The reconstructor now enforces a strict single-step ladder and flags
 `interpolated` rungs. The autonomous loop should treat **every interpolated rung
@@ -218,7 +243,7 @@ per realized transition.*
 
 ---
 
-## 8. Data-form / schema upgrades
+## 9. Data-form / schema upgrades
 
 - **Raise field completeness.** `event_summary` present on only 9% of rows;
   polarity/interpretation/limitation on ~69%. Make the analyzer populate them
@@ -233,32 +258,36 @@ per realized transition.*
 
 ---
 
-## 9. Phased roadmap (for the implementing models)
+## 10. Phased roadmap (for the implementing models)
 
-- **P0 — Method correctness (no new data needed):** §5.5 name-layer, §5.4
-  domain-dedup, §5.1 data-confidence. Re-verify golden cases + full test suite.
-- **P1 — Source expansion:** §4.1 Chinese regulators first (cninfo, NMPA/CDE,
+- **P0 — Topic Expansion & Baseline Backfill:** Inject the 5 new topics (§5.1) and
+  deploy the Local Agent-in-the-Loop script (`batch_historical_backfill.ts`) to
+  backfill deep historical evidence across all 25 topics, ensuring baseline continuity.
+- **P1 — Method correctness (no new data needed):** §6.5 name-layer, §6.4
+  domain-dedup, §6.1 data-confidence. Re-verify golden cases + full test suite.
+- **P2 — Source expansion:** §4.1 Chinese regulators first (cninfo, NMPA/CDE,
   CAAC, MIIT, gov.cn), then §4.3 patents. New adapters + governed-use contracts +
   sandbox fixtures.
-- **P2 — Continuous auto-loop:** scheduler runs PLAN→…→RECOMPUTE; tiered
-  auto-admission (§6) for T1/T2; gap-driven coverage targeting interpolated rungs.
-- **P3 — Analysis depth:** §5.2 strength-weighted scoring, §5.3 polarity/S7B,
-  §8 schema fields, UI surfacing of per-rung independent-source counts.
+- **P3 — Continuous auto-loop:** scheduler runs PLAN→…→RECOMPUTE; tiered
+  auto-admission (§7) for T1/T2; gap-driven coverage targeting interpolated rungs.
+- **P4 — Analysis depth:** §6.2 strength-weighted scoring, §6.3 polarity/S7B,
+  §9 schema fields, UI surfacing of per-rung independent-source counts.
 
 ---
 
-## 10. Acceptance metrics
+## 11. Acceptance metrics
 
 - Median parent-scope evidence per active topic ≥ 20 (from ~5–9 today).
 - 0 interpolated rungs on Tier-1/2-covered active topics.
 - ≥2 publisher-independent sources per realized stage transition.
+- **Topic Coverage:** System tracks exactly 25 comprehensive super-narratives.
 - Source atlas ≥ 80 governed entries; ≥ 20 Chinese primary/regulatory adapters live.
 - 100% of auto-admitted rows carry provenance + audit + `verification_status`.
 - Golden cases (BCI parent S4; humanoid S5–S6; drug S5–S6) still pass.
 
 ---
 
-## 11. Risks & open questions
+## 12. Risks & open questions
 
 - **Terms-of-use / rate limits / robots.** Each source needs its governed-use
   contract; respect polling permission and retain only hashes + bounded excerpts

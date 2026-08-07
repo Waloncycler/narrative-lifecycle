@@ -1,7 +1,25 @@
 {
-  "name": "narrative-lifecycle-dashboard",
-  "version": "0.1.0",
-  "private": true,
+  "name": "narrative-lifecycle",
+  "version": "0.13.5",
+  "description": "A rule-based Narrative Lifecycle research system for classifying market narratives into S0-S7 stages. Evidence first. Rules second. LLM explanation third.",
+  "keywords": [
+    "narrative",
+    "market-research",
+    "lifecycle",
+    "evidence-based",
+    "stage-gate",
+    "financial-research",
+    "research-tool"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Waloncycler/narrative-lifecycle.git"
+  },
+  "homepage": "https://github.com/Waloncycler/narrative-lifecycle#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "type": "module",
   "scripts": {
     "evidence:validate": "tsx src/cli/run_evidence_validate.ts",

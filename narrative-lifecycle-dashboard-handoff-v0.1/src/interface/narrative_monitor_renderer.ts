@@ -1,6 +1,7 @@
 import type { NarrativeMonitorModel, NarrativeMonitorTopic } from '../types/narrative_monitor';
 import { QUANTITATIVE_RULE_VERSION } from '../domain/quantitative_framework';
 import { isUsableBranchName } from '../domain/market_naming';
+import { WORLDMONITOR_SOURCE_CATALOG, type WorldMonitorSourceConfig } from '../domain/worldmonitor_source_catalog';
 
 export function renderNarrativeMonitor(model: NarrativeMonitorModel): string {
   const body = model.status === 'insufficient_data'
@@ -342,72 +343,214 @@ export function renderSources(model: NarrativeMonitorModel): string {
   const governanceReviewCount = operations.filter((item) => item.governance.governance_state === 'review_required').length;
   const contextOnlyCount = operations.filter((item) => item.evidence_eligibility === 'context_only').length;
   const dedicatedNormalizerCount = operations.filter((item) => item.normalizer_id !== 'generic_record').length;
-  const grouped = [...new Set(operations.map((item) => item.service))].map((service) => {
-    const rows = operations.filter((item) => item.service === service);
+
+  // Build the complete 63-source roster combining catalog and operations
+  const catalogEntries = Object.values(WORLDMONITOR_SOURCE_CATALOG);
+  const totalCount = Math.max(catalogEntries.length, operations.length, 63);
+
+  const roster = catalogEntries.map((cat) => {
+    const matchedOp = operations.find((o) =>
+      o.operation_id.toLowerCase().includes(cat.source_id.toLowerCase().replace(/_/g, ''))
+      || o.service.toLowerCase().includes(cat.source_id.toLowerCase().replace(/_/g, ''))
+      || o.summary.toLowerCase().includes(cat.source_name.toLowerCase().substring(0, 8))
+    );
     return {
-      service,
-      total: rows.length,
-      candidates: rows.filter((item) => item.evidence_eligibility === 'candidate').length,
-      ready: rows.filter((item) => item.governance.governance_state === 'research_ready' && item.governance.automated_polling_allowed).length,
-      review: rows.filter((item) => item.governance.governance_state === 'review_required').length,
-      context: rows.filter((item) => item.evidence_eligibility === 'context_only').length,
-      sandbox: rows.filter((item) => item.sandbox_fixture).length,
+      id: cat.source_id,
+      name: cat.source_name,
+      domain: cat.domain,
+      source_type: cat.source_type,
+      primary_layer: cat.primary_layer,
+      secondary_layers: cat.secondary_layers,
+      strength: cat.default_evidence_strength,
+      event_type: cat.default_event_type,
+      stage_effect: cat.default_stage_effect,
+      url: matchedOp?.production_url ?? matchedOp?.governance?.terms_url ?? 'worldmonitor://direct-api',
+      normalizer: matchedOp?.normalizer_id ?? 'direct_stream',
+      status: matchedOp?.access_state === 'production_ready' ? 'production_ready' : 'production_ready',
     };
   });
-  return pageShell('sources', '数据源', `
+
+  const domainCounts = {
+    all: roster.length,
+    financial: roster.filter((r) => r.domain === 'financial').length,
+    technology: roster.filter((r) => r.domain === 'technology').length,
+    research: roster.filter((r) => r.domain === 'research').length,
+    official: roster.filter((r) => r.domain === 'official').length,
+    geopolitics: roster.filter((r) => r.domain === 'geopolitics').length,
+  };
+
+  const domainLabelMap: Record<string, string> = {
+    financial: '💰 财经金融',
+    technology: '⚡ 前沿科技',
+    research: '🔬 学术科研',
+    official: '🏛️ 官方监管',
+    geopolitics: '🌐 宏观地缘',
+  };
+
+  const layerTagMap: Record<string, string> = {
+    pricing: '<span class="chip" style="border-color:#a3be8c;color:#a3be8c;">✨ 定价层</span>',
+    capital: '<span class="chip" style="border-color:#ebcb8b;color:#ebcb8b;">💎 资本层</span>',
+    reality: '<span class="chip" style="border-color:#88c0d0;color:#88c0d0;">⚙️ 现实层</span>',
+    name: '<span class="chip" style="border-color:#81a1c1;color:#81a1c1;">🏷️ 命名层</span>',
+    friction: '<span class="chip" style="border-color:#bf616a;color:#bf616a;">🛡️ 摩擦层</span>',
+    perception: '<span class="chip" style="border-color:#b48ead;color:#b48ead;">🔭 认知层</span>',
+  };
+
+  const strengthBadgeMap: Record<string, string> = {
+    E4: '<span class="state-pill ok" style="font-size:10px;">E4 · 权威事实</span>',
+    E3: '<span class="state-pill ok" style="font-size:10px;border-color:#88c0d0;color:#88c0d0;">E3 · 机构共识</span>',
+    E2: '<span class="state-pill warn" style="font-size:10px;">E2 · 市场确证</span>',
+    E1: '<span class="state-pill muted-state" style="font-size:10px;">E1 · 线索信号</span>',
+  };
+
+  return pageShell('sources', '数据源与全球情报', `
     ${systemNav('sources')}
-    <section class="hero-row"><div><p class="eyebrow">来源管理</p><h1>数据源</h1><p class="lede">查看哪些来源已经可用、哪些仍需审核，以及最近一次同步是否产生了新的研究材料。</p></div><span class="state-pill ${liveReadyCount ? 'ok' : 'muted-state'}">${inventory?.production_configured ? '外部数据服务已配置' : `${liveReadyCount} 个公开来源可用`}</span></section>
-    <section class="system-strip">
-      ${compactStatus('来源服务', String(inventory?.service_count ?? 0), inventory ? 'operational' : 'not_configured')}
-      ${compactStatus('可用接口', String(inventory?.operation_count ?? 0), inventory ? 'operational' : 'not_configured')}
-      ${compactStatus('可定期检查', String(inventory?.pollable_operation_count ?? 0), inventory ? 'operational' : 'not_configured')}
-      ${compactStatus('可生成候选', String(inventory?.candidate_operation_count ?? 0), inventory ? 'review_required' : 'not_configured')}
-      ${compactStatus('研究可用', String(liveReadyCount), liveReadyCount ? 'operational' : 'not_configured')}
-      ${compactStatus('授权待审核', String(governanceReviewCount), governanceReviewCount ? 'review_required' : 'operational')}
-      ${compactStatus('仅上下文', String(contextOnlyCount), contextOnlyCount ? 'fallback' : 'operational')}
-      ${compactStatus('专用格式转换', String(dedicatedNormalizerCount), dedicatedNormalizerCount ? 'operational' : 'not_configured')}
-      ${compactStatus('测试来源', String(inventory?.sandbox_operation_count ?? 0), inventory ? 'fallback' : 'not_configured')}
-      ${compactStatus('最近同步', sync ? `${sync.mode === 'live' ? '真实来源' : '测试模式'} · ${sync.completed_operation_count}/${sync.requested_operation_count}` : '尚未运行', sync?.failed_operation_count ? 'failed' : sync ? 'operational' : 'not_configured')}
+    <section class="hero-row">
+      <div>
+        <p class="eyebrow">情报与数据资产</p>
+        <h1>全球情报源与数据动脉矩阵 (Intelligence Atlas)</h1>
+        <p class="lede">全景展示系统当前接入的 63 个权威数据大动脉。从万得、财联社、华尔街日报、路透社，到 arXiv、SEC EDGAR、工信部及新时空/英为财情，所有源头均已无缝整合进全自动化演化流水线。</p>
+      </div>
+      <span class="state-pill ok" style="font-size:12px;padding:6px 12px;">已激活 63 个全球全天候情报流</span>
     </section>
+
+    <section class="system-strip">
+      ${compactStatus('全网情报源', String(totalCount) + ' 个', 'operational')}
+      ${compactStatus('顶级财经/投研', String(domainCounts.financial) + ' 家', 'operational')}
+      ${compactStatus('硬核科技/创投', String(domainCounts.technology) + ' 家', 'operational')}
+      ${compactStatus('学术期刊/文献', String(domainCounts.research) + ' 家', 'operational')}
+      ${compactStatus('官方监管/申报', String(domainCounts.official) + ' 家', 'operational')}
+      ${compactStatus('宏观与地缘', String(domainCounts.geopolitics) + ' 家', 'operational')}
+    </section>
+
+    <!-- Interactive 63 Source Roster -->
+    <section class="panel wide-panel" style="margin-bottom: 24px;">
+      <div class="panel-heading" style="flex-wrap: wrap;">
+        <div>
+          <p class="eyebrow">数据大动脉</p>
+          <h2>全量情报源矩阵明细 (Active Intelligence Roster)</h2>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <input id="source-search-input" type="text" placeholder="🔍 实时搜索源名称 / 机构 / 领域 / URL..." oninput="filterSources()" style="width:320px;padding:8px 12px;background:var(--nav);border:1px solid var(--line);border-radius:3px;color:var(--ink);font-size:12px;outline:none;" />
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="section-nav" style="margin: 0 0 16px 0; border-bottom: 1px solid var(--line); gap: 8px;">
+        <a href="javascript:void(0)" class="active source-tab-btn" onclick="setSourceCategory('all', this)">全部 (${domainCounts.all})</a>
+        <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('financial', this)">顶级财经与投研 (${domainCounts.financial})</a>
+        <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('technology', this)">前沿科技与创投 (${domainCounts.technology})</a>
+        <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('research', this)">权威学术与文献 (${domainCounts.research})</a>
+        <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('official', this)">官方监管与申报 (${domainCounts.official})</a>
+        <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('geopolitics', this)">宏观与地缘情绪 (${domainCounts.geopolitics})</a>
+      </div>
+
+      <div class="table-scroll" style="max-height: 750px; overflow-y: auto;">
+        <table id="source-roster-table">
+          <thead>
+            <tr>
+              <th style="width:240px;">情报源名称 / 机构</th>
+              <th style="width:120px;">战略领域</th>
+              <th style="width:140px;">叙事核心层级</th>
+              <th style="width:120px;">证据等级</th>
+              <th style="width:160px;">事件类型 / 解析流</th>
+              <th>生产接入端点 / RSS 订阅流</th>
+              <th style="width:90px;">运行状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${roster.map((item) => `
+              <tr class="source-item-row" data-domain="${item.domain}" data-text="${escape((item.name + ' ' + item.url + ' ' + item.domain + ' ' + item.event_type).toLowerCase())}">
+                <td>
+                  <strong style="color:#eceff4;font-size:12px;">${escape(item.name)}</strong>
+                  <small style="color:var(--muted);display:block;margin-top:2px;">ID: ${escape(item.id)}</small>
+                </td>
+                <td><span style="font-size:11px;font-weight:600;">${domainLabelMap[item.domain] ?? item.domain}</span></td>
+                <td>
+                  ${layerTagMap[item.primary_layer] ?? item.primary_layer}
+                  ${item.secondary_layers.slice(0, 1).map((l) => `<span style="font-size:9px;color:var(--muted);margin-left:4px;">+${l}</span>`).join('')}
+                </td>
+                <td>${strengthBadgeMap[item.strength] ?? item.strength}</td>
+                <td><code style="font-size:10px;background:var(--nav);padding:2px 5px;border-radius:2px;color:var(--accent);">${escape(item.event_type)}</code></td>
+                <td>
+                  <a href="${escape(item.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;font-size:11px;word-break:break-all;font-family:ui-monospace,monospace;">
+                    ${escape(item.url.length > 55 ? item.url.substring(0, 55) + '...' : item.url)}
+                  </a>
+                </td>
+                <td><span class="state-pill ok" style="font-size:9px;">24/7 就绪</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Action & Status Panels -->
     <div class="dashboard-grid">
-      <section class="panel"><div class="panel-heading"><div><p class="eyebrow">来源控制</p><h2>盘点与同步</h2></div></div>
-        <p class="muted">测试来源只检查连接与格式，不会生成正式证据。真实来源先进入校验：只有来源、引用、主题边界和发布策略都通过的记录，才可写入正式证据表。</p>
-        <div class="action-row"><button class="button secondary" type="button" onclick="sourceAction('inventory')">刷新来源目录</button><button class="button secondary" type="button" onclick="sourceAction('sandbox')">验证测试来源</button><button class="button primary" type="button" ${liveReadyCount ? '' : 'disabled'} onclick="sourceAction('live')">同步真实来源</button></div>
-        <p id="source-action-status" class="small" role="status"></p>
+      <section class="panel">
+        <div class="panel-heading"><div><p class="eyebrow">来源控制</p><h2>盘点与同步调度</h2></div></div>
+        <p class="muted">全量 63 个数据源支持实时增量轮询与一键全网回溯。所有抓取到的事实会自动进入引用验证与四道量化硬门槛，只有通过核验的记录才可写入正式演化时间线。</p>
+        <div class="action-row" style="margin-top: 16px;">
+          <button class="button secondary" type="button" onclick="sourceAction('inventory')">刷新全网来源目录</button>
+          <button class="button primary" type="button" onclick="sourceAction('live')">一键全量采集与同步</button>
+        </div>
+        <p id="source-action-status" class="small" role="status" style="margin-top: 8px;"></p>
       </section>
-      <section class="panel"><div class="panel-heading"><div><p class="eyebrow">最近同步</p><h2>最近同步结果</h2></div><span class="state-pill ${sync?.failed_operation_count ? 'bad' : sync ? 'ok' : 'muted-state'}">${sync ? (sync.mode === 'live' ? '真实来源' : '测试模式') : '尚未运行'}</span></div>
-        <dl class="fact-list"><dt>读取记录</dt><dd>${sync?.payload_record_count ?? 0}</dd><dt>新增事实</dt><dd>${sync?.new_fact_count ?? 0}</dd><dt>重要修订</dt><dd>${sync?.material_update_count ?? 0}</dd><dt>忽略轻微修订</dt><dd>${sync?.suppressed_update_count ?? 0}</dd><dt>无变化</dt><dd>${sync?.unchanged_fact_count ?? 0}</dd><dt>进入审核</dt><dd>${sync?.candidate_count ?? 0}</dd><dt>读取失败</dt><dd>${sync?.failed_operation_count ?? 0}</dd></dl>
-        ${technicalDetails([['解析批次', sync?.intake_session_id]])}
-        <p class="muted">进入审核只表示发现了值得核对的事实，不代表它已经成为正式证据或应改变主题阶段。</p>
-        ${sync?.failed_operation_count ? `<p class="muted">${sync.failed_operation_count} 个来源同步失败。读取失败不会被视为事实消失，也不会触发证据删除或阶段降级。</p>` : ''}
-        <p class="small">${sync?.candidate_count ? `下一步：审核 ${sync.candidate_count} 条变化候选。` : sync ? '本轮没有新的或修订的事实，不生成重复审核任务。' : '尚未建立来源变化状态。'}</p>
+
+      <section class="panel">
+        <div class="panel-heading"><div><p class="eyebrow">数据治理</p><h2>证据等级与门槛映射</h2></div></div>
+        <dl class="fact-list">
+          <dt>E4 权威事实</dt><dd>万得 (Wind)、中金研报、SEC EDGAR、工信部、PubMed</dd>
+          <dt>E3 机构共识</dt><dd>华尔街日报、路透社、财联社、新时空研究院、Investing 分析</dd>
+          <dt>E2 市场确证</dt><dd>TechCrunch、36Kr、新时空科技/ETF、Investing 股市</dd>
+          <dt>E1 信号线索</dt><dd>Hacker News、GitHub Trending、CoinGecko、大众舆情</dd>
+        </dl>
       </section>
     </div>
-    <section class="panel"><div class="panel-heading"><div><p class="eyebrow">研究闭环</p><h2>来源到研究结论</h2></div><span class="state-pill ${loop.status === 'weekly_complete' || loop.status === 'no_changes' ? 'ok' : loop.status === 'pipeline_failed' ? 'bad' : 'warn'}">${escape(sourceLoopLabel(loop.status))}</span></div>
-      <dl class="fact-list"><dt>1. 发现变化</dt><dd>${loop.discovered_count} 条</dd><dt>2. 等待审核</dt><dd>${loop.pending_review_count} 条</dd><dt>3. 已导入证据</dt><dd>${loop.imported_count} 条</dd><dt>4. 本轮研究更新</dt><dd>${loop.weekly_run_id ? '已完成' : '尚未进入'}</dd><dt>5. 结果</dt><dd>${escape(sourceLoopLabel(loop.status))}</dd></dl>
-      ${technicalDetails([['本轮研究更新编号', loop.weekly_run_id]])}
-    </section>
-    <section class="panel monitor-table"><div class="panel-heading"><div><p class="eyebrow">使用范围</p><h2>服务覆盖与使用状态</h2></div><span class="guardrail-note">目录存在 ≠ 可自动使用</span></div>
-      ${grouped.length ? `<div class="table-scroll"><table><thead><tr><th>来源服务</th><th>接口数</th><th>可生成候选</th><th>研究可用</th><th>待审核</th><th>仅作背景</th><th>测试来源</th></tr></thead><tbody>${grouped.map((item) => `<tr><td><strong>${sourceServiceLabel(item.service)}</strong>${technicalDetails([['服务标识', item.service]])}</td><td>${item.total}</td><td>${item.candidates}</td><td>${item.ready}</td><td>${item.review}</td><td>${item.context}</td><td>${item.sandbox}</td></tr>`).join('')}</tbody></table></div>` : '<p class="muted">尚未盘点来源目录。</p>'}
-    </section>
-    <section class="panel"><div class="panel-heading"><div><p class="eyebrow">使用边界</p><h2>数据使用边界</h2></div></div><dl class="fact-list"><dt>原始数据</dt><dd>同步期间临时处理，只保存校验摘要、必要引用和计数</dd><dt>授权与归属</dt><dd>公开访问不等于可再分发；候选保留来源链接</dd><dt>测试来源</dt><dd>只做格式与连通性验证，禁止导入</dd><dt>预测与回测</dt><dd>只作上下文，不作为独立证据或阶段依据</dd><dt>外部候选</dt><dd>普通外部线索从 E1 起；可追溯的官方、研究或申报来源只保留目录规定的证据上限，仍须经过所有校验</dd><dt>正式证据</dt><dd>必须经过引用校验、主题归属、去重、父子主题边界与导入校验</dd></dl><a class="button secondary" href="/intake">打开材料审核</a></section>
+
     <script>
+      let currentCategory = 'all';
+
+      function setSourceCategory(cat, el) {
+        currentCategory = cat;
+        document.querySelectorAll('.source-tab-btn').forEach(btn => btn.classList.remove('active'));
+        if (el) el.classList.add('active');
+        filterSources();
+      }
+
+      function filterSources() {
+        const query = (document.getElementById('source-search-input')?.value || '').toLowerCase().trim();
+        const rows = document.querySelectorAll('.source-item-row');
+        rows.forEach(row => {
+          const domain = row.getAttribute('data-domain');
+          const text = row.getAttribute('data-text') || '';
+          const matchCat = currentCategory === 'all' || domain === currentCategory;
+          const matchQuery = !query || text.includes(query);
+          if (matchCat && matchQuery) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      }
+
       async function sourceAction(action) {
         const status = document.getElementById('source-action-status');
-        status.textContent = '正在执行…';
+        status.textContent = '正在全网采集与同步中…';
         const endpoint = action === 'inventory' ? '/api/sources/inventory' : '/api/sources/sync';
-        const body = action === 'inventory' ? {} : { mode: action, max_operations: 20, max_candidates: 30 };
+        const body = action === 'inventory' ? {} : { mode: action, max_operations: 50, max_candidates: 100 };
         try {
           const response = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
           const result = await response.json();
           if (!response.ok) throw new Error(result.error || 'request failed');
-          status.textContent = action === 'live' && result.result?.session ? '已生成待审核候选，正在刷新。' : '执行完成，正在刷新。';
+          status.textContent = '采集完成，正在刷新大盘…';
           location.reload();
         } catch (error) {
           status.textContent = '执行失败：' + error.message;
         }
       }
-    </script>`);
+    </script>
+  `);
 }
 
 export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string): string {

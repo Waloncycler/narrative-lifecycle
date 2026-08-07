@@ -266,3 +266,15 @@
   status: provisional
   naming_status: unresolved
   naming_sources: []
+- topic_id: provisional_ai_video_generation
+  topic_name: Ai Video Generation
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []
+- topic_id: provisional_innovative_drug_approval
+  topic_name: Innovative Drug Approval
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []

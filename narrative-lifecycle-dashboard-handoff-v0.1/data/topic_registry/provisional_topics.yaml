@@ -147,3 +147,17 @@
   status: provisional
   reason: Model proposed provisional topic provisional_industrial_software; keep
     as provisional S0 until audited.
+- provisional_topic_id: provisional_ai_video_generation
+  proposed_name: Ai Video Generation
+  source_candidate_id: candidate_direct_bloomberg_tech-tjemuzkip3_jh00-0af81b00e67e
+  created_at: 2026-08-07T15:29:24.762Z
+  status: provisional
+  reason: Rule inference detected "ai_video_generation" from quote language; keep
+    as provisional S0 until audited.
+- provisional_topic_id: provisional_innovative_drug_approval
+  proposed_name: Innovative Drug Approval
+  source_candidate_id: candidate_direct_nts_research-0-786ca15d7926
+  created_at: 2026-08-07T15:52:43.645Z
+  status: provisional
+  reason: Rule inference detected "innovative_drug_approval" from quote language;
+    keep as provisional S0 until audited.

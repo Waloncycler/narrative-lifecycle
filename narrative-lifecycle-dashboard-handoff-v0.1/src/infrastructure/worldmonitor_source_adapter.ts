@@ -112,6 +112,26 @@ const DIRECT_PUBLIC_OPERATIONS: WorldMonitorOperationDescriptor[] = [
   direct('DirectConcordiaResearch', 'ConcordiaResearch', 'https://concordia-ai.com/feed/', 'research', 'candidate', 'Concordia AI policy research feed (WordPress RSS)'),
   direct('DirectBrookingsResearch', 'BrookingsResearch', 'https://www.brookings.edu/research/', 'research', 'candidate', 'Brookings Institution research articles (HTML scrape)'),
   direct('DirectMorganStanleyInsights', 'MorganStanleyInsights', 'https://www.morganstanley.com/ideas', 'financial', 'candidate', 'Morgan Stanley Insights research (HTML scrape)'),
+  
+  // Category 9 (v0.9.5+): Elite Institutional, Financial & Macro Data Sources
+  direct('DirectCailianTelegraph', 'CailianTelegraph', 'https://www.cls.cn/nodeapi/telegraphList', 'financial', 'candidate', 'Cailian Press (财联社) 24/7 Rolling Telegraph'),
+  direct('DirectWSJBusiness', 'WSJBusiness', 'https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml', 'financial', 'candidate', 'The Wall Street Journal - Global Business & Markets RSS'),
+  direct('DirectReutersBiz', 'ReutersBiz', 'https://www.reutersagency.com/feed/', 'geopolitics', 'candidate', 'Reuters Business & Finance Wire'),
+  direct('DirectTechCrunch', 'TechCrunch', 'https://techcrunch.com/feed/', 'technology', 'candidate', 'TechCrunch Startups and VC News'),
+  direct('DirectWindMacro', 'WindMacro', 'https://api.wind.com.cn/v1/macro/news', 'financial', 'candidate', 'Wind Data (万得) Macro Market News API'),
+  direct('DirectCICCResearch', 'CICCResearch', 'https://research.cicc.com/api/reports', 'research', 'candidate', 'CICC (中金公司) Institutional Research Reports'),
+
+  // Category 10 (v0.9.6+): NewTimeSpace Premium Regional Intel
+  direct('DirectNtsFinance', 'NtsFinance', 'https://www.newtimespace.com/feed/rss_template.xml?id=100000&site=rss&lang=zh-cn', 'financial', 'candidate', 'NewTimeSpace Finance (新时空-财经) RSS'),
+  direct('DirectNtsTechnology', 'NtsTechnology', 'https://www.newtimespace.com/feed/rss_template.xml?id=100003&site=rss&lang=zh-cn', 'technology', 'candidate', 'NewTimeSpace Technology (新时空-科技) RSS'),
+  direct('DirectNtsEtf', 'NtsEtf', 'https://www.newtimespace.com/feed/rss_template.xml?id=100002&site=rss&lang=zh-cn', 'financial', 'candidate', 'NewTimeSpace ETF (新时空-ETF) RSS'),
+  direct('DirectNtsResearch', 'NtsResearch', 'https://www.newtimespace.com/feed/rss_template.xml?id=200097&site=rss&lang=zh-cn', 'research', 'candidate', 'NewTimeSpace Research (新时空研究院) RSS'),
+
+  // Category 11 (v0.9.7+): Investing.com Premium Macro & Capital
+  direct('DirectInvestingMacro', 'InvestingMacro', 'https://cn.investing.com/rss/news_14.rss', 'financial', 'candidate', 'Investing.com Macro & Market News (宏观与市场资讯)'),
+  direct('DirectInvestingStock', 'InvestingStock', 'https://cn.investing.com/rss/news_25.rss', 'financial', 'candidate', 'Investing.com Stock Market News (股票股市资讯)'),
+  direct('DirectInvestingAnalysis', 'InvestingAnalysis', 'https://cn.investing.com/rss/market_overview.rss', 'research', 'candidate', 'Investing.com Market Overview Analysis (市场概况分析)'),
+  direct('DirectInvestingCrypto', 'InvestingCrypto', 'https://cn.investing.com/rss/news_301.rss', 'financial', 'candidate', 'Investing.com Crypto News (虚拟货币最新消息)'),
 ];
 
 export interface WorldMonitorFetchResult {

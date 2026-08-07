@@ -3,7 +3,7 @@ import { HttpWebSearchProvider, webSearchConfigFromEnv } from '../src/infrastruc
 
 describe('web search provider config selection', () => {
   it('defaults to the keyless free aggregate when no search key is configured', () => {
-    const config = webSearchConfigFromEnv({ DEEPSEEK_API_KEY: 'chat-only-key' });
+    const config = webSearchConfigFromEnv({ MINIMAX_API_KEY: 'chat-only-key' });
     expect(config).toMatchObject({ provider: 'free', endpoint: null, api_key: null });
   });
 

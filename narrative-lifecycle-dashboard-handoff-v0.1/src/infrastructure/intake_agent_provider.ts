@@ -22,17 +22,15 @@ export interface OpenAiCompatibleAgentConfig {
 }
 
 export function intakeAgentConfigFromEnv(env: NodeJS.ProcessEnv): OpenAiCompatibleAgentConfig {
-  const deepseekConfigured = Boolean(env.DEEPSEEK_API_KEY);
   const minimaxConfigured = Boolean(env.MINIMAX_API_KEY);
-  const provider = env.NARRATIVE_AGENT_PROVIDER ?? (deepseekConfigured ? 'deepseek' : minimaxConfigured ? 'minimax' : 'disabled');
-  const deepseekBaseUrl = (env.DEEPSEEK_BASE_URL ?? 'https://api.deepseek.com').replace(/\/$/, '');
+  const provider = env.NARRATIVE_AGENT_PROVIDER ?? (minimaxConfigured ? 'minimax' : 'disabled');
   const minimaxBaseUrl = (env.MINIMAX_BASE_URL ?? 'https://api.minimaxi.com/v1').replace(/\/$/, '');
   const minimaxModel = env.MINIMAX_MODEL ?? 'MiniMax-M3';
   return {
     provider,
-    endpoint: env.NARRATIVE_AGENT_ENDPOINT ?? (deepseekConfigured ? `${deepseekBaseUrl}/chat/completions` : minimaxConfigured ? `${minimaxBaseUrl}/chat/completions` : undefined),
-    apiKey: env.NARRATIVE_AGENT_API_KEY ?? env.DEEPSEEK_API_KEY ?? env.MINIMAX_API_KEY,
-    model: env.NARRATIVE_AGENT_MODEL ?? env.DEEPSEEK_MODEL ?? (deepseekConfigured ? 'deepseek-v4-flash' : minimaxConfigured ? minimaxModel : 'intake-agent-disabled'),
+    endpoint: env.NARRATIVE_AGENT_ENDPOINT ?? (minimaxConfigured ? `${minimaxBaseUrl}/chat/completions` : undefined),
+    apiKey: env.NARRATIVE_AGENT_API_KEY ?? env.MINIMAX_API_KEY,
+    model: env.NARRATIVE_AGENT_MODEL ?? (minimaxConfigured ? minimaxModel : 'intake-agent-disabled'),
     timeoutMs: Number(env.NARRATIVE_AGENT_TIMEOUT_MS ?? 600000),
   };
 }

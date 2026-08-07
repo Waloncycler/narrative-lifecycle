@@ -50,3 +50,23 @@ outputs/research/
 outputs/research_agent/
 outputs/intake/
 outputs/history/
+
+# Intelligence engine outputs (large generated data, not for repo)
+outputs/evolution_timelines/
+outputs/intelligence_cache/
+outputs/worldmonitor/
+outputs/research_cache/
+
+# Sensitive: API keys and credentials
+.env.*
+!.env.example
+secrets/
+*.key
+*.pem
+
+# Agent workspace files (personal, not for contributors)
+.agents/
+
+# Generated large artifacts
+data/imports/*.yaml
+!data/imports/evidence_draft.example.yaml
