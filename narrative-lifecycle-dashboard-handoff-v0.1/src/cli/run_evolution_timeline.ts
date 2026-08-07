@@ -11,50 +11,18 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { reconstructAllTopicEvolutions, type TopicEvolutionTimeline } from '../domain/stage_evolution_reconstructor';
+import { FileAutonomousResearchRepository } from '../infrastructure/autonomous_research_io';
 import type { EvidenceNode } from '../domain/evidence';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(__dirname, '..', '..');
 
-// Load all evidence sources
+// Read the same operational Evidence Table the stage snapshot is built from —
+// audited manual rows, published automated rows, and the JSON table — so the
+// timeline and the snapshot can never disagree about a topic's stage.
 function loadAllEvidence(): EvidenceNode[] {
-  const sources = [
-    'data/sample_evidence/manual_imported_evidence.yaml',
-    'data/live_evidence/automated_evidence.yaml',
-    'data/evidence_table/evidence_table.json',
-  ];
-
-  const allEvidence: EvidenceNode[] = [];
-
-  for (const source of sources) {
-    const fullPath = resolve(repoRoot, source);
-    try {
-      const content = readFileSync(fullPath, 'utf8');
-      if (source.endsWith('.json')) {
-        const parsed = JSON.parse(content);
-        if (Array.isArray(parsed)) allEvidence.push(...parsed);
-      } else {
-        // YAML parsing — simple extraction of evidence arrays
-        try {
-          const yaml = require('js-yaml');
-          const parsed = yaml.load(content);
-          if (Array.isArray(parsed)) allEvidence.push(...parsed);
-          else if (parsed && typeof parsed === 'object') {
-            for (const val of Object.values(parsed)) {
-              if (Array.isArray(val)) allEvidence.push(...(val as EvidenceNode[]));
-            }
-          }
-        } catch {
-          // Skip files that can't be parsed
-        }
-      }
-    } catch {
-      // Skip missing files
-    }
-  }
-
-  return allEvidence;
+  return new FileAutonomousResearchRepository(repoRoot).readOperationalEvidence();
 }
 
 // Load topic registry

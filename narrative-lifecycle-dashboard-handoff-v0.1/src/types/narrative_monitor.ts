@@ -33,6 +33,9 @@ export interface NarrativeMonitorTopic {
   strongest_branch: string;
   weakest_layer: string;
   why_not_higher_stage: string;
+  /** The four quantitative stage gates plus independent-source count, forwarded
+   * for the topic detail radar. Null when no parent Evidence Table exists. */
+  gate_input: import('../domain/stages').StageGateInput | null;
   change: TopicChange | null;
   branches: StageSnapshotHistory['topics'][number]['branches'];
   evidence: WeeklyBriefEvidenceItem[];

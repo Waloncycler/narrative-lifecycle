@@ -115,8 +115,12 @@ const TOPIC_PATTERNS: Array<{ pattern: RegExp; topicId: string }> = [
   { pattern: /(?:memory\s*chip|hbm|dram|nand|semiconductor\s*memory|存储芯片|内存芯片|长鑫|美光|海力士|兆易创新|闪存|存储器)/i, topicId: 'provisional_semiconductor_memory_market' },
   // BCI / 脑机接口
   { pattern: /(?:bci|brain[\s-]*computer|neuro(?:link|modulation|science)|synchron|脑机|脑机接口|侵入式|神经调控|eeg|brain[\s-]*machine)/i, topicId: 'bci' },
+  // Autonomous Driving & Robotaxi / 自动驾驶与 Robotaxi
+  // Must precede humanoid robotics: "robotaxi" and 机器人出租车 would otherwise
+  // be captured by the broader robotics pattern below.
+  { pattern: /(?:robotaxi|robo[\s-]*taxi|autonomous\s*(?:driv|vehicle)|self[\s-]*driving|waymo|cruise|zoox|fsd|apollo\s*go|自动驾驶|无人驾驶|萝卜快跑|智能驾驶|辅助驾驶|小马智行|文远知行|领航辅助|l[234]\s*级自动驾驶)/i, topicId: 'provisional_autonomous_driving_robotaxi' },
   // Humanoid Robotics / 人形机器人
-  { pattern: /(?:humanoid|optimus|figure[\s-]*0[12]|atlas|robot(?:ics)?|actuator|embodied\s*(?:ai|intelligence)|人形机器人|具身智能|灵巧手|减速器|机器人|执行器|伺服|harmonic|谐波)/i, topicId: 'humanoid_robotics' },
+  { pattern: /(?:humanoid|optimus|figure[\s-]*0[12]|atlas|robot(?:ics)?\b|actuator|embodied\s*(?:ai|intelligence)|人形机器人|具身智能|灵巧手|减速器|机器人|执行器|伺服|harmonic|谐波)/i, topicId: 'humanoid_robotics' },
   // Innovative Drug License-out / 创新药对外授权
   { pattern: /(?:license[\s-]*out|out[\s-]*licens|pharma\s*deal|license\s*agreement|milestone\s*payment|创新药.*授权|对外授权|首付款|里程碑付款|adc|抗体偶联|pd[\s-]*[l1]|car[\s-]*t|bispecific)/i, topicId: 'innovative_drug_license_out' },
   // AI Agents / AI 智能体
@@ -125,6 +129,10 @@ const TOPIC_PATTERNS: Array<{ pattern: RegExp; topicId: string }> = [
   { pattern: /(?:foundation\s*model|llm|large\s*language|gpt[\s-]*[45o]|claude|gemini|deepseek|qwen|通义千问|文心一言|大模型|基座模型|预训练|sora|video\s*generation|视频生成|seedance|豆包)/i, topicId: 'provisional_ai_foundation_models' },
   // Low Altitude Economy / 低空经济
   { pattern: /(?:low[\s-]*altitude|evtol|uam|urban\s*air|flying\s*car|drone|airworthiness|低空经济|低空|eVTOL|城市空中交通|无人机|适航|飞行汽车|亿航|小鹏汇天|峰飞)/i, topicId: 'provisional_low_altitude_economy' },
+  // Solid-State Battery / 固态电池
+  // Must precede the new-energy industry pattern: cell makers such as 宁德时代
+  // appear in both, and the more specific chemistry should win.
+  { pattern: /(?:solid[\s-]*state\s*batter|semi[\s-]*solid[\s-]*state|sulfide\s*electrolyte|(?:solid|sulfide|oxide|polymer)\s*electrolyte|固态电池|全固态|半固态|固态电解质|硫化物电解质|锂金属负极|清陶|卫蓝新能源)/i, topicId: 'provisional_solid_state_battery' },
   // New Energy Industry / 新能源产业
   { pattern: /(?:new\s*energy|solar|photovoltaic|wind\s*(?:power|turbine|energy)|energy\s*storage|battery\s*(?:storage|pack)|新能源|光伏|风电|储能|锂电|钠电|氢能|宁德时代|比亚迪|catl|隆基|晶澳)/i, topicId: 'provisional_new_energy_industry' },
   // Commercial Space / 商业航天
@@ -151,6 +159,12 @@ const TOPIC_PATTERNS: Array<{ pattern: RegExp; topicId: string }> = [
   { pattern: /(?:intellectual\s*property|patent\s*(?:law|policy|reform)|知识产权|专利法|商标法|版权)/i, topicId: 'provisional_china_ip_policy' },
   // China Social Security Policy / 社会保障政策
   { pattern: /(?:social\s*security|pension|retirement|养老|社保|退休|社会保障|医保|公积金)/i, topicId: 'provisional_china_social_security_policy' },
+  // Nuclear Fusion & Advanced Nuclear / 可控核聚变与先进核能
+  { pattern: /(?:nuclear\s*fusion|fusion\s*(?:energy|reactor|power|ignition)|tokamak|stellarator|inertial\s*confinement|small\s*modular\s*reactor|\bsmr\b|iter|commonwealth\s*fusion|helion|核聚变|可控核聚变|托卡马克|人造太阳|聚变堆|先进核能|小型模块化反应堆|第四代核电|中核聚变|east装置)/i, topicId: 'provisional_nuclear_fusion_advanced_nuclear' },
+  // Spatial Computing & XR / 空间计算与 XR
+  { pattern: /(?:spatial\s*comput|\bxr\b|\bvr\b|\bar\b\s*(?:glass|headset|device)|mixed\s*reality|vision\s*pro|meta\s*quest|orion|smart\s*glasses|head[\s-]*mounted\s*display|空间计算|混合现实|虚拟现实|增强现实|智能眼镜|ar眼镜|头显|元宇宙硬件)/i, topicId: 'provisional_spatial_computing_xr' },
+  // Synthetic Biology / 合成生物学
+  { pattern: /(?:synthetic\s*biolog|synbio|protein\s*(?:design|folding|engineering)|alphafold|directed\s*evolution|cell[\s-]*free\s*system|biomanufactur|metabolic\s*engineering|gene\s*circuit|合成生物学|生物制造|蛋白质设计|蛋白质折叠|基因线路|细胞工厂|代谢工程|生物基材料)/i, topicId: 'provisional_synthetic_biology' },
 ];
 
 export function inferTopicFromText(text: string): string {
@@ -187,6 +201,21 @@ const BRANCH_PATTERNS: Array<{ topicId: string; pattern: RegExp; branchId: strin
   { topicId: 'provisional_quantum_computing', pattern: /(?:quantum\s*material|拓扑|topolog|量子材料)/i, branchId: 'quantum_materials' },
   // Computing Infrastructure
   { topicId: 'provisional_computing_infrastructure', pattern: /(?:ai\s*infra|gpu|npu|算力芯片|ai\s*加速)/i, branchId: 'provisional_computing_infrastructure_ai_infrastructure' },
+  // Solid-State Battery
+  { topicId: 'provisional_solid_state_battery', pattern: /(?:sulfide|硫化物|全固态|all[\s-]*solid[\s-]*state)/i, branchId: 'provisional_ssb_sulfide_electrolyte' },
+  { topicId: 'provisional_solid_state_battery', pattern: /(?:semi[\s-]*solid|半固态|中试线|装车|量产|pilot\s*line)/i, branchId: 'provisional_ssb_semi_solid_mass_production' },
+  // Autonomous Driving & Robotaxi
+  { topicId: 'provisional_autonomous_driving_robotaxi', pattern: /(?:robotaxi|robo[\s-]*taxi|waymo|apollo\s*go|萝卜快跑|付费订单|运营车队|fleet)/i, branchId: 'provisional_robotaxi_commercial_operation' },
+  { topicId: 'provisional_autonomous_driving_robotaxi', pattern: /(?:regulation|准入|法规|标准|条例|试点|l3)/i, branchId: 'provisional_autonomous_driving_l3_regulation' },
+  // Nuclear Fusion & Advanced Nuclear
+  { topicId: 'provisional_nuclear_fusion_advanced_nuclear', pattern: /(?:tokamak|stellarator|magnetic\s*confinement|托卡马克|磁约束|人造太阳|east|iter)/i, branchId: 'provisional_fusion_magnetic_confinement' },
+  { topicId: 'provisional_nuclear_fusion_advanced_nuclear', pattern: /(?:small\s*modular|\bsmr\b|模块化反应堆|第四代核电|高温气冷堆)/i, branchId: 'provisional_small_modular_reactor' },
+  // Spatial Computing & XR
+  { topicId: 'provisional_spatial_computing_xr', pattern: /(?:smart\s*glasses|ray[\s-]*ban|智能眼镜|ar眼镜|眼镜)/i, branchId: 'provisional_xr_ai_smart_glasses' },
+  { topicId: 'provisional_spatial_computing_xr', pattern: /(?:content|ecosystem|app\s*store|内容生态|应用生态|开发者)/i, branchId: 'provisional_xr_spatial_content_ecosystem' },
+  // Synthetic Biology
+  { topicId: 'provisional_synthetic_biology', pattern: /(?:protein\s*(?:design|folding|structure)|alphafold|rfdiffusion|蛋白质设计|蛋白质折叠|从头设计)/i, branchId: 'provisional_synbio_ai_protein_design' },
+  { topicId: 'provisional_synthetic_biology', pattern: /(?:biomanufactur|fermentation|bio[\s-]*based|生物制造|发酵|生物基|细胞工厂)/i, branchId: 'provisional_synbio_biomanufacturing' },
 ];
 
 export function inferBranchFromText(topicId: string, text: string): string | null {

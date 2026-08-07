@@ -33,7 +33,7 @@
   market_name_en: AI adoption
   naming_status: provisional
   naming_sources: []
-  status: active
+  status: archived
 - branch_id: urban_uav_infrastructure
   topic_id: provisional_low_altitude_economy
   branch_name: 城市低空基础设施
@@ -65,7 +65,7 @@
   market_name_en: A-share price action
   naming_status: provisional
   naming_sources: []
-  status: watch
+  status: archived
 - branch_id: smb_desktop_3d_printing
   topic_id: provisional_additive_manufacturing
   branch_name: 中小型桌面 3D 打印
@@ -79,7 +79,7 @@
   branch_name: 第三个对话窗口里研究发布方案
   naming_status: unresolved
   naming_sources: []
-  status: watch
+  status: archived
 - branch_id: provisional_innovative_drug_clinical_development_nct07530367
   topic_id: provisional_innovative_drug_clinical_development
   branch_name: NCT07530367
@@ -95,7 +95,7 @@
 - branch_id: provisional_semiconductor_advanced_manufacturing_branch_bkonti
   topic_id: provisional_semiconductor_advanced_manufacturing
   branch_name: 轻量智造还将沿着轻量化制造
-  status: watch
+  status: archived
   naming_status: unresolved
   naming_sources: []
 - branch_id: provisional_innovative_drug_clinical_development_alk201
@@ -113,7 +113,7 @@
 - branch_id: provisional_ai_foundation_models_branch_evhmt7
   topic_id: provisional_ai_foundation_models
   branch_name: Branch Evhmt7
-  status: watch
+  status: archived
   naming_status: unresolved
   naming_sources: []
 - branch_id: provisional_innovative_drug_clinical_development_nct07299019
@@ -125,13 +125,13 @@
 - branch_id: provisional_ai_foundation_models_branch_bmbjj5
   topic_id: provisional_ai_foundation_models
   branch_name: 百亿订单履约及算力产能持续扩张需求
-  status: watch
+  status: archived
   naming_status: unresolved
   naming_sources: []
 - branch_id: provisional_blockchain_crypto_market_branch_1mjfs84
   topic_id: provisional_blockchain_crypto_market
   branch_name: 设备制造
-  status: watch
+  status: archived
   naming_status: unresolved
   naming_sources: []
 - branch_id: provisional_low_altitude_economy_evtol_airworthiness
@@ -185,19 +185,19 @@
 - branch_id: innovative_drug_license_out_gp2013
   topic_id: innovative_drug_license_out
   branch_name: GP2013
-  status: watch
+  status: archived
   naming_status: unresolved
   naming_sources: []
 - branch_id: provisional_ai_agents_into_multi_level_tree_that_ranges_from_fine_grained_diagno
   topic_id: provisional_ai_agents
   branch_name: into multi-level tree that ranges from fine-grained diagnostic
-  status: watch
+  status: archived
   naming_status: unresolved
   naming_sources: []
 - branch_id: provisional_ai_agents_varied_diagnostic
   topic_id: provisional_ai_agents
   branch_name: varied diagnostic
-  status: watch
+  status: archived
   naming_status: unresolved
   naming_sources: []
 - branch_id: provisional_computing_infrastructure_ai_infrastructure
@@ -209,7 +209,7 @@
 - branch_id: provisional_computing_infrastructure_deploying_infrastructure
   topic_id: provisional_computing_infrastructure
   branch_name: deploying infrastructure
-  status: watch
+  status: archived
   naming_status: unresolved
   naming_sources: []
 - branch_id: provisional_bci_als_communication
@@ -223,4 +223,84 @@
   branch_name: Compute Budget Governance
   status: watch
   naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ssb_semi_solid_mass_production
+  topic_id: provisional_solid_state_battery
+  branch_name: 半固态电池量产
+  market_name_zh: 半固态电池量产
+  market_name_en: Semi-solid-state battery mass production
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_ssb_sulfide_electrolyte
+  topic_id: provisional_solid_state_battery
+  branch_name: 硫化物全固态电解质
+  market_name_zh: 硫化物全固态电解质
+  market_name_en: Sulfide all-solid-state electrolyte
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_robotaxi_commercial_operation
+  topic_id: provisional_autonomous_driving_robotaxi
+  branch_name: Robotaxi 商业化运营
+  market_name_zh: Robotaxi 商业化运营
+  market_name_en: Robotaxi commercial operation
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_autonomous_driving_l3_regulation
+  topic_id: provisional_autonomous_driving_robotaxi
+  branch_name: L3 自动驾驶准入法规
+  market_name_zh: L3 自动驾驶准入法规
+  market_name_en: L3 autonomous driving regulation
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_fusion_magnetic_confinement
+  topic_id: provisional_nuclear_fusion_advanced_nuclear
+  branch_name: 磁约束聚变装置
+  market_name_zh: 磁约束聚变装置
+  market_name_en: Magnetic confinement fusion device
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_small_modular_reactor
+  topic_id: provisional_nuclear_fusion_advanced_nuclear
+  branch_name: 小型模块化反应堆
+  market_name_zh: 小型模块化反应堆
+  market_name_en: Small modular reactor
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_xr_ai_smart_glasses
+  topic_id: provisional_spatial_computing_xr
+  branch_name: AI 智能眼镜
+  market_name_zh: AI 智能眼镜
+  market_name_en: AI smart glasses
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_xr_spatial_content_ecosystem
+  topic_id: provisional_spatial_computing_xr
+  branch_name: 空间内容生态
+  market_name_zh: 空间内容生态
+  market_name_en: Spatial content ecosystem
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_synbio_ai_protein_design
+  topic_id: provisional_synthetic_biology
+  branch_name: AI 蛋白质设计
+  market_name_zh: AI 蛋白质设计
+  market_name_en: AI protein design
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_synbio_biomanufacturing
+  topic_id: provisional_synthetic_biology
+  branch_name: 生物制造
+  market_name_zh: 生物制造
+  market_name_en: Biomanufacturing
+  status: watch
+  naming_status: provisional
   naming_sources: []

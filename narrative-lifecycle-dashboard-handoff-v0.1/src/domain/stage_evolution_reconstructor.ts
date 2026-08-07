@@ -12,8 +12,13 @@
  */
 import type { EvidenceNode } from './evidence';
 import { inferStageGateInput, type StageClassification } from './stage_classifier';
-import { maxAllowedStage, missingStageGateReasons } from '../rules/stage_gate_rules';
-import type { Stage } from './stages';
+import { maxAllowedStage } from '../rules/stage_gate_rules';
+import { capStageByDataConfidence } from '../rules/data_confidence_rules';
+import { stageRank, type Stage } from './stages';
+
+/** The linear stage ladder used to expand multi-gate jumps into single steps.
+ * Index equals stageRank, so STAGE_LADDER[rank] is that rank's stage. */
+const STAGE_LADDER: Stage[] = ['S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'];
 
 // ---------------------------------------------------------------------------
 // Public Types
@@ -34,6 +39,12 @@ export interface StageTransition {
   trigger_evidence_url: string;
   /** Which gate was newly satisfied to enable this transition */
   gate_unlocked: string;
+  /** True when this is a filled intermediate rung on the ladder rather than a
+   * step with its own distinct triggering evidence. The narrative genuinely
+   * passed through this stage, but the same evidence that cleared the next real
+   * gate is what carried it here — a signal that intermediate evidence is still
+   * missing and worth collecting. */
+  interpolated?: boolean;
   /** All evidence IDs accumulated up to this transition point */
   cumulative_evidence_ids: string[];
   /** Cumulative gate state after this transition */
@@ -131,9 +142,13 @@ export function reconstructTopicEvolution(
   for (const evidence of sorted) {
     accumulated.push(evidence);
 
-    // Evaluate gate state with accumulated evidence
+    // Evaluate gate state with accumulated evidence. The Data Confidence cap is
+    // applied here for the same reason classifyStage applies it: a thin or
+    // conflicting evidence base must not read as a fully validated narrative.
+    // Without it the timeline and the stage snapshot report different stages
+    // for the same topic.
     const gateInput = inferStageGateInput(accumulated);
-    const newMaxStage = maxAllowedStage(gateInput);
+    const newMaxStage = capStageByDataConfidence(maxAllowedStage(gateInput), averageConfidence(accumulated));
     const newStage = newMaxStage;
 
     const causedTransition = newStage !== currentStage;
@@ -151,10 +166,41 @@ export function reconstructTopicEvolution(
       caused_transition: causedTransition,
     });
 
-    if (causedTransition) {
-      // Determine which gate was newly unlocked
+    if (causedTransition && stageRank[newStage] > stageRank[currentStage]) {
+      // Enforce a strictly continuous ladder: a single evidence event may clear
+      // several gates at once (e.g. stable label + hard reality), but the
+      // timeline must never draw an edge that skips a stage. Expand the jump
+      // into consecutive single-rung transitions S(n) -> S(n+1). The final rung
+      // is the genuine gate unlock; any rung below it is a filled intermediate
+      // step, flagged `interpolated` because it still lacks its own evidence.
       const gateUnlocked = identifyUnlockedGate(currentStage, newStage, gateInput);
-
+      const fromRank = stageRank[currentStage];
+      const toRank = stageRank[newStage];
+      for (let rank = fromRank + 1; rank <= toRank; rank += 1) {
+        const stepFrom = STAGE_LADDER[rank - 1];
+        const stepTo = STAGE_LADDER[rank];
+        const isFinalRung = rank === toRank;
+        transitions.push({
+          from_stage: stepFrom,
+          to_stage: stepTo,
+          transition_date: evidence.event_date,
+          trigger_evidence_id: evidence.evidence_id,
+          trigger_evidence_title: evidence.event_title,
+          trigger_evidence_url: evidence.source_url ?? '',
+          gate_unlocked: isFinalRung
+            ? gateUnlocked
+            : `sequential fill ${stepFrom} → ${stepTo} (no distinct evidence yet)`,
+          interpolated: !isFinalRung,
+          cumulative_evidence_ids: accumulated.map((e) => e.evidence_id),
+          gate_state: { ...gateInput },
+        });
+        if (!stageSequence.includes(stepTo)) stageSequence.push(stepTo);
+      }
+      currentStage = newStage;
+    } else if (causedTransition) {
+      // Stage regression (e.g. later evidence lowers confidence). Record the
+      // single step without laddering; regressions are already single-stage in
+      // practice and must remain visible.
       transitions.push({
         from_stage: currentStage,
         to_stage: newStage,
@@ -162,15 +208,12 @@ export function reconstructTopicEvolution(
         trigger_evidence_id: evidence.evidence_id,
         trigger_evidence_title: evidence.event_title,
         trigger_evidence_url: evidence.source_url ?? '',
-        gate_unlocked: gateUnlocked,
+        gate_unlocked: identifyUnlockedGate(currentStage, newStage, gateInput),
         cumulative_evidence_ids: accumulated.map((e) => e.evidence_id),
         gate_state: { ...gateInput },
       });
-
       currentStage = newStage;
-      if (!stageSequence.includes(newStage)) {
-        stageSequence.push(newStage);
-      }
+      if (!stageSequence.includes(newStage)) stageSequence.push(newStage);
     }
   }
 
@@ -235,4 +278,10 @@ function identifyUnlockedGate(
 /** Build the full evolution path string, including intermediate jumps */
 function buildFullEvolutionPath(stages: string[]): string {
   return stages.join(' → ');
+}
+
+/** Mirrors the operational snapshot's fallback when confidence is unrecorded. */
+function averageConfidence(evidence: EvidenceNode[]): number {
+  const values = evidence.map((item) => item.confidence).filter((item): item is number => typeof item === 'number');
+  return values.length ? Math.round(values.reduce((sum, value) => sum + value, 0) / values.length) : 45;
 }
