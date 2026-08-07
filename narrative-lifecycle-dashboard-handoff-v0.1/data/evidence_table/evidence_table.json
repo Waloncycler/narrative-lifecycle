@@ -1,0 +1,402 @@
+[
+  {
+    "evidence_id": "ev_probe_889c5c2d51bd842b",
+    "topic_id": "provisional_ai_agents",
+    "branch_id": "provisional_ai_agents_compute_budget_governance",
+    "parent_or_branch": "branch",
+    "event_date": "2026-08-06",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Resourced Authority A Mechanism-Design Model for Participatory Governance of Deployed AI Agents",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "http://arxiv.org/abs/2608.06353v1",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "split_branch",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_cbbf4a76f9854c82",
+    "topic_id": "bci",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2013-07-12",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Communication by Brain - Computer Interface in Amyotrophic Lateral Sclerosis:Feasibility Study",
+    "event_type": "disclosure",
+    "source_name": "official",
+    "source_url": "https://clinicaltrials.gov/study/NCT01897818",
+    "evidence_strength": "E4",
+    "affected_layer": [
+      "reality",
+      "pricing"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_68a3ff38a4f2a25a",
+    "topic_id": "provisional_additive_manufacturing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2017-10-12",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Additive manufacturing of metallic components – Process, structure and properties",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1016/j.pmatsci.2017.10.001",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_917b988735767e6c",
+    "topic_id": "provisional_advanced_packaging",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2023-05-22",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Challenges and prospects for advanced packaging",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1016/j.fmre.2023.04.014",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_320261fd7b576d16",
+    "topic_id": "provisional_tech_innovation",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2016-12-15",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Formic Acid as a Hydrogen Energy Carrier",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1021/acsenergylett.6b00574",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_73a9f86d483f295c",
+    "topic_id": "provisional_additive_manufacturing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2016-07-20",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Additive manufacturing of metals",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1016/j.actamat.2016.07.019",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_de3764d2a5f056a0",
+    "topic_id": "provisional_tech_innovation",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2016-02-01",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "The prospects for hydrogen as an energy carrier: an overview of hydrogen energy and hydrogen energy systems",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1007/s40974-016-0005-z",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_cfea000f34a30f27",
+    "topic_id": "provisional_tech_innovation",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2019-05-03",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Hydrogen energy, economy and storage: Review and recommendation",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1016/j.ijhydene.2019.04.068",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_6218c5bf8d0ecac4",
+    "topic_id": "provisional_advanced_packaging",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2008-12-16",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Materials for Advanced Packaging",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1007/978-0-387-78219-5",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_3676c0071ad3674b",
+    "topic_id": "provisional_tech_innovation",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2021-05-03",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Hydrogen energy systems: A critical review of technologies, applications, trends and challenges",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1016/j.rser.2021.111180",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_1984737014776e5a",
+    "topic_id": "provisional_tech_innovation",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2018-01-09",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Signal Integrity Design and Analysis of Silicon Interposer for GPU-Memory Channels in High-Bandwidth Memory Interface",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1109/tcpmt.2017.2779838",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_b4a6b7fb21b57408",
+    "topic_id": "provisional_additive_manufacturing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2020-08-11",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Grain refinement of stainless steel in ultrasound-assisted additive manufacturing",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "http://arxiv.org/abs/2008.04485v3",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_280ad78fc7ee6bec",
+    "topic_id": "provisional_advanced_packaging",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "1990-01-01",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Advanced mammalian gene transfer: high titre retroviral vectors with multiple drug selection markers and a complementary",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1093/nar/18.12.3587",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_7df310a0927544bd",
+    "topic_id": "provisional_additive_manufacturing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2014-04-07",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Metal Additive Manufacturing: A Review",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1007/s11665-014-0958-z",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_5df83a9e30fc2404",
+    "topic_id": "provisional_additive_manufacturing",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2018-02-13",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Additive manufacturing (3D printing): A review of materials, methods, applications and challenges",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1016/j.compositesb.2018.02.012",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_75aff8f0c1fc0fc5",
+    "topic_id": "provisional_advanced_packaging",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2022-01-18",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Recent Advances and Trends in Advanced Packaging",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1109/tcpmt.2022.3144461",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_97503934e99a8af2",
+    "topic_id": "provisional_tech_innovation",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2021-04-28",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Shuhai: A Tool for Benchmarking High Bandwidth Memory on FPGAs",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1109/tc.2021.3075765",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_a8d5fec26b16152e",
+    "topic_id": "provisional_tech_innovation",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2017-05-01",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "HBM (High Bandwidth Memory) DRAM Technology and Architecture",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1109/imw.2017.7939084",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_329791bdabd1e2a8",
+    "topic_id": "humanoid_robotics",
+    "branch_id": "humanoid_actuator",
+    "parent_or_branch": "branch",
+    "event_date": "2015-01-15",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Actuator Control for the NASA‐JSC Valkyrie Humanoid Robot: A Decoupled Dynamics Approach for Torque Control of Series El",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "https://doi.org/10.1002/rob.21556",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "split_branch",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  },
+  {
+    "evidence_id": "ev_probe_8881b73bc32e0f37",
+    "topic_id": "provisional_tech_innovation",
+    "branch_id": null,
+    "parent_or_branch": "parent",
+    "event_date": "2001-01-22",
+    "available_at": "2026-08-07T10:06:43.964Z",
+    "event_title": "Time-of-Flight Spectroscopy of Muonic Hydrogen Atoms and Molecules",
+    "event_type": "disclosure",
+    "source_name": "academic",
+    "source_url": "http://arxiv.org/abs/nucl-ex/0101007v1",
+    "evidence_strength": "E3",
+    "affected_layer": [
+      "reality",
+      "name"
+    ],
+    "stage_effect": "fills_gap",
+    "confidence": 88,
+    "schema_version": "0.9-autonomous-research"
+  }
+]

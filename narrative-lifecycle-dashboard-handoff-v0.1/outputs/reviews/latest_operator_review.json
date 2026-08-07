@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260807T095906361_27e52a",
-  "generated_at": "2026-08-07T09:59:06.655Z",
-  "review_id": "operator_review_run_20260807T095906361_27e52a",
+  "run_id": "run_20260807T100945041_a87ed1",
+  "generated_at": "2026-08-07T10:09:45.270Z",
+  "review_id": "operator_review_run_20260807T100945041_a87ed1",
   "status": "ok",
   "source_artifacts": [
     "outputs/operator_runs/run_20260802T181123872_9133dd/run_manifest.json",
@@ -259,17 +259,20 @@
     "outputs/operator_runs/run_20260807T095712116_45d145/weekly_brief.json",
     "outputs/operator_runs/run_20260807T095906361_27e52a/run_manifest.json",
     "outputs/operator_runs/run_20260807T095906361_27e52a/stage_diff.json",
-    "outputs/operator_runs/run_20260807T095906361_27e52a/weekly_brief.json"
+    "outputs/operator_runs/run_20260807T095906361_27e52a/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T100945041_a87ed1/run_manifest.json",
+    "outputs/operator_runs/run_20260807T100945041_a87ed1/stage_diff.json",
+    "outputs/operator_runs/run_20260807T100945041_a87ed1/weekly_brief.json"
   ],
   "review_window": {
     "first_run_id": "run_20260802T181123872_9133dd",
-    "last_run_id": "run_20260807T095906361_27e52a",
+    "last_run_id": "run_20260807T100945041_a87ed1",
     "first_started_at": "2026-08-02T18:11:23.872Z",
-    "last_completed_at": "2026-08-07T09:59:06.556Z"
+    "last_completed_at": "2026-08-07T10:09:45.171Z"
   },
   "run_summary": {
-    "run_count": 84,
-    "successful_run_count": 84,
+    "run_count": 85,
+    "successful_run_count": 85,
     "failed_run_count": 0
   },
   "runs": [
@@ -1028,6 +1031,15 @@
       "guardrail_status": "ok",
       "has_stage_diff": true,
       "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T100945041_a87ed1",
+      "started_at": "2026-08-07T10:09:45.041Z",
+      "completed_at": "2026-08-07T10:09:45.171Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
     }
   ],
   "stage_trends": {
@@ -1243,7 +1255,7 @@
     {
       "topic_id": "bci",
       "topic_name": "脑机接口",
-      "consecutive_run_count": 52,
+      "consecutive_run_count": 53,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1296,14 +1308,15 @@
         "run_20260807T073055977_631f1f",
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
-        "run_20260807T095712116_45d145"
+        "run_20260807T095712116_45d145",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S4"
     },
     {
       "topic_id": "humanoid_robotics",
       "topic_name": "人形机器人",
-      "consecutive_run_count": 54,
+      "consecutive_run_count": 55,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1358,14 +1371,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "innovative_drug_license_out",
       "topic_name": "创新药对外授权",
-      "consecutive_run_count": 51,
+      "consecutive_run_count": 52,
       "run_ids": [
         "run_20260802T183030393_2e4435",
         "run_20260802T183223529_e223a1",
@@ -1417,14 +1431,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_blockchain_crypto_market",
       "topic_name": "区块链与加密资产",
-      "consecutive_run_count": 30,
+      "consecutive_run_count": 31,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1455,14 +1470,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_luxury_consumer",
       "topic_name": "高端消费",
-      "consecutive_run_count": 30,
+      "consecutive_run_count": 31,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1493,14 +1509,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_low_altitude_economy",
       "topic_name": "低空经济",
-      "consecutive_run_count": 30,
+      "consecutive_run_count": 31,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1531,14 +1548,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_new_energy_industry",
       "topic_name": "新能源产业",
-      "consecutive_run_count": 57,
+      "consecutive_run_count": 58,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1596,14 +1614,15 @@
         "run_20260807T093409754_8847fb",
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_commercial_space",
       "topic_name": "商业航天",
-      "consecutive_run_count": 57,
+      "consecutive_run_count": 58,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1661,14 +1680,15 @@
         "run_20260807T093409754_8847fb",
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_quantum_computing",
       "topic_name": "量子计算",
-      "consecutive_run_count": 28,
+      "consecutive_run_count": 29,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1697,14 +1717,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_innovative_drug_clinical_development",
       "topic_name": "创新药临床研发",
-      "consecutive_run_count": 54,
+      "consecutive_run_count": 55,
       "run_ids": [
         "run_20260802T182405982_052013",
         "run_20260802T182601304_177bdf",
@@ -1759,14 +1780,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_ai_foundation_models",
       "topic_name": "基础大模型",
-      "consecutive_run_count": 28,
+      "consecutive_run_count": 29,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1795,14 +1817,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_semiconductor_advanced_manufacturing",
       "topic_name": "半导体先进制造",
-      "consecutive_run_count": 28,
+      "consecutive_run_count": 29,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1831,14 +1854,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_semiconductor_memory_market",
       "topic_name": "存储芯片",
-      "consecutive_run_count": 14,
+      "consecutive_run_count": 15,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1853,14 +1877,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_china_ip_policy",
       "topic_name": "中国知识产权政策",
-      "consecutive_run_count": 75,
+      "consecutive_run_count": 76,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -1936,14 +1961,15 @@
         "run_20260807T093409754_8847fb",
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_additive_manufacturing",
       "topic_name": "增材制造",
-      "consecutive_run_count": 28,
+      "consecutive_run_count": 29,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -1972,14 +1998,15 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_china_social_security_policy",
       "topic_name": "社会保障政策",
-      "consecutive_run_count": 75,
+      "consecutive_run_count": 76,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -2055,14 +2082,15 @@
         "run_20260807T093409754_8847fb",
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_ai_agents",
       "topic_name": "AI 智能体",
-      "consecutive_run_count": 26,
+      "consecutive_run_count": 27,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2089,14 +2117,15 @@
         "run_20260807T071845297_7a67a7",
         "run_20260807T073055977_631f1f",
         "run_20260807T073542612_372da6",
-        "run_20260807T095712116_45d145"
+        "run_20260807T095712116_45d145",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_smart_manufacturing",
       "topic_name": "智能制造",
-      "consecutive_run_count": 55,
+      "consecutive_run_count": 56,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2152,14 +2181,15 @@
         "run_20260807T093409754_8847fb",
         "run_20260807T093410460_a5803e",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     },
     {
       "topic_id": "provisional_computing_infrastructure",
       "topic_name": "算力基础设施",
-      "consecutive_run_count": 28,
+      "consecutive_run_count": 29,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2188,7 +2218,8 @@
         "run_20260807T073542612_372da6",
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
-        "run_20260807T095906361_27e52a"
+        "run_20260807T095906361_27e52a",
+        "run_20260807T100945041_a87ed1"
       ],
       "current_stage": "S0"
     }
