@@ -3,9 +3,9 @@
   "schema_version": "1.0.0",
   "producer_version": "0.4.0",
   "rule_version": "narrative-lifecycle-rules-v0.1",
-  "run_id": "run_20260807T103017741_9a0f3e",
-  "generated_at": "2026-08-07T10:30:17.982Z",
-  "review_id": "operator_review_run_20260807T103017741_9a0f3e",
+  "run_id": "run_20260807T104133539_4bca70",
+  "generated_at": "2026-08-07T10:41:33.773Z",
+  "review_id": "operator_review_run_20260807T104133539_4bca70",
   "status": "ok",
   "source_artifacts": [
     "outputs/operator_runs/run_20260802T181123872_9133dd/run_manifest.json",
@@ -271,17 +271,20 @@
     "outputs/operator_runs/run_20260807T102652092_8bbd48/weekly_brief.json",
     "outputs/operator_runs/run_20260807T103017741_9a0f3e/run_manifest.json",
     "outputs/operator_runs/run_20260807T103017741_9a0f3e/stage_diff.json",
-    "outputs/operator_runs/run_20260807T103017741_9a0f3e/weekly_brief.json"
+    "outputs/operator_runs/run_20260807T103017741_9a0f3e/weekly_brief.json",
+    "outputs/operator_runs/run_20260807T104133539_4bca70/run_manifest.json",
+    "outputs/operator_runs/run_20260807T104133539_4bca70/stage_diff.json",
+    "outputs/operator_runs/run_20260807T104133539_4bca70/weekly_brief.json"
   ],
   "review_window": {
     "first_run_id": "run_20260802T181123872_9133dd",
-    "last_run_id": "run_20260807T103017741_9a0f3e",
+    "last_run_id": "run_20260807T104133539_4bca70",
     "first_started_at": "2026-08-02T18:11:23.872Z",
-    "last_completed_at": "2026-08-07T10:30:17.875Z"
+    "last_completed_at": "2026-08-07T10:41:33.664Z"
   },
   "run_summary": {
-    "run_count": 88,
-    "successful_run_count": 88,
+    "run_count": 89,
+    "successful_run_count": 89,
     "failed_run_count": 0
   },
   "runs": [
@@ -1076,6 +1079,15 @@
       "guardrail_status": "ok",
       "has_stage_diff": true,
       "has_weekly_brief": true
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "started_at": "2026-08-07T10:41:33.539Z",
+      "completed_at": "2026-08-07T10:41:33.664Z",
+      "status": "ok",
+      "guardrail_status": "ok",
+      "has_stage_diff": true,
+      "has_weekly_brief": true
     }
   ],
   "stage_trends": {
@@ -1138,6 +1150,210 @@
           "ev_probe_73a9f86d483f295c",
           "ev_probe_7df310a0927544bd",
           "ev_probe_b4a6b7fb21b57408"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "humanoid_robotics",
+        "topic_name": "人形机器人",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_humanoid_china_policy_2026",
+          "ev_humanoid_figure_funding_2026",
+          "ev_humanoid_tesla_optimus_gen3_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "innovative_drug_license_out",
+        "topic_name": "创新药对外授权",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_licout_fda_approval_2026",
+          "ev_licout_nmpa_policy_2026",
+          "ev_licout_total_deal_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_blockchain_crypto_market",
+        "topic_name": "区块链与加密资产",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_crypto_btc_etf_2026",
+          "ev_crypto_regulation_framework_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_luxury_consumer",
+        "topic_name": "高端消费",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_luxury_baijiu_recovery_2026",
+          "ev_luxury_hainan_dutyfree_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_low_altitude_economy",
+        "topic_name": "低空经济",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_lowalt_ehang_cert_2026",
+          "ev_lowalt_investment_2026",
+          "ev_lowalt_policy_pilot_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_new_energy_industry",
+        "topic_name": "新能源产业",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_newenergy_policy_dual_carbon_2026",
+          "ev_newenergy_solar_shipment_2026",
+          "ev_newenergy_storage_catl_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_commercial_space",
+        "topic_name": "商业航天",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_space_china_launch_2026",
+          "ev_space_satellite_policy_2026",
+          "ev_space_starlink_revenue_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_quantum_computing",
+        "topic_name": "量子计算",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S4",
+        "evidence_ids": [
+          "ev_quantum_china_network_2026",
+          "ev_quantum_ibm_condor_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_ai_foundation_models",
+        "topic_name": "基础大模型",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_llm_claude_opus4_2026",
+          "ev_llm_deepseek_v3_2026",
+          "ev_llm_enterprise_adoption_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_semiconductor_advanced_manufacturing",
+        "topic_name": "半导体先进制造",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_semi_chips_act_2026",
+          "ev_semi_smic_expansion_2026",
+          "ev_semi_tsmc_2nm_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_ai_agents",
+        "topic_name": "AI 智能体",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_agent_china_regulation_2026",
+          "ev_agent_enterprise_deploy_2026",
+          "ev_agent_mcp_standard_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_smart_manufacturing",
+        "topic_name": "智能制造",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_smartmfg_industrial_iot_2026",
+          "ev_smartmfg_vision_market_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_computing_infrastructure",
+        "topic_name": "算力基础设施",
+        "change_type": "stage_upgrade",
+        "previous_value": "S0",
+        "current_value": "S6",
+        "evidence_ids": [
+          "ev_compute_dc_china_2026",
+          "ev_compute_liquid_cool_2026",
+          "ev_compute_nvidia_gb200_2026"
         ],
         "branch_id": null,
         "reactivation_record_id": null
@@ -1252,6 +1468,184 @@
         "evidence_ids": [
           "direct_arxiv_mn8gv5",
           "ev_probe_889c5c2d51bd842b"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "humanoid_robotics",
+        "topic_name": "人形机器人",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_humanoid_china_policy_2026",
+          "ev_humanoid_figure_funding_2026",
+          "ev_humanoid_tesla_optimus_gen3_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "innovative_drug_license_out",
+        "topic_name": "创新药对外授权",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_licout_fda_approval_2026",
+          "ev_licout_nmpa_policy_2026",
+          "ev_licout_total_deal_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_blockchain_crypto_market",
+        "topic_name": "区块链与加密资产",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_crypto_btc_etf_2026",
+          "ev_crypto_regulation_framework_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_luxury_consumer",
+        "topic_name": "高端消费",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_luxury_baijiu_recovery_2026",
+          "ev_luxury_hainan_dutyfree_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_low_altitude_economy",
+        "topic_name": "低空经济",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_lowalt_ehang_cert_2026",
+          "ev_lowalt_investment_2026",
+          "ev_lowalt_policy_pilot_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_new_energy_industry",
+        "topic_name": "新能源产业",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_newenergy_policy_dual_carbon_2026",
+          "ev_newenergy_solar_shipment_2026",
+          "ev_newenergy_storage_catl_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_commercial_space",
+        "topic_name": "商业航天",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_space_china_launch_2026",
+          "ev_space_satellite_policy_2026",
+          "ev_space_starlink_revenue_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_quantum_computing",
+        "topic_name": "量子计算",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_quantum_china_network_2026",
+          "ev_quantum_ibm_condor_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_ai_foundation_models",
+        "topic_name": "基础大模型",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_llm_claude_opus4_2026",
+          "ev_llm_deepseek_v3_2026",
+          "ev_llm_enterprise_adoption_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_semiconductor_advanced_manufacturing",
+        "topic_name": "半导体先进制造",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_semi_chips_act_2026",
+          "ev_semi_smic_expansion_2026",
+          "ev_semi_tsmc_2nm_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_ai_agents",
+        "topic_name": "AI 智能体",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_agent_china_regulation_2026",
+          "ev_agent_enterprise_deploy_2026",
+          "ev_agent_mcp_standard_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_smart_manufacturing",
+        "topic_name": "智能制造",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_smartmfg_industrial_iot_2026",
+          "ev_smartmfg_vision_market_2026"
+        ],
+        "branch_id": null,
+        "reactivation_record_id": null
+      },
+      {
+        "run_id": "run_20260807T104133539_4bca70",
+        "generated_at": "2026-08-07T10:41:33.539Z",
+        "topic_id": "provisional_computing_infrastructure",
+        "topic_name": "算力基础设施",
+        "change_type": "evidence_added",
+        "evidence_ids": [
+          "ev_compute_dc_china_2026",
+          "ev_compute_liquid_cool_2026",
+          "ev_compute_nvidia_gb200_2026"
         ],
         "branch_id": null,
         "reactivation_record_id": null
@@ -1427,6 +1821,210 @@
       "evidence_ids": [],
       "branch_id": null,
       "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_humanoid_china_policy_2026",
+        "ev_humanoid_figure_funding_2026",
+        "ev_humanoid_tesla_optimus_gen3_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药对外授权",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_licout_fda_approval_2026",
+        "ev_licout_nmpa_policy_2026",
+        "ev_licout_total_deal_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "区块链与加密资产",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_crypto_btc_etf_2026",
+        "ev_crypto_regulation_framework_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "高端消费",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_luxury_baijiu_recovery_2026",
+        "ev_luxury_hainan_dutyfree_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "低空经济",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_lowalt_ehang_cert_2026",
+        "ev_lowalt_investment_2026",
+        "ev_lowalt_policy_pilot_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "新能源产业",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_newenergy_policy_dual_carbon_2026",
+        "ev_newenergy_solar_shipment_2026",
+        "ev_newenergy_storage_catl_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "商业航天",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_space_china_launch_2026",
+        "ev_space_satellite_policy_2026",
+        "ev_space_starlink_revenue_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_quantum_computing",
+      "topic_name": "量子计算",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "Missing pricing adoption.",
+      "evidence_ids": [
+        "ev_quantum_china_network_2026",
+        "ev_quantum_ibm_condor_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_ai_foundation_models",
+      "topic_name": "基础大模型",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_llm_claude_opus4_2026",
+        "ev_llm_deepseek_v3_2026",
+        "ev_llm_enterprise_adoption_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_semiconductor_advanced_manufacturing",
+      "topic_name": "半导体先进制造",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_semi_chips_act_2026",
+        "ev_semi_smic_expansion_2026",
+        "ev_semi_tsmc_2nm_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_agent_china_regulation_2026",
+        "ev_agent_enterprise_deploy_2026",
+        "ev_agent_mcp_standard_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_smart_manufacturing",
+      "topic_name": "智能制造",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_smartmfg_industrial_iot_2026",
+        "ev_smartmfg_vision_market_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_computing_infrastructure",
+      "topic_name": "算力基础设施",
+      "change_type": "why_not_higher_changed",
+      "previous_value": "No parent Evidence Table is available. Branch evidence is shown separately and cannot upgrade the parent narrative.",
+      "current_value": "S6 is not safety; monitor continuity, friction, and S7 branch outcomes.",
+      "evidence_ids": [
+        "ev_compute_dc_china_2026",
+        "ev_compute_liquid_cool_2026",
+        "ev_compute_nvidia_gb200_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
     }
   ],
   "data_confidence_changes": [
@@ -1502,6 +2100,210 @@
       "previous_value": "medium",
       "current_value": "low",
       "evidence_ids": [],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "humanoid_robotics",
+      "topic_name": "人形机器人",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_humanoid_china_policy_2026",
+        "ev_humanoid_figure_funding_2026",
+        "ev_humanoid_tesla_optimus_gen3_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "innovative_drug_license_out",
+      "topic_name": "创新药对外授权",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_licout_fda_approval_2026",
+        "ev_licout_nmpa_policy_2026",
+        "ev_licout_total_deal_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_blockchain_crypto_market",
+      "topic_name": "区块链与加密资产",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_crypto_btc_etf_2026",
+        "ev_crypto_regulation_framework_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_luxury_consumer",
+      "topic_name": "高端消费",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_luxury_baijiu_recovery_2026",
+        "ev_luxury_hainan_dutyfree_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_low_altitude_economy",
+      "topic_name": "低空经济",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_lowalt_ehang_cert_2026",
+        "ev_lowalt_investment_2026",
+        "ev_lowalt_policy_pilot_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_new_energy_industry",
+      "topic_name": "新能源产业",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_newenergy_policy_dual_carbon_2026",
+        "ev_newenergy_solar_shipment_2026",
+        "ev_newenergy_storage_catl_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_commercial_space",
+      "topic_name": "商业航天",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_space_china_launch_2026",
+        "ev_space_satellite_policy_2026",
+        "ev_space_starlink_revenue_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_quantum_computing",
+      "topic_name": "量子计算",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_quantum_china_network_2026",
+        "ev_quantum_ibm_condor_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_ai_foundation_models",
+      "topic_name": "基础大模型",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_llm_claude_opus4_2026",
+        "ev_llm_deepseek_v3_2026",
+        "ev_llm_enterprise_adoption_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_semiconductor_advanced_manufacturing",
+      "topic_name": "半导体先进制造",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_semi_chips_act_2026",
+        "ev_semi_smic_expansion_2026",
+        "ev_semi_tsmc_2nm_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_ai_agents",
+      "topic_name": "AI 智能体",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_agent_china_regulation_2026",
+        "ev_agent_enterprise_deploy_2026",
+        "ev_agent_mcp_standard_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_smart_manufacturing",
+      "topic_name": "智能制造",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_smartmfg_industrial_iot_2026",
+        "ev_smartmfg_vision_market_2026"
+      ],
+      "branch_id": null,
+      "reactivation_record_id": null
+    },
+    {
+      "run_id": "run_20260807T104133539_4bca70",
+      "generated_at": "2026-08-07T10:41:33.539Z",
+      "topic_id": "provisional_computing_infrastructure",
+      "topic_name": "算力基础设施",
+      "change_type": "data_confidence_changed",
+      "previous_value": "low",
+      "current_value": "medium",
+      "evidence_ids": [
+        "ev_compute_dc_china_2026",
+        "ev_compute_liquid_cool_2026",
+        "ev_compute_nvidia_gb200_2026"
+      ],
       "branch_id": null,
       "reactivation_record_id": null
     }
@@ -1665,7 +2467,7 @@
     {
       "topic_id": "bci",
       "topic_name": "脑机接口",
-      "consecutive_run_count": 54,
+      "consecutive_run_count": 55,
       "run_ids": [
         "run_20260802T181123872_9133dd",
         "run_20260802T182405982_052013",
@@ -1720,7 +2522,8 @@
         "run_20260807T074058640_47a13c",
         "run_20260807T095712116_45d145",
         "run_20260807T100945041_a87ed1",
-        "run_20260807T102652092_8bbd48"
+        "run_20260807T102652092_8bbd48",
+        "run_20260807T104133539_4bca70"
       ],
       "current_stage": "S4"
     },
@@ -1786,7 +2589,7 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102652092_8bbd48"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "innovative_drug_license_out",
@@ -1849,7 +2652,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_blockchain_crypto_market",
@@ -1891,7 +2694,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_luxury_consumer",
@@ -1933,7 +2736,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_low_altitude_economy",
@@ -1975,7 +2778,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_new_energy_industry",
@@ -2044,7 +2847,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_commercial_space",
@@ -2113,7 +2916,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_quantum_computing",
@@ -2153,12 +2956,12 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S4"
     },
     {
       "topic_id": "provisional_innovative_drug_clinical_development",
       "topic_name": "创新药临床研发",
-      "consecutive_run_count": 58,
+      "consecutive_run_count": 59,
       "run_ids": [
         "run_20260802T182405982_052013",
         "run_20260802T182601304_177bdf",
@@ -2217,7 +3020,8 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T104133539_4bca70"
       ],
       "current_stage": "S2"
     },
@@ -2259,7 +3063,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_semiconductor_advanced_manufacturing",
@@ -2299,12 +3103,12 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_semiconductor_memory_market",
       "topic_name": "存储芯片",
-      "consecutive_run_count": 17,
+      "consecutive_run_count": 18,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2322,14 +3126,15 @@
         "run_20260807T095906361_27e52a",
         "run_20260807T100945041_a87ed1",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T104133539_4bca70"
       ],
       "current_stage": "S4"
     },
     {
       "topic_id": "provisional_china_ip_policy",
       "topic_name": "中国知识产权政策",
-      "consecutive_run_count": 79,
+      "consecutive_run_count": 80,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -2409,14 +3214,15 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T104133539_4bca70"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_additive_manufacturing",
       "topic_name": "增材制造",
-      "consecutive_run_count": 31,
+      "consecutive_run_count": 32,
       "run_ids": [
         "run_20260803T172837060_f886f2",
         "run_20260804T012931317_6cb3de",
@@ -2448,14 +3254,15 @@
         "run_20260807T095906361_27e52a",
         "run_20260807T100945041_a87ed1",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T104133539_4bca70"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_china_social_security_policy",
       "topic_name": "社会保障政策",
-      "consecutive_run_count": 79,
+      "consecutive_run_count": 80,
       "run_ids": [
         "run_20260803T102622106_835385",
         "run_20260803T145927354_a51824",
@@ -2535,17 +3342,19 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102443050_f3c588",
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T104133539_4bca70"
       ],
       "current_stage": "S2"
     },
     {
       "topic_id": "provisional_advanced_packaging",
       "topic_name": "Advanced Packaging",
-      "consecutive_run_count": 2,
+      "consecutive_run_count": 3,
       "run_ids": [
         "run_20260807T102652092_8bbd48",
-        "run_20260807T103017741_9a0f3e"
+        "run_20260807T103017741_9a0f3e",
+        "run_20260807T104133539_4bca70"
       ],
       "current_stage": "S2"
     },
@@ -2583,7 +3392,7 @@
         "run_20260807T100945041_a87ed1",
         "run_20260807T102652092_8bbd48"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_smart_manufacturing",
@@ -2650,7 +3459,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     },
     {
       "topic_id": "provisional_computing_infrastructure",
@@ -2690,7 +3499,7 @@
         "run_20260807T102652092_8bbd48",
         "run_20260807T103017741_9a0f3e"
       ],
-      "current_stage": "S0"
+      "current_stage": "S6"
     }
   ],
   "high_priority_operator_alerts": [

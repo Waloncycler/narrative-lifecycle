@@ -1,6 +1,6 @@
 {
-  "run_id": "run_20260807T103040276_f48611",
-  "generated_at": "2026-08-07T10:30:40.276Z",
+  "run_id": "run_20260807T104219308_d64410",
+  "generated_at": "2026-08-07T10:42:19.308Z",
   "rule_version": "narrative-lifecycle-rules-v0.1",
   "mission": "Evidence-first narrative lifecycle decision-support system. Not a trading system.",
   "guardrails": [
