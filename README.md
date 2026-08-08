@@ -230,7 +230,8 @@ The full set lives in [`docs/`](docs/README.md), organized by theme. Highlights:
 
 | Doc | Description |
 |---|---|
-| [docs/theory/市场叙事生命周期理论_第一版.pdf](docs/theory/市场叙事生命周期理论_第一版.pdf) | **理论原文 (PDF, 中文完整版)** |
+| [docs/theory/市场叙事生命周期理论_第一版.md](docs/theory/市场叙事生命周期理论_第一版.md) | **理论原文 (Markdown 全文)** |
+| [docs/theory/市场叙事生命周期理论_第一版.pdf](docs/theory/市场叙事生命周期理论_第一版.pdf) | **理论原文 (PDF 原版文档)** |
 | [docs/01_theory_name_capital_reality_momentum.md](docs/01_theory_name_capital_reality_momentum.md) | The underlying theory |
 | [docs/02_lifecycle_states_S0_S7.md](docs/02_lifecycle_states_S0_S7.md) | Stage definitions |
 | [docs/03_minimum_evidence_standards.md](docs/03_minimum_evidence_standards.md) | Evidence rules |

@@ -1,9 +1,10 @@
 # Documentation Index
 
 ## Theory & lifecycle model
+- [市场叙事生命周期理论 · 第一版 (Markdown 全文)](theory/市场叙事生命周期理论_第一版.md)
+- [市场叙事生命周期理论 · 第一版 (PDF 原版文档)](theory/市场叙事生命周期理论_第一版.pdf)
 - [01 · Theory — Name / Capital / Reality / Momentum](01_theory_name_capital_reality_momentum.md)
 - [02 · Lifecycle States S0–S7](02_lifecycle_states_S0_S7.md)
-- [Market Narrative Lifecycle Theory (PDF, 中文)](theory/市场叙事生命周期理论_第一版.pdf)
 
 ## Evidence, scoring & data
 - [03 · Minimum Evidence Standards](03_minimum_evidence_standards.md)
