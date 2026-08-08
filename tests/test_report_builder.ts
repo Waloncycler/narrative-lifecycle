@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,6 +14,12 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');
 
 describe('report builder', () => {
+  // outputs/diffs/ is generated, not committed — produce a real diff against
+  // the repo's own calibrated data before the loaders below read it.
+  beforeAll(() => {
+    execFileSync('npm', ['run', 'weekly'], { cwd: repoRoot, stdio: 'pipe' });
+  });
+
   it('aggregates pipeline artifacts without reclassifying or scoring', () => {
     const artifacts = loadReportArtifacts(repoRoot);
     const report = buildWeeklyBrief(artifacts, loadCanonicalStageDiff(repoRoot), { run_id: 'run_20260705T000000000_abcdef', started_at: '2026-07-05T00:00:00.000Z', rule_version: 'narrative-lifecycle-rules-v0.1', artifact_version: 'v0.3.1' });

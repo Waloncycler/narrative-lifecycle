@@ -6,6 +6,7 @@ const repoRoot = resolve(import.meta.dirname, '..');
 
 function filesUnder(relativeDir: string): string[] {
   const root = resolve(repoRoot, relativeDir);
+  if (!statSync(root, { throwIfNoEntry: false })) return [];
   return readdirSync(root).flatMap((name) => {
     const path = resolve(root, name);
     const relative = `${relativeDir}/${name}`;
@@ -13,23 +14,39 @@ function filesUnder(relativeDir: string): string[] {
   }).filter((file) => file.endsWith('.ts'));
 }
 
+// Post feature-slice restructure: the old flat src/domain and src/rules layers
+// now live as a domain/ and rules/ sublayer inside each src/features/<name>/
+// slice. The purity boundary they enforced is unchanged — only the paths moved.
+const FEATURE_NAMES = readdirSync(resolve(repoRoot, 'src/features'));
+const domainAndRuleFiles = FEATURE_NAMES.flatMap((name) => [
+  ...filesUnder(`src/features/${name}/domain`),
+  ...filesUnder(`src/features/${name}/rules`),
+]);
+
+// src/application became src/app (composition root: use_cases, ports, errors).
+// pipeline_runner.ts moved here too from the old src/services/, but it is the
+// orchestration entrypoint, not a use case — it legitimately touches fs/paths
+// the same way the old services/ layer did, so it is excluded from the purity
+// check just as run_evolution_timeline.ts is excluded from the CLI check below.
+const appFiles = filesUnder('src/app').filter((file) => !file.endsWith('pipeline_runner.ts'));
+
 describe('layered architecture boundaries', () => {
   it('keeps Domain free of filesystem, YAML, CLI, and output paths', () => {
-    for (const file of filesUnder('src/domain')) {
+    for (const file of domainAndRuleFiles) {
       const body = readFileSync(resolve(repoRoot, file), 'utf8');
       expect(body, file).not.toMatch(/node:fs|node:path|yaml|process\.argv|outputs\//);
     }
   });
 
   it('keeps Application use cases free of direct filesystem and path dependencies', () => {
-    for (const file of filesUnder('src/application')) {
+    for (const file of appFiles) {
       const body = readFileSync(resolve(repoRoot, file), 'utf8');
       expect(body, file).not.toMatch(/node:fs|node:path|yaml|outputs\//);
     }
   });
 
   it('keeps Domain and Application independent from legacy services', () => {
-    for (const file of [...filesUnder('src/domain'), ...filesUnder('src/application')]) {
+    for (const file of [...domainAndRuleFiles, ...appFiles]) {
       const body = readFileSync(resolve(repoRoot, file), 'utf8');
       expect(body, file).not.toMatch(/from ['"].*services\//);
     }
