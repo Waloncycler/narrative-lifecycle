@@ -518,3 +518,660 @@
   positive_or_negative: neutral
   confidence: 45
   schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_anthropic_releases-tag_github_com_2008_repository_590187800_v0_121_0-ab44be325370
+  topic_id: provisional_ai_foundation_models
+  branch_id: null
+  event_date: 2026-08-07
+  event_title: v0.121.0
+  event_summary: 官方发布 2026-08-07; 原始来源
+    https://github.com/anthropics/anthropic-sdk-python/releases.atom.
+  event_type: OFFICIAL_ANNOUNCEMENT
+  source_name: Direct public / AnthropicReleases
+  source_url: https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.121.0
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - perception
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-07
+  branch_coverage_score: 0
+  interpretation: Active SDK maintenance indicates ongoing developer tooling
+    investment for Claude API users.
+  limitation: "Structured API record normalized by anthropic_release 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    ab44be3253701ec6a137f9484c06f8ddf6c875835e7d5937521e9b801f591363.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_bloomberg_tech-tjdpc2_kk3_ny900-03343e9d1749
+  topic_id: provisional_semiconductor_memory_market
+  branch_id: null
+  event_date: 2026-08-07
+  event_title: SK Hynix Said to Mull Options for $3 Billion Chongqing Plant
+  event_summary: 新闻动态 2026-08-07; South Korea’s SK Hynix Inc. is considering
+    options for its Chongqing, China-based facility, including bringing in an
+    investor to help accelerate growth, according to people with knowledge of
+    the matter.; 来源 https://www.bloomberg.com/feeds/technology/news.rss.
+  event_type: NEWS_ARTICLE_PUBLISHED
+  source_name: Direct public / BloombergTech
+  source_url: https://www.bloomberg.com/news/articles/2026-08-07/sk-hynix-is-said-to-mull-options-for-3-billion-chongqing-assets
+  source_type: news
+  evidence_strength: E2
+  affected_layer:
+    - perception
+    - feedback
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-07
+  branch_coverage_score: 0
+  interpretation: SK Hynix may seek external capital for its China memory
+    operations amid strategic review.
+  limitation: "Structured API record normalized by news_article 1.0.0; upstream
+    verification and human review remain required. Payload hash:
+    03343e9d17492356d6fa120f1e8364e084cafde1249fa3cb2c725d5540f6adb6.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_coinbase_spot_price-btc_usd-9d9ddbf7935f
+  topic_id: provisional_blockchain_crypto_market
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: BTC-USD spot price 64943.975 USD
+  event_summary: Coinbase public spot quote BTC-USD; price 64943.975 USD.
+  event_type: CRYPTO_SPOT_PRICE
+  source_name: Direct public / CoinbaseSpotPrice
+  source_url: https://api.coinbase.com/v2/prices/BTC-USD/spot
+  source_type: company
+  evidence_strength: E1
+  affected_layer:
+    - capital
+    - feedback
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Bitcoin spot price was near $65k at the quoted Coinbase timestamp.
+  limitation: "Structured API record normalized by coinbase_spot_price 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    9d9ddbf7935fd3dd9f721cf036f5b91a23a6f2cba721543ef5920e0f87077788.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_coin_gecko_trending-pudgy_penguins-bfb0f41fd1b8
+  topic_id: provisional_blockchain_crypto_market
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: Pudgy Penguins (PENGU) trending on CoinGecko
+  event_summary: CoinGecko trending search signal; symbol PENGU; market cap rank 107.
+  event_type: MARKET_TRENDING_ASSET
+  source_name: Direct public / CoinGeckoTrending
+  source_url: https://www.coingecko.com/en/coins/pudgy-penguins
+  source_type: company
+  evidence_strength: E1
+  affected_layer:
+    - perception
+    - capital
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: PENGU consumer-brand memecoin maintains retail attention despite
+    mid-cap rank.
+  limitation: "Structured API record normalized by coingecko_trending 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    bfb0f41fd1b8e8ef9364671cb7efae541a96eccc7494f2e858e22c0f77c676da.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_eastmoney_stock_quote-688981-35dfd25ce5b1
+  topic_id: provisional_semiconductor_advanced_manufacturing
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: A股 中芯国际 (688981) 涨 3.5%
+  event_summary: A股 中芯国际 (688981); 最新价 128.5; 变动 3.5%; 最高 128.5; 最低 123.13.
+  event_type: A_SHARE_QUOTE
+  source_name: Direct public / EastmoneyStockQuote
+  source_url: https://push2.eastmoney.com/api/qt/stock/get?secid=1.688981&fltt=2&invt=2&fields=f43%2Cf44%2Cf45%2Cf46%2Cf47%2Cf48%2Cf57%2Cf58%2Cf169%2Cf170
+  source_type: company
+  evidence_strength: E1
+  affected_layer:
+    - capital
+    - feedback
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: SMIC shares rose on the session with intraday high 128.5 CNY.
+  limitation: "Structured API record normalized by eastmoney_stock_quote 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    35dfd25ce5b10fc84a0eaa14cedbfdfb861d0da0116b6a0a8884c7790d64ccfc.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_open_ai_blog-https_openai_com_index_responding_next_frontier_critical_cyber_capabilities-7271c1904eef
+  topic_id: provisional_ai_foundation_models
+  branch_id: null
+  event_date: 2026-08-07
+  event_title: Responding to the next frontier of critical cyber capabilities
+  event_summary: 官方发布 2026-08-07; OpenAI is sharing preliminary cybersecurity
+    evaluations for Astra and the steps we’re taking to strengthen safeguards
+    and security controls.; 原始来源 https://openai.com/news/rss.xml.
+  event_type: OFFICIAL_ANNOUNCEMENT
+  source_name: Direct public / OpenAiBlog
+  source_url: https://openai.com/index/responding-next-frontier-critical-cyber-capabilities
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - perception
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-07
+  branch_coverage_score: 0
+  interpretation: OpenAI is publicly disclosing cyber-capability testing ahead of
+    broader release.
+  limitation: "Structured API record normalized by openai_blog_announcement 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    7271c1904eef50485102383f7f0988fa5fb7ad96568ef0c372b4448d782e8183.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_sina_finance-https_finance_sina_com_cn_stock_usstock_c_2026_08_08_doc_inimqptr2699541_shtml-b99a0b57ab93
+  topic_id: provisional_ai_foundation_models
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: OpenAI出于网络安全担忧暂停新Astra模型的部分研发工作
+  event_summary: 新闻动态 2026-08-08;
+    OpenAI正暂停其即将推出的一款人工智能模型的相关内部工作，以实施更严格的安全保障措施，此前发现该系统在网络安全任务方面表现显著更胜一筹。; 来源
+    https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2516&num=15&page=1.
+  event_type: NEWS_ARTICLE_PUBLISHED
+  source_name: Direct public / SinaFinance
+  source_url: https://finance.sina.com.cn/stock/usstock/c/2026-08-08/doc-inimqptr2699541.shtml
+  source_type: news
+  evidence_strength: E2
+  affected_layer:
+    - perception
+    - feedback
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: OpenAI is implementing stricter safeguards before resuming Astra development.
+  limitation: "Structured API record normalized by news_article 1.0.0; upstream
+    verification and human review remain required. Payload hash:
+    b99a0b57ab9314abdeb132be9bb128bcbc3969e23600b296227861f1f6ae5f48.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_bloomberg_tech-tjesnukgzajz00-03343e9d1749
+  topic_id: provisional_ai_foundation_models
+  branch_id: null
+  event_date: 2026-08-07
+  event_title: OpenAI Pauses Some Work on New Astra Model on Cyber Concerns
+  event_summary: 新闻动态 2026-08-07; OpenAI is pausing some internal work around one
+    of its upcoming artificial intelligence models to implement stricter
+    safeguards after the system was found to be significantly more adept at
+    cybersecurity tasks.; 来源
+    https://www.bloomberg.com/feeds/technology/news.rss.
+  event_type: NEWS_ARTICLE_PUBLISHED
+  source_name: Direct public / BloombergTech
+  source_url: https://www.bloomberg.com/news/articles/2026-08-07/openai-pauses-some-work-on-new-astra-model-over-cyber-concerns
+  source_type: news
+  evidence_strength: E2
+  affected_layer:
+    - perception
+    - feedback
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-07
+  branch_coverage_score: 0
+  interpretation: OpenAI is recalibrating release timing amid heightened
+    cybersecurity capability findings.
+  limitation: "Structured API record normalized by news_article 1.0.0; upstream
+    verification and human review remain required. Payload hash:
+    03343e9d17492356d6fa120f1e8364e084cafde1249fa3cb2c725d5540f6adb6.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_brookings_research-https_www_brookings_edu_articles_can_europe_survive_china_shock_2_0-1e52097a2a39
+  topic_id: provisional_china_macro_policy
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: Can Europe survive China Shock 2.0?
+  event_summary: 研究报告发布于 2026-08-08; 来源 https://www.brookings.edu/research/.
+  event_type: RESEARCH_REPORT_PUBLISHED
+  source_name: Direct public / BrookingsResearch
+  source_url: https://www.brookings.edu/articles/can-europe-survive-china-shock-2-0/
+  source_type: research
+  evidence_strength: E1
+  affected_layer:
+    - feedback
+    - perception
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Think tank frames renewed China-export competition risk for
+    European industry.
+  limitation: "Structured API record normalized by research_report 1.0.0; upstream
+    verification and human review remain required. Payload hash:
+    1e52097a2a39f127a0302f54ffa056136b5622f6d277bc5eb7a29407d888eba8.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_coin_gecko_trending-biconomy-bfb0f41fd1b8
+  topic_id: provisional_blockchain_crypto_market
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: Biconomy (BICO) trending on CoinGecko
+  event_summary: CoinGecko trending search signal; symbol BICO; market cap rank 370.
+  event_type: MARKET_TRENDING_ASSET
+  source_name: Direct public / CoinGeckoTrending
+  source_url: https://www.coingecko.com/en/coins/biconomy
+  source_type: company
+  evidence_strength: E1
+  affected_layer:
+    - perception
+    - capital
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Mid-cap infrastructure token BICO is attracting renewed retail
+    search attention.
+  limitation: "Structured API record normalized by coingecko_trending 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    bfb0f41fd1b8e8ef9364671cb7efae541a96eccc7494f2e858e22c0f77c676da.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_ndrc_news-https_www_ndrc_gov_cn_xwdt_wszb_6yxwfbh2026-3beab7729705
+  topic_id: provisional_china_macro_policy
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: 国家发展改革委举行6月份例行新闻发布会
+  event_summary: 中国政府官方公告 2026-08-08; 原始来源 https://www.ndrc.gov.cn/xwdt/.
+  event_type: OFFICIAL_GOV_ANNOUNCEMENT
+  source_name: Direct public / NdrcNews
+  source_url: https://www.ndrc.gov.cn/xwdt/wszb/6yxwfbh2026/
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - friction
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: NDRC continues its regular monthly press conference cadence.
+  limitation: "Structured API record normalized by gov_announcement 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    3beab7729705e0119b9904844fd2d315d580e761634ee8e31a9eed837e9be699.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_apple_newsroom-https_www_apple_com_newsroom_2026_07_apple_upgrade_launches_in_the_united_states-c490359935b7
+  topic_id: provisional_commercial_space
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: Apple Upgrade launches in the United States
+  event_summary: 官方发布 2026-08-08; 原始来源 https://www.apple.com/newsroom/rss-feed.rss.
+  event_type: OFFICIAL_ANNOUNCEMENT
+  source_name: Direct public / AppleNewsroom
+  source_url: https://www.apple.com/newsroom/2026/07/apple-upgrade-launches-in-the-united-states/
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - perception
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Apple is rolling out a US subscription upgrade program.
+  limitation: "Structured API record normalized by apple_newsroom_announcement
+    1.0.0; upstream verification and human review remain required. Payload hash:
+    c490359935b79451f81d7fc86adec081baf11ffd8b1769a79834ac79153051fb.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_bloomberg_tech-tjf1_nar24_u8_k00-03343e9d1749
+  topic_id: provisional_computing_infrastructure
+  branch_id: null
+  event_date: 2026-08-07
+  event_title: Data Center Firm Switch to File Confidentially for IPO
+  event_summary: 新闻动态 2026-08-07; Switch Inc. filed confidentially for a US IPO,
+    according to people familiar with the matter, joining its data center peers
+    in tapping demand for exposure to the artificial intelligence theme.; 来源
+    https://www.bloomberg.com/feeds/technology/news.rss.
+  event_type: NEWS_ARTICLE_PUBLISHED
+  source_name: Direct public / BloombergTech
+  source_url: https://www.bloomberg.com/news/articles/2026-08-07/data-center-firm-switch-is-said-to-file-confidentially-for-ipo
+  source_type: news
+  evidence_strength: E2
+  affected_layer:
+    - perception
+    - feedback
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-07
+  branch_coverage_score: 0
+  interpretation: AI-thematic data-center operator Switch is preparing public-market access.
+  limitation: "Structured API record normalized by news_article 1.0.0; upstream
+    verification and human review remain required. Payload hash:
+    03343e9d17492356d6fa120f1e8364e084cafde1249fa3cb2c725d5540f6adb6.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_coin_gecko_trending-pi_network-bfb0f41fd1b8
+  topic_id: provisional_blockchain_crypto_market
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: Pi Network (PI) trending on CoinGecko
+  event_summary: CoinGecko trending search signal; symbol PI; market cap rank 65.
+  event_type: MARKET_TRENDING_ASSET
+  source_name: Direct public / CoinGeckoTrending
+  source_url: https://www.coingecko.com/en/coins/pi-network
+  source_type: company
+  evidence_strength: E1
+  affected_layer:
+    - perception
+    - capital
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Pi Network maintains mid-tier market cap while retaining trending status.
+  limitation: "Structured API record normalized by coingecko_trending 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    bfb0f41fd1b8e8ef9364671cb7efae541a96eccc7494f2e858e22c0f77c676da.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_ndrc_news-https_www_ndrc_gov_cn_xwdt_wszb_zhblxfwbh-3beab7729705
+  topic_id: provisional_china_macro_policy
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: 国家发展改革委中欧班列专题新闻发布会
+  event_summary: 中国政府官方公告 2026-08-08; 原始来源 https://www.ndrc.gov.cn/xwdt/.
+  event_type: OFFICIAL_GOV_ANNOUNCEMENT
+  source_name: Direct public / NdrcNews
+  source_url: https://www.ndrc.gov.cn/xwdt/wszb/zhblxfwbh/
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - friction
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: NDRC continues highlighting China-Europe freight rail as a
+    strategic corridor.
+  limitation: "Structured API record normalized by gov_announcement 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    3beab7729705e0119b9904844fd2d315d580e761634ee8e31a9eed837e9be699.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_sina_finance-https_finance_sina_com_cn_jjxw_2026_08_08_doc_inimqptt9765112_shtml-b99a0b57ab93
+  topic_id: provisional_china_macro_policy
+  branch_id: provisional_china_macro_policy_branch_1ms7pyj
+  event_date: 2026-08-08
+  event_title: 新兴产业新设企业40万户 上半年全国经营主体发展数据发布
+  event_summary: 新闻动态 2026-08-08;
+    8月8日，市场监管总局公布数据显示，新产业新赛道企业蓄能成势，服务业新消费与高技术服务业双轮驱动，制造业转型加快，产业发展亮点纷呈。; 来源
+    https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2516&num=15&page=1.
+  event_type: NEWS_ARTICLE_PUBLISHED
+  source_name: Direct public / SinaFinance
+  source_url: https://finance.sina.com.cn/jjxw/2026-08-08/doc-inimqptt9765112.shtml
+  source_type: news
+  evidence_strength: E1
+  affected_layer:
+    - perception
+    - feedback
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-08
+  branch_coverage_score: 35
+  interpretation: China's market regulator highlights strong new-firm formation in
+    emerging industries.
+  limitation: "Structured API record normalized by news_article 1.0.0; upstream
+    verification and human review remain required. Payload hash:
+    b99a0b57ab9314abdeb132be9bb128bcbc3969e23600b296227861f1f6ae5f48. Branch
+    evidence cannot upgrade the parent narrative by itself. Automatically
+    published under policy v0.9-autonomous-research-default; deterministic Stage
+    Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_bloomberg_tech-tjew44_r24_u8_i00-03343e9d1749
+  topic_id: provisional_additive_manufacturing
+  branch_id: null
+  event_date: 2026-08-07
+  event_title: SoftBank-Backed 3D Printer Maker Formlabs Said to Weigh IPO
+  event_summary: 新闻动态 2026-08-07; Formlabs, a maker of 3D printers, is in early
+    talks with potential advisers for an initial public offering, according to
+    people familiar with the matter.; 来源
+    https://www.bloomberg.com/feeds/technology/news.rss.
+  event_type: NEWS_ARTICLE_PUBLISHED
+  source_name: Direct public / BloombergTech
+  source_url: https://www.bloomberg.com/news/articles/2026-08-07/softbank-backed-3d-printer-maker-formlabs-is-said-to-weigh-ipo
+  source_type: news
+  evidence_strength: E2
+  affected_layer:
+    - perception
+    - feedback
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-07
+  branch_coverage_score: 0
+  interpretation: SoftBank-backed 3D-printer maker Formlabs is exploring public-market listing.
+  limitation: "Structured API record normalized by news_article 1.0.0; upstream
+    verification and human review remain required. Payload hash:
+    03343e9d17492356d6fa120f1e8364e084cafde1249fa3cb2c725d5540f6adb6.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_csrc_news-http_www_beian_gov_cn_portal_register_system_info_recordcode_11040102700080-efb31480a2b9
+  topic_id: provisional_china_macro_policy
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: 京公网安备 11040102700080号
+  event_summary: 中国政府官方公告 2026-08-08; 原始来源
+    http://www.csrc.gov.cn/csrc/c100028/common_list.shtml.
+  event_type: OFFICIAL_GOV_ANNOUNCEMENT
+  source_name: Direct public / CsrcNews
+  source_url: http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11040102700080
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - friction
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Chinese regulatory pages carry standard public-security filing metadata.
+  limitation: "Structured API record normalized by regulator_announcement 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    efb31480a2b9767c39f570855252bce955b7dea966e7729c6ee31898681c4646.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_ndrc_news-http_www_china_com_cn_zhibo_content_118558185_htm-3beab7729705
+  topic_id: provisional_china_macro_policy
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: 国家发展改革委相关工作负责同志参加国新办新闻发布会 介绍利用外资固稳促优有关政策措施有关...
+  event_summary: 中国政府官方公告 2026-08-08; 原始来源 https://www.ndrc.gov.cn/xwdt/.
+  event_type: OFFICIAL_GOV_ANNOUNCEMENT
+  source_name: Direct public / NdrcNews
+  source_url: http://www.china.com.cn/zhibo/content_118558185.htm
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - friction
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: China is emphasizing policies to stabilize and improve
+    foreign-investment utilization.
+  limitation: "Structured API record normalized by gov_announcement 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    3beab7729705e0119b9904844fd2d315d580e761634ee8e31a9eed837e9be699.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_coin_gecko_trending-wiki_cat-bfb0f41fd1b8
+  topic_id: provisional_blockchain_crypto_market
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: Wiki Cat (WKC) trending on CoinGecko
+  event_summary: CoinGecko trending search signal; symbol WKC; market cap rank 456.
+  event_type: MARKET_TRENDING_ASSET
+  source_name: Direct public / CoinGeckoTrending
+  source_url: https://www.coingecko.com/en/coins/wiki-cat
+  source_type: company
+  evidence_strength: E1
+  affected_layer:
+    - perception
+    - capital
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Low-cap memecoin Wiki Cat attracted brief trending attention.
+  limitation: "Structured API record normalized by coingecko_trending 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    bfb0f41fd1b8e8ef9364671cb7efae541a96eccc7494f2e858e22c0f77c676da.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_gov_cn_policy-http_www_beian_gov_cn_portal_register_system_info_recordcode_11010202000001-abac2b9ef450
+  topic_id: provisional_china_macro_policy
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: 京公网安备11010202000001号
+  event_summary: 中国政府官方公告 2026-08-08; 原始来源 https://www.gov.cn/zhengce/.
+  event_type: GOVERNMENT_POLICY_UPDATE
+  source_name: Direct public / GovCnPolicy
+  source_url: http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010202000001
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - friction
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Chinese government pages carry standard public-security filing metadata.
+  limitation: "Structured API record normalized by govcn_policy_update 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    abac2b9ef450fd871ca2eb4a6cbe44ae966f57af7e687eb3f6dd8eaff73666d1.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_ndrc_news-http_www_china_com_cn_zhibo_content_118551416_htm-3beab7729705
+  topic_id: provisional_china_macro_policy
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: 国家发展改革委副主任周海兵出席国新办新闻发布会 介绍《构建更加公正合理的全球治理体系：中...
+  event_summary: 中国政府官方公告 2026-08-08; 原始来源 https://www.ndrc.gov.cn/xwdt/.
+  event_type: OFFICIAL_GOV_ANNOUNCEMENT
+  source_name: Direct public / NdrcNews
+  source_url: http://www.china.com.cn/zhibo/content_118551416.htm
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - friction
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: China is engaging multilaterally to frame a more equitable
+    global governance narrative.
+  limitation: "Structured API record normalized by gov_announcement 1.0.0;
+    upstream verification and human review remain required. Payload hash:
+    3beab7729705e0119b9904844fd2d315d580e761634ee8e31a9eed837e9be699.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: wm_direct_sina_finance-https_finance_sina_com_cn_stock_usstock_c_2026_08_08_doc_inimqimx6631227_shtml-b99a0b57ab93
+  topic_id: provisional_semiconductor_memory_market
+  branch_id: null
+  event_date: 2026-08-08
+  event_title: SK海力士据悉评估重庆资产方案 包括引入投资者
+  event_summary: 新闻动态 2026-08-08; 据知情人士称，SK海力士正研究旗下重庆资产的方案选项，包括引入投资者以帮助加速增长。
+    消息人士称，作为英伟达高带宽内存芯片的重要供应商，SK海力士正与潜在顾问接洽...; 来源
+    https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2516&num=15&page=1.
+  event_type: NEWS_ARTICLE_PUBLISHED
+  source_name: Direct public / SinaFinance
+  source_url: https://finance.sina.com.cn/stock/usstock/c/2026-08-08/doc-inimqimx6631227.shtml
+  source_type: news
+  evidence_strength: E2
+  affected_layer:
+    - perception
+    - feedback
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2026-08-08
+  branch_coverage_score: 0
+  interpretation: Chinese-language coverage mirrors Bloomberg reporting on SK
+    Hynix's Chongqing review.
+  limitation: "Structured API record normalized by news_article 1.0.0; upstream
+    verification and human review remain required. Payload hash:
+    b99a0b57ab9314abdeb132be9bb128bcbc3969e23600b296227861f1f6ae5f48.
+    Automatically published under policy v0.9-autonomous-research-default;
+    deterministic Stage Gate remains authoritative."
+  positive_or_negative: neutral
+  confidence: 45
+  schema_version: 0.9-autonomous-research

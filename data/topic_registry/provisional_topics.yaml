@@ -30,7 +30,7 @@
   proposed_name: China Macro Policy
   source_candidate_id: candidate_direct_ndrc_news-https_www_ndrc_gov_cn_xwdt_wszb_7yxwfbh-ae39e069497b
   created_at: 2026-08-03T10:21:14.650Z
-  status: provisional
+  status: promoted
   reason: Model proposed provisional topic provisional_china_macro_policy; keep as
     provisional S0 until audited.
 - provisional_topic_id: provisional_biopharma_annual_reporting

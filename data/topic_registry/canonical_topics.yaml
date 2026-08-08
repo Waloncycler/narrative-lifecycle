@@ -113,7 +113,7 @@
   naming_status: provisional
   naming_sources: []
   current_stage: S0
-  status: provisional
+  status: active
 - topic_id: provisional_biopharma_annual_reporting
   topic_name: 生物医药年报
   market_name_zh: 生物医药年报
