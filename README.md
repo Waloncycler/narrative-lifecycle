@@ -42,10 +42,10 @@
 
 ```mermaid
 graph LR
-    subgraph 传统研究的困境
-    A1[纯事实派] -->|忽视认知滞后与共识催化| B1[现实兑现时股价已见顶 / 陷入价值陷阱]
-    A2[纯情绪派] -->|追踪热度表象与讨论量| B2[误把短期噪音当主线 / 遭遇流动性踩踏]
-    A3[黑盒模型派] -->|Prompt直接盲打分| B3[缺乏证据因果链 / 幻觉严重不可复盘]
+    subgraph D1 ["传统研究的困境"]
+    A1["纯事实派"] -->|忽视认知滞后与共识催化| B1["现实兑现时股价已见顶 / 陷入价值陷阱"]
+    A2["纯情绪派"] -->|追踪热度表象与讨论量| B2["误把短期噪音当主线 / 遭遇流动性踩踏"]
+    A3["黑盒模型派"] -->|Prompt直接盲打分| B3["缺乏证据因果链 / 幻觉严重不可复盘"]
     end
 ```
 
@@ -293,32 +293,32 @@ src/
 
 ```mermaid
 flowchart TD
-    subgraph 外部权威数据宇宙 (43+ Sources)
-        S1[全球宏观与金融: Investing/Reuters/WSJ/Bloomberg]
-        S2[官方监管与法定: SEC EDGAR/Federal Register/SAMR/CAC]
-        S3[顶级学术与科技: PubMed/ArXiv/OpenAlex/Crossref]
-        S4[产业与公司披露: 30家核心公司IR/交易所公告/招投标]
+    subgraph G1 ["外部权威数据宇宙 (43+ Sources)"]
+        S1["全球宏观与金融: Investing / Reuters / WSJ / Bloomberg"]
+        S2["官方监管与法定: SEC EDGAR / Federal Register / SAMR / CAC"]
+        S3["顶级学术与科技: PubMed / ArXiv / OpenAlex / Crossref"]
+        S4["产业与公司披露: 30家核心公司IR / 交易所公告 / 招投标"]
     end
 
-    subgraph 提纯与证据准入
-        S1 & S2 & S3 & S4 --> WM[WorldMonitor 结构化特征提纯]
-        WM --> IC[Evidence Candidate 候选提纯 (含原文引用与置信度)]
-        IC --> AG[AI Shadow 影子验证 (MiniMax/自定义接口)]
-        IC & AG --> HG{人类审查道闸 (Review Gate)}
+    subgraph G2 ["提纯与证据准入"]
+        S1 & S2 & S3 & S4 --> WM["WorldMonitor 结构化特征提纯"]
+        WM --> IC["Evidence Candidate 候选提纯 (含原文引用与置信度)"]
+        IC --> AG["AI Shadow 影子验证 (MiniMax / 自定义接口)"]
+        IC & AG --> HG{"人类审查道闸 (Review Gate)"}
     end
 
-    subgraph 确定性状态机核心 (Pure Domain)
-        HG -->|通过审核| ET[正式证据表 (Evidence Table)]
-        ET --> NM[叙事记忆库 (Narrative Memory)]
-        NM --> SG[Stage Gate 状态门槛分类器 (S0-S7)]
-        SG --> SE[动力学打分引擎 (Transition Force 计算)]
+    subgraph G3 ["确定性状态机核心 (Pure Domain)"]
+        HG -->|通过审核| ET["正式证据表 (Evidence Table)"]
+        ET --> NM["叙事记忆库 (Narrative Memory)"]
+        NM --> SG["Stage Gate 状态门槛分类器 (S0-S7)"]
+        SG --> SE["动力学打分引擎 (Transition Force 计算)"]
     end
 
-    subgraph 最终决策看板与产出
-        SE --> DC[Dashboard 状态卡 (outputs/dashboard_cards/)]
-        SE --> SD[状态迁移对比 (outputs/diffs/latest_stage_diff.md)]
-        SE --> WB[周度战略简报 (outputs/reports/weekly_brief.md)]
-        SE --> UI[Narrative Monitor 交互式工作台 (127.0.0.1:4177)]
+    subgraph G4 ["最终决策看板与产出"]
+        SE --> DC["Dashboard 状态卡 (outputs/dashboard_cards/)"]
+        SE --> SD["状态迁移对比 (outputs/diffs/latest_stage_diff.md)"]
+        SE --> WB["周度战略简报 (outputs/reports/weekly_brief.md)"]
+        SE --> UI["Narrative Monitor 交互式工作台 (127.0.0.1:4177)"]
     end
 ```
 
