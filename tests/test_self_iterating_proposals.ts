@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { buildEvidenceChainEntries } from '../src/domain/evidence_chain';
-import { buildTopicDiscoveryProposals } from '../src/domain/topic_discovery';
-import type { EvidenceNode } from '../src/domain/evidence';
-import type { EvidenceIntakeSession } from '../src/types/intake';
-import type { TopicRegistry, TopicResolutionAudit } from '../src/types/topic_resolution';
+import { buildEvidenceChainEntries } from '@/features/evidence/domain/evidence_chain';
+import { buildTopicDiscoveryProposals } from '@/features/narrative/domain/topic_discovery';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
+import type { EvidenceIntakeSession } from '@/features/intake/types/intake';
+import type { TopicRegistry, TopicResolutionAudit } from '@/features/narrative/types/topic_resolution';
 
 const registry: TopicRegistry = {
   canonical_topics: [{ topic_id: 'bci', topic_name: 'BCI', current_stage: 'S4', status: 'active' }],

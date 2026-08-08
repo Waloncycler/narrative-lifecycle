@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildSuggestedEvidence, sanitizeModelJson } from '../src/infrastructure/intake_agent_provider';
+import { buildSuggestedEvidence, sanitizeModelJson } from '@/features/intake/io/intake_agent_provider';
 
 describe('buildSuggestedEvidence agent-only fallbacks', () => {
   it('derives non-empty title/summary from fact/interpretation when the model omits them', () => {
@@ -62,7 +62,7 @@ describe('buildSuggestedEvidence agent-only fallbacks', () => {
       e_strength_rationale: 'rationale',
       duplicate_of_evidence_id: null,
       guardrail_check: { no_trading_advice: true, provenance_present: true, human_review_required: false },
-    } satisfies import('../src/types/intake').EvidenceCandidate;
+    } satisfies import('@/features/intake/types/intake').EvidenceCandidate;
     const draft = buildSuggestedEvidence({ core_topic: 'tcm' }, rule);
     expect(draft?.event_title).toBe('Rule title');
     expect(draft?.event_summary).toBe('Rule summary');

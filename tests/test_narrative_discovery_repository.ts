@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { FileIntelligenceRepository } from '../src/infrastructure/intelligence_io';
-import type { NarrativeDiscoveryReport } from '../src/types/narrative_discovery';
+import { FileIntelligenceRepository } from '@/platform/io/intelligence_io';
+import type { NarrativeDiscoveryReport } from '@/features/narrative/types/narrative_discovery';
 
 function report(documentId: string, generatedAt: string): NarrativeDiscoveryReport {
   return {

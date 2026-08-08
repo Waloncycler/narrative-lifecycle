@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createInteractiveIntakeServer } from '../interface/interactive_intake_server';
-import { createProductCoreUseCases } from '../infrastructure/file_system_adapters';
+import { createInteractiveIntakeServer } from '@/features/intake/ui/interactive_intake_server';
+import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(here, '../..');

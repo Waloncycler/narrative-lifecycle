@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { cronMatches, nextCronTime, parseCron } from '../src/infrastructure/research_agent_scheduler';
+import { cronMatches, nextCronTime, parseCron } from '@/features/research/io/research_agent_scheduler';
 
 describe('research agent scheduler cron', () => {
   it('parses and matches a daily 06:00 cron in local time', () => {

@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { RunIntakeAgentUseCase } from '../src/application/use_cases/run_intake_agent_use_case';
-import { buildTopicResolutionAudit } from '../src/domain/topic_resolver';
-import { chunkRawDocument, extractEvidenceCandidates } from '../src/domain/intake_rules';
-import type { EvidenceIntakeSession, RawDocument } from '../src/types/intake';
-import type { AgentEvidenceCandidate } from '../src/types/intake_agent';
-import type { NarrativeDiscoveryReport } from '../src/types/narrative_discovery';
-import type { TopicRegistry, TopicResolutionAudit } from '../src/types/topic_resolution';
+import { RunIntakeAgentUseCase } from '@/app/use_cases/run_intake_agent_use_case';
+import { buildTopicResolutionAudit } from '@/features/narrative/domain/topic_resolver';
+import { chunkRawDocument, extractEvidenceCandidates } from '@/features/intake/domain/intake_rules';
+import type { EvidenceIntakeSession, RawDocument } from '@/features/intake/types/intake';
+import type { AgentEvidenceCandidate } from '@/features/intake/types/intake_agent';
+import type { NarrativeDiscoveryReport } from '@/features/narrative/types/narrative_discovery';
+import type { TopicRegistry, TopicResolutionAudit } from '@/features/narrative/types/topic_resolution';
 
 const registry: TopicRegistry = {
   canonical_topics: [{ topic_id: 'humanoid_robotics', topic_name: 'Humanoid robotics', current_stage: 'S4', status: 'active' }],

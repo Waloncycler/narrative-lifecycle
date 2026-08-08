@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { expectGoldenCaseShape, loadGoldenCase } from './helpers/golden_case_loader';
-import { classifyStage } from '../src/services/stage_classifier';
-import type { EvidenceNode } from '../src/domain/evidence';
+import { expectGoldenCaseShape, loadGoldenCase } from '@tests/helpers/golden_case_loader';
+import { classifyStage } from '@/features/stages/domain/stage_classifier';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 
 describe('test_bci_golden_case', () => {
   const goldenCase = loadGoldenCase('bci.yaml');

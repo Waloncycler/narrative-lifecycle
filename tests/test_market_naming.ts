@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { isUsableBranchName, marketBranchName, marketNameWarning, marketTopicName } from '../src/domain/market_naming';
-import { buildOperationalResearchState } from '../src/domain/operational_research_state';
-import type { TopicRegistry } from '../src/types/topic_resolution';
-import type { EvidenceNode } from '../src/domain/evidence';
+import { isUsableBranchName, marketBranchName, marketNameWarning, marketTopicName } from '@/features/narrative/domain/market_naming';
+import { buildOperationalResearchState } from '@/features/reporting/domain/operational_research_state';
+import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 
 describe('source-backed market naming', () => {
   it('shows a verified Chinese market name while retaining stable ids and English retrieval names', () => {

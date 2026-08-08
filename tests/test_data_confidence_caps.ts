@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { calculateDataConfidence, capStageByDataConfidence, maximumStageByDataConfidence } from '../src/rules/data_confidence_rules';
-import { classifyStage } from '../src/services/stage_classifier';
-import { parentS6Evidence } from './helpers/sample_evidence';
+import { calculateDataConfidence, capStageByDataConfidence, maximumStageByDataConfidence } from '@/features/stages/rules/data_confidence_rules';
+import { classifyStage } from '@/features/stages/domain/stage_classifier';
+import { parentS6Evidence } from '@tests/helpers/sample_evidence';
 
 describe('test_data_confidence_caps', () => {
   it('caps stage upgrades when data confidence is insufficient', () => {

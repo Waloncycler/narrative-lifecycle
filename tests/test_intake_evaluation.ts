@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import type { EvidenceCandidate, EvidenceIntakeSession, ReviewDecision } from '../src/types/intake';
-import { buildIntakeEvaluation, compareRuleAndAiCandidates } from '../src/domain/intake_evaluation';
-import { EvaluateIntakeUseCase } from '../src/application/use_cases/intake_use_cases';
+import type { EvidenceCandidate, EvidenceIntakeSession, ReviewDecision } from '@/features/intake/types/intake';
+import { buildIntakeEvaluation, compareRuleAndAiCandidates } from '@/features/intake/domain/intake_evaluation';
+import { EvaluateIntakeUseCase } from '@/app/use_cases/intake_use_cases';
 
 function candidate(id: string, topicId = 'bci', branchId: string | null = 'bci_medical_rehab'): EvidenceCandidate {
   return {

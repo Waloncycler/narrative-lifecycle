@@ -50,6 +50,8 @@ outputs/research/
 outputs/research_agent/
 outputs/intake/
 outputs/history/
+outputs/pilot/history/
+outputs/replay/history/
 
 # Intelligence engine outputs (large generated data, not for repo)
 outputs/evolution_timelines/

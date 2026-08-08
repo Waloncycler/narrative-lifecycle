@@ -3,8 +3,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { stringify } from 'yaml';
 import { describe, expect, it } from 'vitest';
-import { FileAutonomousResearchRepository } from '../src/infrastructure/autonomous_research_io';
-import type { EvidenceNode } from '../src/domain/evidence';
+import { FileAutonomousResearchRepository } from '@/features/research/io/autonomous_research_io';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 
 function evidence(evidenceId: string): EvidenceNode {
   return {

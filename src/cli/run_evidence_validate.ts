@@ -1,8 +1,8 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseEvidenceImportArgs } from '../interface/evidence_import_args';
-import { createProductCoreUseCases } from '../infrastructure/file_system_adapters';
-import type { EvidenceValidationReport } from '../types/evidence_import';
+import { parseEvidenceImportArgs } from '@/features/evidence/ui/evidence_import_args';
+import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import type { EvidenceValidationReport } from '@/features/evidence/types/evidence_import';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(here, '../..');

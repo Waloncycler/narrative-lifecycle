@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { EvidenceNode } from '../src/domain/evidence';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import {
   aggregateLayerSupport,
   calculateModelCost,
@@ -9,7 +9,7 @@ import {
   computeTransitionReadiness,
   evaluateAgentOptimization,
   evidenceContribution,
-} from '../src/domain/quantitative_framework';
+} from '@/features/scoring/domain/quantitative_framework';
 
 function evidence(overrides: Partial<EvidenceNode> = {}): EvidenceNode {
   return {

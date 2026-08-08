@@ -2,9 +2,9 @@ import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { writeRunManifest } from '../src/services/run_manifest_writer';
-import type { RunManifest } from '../src/types/run_context';
-import { artifactMetadata } from '../src/types/artifact_contract';
+import { writeRunManifest } from '@/platform/io/run_manifest_writer';
+import type { RunManifest } from '@/platform/types/run_context';
+import { artifactMetadata } from '@/platform/types/artifact_contract';
 
 describe('run manifest writer', () => {
   it('writes immutable run manifests and only advances latest for successful runs', () => {

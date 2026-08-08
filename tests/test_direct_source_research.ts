@@ -3,13 +3,13 @@ import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { AuthoritativeDirectSourceProvider } from '../src/infrastructure/authoritative_direct_source_provider';
-import { RunDirectSourceResearchUseCase } from '../src/application/use_cases/run_direct_source_research_use_case';
-import { PrepareDirectSourceIntakeUseCase } from '../src/application/use_cases/prepare_direct_source_intake_use_case';
-import { RunResearchCampaignUseCase } from '../src/application/use_cases/run_research_campaign_use_case';
-import { matchesCampaignTerms } from '../src/domain/direct_source_research';
-import type { DirectSourceResearchReport } from '../src/types/direct_source_research';
-import type { AuthoritativeResearchSource, ResearchCampaign } from '../src/types/research_coverage';
+import { AuthoritativeDirectSourceProvider } from '@/features/research/io/authoritative_direct_source_provider';
+import { RunDirectSourceResearchUseCase } from '@/app/use_cases/run_direct_source_research_use_case';
+import { PrepareDirectSourceIntakeUseCase } from '@/app/use_cases/prepare_direct_source_intake_use_case';
+import { RunResearchCampaignUseCase } from '@/app/use_cases/run_research_campaign_use_case';
+import { matchesCampaignTerms } from '@/features/research/domain/direct_source_research';
+import type { DirectSourceResearchReport } from '@/features/research/types/direct_source_research';
+import type { AuthoritativeResearchSource, ResearchCampaign } from '@/features/research/types/research_coverage';
 
 const clinicalTrials: AuthoritativeResearchSource = {
   source_id: 'clinicaltrials', display_name_zh: 'ClinicalTrials.gov', display_name_en: 'ClinicalTrials.gov', operator: 'NIH', authority_tier: 'statutory',

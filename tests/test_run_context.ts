@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createRunContext, resolveRunContext } from '../src/services/run_context';
+import { createRunContext, resolveRunContext } from '@/platform/io/run_context';
 
 describe('run context', () => {
   it('uses an injected clock and suffix for deterministic IDs', () => {

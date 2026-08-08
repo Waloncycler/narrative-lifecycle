@@ -5,10 +5,10 @@ import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { parse } from 'yaml';
 import { describe, expect, it } from 'vitest';
-import { buildResearchCampaign, usableMarketLabel } from '../src/domain/research_coverage';
-import { buildWebResearchQueries, normalizeWebResearchLeads } from '../src/domain/web_research';
-import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchUniverse } from '../src/types/research_coverage';
-import type { TopicRegistry } from '../src/types/topic_resolution';
+import { buildResearchCampaign, usableMarketLabel } from '@/features/research/domain/research_coverage';
+import { buildWebResearchQueries, normalizeWebResearchLeads } from '@/features/research/domain/web_research';
+import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchUniverse } from '@/features/research/types/research_coverage';
+import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const atlas = parse(readFileSync(resolve(repoRoot, 'data/source_atlas/authoritative_sources.yaml'), 'utf8')) as AuthoritativeSourceAtlas;

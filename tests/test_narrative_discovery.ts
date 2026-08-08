@@ -4,9 +4,9 @@ import addFormats from 'ajv-formats';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { applyNarrativeDiscoveryMappings, discoverNarrativeGraph } from '../src/domain/narrative_discovery';
-import type { EvidenceIntakeSession } from '../src/types/intake';
-import type { TopicRegistry } from '../src/types/topic_resolution';
+import { applyNarrativeDiscoveryMappings, discoverNarrativeGraph } from '@/features/narrative/domain/narrative_discovery';
+import type { EvidenceIntakeSession } from '@/features/intake/types/intake';
+import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 

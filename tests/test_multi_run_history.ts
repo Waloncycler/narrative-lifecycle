@@ -2,9 +2,9 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { loadPreviousSnapshot } from '../src/services/diff_artifact_loader';
-import { writeStageHistory } from '../src/services/stage_history_writer';
-import type { StageSnapshotHistory } from '../src/types/diff';
+import { loadPreviousSnapshot } from '@/features/stages/pipeline/diff_artifact_loader';
+import { writeStageHistory } from '@/features/stages/pipeline/stage_history_writer';
+import type { StageSnapshotHistory } from '@/features/stages/types/diff';
 
 describe('multi-run history', () => {
   it('preserves same-day snapshots and never selects the current run as previous', () => {

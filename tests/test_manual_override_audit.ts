@@ -4,7 +4,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import { createAuditLog, createManualOverride, RULE_VERSION } from '../src/services/versioning_service';
+import { createAuditLog, createManualOverride, RULE_VERSION } from '@/platform/core/versioning_service';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

@@ -3,8 +3,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
-import type { TopicResolution } from '../src/types/topic_resolution';
-import { FileTopicRegistryRepository } from '../src/infrastructure/topic_registry_io';
+import type { TopicResolution } from '@/features/narrative/types/topic_resolution';
+import { FileTopicRegistryRepository } from '@/platform/io/topic_registry_io';
 
 function seedRegistry(root: string): void {
   mkdirSync(join(root, 'data/topic_registry'), { recursive: true });

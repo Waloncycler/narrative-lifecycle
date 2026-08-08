@@ -3,13 +3,13 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import type { EvidenceNode } from '../src/domain/evidence';
-import type { StageSnapshotHistory, StageSnapshotTopic } from '../src/types/diff';
-import { artifactMetadata } from '../src/types/artifact_contract';
-import { classifyStage } from '../src/services/stage_classifier';
-import { buildStageDiff } from '../src/services/stage_diff_engine';
-import { MemoryService } from '../src/services/memory_service';
-import { createReactivationRecord } from '../src/services/reactivation_service';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
+import type { StageSnapshotHistory, StageSnapshotTopic } from '@/features/stages/types/diff';
+import { artifactMetadata } from '@/platform/types/artifact_contract';
+import { classifyStage } from '@/features/stages/domain/stage_classifier';
+import { buildStageDiff } from '@/features/stages/domain/stage_diff_engine';
+import { MemoryService } from '@/features/narrative/domain/memory_service';
+import { createReactivationRecord } from '@/features/narrative/domain/reactivation_service';
 
 const repoRoot = resolve(import.meta.dirname, '..');
 const guardrail_check = {
