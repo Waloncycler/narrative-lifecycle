@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { expectGoldenCaseShape, loadGoldenCase } from './helpers/golden_case_loader';
+import { expectGoldenCaseShape, loadGoldenCase } from '@tests/helpers/golden_case_loader';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import { classifyStage } from '@/features/stages/domain/stage_classifier';
 import { generateScore } from '@/features/scoring/domain/scoring_engine';

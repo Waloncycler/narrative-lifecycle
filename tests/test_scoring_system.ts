@@ -6,7 +6,7 @@ import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { generateScore } from '@/features/scoring/domain/scoring_engine';
 import { classifyStage } from '@/features/stages/domain/stage_classifier';
-import { parentS4Evidence, parentS6Evidence } from './helpers/sample_evidence';
+import { parentS4Evidence, parentS6Evidence } from '@tests/helpers/sample_evidence';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');
