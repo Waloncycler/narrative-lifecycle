@@ -169,12 +169,11 @@ describe('interactive intake workbench', () => {
     expect(systemPage).toContain('学习治理');
     expect(systemPage).toContain('方法论');
     const sourcesPage = await fetch(`${base}/sources`).then((response) => response.text());
-    expect(sourcesPage).toContain('目录存在 ≠ 可自动使用');
-    expect(sourcesPage).toContain('测试来源只检查连接与格式');
-    expect(sourcesPage).toContain('原始数据');
-    expect(sourcesPage).toContain('授权待审核');
-    expect(sourcesPage).toContain('忽略轻微修订');
-    expect(sourcesPage).toContain('不代表它已经成为正式证据');
+    // The sources page was redesigned into the Intelligence Atlas roster in the
+    // v0.13.5 release; assert its stable headings and domain buckets.
+    expect(sourcesPage).toContain('全球情报源与数据动脉矩阵');
+    expect(sourcesPage).toContain('全量情报源矩阵明细');
+    expect(sourcesPage).toContain('官方监管/申报');
     const topicPage = await fetch(`${base}/topics/bci`).then((response) => response.text());
     // The topic detail page shows the parent/branch structure ("分支地图") and
     // the isolation guardrail ("隔离验证" — branch stage never lifts the parent).

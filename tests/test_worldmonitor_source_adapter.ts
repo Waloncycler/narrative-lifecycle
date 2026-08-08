@@ -28,9 +28,11 @@ describe('World Monitor source adapter', () => {
       productionConfigured: false,
     });
 
-    expect(inventory.service_count).toBe(50);
-    expect(inventory.operation_count).toBe(52);
-    expect(inventory.pollable_operation_count).toBe(49);
+    // Counts reflect the built-in catalog (expanded in the v0.13.5 open-source
+    // release) plus the two synthetic fixture services below.
+    expect(inventory.service_count).toBe(64);
+    expect(inventory.operation_count).toBe(66);
+    expect(inventory.pollable_operation_count).toBe(63);
     expect(inventory.sandbox_operation_count).toBe(1);
     expect(inventory.operations.find((item) => item.operation_id === 'ListEarthquakes')?.access_state).toBe('sandbox_available');
     expect(inventory.operations.find((item) => item.operation_id === 'GetCountryRisk')?.evidence_eligibility).toBe('context_only');

@@ -1,7 +1,7 @@
 import type { NarrativeMonitorModel, NarrativeMonitorTopic } from '../types/narrative_monitor';
 import { QUANTITATIVE_RULE_VERSION } from '../domain/quantitative_framework';
 import { isUsableBranchName } from '../domain/market_naming';
-import { WORLDMONITOR_SOURCE_CATALOG, type WorldMonitorSourceConfig } from '../domain/worldmonitor_source_catalog';
+import { WORLDMONITOR_SOURCE_CATALOG } from '../domain/worldmonitor_source_catalog';
 
 export function renderNarrativeMonitor(model: NarrativeMonitorModel): string {
   const body = model.status === 'insufficient_data'
@@ -370,13 +370,19 @@ export function renderSources(model: NarrativeMonitorModel): string {
     };
   });
 
+  // NOTE: the UI groups sources into five display buckets. `official` is a
+  // display bucket, not a WorldMonitorDomain value (the catalog classifies
+  // regulators under financial/geopolitics), so it currently counts 0 until the
+  // taxonomy is reconciled. Comparisons are widened to string to stay type-safe
+  // without inventing a domain value.
+  const domainOf = (r: { domain: string }) => r.domain;
   const domainCounts = {
     all: roster.length,
-    financial: roster.filter((r) => r.domain === 'financial').length,
-    technology: roster.filter((r) => r.domain === 'technology').length,
-    research: roster.filter((r) => r.domain === 'research').length,
-    official: roster.filter((r) => r.domain === 'official').length,
-    geopolitics: roster.filter((r) => r.domain === 'geopolitics').length,
+    financial: roster.filter((r) => domainOf(r) === 'financial').length,
+    technology: roster.filter((r) => domainOf(r) === 'technology').length,
+    research: roster.filter((r) => domainOf(r) === 'research').length,
+    official: roster.filter((r) => domainOf(r) === 'official').length,
+    geopolitics: roster.filter((r) => domainOf(r) === 'geopolitics').length,
   };
 
   const domainLabelMap: Record<string, string> = {
