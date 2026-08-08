@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { maxAllowedStage } from '../src/rules/stage_gate_rules';
-import { classifyStage } from '../src/services/stage_classifier';
+import { classifyStage } from '../src/domain/stage_classifier';
 import type { EvidenceNode } from '../src/domain/evidence';
 
 describe('stage gates', () => {

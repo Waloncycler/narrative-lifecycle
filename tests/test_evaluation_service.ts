@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FileEvaluationRepository, FileFailureCaseRepository, YamlFileRepository } from '../src/repositories/file_repository';
-import { calibrateFailureCases } from '../src/services/evaluation_service';
+import { calibrateFailureCases } from '../src/domain/evaluation_service';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

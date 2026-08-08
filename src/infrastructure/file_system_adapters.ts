@@ -33,7 +33,7 @@ import { buildWeeklyBrief } from '../services/report_builder';
 import { renderWeeklyBriefMarkdown } from '../services/report_markdown_renderer';
 import { createRunContext } from './run_context';
 import { writeJsonAtomically, writeRunManifest, writeTextAtomically } from '../services/run_manifest_writer';
-import { buildStageDiff } from '../services/stage_diff_engine';
+import { buildStageDiff } from '../domain/stage_diff_engine';
 import { renderStageDiffMarkdown } from '../services/stage_diff_markdown_renderer';
 import { writeStageHistory } from '../services/stage_history_writer';
 import { buildStageSnapshot } from '../services/stage_snapshot_builder';

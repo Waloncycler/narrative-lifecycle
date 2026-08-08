@@ -4,9 +4,9 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import { createEarlyRadarCandidate, type EarlyRadarCandidateInput, qualifiesForEarlyRadar } from '../src/services/early_radar_service';
-import { MemoryService } from '../src/services/memory_service';
-import { createReactivationRecord } from '../src/services/reactivation_service';
+import { createEarlyRadarCandidate, type EarlyRadarCandidateInput, qualifiesForEarlyRadar } from '../src/domain/early_radar_service';
+import { MemoryService } from '../src/domain/memory_service';
+import { createReactivationRecord } from '../src/domain/reactivation_service';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

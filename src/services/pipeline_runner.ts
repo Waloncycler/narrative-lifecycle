@@ -2,11 +2,11 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import type { DashboardCard } from './dashboard_card_service';
-import { createEarlyRadarCandidate, type EarlyRadarCandidate } from './early_radar_service';
-import { calibrateFailureCases, type FailureCaseCalibration } from './evaluation_service';
-import { MemoryService } from './memory_service';
-import { createReactivationRecord } from './reactivation_service';
+import type { DashboardCard } from '../domain/dashboard_card_service';
+import { createEarlyRadarCandidate, type EarlyRadarCandidate } from '../domain/early_radar_service';
+import { calibrateFailureCases, type FailureCaseCalibration } from '../domain/evaluation_service';
+import { MemoryService } from '../domain/memory_service';
+import { createReactivationRecord } from '../domain/reactivation_service';
 import {
   FileEvaluationRepository,
   FileEvidenceRepository,

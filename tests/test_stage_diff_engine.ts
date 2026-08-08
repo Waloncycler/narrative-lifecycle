@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { StageSnapshotHistory, StageSnapshotTopic } from '../src/types/diff';
-import { buildStageDiff } from '../src/services/stage_diff_engine';
+import { buildStageDiff } from '../src/domain/stage_diff_engine';
 import { artifactMetadata } from '../src/types/artifact_contract';
 
 const guardrails = {

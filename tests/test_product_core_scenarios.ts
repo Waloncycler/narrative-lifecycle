@@ -6,10 +6,10 @@ import addFormats from 'ajv-formats';
 import type { EvidenceNode } from '../src/domain/evidence';
 import type { StageSnapshotHistory, StageSnapshotTopic } from '../src/types/diff';
 import { artifactMetadata } from '../src/types/artifact_contract';
-import { classifyStage } from '../src/services/stage_classifier';
-import { buildStageDiff } from '../src/services/stage_diff_engine';
-import { MemoryService } from '../src/services/memory_service';
-import { createReactivationRecord } from '../src/services/reactivation_service';
+import { classifyStage } from '../src/domain/stage_classifier';
+import { buildStageDiff } from '../src/domain/stage_diff_engine';
+import { MemoryService } from '../src/domain/memory_service';
+import { createReactivationRecord } from '../src/domain/reactivation_service';
 
 const repoRoot = resolve(import.meta.dirname, '..');
 const guardrail_check = {

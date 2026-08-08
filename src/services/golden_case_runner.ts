@@ -2,10 +2,10 @@ import type { EvidenceNode } from '../domain/evidence';
 import type { GoldenCase } from '../domain/golden_case';
 import type { ScoreResult } from '../domain/scoring';
 import { maxStageInExpression } from '../domain/stages';
-import type { DashboardCard } from './dashboard_card_service';
+import type { DashboardCard } from '../domain/dashboard_card_service';
 import { generateDashboardCardFromGoldenCase } from './dashboard_card_generator';
-import { generateScore } from './scoring_engine';
-import { classifyStage, type StageClassification } from './stage_classifier';
+import { generateScore } from '../domain/scoring_engine';
+import { classifyStage, type StageClassification } from '../domain/stage_classifier';
 
 export interface GoldenCaseRunResult {
   topic_id: string;

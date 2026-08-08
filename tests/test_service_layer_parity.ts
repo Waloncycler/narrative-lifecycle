@@ -7,8 +7,8 @@ import { buildStageDiff as buildStageDiffDomain } from '../src/domain/stage_diff
 import { normalizeEvidenceImport as normalizeEvidenceImportApplication } from '../src/application/evidence_import_normalizer';
 import { loadEvidenceImportDraft } from '../src/services/evidence_import_loader';
 import { normalizeEvidenceImport as normalizeEvidenceImportService } from '../src/services/evidence_import_normalizer';
-import { classifyStage as classifyStageService } from '../src/services/stage_classifier';
-import { buildStageDiff as buildStageDiffService } from '../src/services/stage_diff_engine';
+import { classifyStage as classifyStageService } from '../src/domain/stage_classifier';
+import { buildStageDiff as buildStageDiffService } from '../src/domain/stage_diff_engine';
 import type { EvidenceNode } from '../src/domain/evidence';
 import type { StageSnapshotHistory, StageSnapshotTopic } from '../src/types/diff';
 import { artifactMetadata } from '../src/types/artifact_contract';

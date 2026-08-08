@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { expectGoldenCaseShape, loadGoldenCase } from './helpers/golden_case_loader';
 import type { EvidenceNode } from '../src/domain/evidence';
-import { classifyStage } from '../src/services/stage_classifier';
-import { generateScore } from '../src/services/scoring_engine';
+import { classifyStage } from '../src/domain/stage_classifier';
+import { generateScore } from '../src/domain/scoring_engine';
 import { generateDashboardCardFromGoldenCase } from '../src/services/dashboard_card_generator';
 
 describe('test_humanoid_robotics_golden_case', () => {

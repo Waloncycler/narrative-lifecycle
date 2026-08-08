@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createDashboardCard } from '../src/services/dashboard_card_service';
+import { createDashboardCard } from '../src/domain/dashboard_card_service';
 
 const baseCardInput = {
   card_id: 'card_test',

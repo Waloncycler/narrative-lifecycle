@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calculateDataConfidence, capStageByDataConfidence, maximumStageByDataConfidence } from '../src/rules/data_confidence_rules';
-import { classifyStage } from '../src/services/stage_classifier';
+import { classifyStage } from '../src/domain/stage_classifier';
 import { parentS6Evidence } from './helpers/sample_evidence';
 
 describe('test_data_confidence_caps', () => {
