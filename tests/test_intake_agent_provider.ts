@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildSuggestedEvidence, sanitizeModelJson } from '../src/infrastructure/intake_agent_provider';
+import { buildSuggestedEvidence, sanitizeModelJson } from '@/infrastructure/intake_agent_provider';
 
 describe('buildSuggestedEvidence agent-only fallbacks', () => {
   it('derives non-empty title/summary from fact/interpretation when the model omits them', () => {

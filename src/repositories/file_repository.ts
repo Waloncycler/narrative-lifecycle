@@ -1,11 +1,11 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
-import type { EvidenceNode } from '../domain/evidence';
-import type { GoldenCase } from '../domain/golden_case';
-import type { EvaluationResult } from '../domain/audit';
-import type { NarrativeMemory } from '../domain/reactivation';
-import type { FailureCase } from '../domain/failure_case_service';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { GoldenCase } from '@/domain/golden_case';
+import type { EvaluationResult } from '@/domain/audit';
+import type { NarrativeMemory } from '@/domain/reactivation';
+import type { FailureCase } from '@/domain/failure_case_service';
 
 export interface TopicRecord {
   topic_id: string;

@@ -1,7 +1,7 @@
-import type { NarrativeMonitorModel, NarrativeMonitorTopic } from '../types/narrative_monitor';
-import { QUANTITATIVE_RULE_VERSION } from '../domain/quantitative_framework';
-import { isUsableBranchName } from '../domain/market_naming';
-import { WORLDMONITOR_SOURCE_CATALOG } from '../domain/worldmonitor_source_catalog';
+import type { NarrativeMonitorModel, NarrativeMonitorTopic } from '@/types/narrative_monitor';
+import { QUANTITATIVE_RULE_VERSION } from '@/domain/quantitative_framework';
+import { isUsableBranchName } from '@/domain/market_naming';
+import { WORLDMONITOR_SOURCE_CATALOG } from '@/domain/worldmonitor_source_catalog';
 
 export function renderNarrativeMonitor(model: NarrativeMonitorModel): string {
   const body = model.status === 'insufficient_data'

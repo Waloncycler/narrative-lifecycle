@@ -1,8 +1,8 @@
-import { buildResearchLeadTriage } from '../../domain/research_lead_triage';
-import type { DirectSourceResearchReport } from '../../types/direct_source_research';
-import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '../../types/research_coverage';
-import type { ResearchLeadTriageReport } from '../../types/research_lead_triage';
-import type { WebResearchReport } from '../../types/web_research';
+import { buildResearchLeadTriage } from '@/domain/research_lead_triage';
+import type { DirectSourceResearchReport } from '@/types/direct_source_research';
+import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '@/types/research_coverage';
+import type { ResearchLeadTriageReport } from '@/types/research_lead_triage';
+import type { WebResearchReport } from '@/types/web_research';
 
 export interface BuildResearchLeadTriageUseCaseDeps {
   now(): string;

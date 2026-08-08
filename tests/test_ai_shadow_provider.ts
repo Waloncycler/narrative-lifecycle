@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { chunkRawDocument, extractEvidenceCandidates } from '../src/domain/intake_rules';
-import type { EvidenceIntakeSession, RawDocument } from '../src/types/intake';
-import { ProviderNeutralAiShadowAdapter } from '../src/infrastructure/ai_shadow_provider';
+import { chunkRawDocument, extractEvidenceCandidates } from '@/domain/intake_rules';
+import type { EvidenceIntakeSession, RawDocument } from '@/types/intake';
+import { ProviderNeutralAiShadowAdapter } from '@/infrastructure/ai_shadow_provider';
 
 function session(): EvidenceIntakeSession {
   const raw: RawDocument = {

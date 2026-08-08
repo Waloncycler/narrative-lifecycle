@@ -1,5 +1,5 @@
-import type { EvidenceIntakeSession, IntakeEvaluationReport, ReviewDecision } from '../types/intake';
-import type { IntakeLearningFieldSignal, IntakeLearningProfile, IntakeLearningRejectionSignal, IntakeLearningTopicSignal } from '../types/intake_learning';
+import type { EvidenceIntakeSession, IntakeEvaluationReport, ReviewDecision } from '@/types/intake';
+import type { IntakeLearningFieldSignal, IntakeLearningProfile, IntakeLearningRejectionSignal, IntakeLearningTopicSignal } from '@/types/intake_learning';
 
 export function buildIntakeLearningProfile(input: {
   session: EvidenceIntakeSession;

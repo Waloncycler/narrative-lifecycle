@@ -1,6 +1,6 @@
-import type { EvidenceNode, EvidenceStrength } from '../domain/evidence';
-import { evidenceStrengthRank, validateEvidenceNode } from '../domain/evidence';
-import type { Stage } from '../domain/stages';
+import type { EvidenceNode, EvidenceStrength } from '@/domain/evidence';
+import { evidenceStrengthRank, validateEvidenceNode } from '@/domain/evidence';
+import type { Stage } from '@/domain/stages';
 
 export function minimumEvidenceStrengthForStage(stage: Stage): EvidenceStrength {
   if (stage === 'S0' || stage === 'S1' || stage === 'S2') return 'E1';

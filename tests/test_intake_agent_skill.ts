@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { EVIDENCE_INTAKE_SKILLS, MAX_AGENT_ONLY_FACTS_PER_RUN, buildSkillContext } from '../src/domain/intake_agent_skill';
-import { deriveSeed } from '../src/infrastructure/intake_agent_provider';
+import { EVIDENCE_INTAKE_SKILLS, MAX_AGENT_ONLY_FACTS_PER_RUN, buildSkillContext } from '@/domain/intake_agent_skill';
+import { deriveSeed } from '@/infrastructure/intake_agent_provider';
 
 describe('intake agent skills', () => {
   it('renders every skill with non-empty instructions', () => {

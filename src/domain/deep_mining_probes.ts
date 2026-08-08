@@ -1,5 +1,5 @@
-import type { ResearchLeadTriageItem } from '../types/research_lead_triage';
-import type { ResearchSourceRetrievalItem, SourcePageExcerpt } from '../types/research_source_retrieval';
+import type { ResearchLeadTriageItem } from '@/types/research_lead_triage';
+import type { ResearchSourceRetrievalItem, SourcePageExcerpt } from '@/types/research_source_retrieval';
 import { extractReadableSource } from './research_source_retrieval';
 import { createHash } from 'node:crypto';
 

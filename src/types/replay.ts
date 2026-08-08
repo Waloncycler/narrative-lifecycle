@@ -1,6 +1,6 @@
 import type { ArtifactMetadata } from './artifact_contract';
 import type { StageDiff } from './diff';
-import type { EvidenceNode } from '../domain/evidence';
+import type { EvidenceNode } from '@/domain/evidence';
 
 export type ReplayScenarioType = 'success' | 'failure' | 's7b' | 's7c' | 'parent_branch_separation' | 'long_no_change';
 export type ReplayOutcomeStatus = 'confirmed' | 'weakened' | 'falsified' | 'no_change';

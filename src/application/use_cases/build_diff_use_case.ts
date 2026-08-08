@@ -1,5 +1,5 @@
-import type { StageDiff } from '../../types/diff';
-import type { RunContext } from '../../types/run_context';
+import type { StageDiff } from '@/types/diff';
+import type { RunContext } from '@/types/run_context';
 
 export interface BuildDiffUseCaseResult {
   diff: StageDiff;

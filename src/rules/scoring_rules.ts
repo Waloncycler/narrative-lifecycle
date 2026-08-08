@@ -1,6 +1,6 @@
-import type { EvidenceNode } from '../domain/evidence';
-import type { ScoreDetail } from '../domain/scoring';
-import { clampScore } from '../domain/scoring';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { ScoreDetail } from '@/domain/scoring';
+import { clampScore } from '@/domain/scoring';
 
 export function scoreFromEvidence(
   evidence: EvidenceNode[],

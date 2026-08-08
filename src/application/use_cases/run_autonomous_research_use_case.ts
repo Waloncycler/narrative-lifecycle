@@ -1,19 +1,19 @@
-import { buildStageDiff } from '../../domain/stage_diff_engine';
-import { evaluateAutonomousPromotion } from '../../domain/autonomous_promotion';
-import { evaluateNarrativeGraphPromotions } from '../../domain/narrative_graph_promotion';
-import { buildOperationalResearchState } from '../../domain/operational_research_state';
-import { buildOperationalWeeklyBrief } from '../../domain/operational_weekly_brief';
-import type { EvidenceNode } from '../../domain/evidence';
-import type { NormalizedEvidenceImport, EvidenceValidationReport } from '../../types/evidence_import';
-import type { EvidenceIntakeSession } from '../../types/intake';
-import type { IntakeAgentReviewBundle } from '../../types/intake_agent';
-import type { StageSnapshotHistory } from '../../types/diff';
-import type { TopicRegistry, TopicResolutionAudit } from '../../types/topic_resolution';
-import type { AutonomousPromotionReport, AutonomousResearchPolicy, AutonomousResearchRun } from '../../types/autonomous_research';
-import type { NarrativeGraphPromotionReport } from '../../types/narrative_graph_promotion';
-import type { RunContext } from '../../types/run_context';
-import { artifactMetadata } from '../../types/artifact_contract';
-import { stageRank, type Stage } from '../../domain/stages';
+import { buildStageDiff } from '@/domain/stage_diff_engine';
+import { evaluateAutonomousPromotion } from '@/domain/autonomous_promotion';
+import { evaluateNarrativeGraphPromotions } from '@/domain/narrative_graph_promotion';
+import { buildOperationalResearchState } from '@/domain/operational_research_state';
+import { buildOperationalWeeklyBrief } from '@/domain/operational_weekly_brief';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { NormalizedEvidenceImport, EvidenceValidationReport } from '@/types/evidence_import';
+import type { EvidenceIntakeSession } from '@/types/intake';
+import type { IntakeAgentReviewBundle } from '@/types/intake_agent';
+import type { StageSnapshotHistory } from '@/types/diff';
+import type { TopicRegistry, TopicResolutionAudit } from '@/types/topic_resolution';
+import type { AutonomousPromotionReport, AutonomousResearchPolicy, AutonomousResearchRun } from '@/types/autonomous_research';
+import type { NarrativeGraphPromotionReport } from '@/types/narrative_graph_promotion';
+import type { RunContext } from '@/types/run_context';
+import { artifactMetadata } from '@/types/artifact_contract';
+import { stageRank, type Stage } from '@/domain/stages';
 
 export interface RunAutonomousResearchUseCaseDeps {
   createRunContext(): RunContext;

@@ -1,8 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
-import { DEFAULT_INDUSTRY_PACKS } from '../domain/industry_packs';
-import type { IndustryPack } from '../types/industry';
+import { DEFAULT_INDUSTRY_PACKS } from '@/domain/industry_packs';
+import type { IndustryPack } from '@/types/industry';
 
 export class FileIndustryPackRepository {
   constructor(private readonly repoRoot: string) {}

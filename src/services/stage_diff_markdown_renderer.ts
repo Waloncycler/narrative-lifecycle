@@ -1,4 +1,4 @@
-import type { StageDiff } from '../types/diff';
+import type { StageDiff } from '@/types/diff';
 
 function rows(diff: StageDiff, type: string): string {
   const matches = diff.topic_changes.filter((change) => change.detected_changes.includes(type as never));

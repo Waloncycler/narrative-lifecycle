@@ -6,8 +6,8 @@ import type {
   StageSnapshotTopic,
   TopicChange,
   TopicChangeType,
-} from '../types/diff';
-import { artifactMetadata } from '../types/artifact_contract';
+} from '@/types/diff';
+import { artifactMetadata } from '@/types/artifact_contract';
 
 const orderedStages = ['S0', 'S1', 'S2', 'S3', 'S4', 'S4-S5', 'S5', 'S5-S6', 'S6', 'S6-S7A', 'S7A'];
 const stateStages = new Set(['S7B', 'S7C']);

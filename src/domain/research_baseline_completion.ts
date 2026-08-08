@@ -1,6 +1,6 @@
-import type { StageSnapshotHistory } from '../types/diff';
-import type { TopicRegistry } from '../types/topic_resolution';
-import type { ResearchBaselineCompletionItem, ResearchBaselineCompletionReport } from '../types/research_baseline_completion';
+import type { StageSnapshotHistory } from '@/types/diff';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { ResearchBaselineCompletionItem, ResearchBaselineCompletionReport } from '@/types/research_baseline_completion';
 import { isUsableBranchName, marketBranchName, marketTopicName } from './market_naming';
 
 const PARENT_BASELINE_LAYERS = ['name', 'capital', 'pricing', 'reality'] as const;

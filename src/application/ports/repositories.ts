@@ -1,10 +1,10 @@
-import type { EvidenceNode } from '../../domain/evidence';
-import type { GoldenCase } from '../../domain/golden_case';
-import type { StageDiff, StageSnapshotHistory } from '../../types/diff';
-import type { EvidenceImportDraft, EvidenceImportReport, EvidenceValidationReport } from '../../types/evidence_import';
-import type { OperatorReview } from '../../types/operator_review';
-import type { WeeklyBrief } from '../../types/report';
-import type { RunManifest } from '../../types/run_context';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { GoldenCase } from '@/domain/golden_case';
+import type { StageDiff, StageSnapshotHistory } from '@/types/diff';
+import type { EvidenceImportDraft, EvidenceImportReport, EvidenceValidationReport } from '@/types/evidence_import';
+import type { OperatorReview } from '@/types/operator_review';
+import type { WeeklyBrief } from '@/types/report';
+import type { RunManifest } from '@/types/run_context';
 
 export interface EvidenceRepository {
   listEvidence(): EvidenceNode[];

@@ -1,11 +1,11 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { EvidenceIntakeSession } from '../types/intake';
-import type { IntakeLearningCycle } from '../types/intake_learning_cycle';
-import type { AgentPurgeDecision, ResearchAgentEvolutionLedger, ResearchAgentRunManifest, ResearchAgentSchedulerConfig } from '../types/research_agent';
-import { DEFAULT_SCHEDULER_CONFIG } from '../types/research_agent';
-import { writeJsonAtomically } from '../services/run_manifest_writer';
-import type { StaleCandidateInput, AgedQueueItemInput } from '../domain/agent_purge_rules';
+import type { EvidenceIntakeSession } from '@/types/intake';
+import type { IntakeLearningCycle } from '@/types/intake_learning_cycle';
+import type { AgentPurgeDecision, ResearchAgentEvolutionLedger, ResearchAgentRunManifest, ResearchAgentSchedulerConfig } from '@/types/research_agent';
+import { DEFAULT_SCHEDULER_CONFIG } from '@/types/research_agent';
+import { writeJsonAtomically } from '@/services/run_manifest_writer';
+import type { StaleCandidateInput, AgedQueueItemInput } from '@/domain/agent_purge_rules';
 
 /**
  * File-backed repository for autonomous research agent artifacts.

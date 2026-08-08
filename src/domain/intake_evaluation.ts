@@ -1,7 +1,7 @@
-import type { EvidenceImportDraft } from '../types/evidence_import';
-import type { AiCandidateSuggestion, CandidateGenerationComparison, CandidateReviewFeedback, EvidenceCandidate, EvidenceIntakeApplyResult, EvidenceIntakeSession, IntakeEvaluationReport, ReviewDecision } from '../types/intake';
+import type { EvidenceImportDraft } from '@/types/evidence_import';
+import type { AiCandidateSuggestion, CandidateGenerationComparison, CandidateReviewFeedback, EvidenceCandidate, EvidenceIntakeApplyResult, EvidenceIntakeSession, IntakeEvaluationReport, ReviewDecision } from '@/types/intake';
 import { noTradingAdvice } from './intake_rules';
-import type { TopicResolutionAudit } from '../types/topic_resolution';
+import type { TopicResolutionAudit } from '@/types/topic_resolution';
 
 const comparedFields: Array<keyof EvidenceImportDraft> = [
   'topic_id',

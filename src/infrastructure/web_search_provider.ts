@@ -1,4 +1,4 @@
-import type { WebSearchConfig } from '../types/web_research';
+import type { WebSearchConfig } from '@/types/web_research';
 
 /** Search providers that require no API key or configuration: usable out of
  *  the box. `free` aggregates the keyless sources below into one result set. */

@@ -1,4 +1,4 @@
-import type { WorldMonitorSourceConfig } from '../types/worldmonitor_adapter';
+import type { WorldMonitorSourceConfig } from '@/types/worldmonitor_adapter';
 
 /**
  * Feed-style source lifecycle mapping catalog (v0.8.1+).

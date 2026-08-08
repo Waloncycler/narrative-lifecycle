@@ -1,7 +1,7 @@
-import { buildResearchCampaign } from '../../domain/research_coverage';
-import type { TopicRegistry } from '../../types/topic_resolution';
-import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse } from '../../types/research_coverage';
-import type { ResearchBaselineCompletionReport } from '../../types/research_baseline_completion';
+import { buildResearchCampaign } from '@/domain/research_coverage';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse } from '@/types/research_coverage';
+import type { ResearchBaselineCompletionReport } from '@/types/research_baseline_completion';
 
 export interface BuildResearchCampaignUseCaseDeps {
   now(): string;

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import type { StageSnapshotHistory, StageSnapshotTopic } from '../src/types/diff';
-import { buildStageDiff } from '../src/domain/stage_diff_engine';
-import { artifactMetadata } from '../src/types/artifact_contract';
+import type { StageSnapshotHistory, StageSnapshotTopic } from '@/types/diff';
+import { buildStageDiff } from '@/domain/stage_diff_engine';
+import { artifactMetadata } from '@/types/artifact_contract';
 
 const guardrails = {
   no_trading_advice: true,

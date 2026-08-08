@@ -1,4 +1,4 @@
-import type { WeeklyBrief } from '../types/report';
+import type { WeeklyBrief } from '@/types/report';
 
 function bool(value: boolean): string {
   return value ? 'true' : 'false';

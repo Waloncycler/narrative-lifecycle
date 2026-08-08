@@ -4,10 +4,10 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import { buildWeeklyBrief } from '../src/services/report_builder';
-import { loadCanonicalStageDiff, loadReportArtifacts } from '../src/services/report_artifact_loader';
-import { renderWeeklyBriefMarkdown } from '../src/services/report_markdown_renderer';
-import type { StageDiff } from '../src/types/diff';
+import { buildWeeklyBrief } from '@/services/report_builder';
+import { loadCanonicalStageDiff, loadReportArtifacts } from '@/services/report_artifact_loader';
+import { renderWeeklyBriefMarkdown } from '@/services/report_markdown_renderer';
+import type { StageDiff } from '@/types/diff';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

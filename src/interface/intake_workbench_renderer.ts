@@ -1,4 +1,4 @@
-import type { EvidenceIntakeSession } from '../types/intake';
+import type { EvidenceIntakeSession } from '@/types/intake';
 
 function escapeHtml(value: string): string {
   return value

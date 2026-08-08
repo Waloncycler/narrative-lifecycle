@@ -1,8 +1,8 @@
 import type { EvidenceNode } from './evidence';
-import type { EvidenceIntakeSession } from '../types/intake';
-import type { EvidenceChainEntry, EvidenceChainRelation } from '../types/evidence_chain';
-import type { TopicResolutionAudit } from '../types/topic_resolution';
-import type { AgentEvidenceCandidate } from '../types/intake_agent';
+import type { EvidenceIntakeSession } from '@/types/intake';
+import type { EvidenceChainEntry, EvidenceChainRelation } from '@/types/evidence_chain';
+import type { TopicResolutionAudit } from '@/types/topic_resolution';
+import type { AgentEvidenceCandidate } from '@/types/intake_agent';
 
 export function buildEvidenceChainEntries(input: {
   session: EvidenceIntakeSession;

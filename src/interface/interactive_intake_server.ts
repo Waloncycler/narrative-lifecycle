@@ -2,24 +2,24 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import { stringify } from 'yaml';
-import type { EvidenceIntakeApplyResult, EvidenceIntakeSession, ReviewDecision } from '../types/intake';
-import type { EvidenceImportDraft } from '../types/evidence_import';
-import type { StageDiff, StageSnapshotHistory } from '../types/diff';
-import type { OperatorReview } from '../types/operator_review';
-import type { WeeklyBrief } from '../types/report';
-import type { RunManifest } from '../types/run_context';
-import type { IntakeAgentAudit, IntakeAgentVerificationReport } from '../types/intake_agent';
-import type { TopicResolutionAudit } from '../types/topic_resolution';
-import type { WorldMonitorSourceInventory, WorldMonitorSyncReport } from '../types/worldmonitor_adapter';
-import type { ResearchCampaign } from '../types/research_coverage';
-import type { DirectSourceResearchReport } from '../types/direct_source_research';
-import type { ResearchLeadTriageReport } from '../types/research_lead_triage';
-import type { ResearchSourceRetrievalReport } from '../types/research_source_retrieval';
-import type { ResearchBaselineCompletionReport } from '../types/research_baseline_completion';
-import { DEFAULT_SCHEDULER_CONFIG } from '../types/research_agent';
-import { createProductCoreUseCases } from '../infrastructure/file_system_adapters';
-import { intakeAgentConfigFromEnv } from '../infrastructure/intake_agent_provider';
-import { buildNarrativeMonitor } from '../domain/narrative_monitor';
+import type { EvidenceIntakeApplyResult, EvidenceIntakeSession, ReviewDecision } from '@/types/intake';
+import type { EvidenceImportDraft } from '@/types/evidence_import';
+import type { StageDiff, StageSnapshotHistory } from '@/types/diff';
+import type { OperatorReview } from '@/types/operator_review';
+import type { WeeklyBrief } from '@/types/report';
+import type { RunManifest } from '@/types/run_context';
+import type { IntakeAgentAudit, IntakeAgentVerificationReport } from '@/types/intake_agent';
+import type { TopicResolutionAudit } from '@/types/topic_resolution';
+import type { WorldMonitorSourceInventory, WorldMonitorSyncReport } from '@/types/worldmonitor_adapter';
+import type { ResearchCampaign } from '@/types/research_coverage';
+import type { DirectSourceResearchReport } from '@/types/direct_source_research';
+import type { ResearchLeadTriageReport } from '@/types/research_lead_triage';
+import type { ResearchSourceRetrievalReport } from '@/types/research_source_retrieval';
+import type { ResearchBaselineCompletionReport } from '@/types/research_baseline_completion';
+import { DEFAULT_SCHEDULER_CONFIG } from '@/types/research_agent';
+import { createProductCoreUseCases } from '@/infrastructure/file_system_adapters';
+import { intakeAgentConfigFromEnv } from '@/infrastructure/intake_agent_provider';
+import { buildNarrativeMonitor } from '@/domain/narrative_monitor';
 import {
   renderAgentDashboard,
   renderAgentRuns,

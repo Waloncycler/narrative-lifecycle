@@ -1,4 +1,4 @@
-import type { EvidenceImportDraft, EvidenceImportReport, EvidenceValidationReport } from '../../types/evidence_import';
+import type { EvidenceImportDraft, EvidenceImportReport, EvidenceValidationReport } from '@/types/evidence_import';
 
 export interface ImportEvidenceUseCaseDeps {
   loadDraft(file: string): EvidenceImportDraft[];

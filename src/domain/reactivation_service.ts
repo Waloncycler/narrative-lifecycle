@@ -3,7 +3,7 @@ import {
   calculateNarrativeDeltaScore,
   classifyReactivation,
   shouldEnterRadar,
-} from '../rules/reactivation_rules';
+} from '@/rules/reactivation_rules';
 
 export function createReactivationRecord(input: {
   record_id: string;

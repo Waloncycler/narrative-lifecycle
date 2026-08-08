@@ -1,5 +1,5 @@
-import type { EvidenceLayer } from '../domain/evidence';
-import type { ScoreDetail, ScoreDimension } from '../domain/scoring';
+import type { EvidenceLayer } from '@/domain/evidence';
+import type { ScoreDetail, ScoreDimension } from '@/domain/scoring';
 import type {
   ResearchSafeActionVerb,
   WeeklyBrief,
@@ -10,11 +10,11 @@ import type {
   WeeklyBriefStageChange,
   WeeklyBriefStageSnapshot,
   WeeklyBriefWhyNotHigher,
-} from '../types/report';
+} from '@/types/report';
 import type { ReportArtifacts } from './report_artifact_loader';
-import type { StageDiff } from '../types/diff';
-import type { RunContext } from '../types/run_context';
-import { artifactMetadata } from '../types/artifact_contract';
+import type { StageDiff } from '@/types/diff';
+import type { RunContext } from '@/types/run_context';
+import { artifactMetadata } from '@/types/artifact_contract';
 
 const forbiddenAdvicePattern = /\b(buy|sell|long|short|entry|exit|position|target price|stop loss)\b/i;
 const researchSafeActions = new Set<ResearchSafeActionVerb>([

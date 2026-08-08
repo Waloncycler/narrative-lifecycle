@@ -1,15 +1,15 @@
-import type { IntakeAgentReviewBundle } from '../../types/intake_agent';
-import type { IntakeLearningCycle } from '../../types/intake_learning_cycle';
-import type { RunManifest } from '../../types/run_context';
-import type { WorldMonitorSyncResult } from '../../types/worldmonitor_adapter';
-import type { AutonomousResearchRun } from '../../types/autonomous_research';
-import type { WebResearchReport } from '../../types/web_research';
-import type { ResearchCampaign } from '../../types/research_coverage';
-import type { DirectSourceResearchReport } from '../../types/direct_source_research';
-import type { EvidenceIntakeSession } from '../../types/intake';
-import type { AgentPurgeDecision, ResearchAgentEvolutionLedger, ResearchAgentLoopKind, ResearchAgentRunManifest, ResearchAgentTrigger } from '../../types/research_agent';
-import { purgeDecisions, agedQueueItems, staleCandidates, type AgedQueueItemInput, type StaleCandidateInput } from '../../domain/agent_purge_rules';
-import { evolveLedger } from '../../domain/agent_evolution';
+import type { IntakeAgentReviewBundle } from '@/types/intake_agent';
+import type { IntakeLearningCycle } from '@/types/intake_learning_cycle';
+import type { RunManifest } from '@/types/run_context';
+import type { WorldMonitorSyncResult } from '@/types/worldmonitor_adapter';
+import type { AutonomousResearchRun } from '@/types/autonomous_research';
+import type { WebResearchReport } from '@/types/web_research';
+import type { ResearchCampaign } from '@/types/research_coverage';
+import type { DirectSourceResearchReport } from '@/types/direct_source_research';
+import type { EvidenceIntakeSession } from '@/types/intake';
+import type { AgentPurgeDecision, ResearchAgentEvolutionLedger, ResearchAgentLoopKind, ResearchAgentRunManifest, ResearchAgentTrigger } from '@/types/research_agent';
+import { purgeDecisions, agedQueueItems, staleCandidates, type AgedQueueItemInput, type StaleCandidateInput } from '@/domain/agent_purge_rules';
+import { evolveLedger } from '@/domain/agent_evolution';
 
 /**
  * Autonomous research agent loop.

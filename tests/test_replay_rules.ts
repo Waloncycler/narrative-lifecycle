@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { EvidenceNode } from '../src/domain/evidence';
-import { branchStagesForReplay, evidenceAvailableAt, parentStageForReplay } from '../src/domain/replay_rules';
+import type { EvidenceNode } from '@/domain/evidence';
+import { branchStagesForReplay, evidenceAvailableAt, parentStageForReplay } from '@/domain/replay_rules';
 
 const parentLabel: EvidenceNode = {
   evidence_id: 'parent_label',

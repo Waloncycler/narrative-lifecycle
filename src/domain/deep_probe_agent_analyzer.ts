@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import type { EvidenceNode } from './evidence';
-import type { ResearchLeadTriageItem } from '../types/research_lead_triage';
+import type { ResearchLeadTriageItem } from '@/types/research_lead_triage';
 import { executeDeepMiningProbe } from './deep_mining_probes';
 
 export interface StructuredAgentAnalysisResult {

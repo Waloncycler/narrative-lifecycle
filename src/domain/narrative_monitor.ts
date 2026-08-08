@@ -1,14 +1,14 @@
-import type { StageDiff, StageSnapshotHistory } from '../types/diff';
-import type { OperatorReview } from '../types/operator_review';
-import type { WeeklyBrief } from '../types/report';
+import type { StageDiff, StageSnapshotHistory } from '@/types/diff';
+import type { OperatorReview } from '@/types/operator_review';
+import type { WeeklyBrief } from '@/types/report';
 import type {
   NarrativeInboxItem,
   NarrativeMonitorModel,
   NarrativeMonitorRuntimeInput,
   NarrativeReviewQueueItem,
-} from '../types/narrative_monitor';
-import type { IntakeLearningCycle } from '../types/intake_learning_cycle';
-import { DEFAULT_SCHEDULER_CONFIG } from '../types/research_agent';
+} from '@/types/narrative_monitor';
+import type { IntakeLearningCycle } from '@/types/intake_learning_cycle';
+import { DEFAULT_SCHEDULER_CONFIG } from '@/types/research_agent';
 
 export function buildNarrativeMonitor(input: {
   snapshot: StageSnapshotHistory | null;

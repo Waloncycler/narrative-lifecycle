@@ -3,9 +3,9 @@ import { dirname, resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { parse, stringify } from 'yaml';
-import { normalizeEvidenceImport } from '../application/evidence_import_normalizer';
-import type { EvidenceNode } from '../domain/evidence';
-import { validateEvidenceImportDrafts } from '../domain/evidence_import_rules';
+import { normalizeEvidenceImport } from '@/application/evidence_import_normalizer';
+import type { EvidenceNode } from '@/domain/evidence';
+import { validateEvidenceImportDrafts } from '@/domain/evidence_import_rules';
 import type {
   EvidenceImportAuditRecord,
   EvidenceImportDraft,
@@ -13,8 +13,8 @@ import type {
   EvidenceValidationIssue,
   EvidenceValidationReport,
   NormalizedEvidenceImport,
-} from '../types/evidence_import';
-import { RULE_VERSION } from '../domain/versioning_service';
+} from '@/types/evidence_import';
+import { RULE_VERSION } from '@/domain/versioning_service';
 
 export const DEFAULT_EVIDENCE_IMPORT_FILE = 'data/imports/evidence_draft.example.yaml';
 export const IMPORT_OUTPUT_DIR = 'outputs/imports';

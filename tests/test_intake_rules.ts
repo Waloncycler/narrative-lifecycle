@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { RawDocument, ReviewDecision } from '../src/types/intake';
-import { chunkRawDocument, evidenceDraftsFromDecisions, extractEvidenceCandidates } from '../src/domain/intake_rules';
+import type { RawDocument, ReviewDecision } from '@/types/intake';
+import { chunkRawDocument, evidenceDraftsFromDecisions, extractEvidenceCandidates } from '@/domain/intake_rules';
 
 const raw: RawDocument = {
   raw_document_id: 'raw_test',

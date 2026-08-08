@@ -3,10 +3,10 @@ import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { evaluateNarrativeGraphPromotions } from '../src/domain/narrative_graph_promotion';
-import type { EvidenceNode } from '../src/domain/evidence';
-import type { AutonomousResearchPolicy } from '../src/types/autonomous_research';
-import type { TopicRegistry } from '../src/types/topic_resolution';
+import { evaluateNarrativeGraphPromotions } from '@/domain/narrative_graph_promotion';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { AutonomousResearchPolicy } from '@/types/autonomous_research';
+import type { TopicRegistry } from '@/types/topic_resolution';
 
 const policy: AutonomousResearchPolicy = {
   policy_id: 'test-autonomy', enabled: true,

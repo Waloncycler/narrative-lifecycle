@@ -1,12 +1,12 @@
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse, stringify } from 'yaml';
-import type { PilotEvaluationSummary, PilotObservation, PilotResearchLedger, PilotTopic } from '../types/pilot';
-import type { RunManifest } from '../types/run_context';
-import type { WeeklyBrief } from '../types/report';
-import type { StageDiff } from '../types/diff';
-import type { OperatorReview } from '../types/operator_review';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
+import type { PilotEvaluationSummary, PilotObservation, PilotResearchLedger, PilotTopic } from '@/types/pilot';
+import type { RunManifest } from '@/types/run_context';
+import type { WeeklyBrief } from '@/types/report';
+import type { StageDiff } from '@/types/diff';
+import type { OperatorReview } from '@/types/operator_review';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
 
 export const PILOT_TOPICS_PATH = 'data/pilot/pilot_topics.yaml';
 export const PILOT_OBSERVATIONS_PATH = 'data/pilot/operator_observations.yaml';

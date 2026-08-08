@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { executeDeepMiningProbe } from '../src/domain/deep_mining_probes';
-import type { ResearchLeadTriageItem } from '../src/types/research_lead_triage';
+import { executeDeepMiningProbe } from '@/domain/deep_mining_probes';
+import type { ResearchLeadTriageItem } from '@/types/research_lead_triage';
 
 const sampleLead: ResearchLeadTriageItem = {
   triage_id: 'triage_sec_1',

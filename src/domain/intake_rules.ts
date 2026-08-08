@@ -1,5 +1,5 @@
-import type { EvidenceImportDraft } from '../types/evidence_import';
-import type { DocumentChunk, EvidenceCandidate, ProvenanceRecord, RawDocument, ReviewDecision } from '../types/intake';
+import type { EvidenceImportDraft } from '@/types/evidence_import';
+import type { DocumentChunk, EvidenceCandidate, ProvenanceRecord, RawDocument, ReviewDecision } from '@/types/intake';
 
 const forbiddenAdvicePattern = /\b(buy|sell|long|short|entry|exit|position|target price|stop loss)\b|买入|卖出|加仓|减仓|持仓|目标价|止损|做多|做空/i;
 

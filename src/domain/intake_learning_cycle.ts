@@ -1,11 +1,11 @@
-import type { EvidenceCandidate } from '../types/intake';
+import type { EvidenceCandidate } from '@/types/intake';
 import type {
   ActiveLearningQueueItem,
   IntakeLearningCycle,
   LearningCycleInput,
   LearningPromotionGate,
   LearningProposal,
-} from '../types/intake_learning_cycle';
+} from '@/types/intake_learning_cycle';
 
 const MIN_PATTERN_COUNT = 3;
 const MIN_PROMOTION_SAMPLE = 50;

@@ -3,9 +3,9 @@ import { resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { describe, expect, it } from 'vitest';
-import { extractReadableSource, selectSourceRetrievalTargets } from '../src/domain/research_source_retrieval';
-import { RetrieveResearchSourcesUseCase } from '../src/application/use_cases/retrieve_research_sources_use_case';
-import { HttpResearchSourceRetriever } from '../src/infrastructure/research_source_retrieval_io';
+import { extractReadableSource, selectSourceRetrievalTargets } from '@/domain/research_source_retrieval';
+import { RetrieveResearchSourcesUseCase } from '@/application/use_cases/retrieve_research_sources_use_case';
+import { HttpResearchSourceRetriever } from '@/infrastructure/research_source_retrieval_io';
 
 const generatedAt = '2026-08-04T02:00:00.000Z';
 const triage = {

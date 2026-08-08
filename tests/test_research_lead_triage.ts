@@ -3,10 +3,10 @@ import { resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { describe, expect, it } from 'vitest';
-import { buildResearchLeadTriage } from '../src/domain/research_lead_triage';
-import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '../src/types/research_coverage';
-import type { DirectSourceResearchReport } from '../src/types/direct_source_research';
-import type { WebResearchReport } from '../src/types/web_research';
+import { buildResearchLeadTriage } from '@/domain/research_lead_triage';
+import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '@/types/research_coverage';
+import type { DirectSourceResearchReport } from '@/types/direct_source_research';
+import type { WebResearchReport } from '@/types/web_research';
 
 const generatedAt = '2026-08-04T00:00:00.000Z';
 const sourceAtlas: AuthoritativeSourceAtlas = {

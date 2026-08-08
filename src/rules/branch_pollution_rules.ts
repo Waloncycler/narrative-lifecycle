@@ -1,4 +1,4 @@
-import { expressionIncludesStage } from '../domain/stages';
+import { expressionIncludesStage } from '@/domain/stages';
 
 export interface BranchLiftInput {
   branchStage: string;

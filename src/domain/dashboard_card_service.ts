@@ -1,6 +1,6 @@
 import type { ScoreDetails } from './scoring';
 import { maxStageInExpression, stageRank, type StageSnapshot } from './stages';
-import { maximumStageByDataConfidence } from '../rules/data_confidence_rules';
+import { maximumStageByDataConfidence } from '@/rules/data_confidence_rules';
 import { RULE_VERSION } from './versioning_service';
 
 export type ResearchAction =

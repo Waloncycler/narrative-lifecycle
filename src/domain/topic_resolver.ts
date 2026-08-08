@@ -1,5 +1,5 @@
-import type { EvidenceCandidate } from '../types/intake';
-import type { TopicRegistry, TopicResolution, TopicResolutionAudit, TopicRegistryValidationReport } from '../types/topic_resolution';
+import type { EvidenceCandidate } from '@/types/intake';
+import type { TopicRegistry, TopicResolution, TopicResolutionAudit, TopicRegistryValidationReport } from '@/types/topic_resolution';
 import { inferTopic } from './intake_rules';
 import { marketNameWarning } from './market_naming';
 

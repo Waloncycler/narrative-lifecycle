@@ -1,7 +1,7 @@
-import { buildResearchBaselineCompletion } from '../../domain/research_baseline_completion';
-import type { StageSnapshotHistory } from '../../types/diff';
-import type { TopicRegistry } from '../../types/topic_resolution';
-import type { ResearchBaselineCompletionReport } from '../../types/research_baseline_completion';
+import { buildResearchBaselineCompletion } from '@/domain/research_baseline_completion';
+import type { StageSnapshotHistory } from '@/types/diff';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { ResearchBaselineCompletionReport } from '@/types/research_baseline_completion';
 
 export interface BuildResearchBaselineCompletionUseCaseDeps {
   now(): string;

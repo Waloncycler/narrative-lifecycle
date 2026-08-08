@@ -1,9 +1,9 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { EvidenceChainEntry } from '../types/evidence_chain';
-import type { TopicDiscoveryProposal } from '../types/topic_discovery';
-import type { NarrativeDiscoveryRecord, NarrativeDiscoveryReport } from '../types/narrative_discovery';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
+import type { EvidenceChainEntry } from '@/types/evidence_chain';
+import type { TopicDiscoveryProposal } from '@/types/topic_discovery';
+import type { NarrativeDiscoveryRecord, NarrativeDiscoveryReport } from '@/types/narrative_discovery';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
 
 export const TOPIC_PROPOSALS_PATH = 'outputs/intake/latest_topic_discovery_proposals.json';
 export const EVIDENCE_CHAIN_PATH = 'outputs/intake/latest_evidence_chain.json';

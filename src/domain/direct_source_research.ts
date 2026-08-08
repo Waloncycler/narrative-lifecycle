@@ -1,4 +1,4 @@
-import type { AuthoritativeResearchSource, ResearchCampaignTask } from '../types/research_coverage';
+import type { AuthoritativeResearchSource, ResearchCampaignTask } from '@/types/research_coverage';
 
 /** Public APIs that accept a bounded campaign term without a private key. */
 export const TERM_QUERY_SOURCE_IDS = new Set([

@@ -1,5 +1,5 @@
-import type { DirectSourceResearchReport } from '../types/direct_source_research';
-import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '../types/research_coverage';
+import type { DirectSourceResearchReport } from '@/types/direct_source_research';
+import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '@/types/research_coverage';
 import type {
   ResearchLeadDisposition,
   ResearchLeadFreshness,
@@ -8,8 +8,8 @@ import type {
   ResearchLeadSourceClass,
   ResearchLeadTriageItem,
   ResearchLeadTriageReport,
-} from '../types/research_lead_triage';
-import type { WebResearchLead, WebResearchReport } from '../types/web_research';
+} from '@/types/research_lead_triage';
+import type { WebResearchLead, WebResearchReport } from '@/types/web_research';
 
 type RawLead = {
   origin: ResearchLeadOrigin;

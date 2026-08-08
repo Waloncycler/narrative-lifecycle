@@ -1,5 +1,5 @@
-import type { AiCandidateSuggestion, AiShadowValidationReport, EvidenceIntakeSession, ReviewDecision } from '../types/intake';
-import type { EvidenceCandidate } from '../types/intake';
+import type { AiCandidateSuggestion, AiShadowValidationReport, EvidenceIntakeSession, ReviewDecision } from '@/types/intake';
+import type { EvidenceCandidate } from '@/types/intake';
 import { noTradingAdvice } from './intake_rules';
 
 export const AI_SHADOW_PROMPT_VERSION = 'ai-shadow-evidence-extraction-v0.5.7';

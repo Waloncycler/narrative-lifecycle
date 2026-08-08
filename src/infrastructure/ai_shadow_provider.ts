@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
-import type { AiCandidateSuggestion, AiShadowAuditRecord, EvidenceIntakeSession } from '../types/intake';
-import { AI_SHADOW_PROMPT_VERSION, fallbackAiCandidate, withAiValidation } from '../domain/ai_shadow_validation';
+import type { AiCandidateSuggestion, AiShadowAuditRecord, EvidenceIntakeSession } from '@/types/intake';
+import { AI_SHADOW_PROMPT_VERSION, fallbackAiCandidate, withAiValidation } from '@/domain/ai_shadow_validation';
 
 export interface AiShadowProviderConfig {
   provider: string;

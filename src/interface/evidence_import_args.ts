@@ -1,4 +1,4 @@
-import { DEFAULT_EVIDENCE_IMPORT_FILE } from '../infrastructure/evidence_import_io';
+import { DEFAULT_EVIDENCE_IMPORT_FILE } from '@/infrastructure/evidence_import_io';
 
 export function parseEvidenceImportArgs(argv: string[]): { file: string } {
   const fileIndex = argv.findIndex((item) => item === '--file');

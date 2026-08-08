@@ -1,4 +1,4 @@
-import type { WorldMonitorSourceConfig } from '../types/worldmonitor_adapter';
+import type { WorldMonitorSourceConfig } from '@/types/worldmonitor_adapter';
 import {
   FEED_OPERATION_TO_SOURCE_ID,
   FEED_SOURCE_CATALOG,

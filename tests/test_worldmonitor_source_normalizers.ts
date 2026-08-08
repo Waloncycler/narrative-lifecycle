@@ -4,8 +4,8 @@ import {
   recordsForWorldMonitorPayload,
   signalsFromWorldMonitorPayload,
   sourceConfigForOperation,
-} from '../src/domain/worldmonitor_rules';
-import type { WorldMonitorOperationDescriptor, WorldMonitorPayload } from '../src/types/worldmonitor_adapter';
+} from '@/domain/worldmonitor_rules';
+import type { WorldMonitorOperationDescriptor, WorldMonitorPayload } from '@/types/worldmonitor_adapter';
 
 describe('World Monitor source-specific normalizers', () => {
   it('normalizes USGS event time, detail URL, location, and metrics', () => {

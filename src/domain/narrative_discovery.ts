@@ -1,7 +1,7 @@
 import { inferTopic, noTradingAdvice } from './intake_rules';
-import type { EvidenceCandidate, EvidenceIntakeSession } from '../types/intake';
-import type { TopicRegistry } from '../types/topic_resolution';
-import type { NarrativeDiscoveryRecord, NarrativeDiscoveryReport, NarrativeDiscoveryResolution } from '../types/narrative_discovery';
+import type { EvidenceCandidate, EvidenceIntakeSession } from '@/types/intake';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { NarrativeDiscoveryRecord, NarrativeDiscoveryReport, NarrativeDiscoveryResolution } from '@/types/narrative_discovery';
 import { marketBranchName, marketTopicName } from './market_naming';
 
 const GENERIC_LABELS = new Set([

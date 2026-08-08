@@ -1,12 +1,12 @@
-import { noTradingAdvice, reviewTemplate } from '../../domain/intake_rules';
+import { noTradingAdvice, reviewTemplate } from '@/domain/intake_rules';
 import {
   governanceForWorldMonitorOperation,
   recordsForWorldMonitorPayload,
   signalsFromWorldMonitorPayload,
   sourceConfigForOperation,
-} from '../../domain/worldmonitor_rules';
-import { buildWorldMonitorFactState } from '../../domain/worldmonitor_change_detection';
-import type { DocumentChunk, EvidenceCandidate, EvidenceIntakeSession, ProvenanceRecord, RawDocument } from '../../types/intake';
+} from '@/domain/worldmonitor_rules';
+import { buildWorldMonitorFactState } from '@/domain/worldmonitor_change_detection';
+import type { DocumentChunk, EvidenceCandidate, EvidenceIntakeSession, ProvenanceRecord, RawDocument } from '@/types/intake';
 import type {
   WorldMonitorFetchRecord,
   WorldMonitorFactState,
@@ -16,7 +16,7 @@ import type {
   WorldMonitorSyncMode,
   WorldMonitorSyncReport,
   WorldMonitorSyncResult,
-} from '../../types/worldmonitor_adapter';
+} from '@/types/worldmonitor_adapter';
 
 export interface SyncWorldMonitorSourcesUseCaseDeps {
   buildInventory(input: { generatedAt: string; productionConfigured: boolean }): WorldMonitorSourceInventory;

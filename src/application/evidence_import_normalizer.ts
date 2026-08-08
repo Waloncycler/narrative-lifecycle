@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
-import type { EvidenceLayer, EvidenceNode } from '../domain/evidence';
-import type { EvidenceImportDraft, NormalizedEvidenceImport } from '../types/evidence_import';
+import type { EvidenceLayer, EvidenceNode } from '@/domain/evidence';
+import type { EvidenceImportDraft, NormalizedEvidenceImport } from '@/types/evidence_import';
 
 const layerMap: Record<string, EvidenceLayer> = {
   name: 'perception',

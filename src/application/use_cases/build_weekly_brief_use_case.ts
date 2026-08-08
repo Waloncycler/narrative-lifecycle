@@ -1,5 +1,5 @@
-import type { WeeklyBrief } from '../../types/report';
-import type { RunContext } from '../../types/run_context';
+import type { WeeklyBrief } from '@/types/report';
+import type { RunContext } from '@/types/run_context';
 
 export interface BuildWeeklyBriefUseCaseResult {
   report: WeeklyBrief;

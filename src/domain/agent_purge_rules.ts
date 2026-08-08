@@ -1,4 +1,4 @@
-import type { AgentPurgeDecision } from '../types/research_agent';
+import type { AgentPurgeDecision } from '@/types/research_agent';
 
 /**
  * Purge rules for the autonomous research agent (domain layer, pure functions).

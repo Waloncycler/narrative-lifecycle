@@ -3,8 +3,8 @@ import { cpSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import type { Server } from 'node:http';
-import { createInteractiveIntakeServer } from '../src/interface/interactive_intake_server';
-import type { EvidenceCandidate, EvidenceIntakeApplyResult, EvidenceIntakeSession, IntakeEvaluationReport } from '../src/types/intake';
+import { createInteractiveIntakeServer } from '@/interface/interactive_intake_server';
+import type { EvidenceCandidate, EvidenceIntakeApplyResult, EvidenceIntakeSession, IntakeEvaluationReport } from '@/types/intake';
 
 const repoRoot = resolve(import.meta.dirname, '..');
 const servers: Server[] = [];

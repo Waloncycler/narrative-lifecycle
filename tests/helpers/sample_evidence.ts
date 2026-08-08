@@ -1,4 +1,4 @@
-import type { EvidenceNode } from '../../src/domain/evidence';
+import type { EvidenceNode } from '@/domain/evidence';
 
 export const parentS4Evidence: EvidenceNode[] = [
   {

@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path';
 import { stringify } from 'yaml';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import type { PilotObservation, PilotResearchLedger, PilotTopic } from '../src/types/pilot';
+import type { PilotObservation, PilotResearchLedger, PilotTopic } from '@/types/pilot';
 
 const repoRoot = resolve(import.meta.dirname, '..');
 const runId = 'run_20260720T000000000_abc123';

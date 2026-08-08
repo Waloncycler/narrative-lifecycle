@@ -1,18 +1,18 @@
-import { buildAgentVerificationReport, mergeAgentOnlyCandidates } from '../../domain/intake_agent_rules';
-import { reviewTemplate } from '../../domain/intake_rules';
-import type { EvidenceCandidate, EvidenceIntakeSession } from '../../types/intake';
-import type { IntakeAgentAudit, IntakeAgentReviewBundle, AgentEvidenceCandidate } from '../../types/intake_agent';
-import type { IndustryPack } from '../../types/industry';
-import type { IntakeLearningProfile } from '../../types/intake_learning';
-import type { TopicRegistry } from '../../types/topic_resolution';
-import type { EvidenceNode } from '../../domain/evidence';
-import type { TopicDiscoveryProposal } from '../../types/topic_discovery';
-import type { EvidenceChainEntry } from '../../types/evidence_chain';
-import type { StageDiff } from '../../types/diff';
-import { buildTopicDiscoveryProposals } from '../../domain/topic_discovery';
-import { buildEvidenceChainEntries } from '../../domain/evidence_chain';
-import { applyNarrativeDiscoveryMappings, discoverNarrativeGraph } from '../../domain/narrative_discovery';
-import type { NarrativeDiscoveryRecord, NarrativeDiscoveryReport } from '../../types/narrative_discovery';
+import { buildAgentVerificationReport, mergeAgentOnlyCandidates } from '@/domain/intake_agent_rules';
+import { reviewTemplate } from '@/domain/intake_rules';
+import type { EvidenceCandidate, EvidenceIntakeSession } from '@/types/intake';
+import type { IntakeAgentAudit, IntakeAgentReviewBundle, AgentEvidenceCandidate } from '@/types/intake_agent';
+import type { IndustryPack } from '@/types/industry';
+import type { IntakeLearningProfile } from '@/types/intake_learning';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { TopicDiscoveryProposal } from '@/types/topic_discovery';
+import type { EvidenceChainEntry } from '@/types/evidence_chain';
+import type { StageDiff } from '@/types/diff';
+import { buildTopicDiscoveryProposals } from '@/domain/topic_discovery';
+import { buildEvidenceChainEntries } from '@/domain/evidence_chain';
+import { applyNarrativeDiscoveryMappings, discoverNarrativeGraph } from '@/domain/narrative_discovery';
+import type { NarrativeDiscoveryRecord, NarrativeDiscoveryReport } from '@/types/narrative_discovery';
 
 export interface RunIntakeAgentUseCaseDeps {
   prepare(input: { file?: string; text?: string }): EvidenceIntakeSession;

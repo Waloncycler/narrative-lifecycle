@@ -1,7 +1,7 @@
 import type {
   WorldMonitorNormalizedFact,
   WorldMonitorPayload,
-} from '../types/worldmonitor_adapter';
+} from '@/types/worldmonitor_adapter';
 
 /**
  * Generic structured-content parsing for feed-style sources (v0.8.1+).

@@ -2,8 +2,8 @@ import type { EvidenceNode } from './evidence';
 import { evidenceForScope, isHardRealityEvidence } from './evidence';
 import type { Stage, StageGateInput, StageSnapshot } from './stages';
 import { capStage } from './stages';
-import { maxAllowedStage, missingStageGateReasons } from '../rules/stage_gate_rules';
-import { capStageByDataConfidence } from '../rules/data_confidence_rules';
+import { maxAllowedStage, missingStageGateReasons } from '@/rules/stage_gate_rules';
+import { capStageByDataConfidence } from '@/rules/data_confidence_rules';
 import { requireEvidenceTable } from './evidence_table';
 
 export interface StageClassificationInput {

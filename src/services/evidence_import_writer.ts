@@ -8,4 +8,4 @@ export {
   writeAcceptedEvidenceImport,
   writeEvidenceValidationReport,
   writeRejectedEvidenceImport,
-} from '../infrastructure/evidence_import_io';
+} from '@/infrastructure/evidence_import_io';

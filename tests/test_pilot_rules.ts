@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { pilotActionFor, validatePilotTopic } from '../src/domain/pilot_rules';
-import type { PilotTopic } from '../src/types/pilot';
+import { pilotActionFor, validatePilotTopic } from '@/domain/pilot_rules';
+import type { PilotTopic } from '@/types/pilot';
 
 const baseTopic: PilotTopic = {
   topic_id: 'bci',

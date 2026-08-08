@@ -3,15 +3,15 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { SyncWorldMonitorSourcesUseCase } from '../src/application/use_cases/sync_worldmonitor_sources_use_case';
-import { signalsFromWorldMonitorPayload } from '../src/domain/worldmonitor_rules';
-import { FileWorldMonitorSourceRepository, WorldMonitorHttpClient } from '../src/infrastructure/worldmonitor_source_adapter';
+import { SyncWorldMonitorSourcesUseCase } from '@/application/use_cases/sync_worldmonitor_sources_use_case';
+import { signalsFromWorldMonitorPayload } from '@/domain/worldmonitor_rules';
+import { FileWorldMonitorSourceRepository, WorldMonitorHttpClient } from '@/infrastructure/worldmonitor_source_adapter';
 import type {
   WorldMonitorOperationDescriptor,
   WorldMonitorPayload,
   WorldMonitorSourceInventory,
-} from '../src/types/worldmonitor_adapter';
-import type { EvidenceIntakeSession } from '../src/types/intake';
+} from '@/types/worldmonitor_adapter';
+import type { EvidenceIntakeSession } from '@/types/intake';
 
 const temporaryPaths: string[] = [];
 

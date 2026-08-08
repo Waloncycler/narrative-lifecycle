@@ -1,7 +1,7 @@
 import { evidenceStrengthRank, type EvidenceNode } from './evidence';
-import type { AutonomousResearchPolicy } from '../types/autonomous_research';
-import type { TopicRegistry } from '../types/topic_resolution';
-import type { NarrativeGraphPromotionItem, NarrativeGraphPromotionReport } from '../types/narrative_graph_promotion';
+import type { AutonomousResearchPolicy } from '@/types/autonomous_research';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { NarrativeGraphPromotionItem, NarrativeGraphPromotionReport } from '@/types/narrative_graph_promotion';
 import { hasVerifiedMarketName } from './market_naming';
 
 const confidenceMinimum = { low: 0, medium: 50, high: 75 } as const;

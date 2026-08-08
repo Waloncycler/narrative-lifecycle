@@ -1,4 +1,4 @@
-import type { IndustryPack, IndustrySuggestion } from '../types/industry';
+import type { IndustryPack, IndustrySuggestion } from '@/types/industry';
 
 export const DEFAULT_INDUSTRY_PACKS: IndustryPack[] = [
   { industry_id: 'medicine', display_name: 'Medicine and Biopharma', aliases: ['medicine', 'biopharma', 'pharma', 'drug', 'clinical', 'fda'], topic_hints: ['approval', 'clinical trial', 'revenue', 'license-out'], branch_hints: ['oncology', 'metabolic', 'immunology', 'neuroscience', 'nuclear medicine'], hard_evidence_hints: ['fda approval', 'clinical data', 'revenue', 'customer'], forbidden_inferences: ['headline deal value is realized revenue'] },

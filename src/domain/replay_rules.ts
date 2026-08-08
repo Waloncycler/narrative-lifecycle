@@ -2,7 +2,7 @@ import type { EvidenceNode } from './evidence';
 import { classifyStage } from './stage_classifier';
 import type { Stage } from './stages';
 import { isStage } from './stages';
-import type { ReplayBranchResult, ReplayCase } from '../types/replay';
+import type { ReplayBranchResult, ReplayCase } from '@/types/replay';
 
 const forbiddenAdvicePattern = /\b(buy|sell|entry|exit|position|target price|stop loss)\b|\b(go|going|went)\s+(long|short)\b|\b(long|short)\s+(trade|position|call|idea)\b/i;
 

@@ -1,11 +1,11 @@
 import { evidenceStrengthRank, type EvidenceNode } from './evidence';
-import type { EvidenceCandidate, EvidenceIntakeSession } from '../types/intake';
-import type { AgentEvidenceCandidate, IntakeAgentAudit } from '../types/intake_agent';
-import type { TopicResolutionAudit } from '../types/topic_resolution';
+import type { EvidenceCandidate, EvidenceIntakeSession } from '@/types/intake';
+import type { AgentEvidenceCandidate, IntakeAgentAudit } from '@/types/intake_agent';
+import type { TopicResolutionAudit } from '@/types/topic_resolution';
 import type {
   AutonomousPromotionItem,
   AutonomousResearchPolicy,
-} from '../types/autonomous_research';
+} from '@/types/autonomous_research';
 
 const confidenceRank = { low: 1, medium: 2, high: 3 } as const;
 const disallowedText = /\b(buy|sell|long|short|entry|exit|position|target price|stop loss)\b/i;

@@ -1,9 +1,9 @@
-import type { GoldenCase } from '../domain/golden_case';
-import type { ScoreDetails, ScoreResult } from '../domain/scoring';
-import type { EvidenceNode } from '../domain/evidence';
-import type { DashboardBranch, DashboardCard, DashboardEvent, ResearchAction } from '../domain/dashboard_card_service';
-import { createDashboardCard } from '../domain/dashboard_card_service';
-import type { StageSnapshot } from '../domain/stages';
+import type { GoldenCase } from '@/domain/golden_case';
+import type { ScoreDetails, ScoreResult } from '@/domain/scoring';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { DashboardBranch, DashboardCard, DashboardEvent, ResearchAction } from '@/domain/dashboard_card_service';
+import { createDashboardCard } from '@/domain/dashboard_card_service';
+import type { StageSnapshot } from '@/domain/stages';
 
 function defaultScores(evidence: EvidenceNode[]): ScoreDetails {
   if (evidence.length === 0) {

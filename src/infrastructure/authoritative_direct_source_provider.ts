@@ -1,5 +1,5 @@
-import type { AuthoritativeResearchSource, ResearchCampaignTask } from '../types/research_coverage';
-import { directSourceQuery, supportsTermQuery } from '../domain/direct_source_research';
+import type { AuthoritativeResearchSource, ResearchCampaignTask } from '@/types/research_coverage';
+import { directSourceQuery, supportsTermQuery } from '@/domain/direct_source_research';
 
 export interface DirectSourceSearchRow {
   title: string;

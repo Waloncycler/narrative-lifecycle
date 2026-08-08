@@ -1,5 +1,5 @@
-import type { Stage, StageGateInput } from '../domain/stages';
-import { capStage } from '../domain/stages';
+import type { Stage, StageGateInput } from '@/domain/stages';
+import { capStage } from '@/domain/stages';
 
 export function maxAllowedStage(input: StageGateInput): Stage {
   if (!input.hasStableLabel) return 'S2';

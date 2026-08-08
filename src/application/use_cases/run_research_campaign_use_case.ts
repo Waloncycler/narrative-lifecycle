@@ -1,9 +1,9 @@
-import type { ResearchCampaign } from '../../types/research_coverage';
-import type { WebResearchReport } from '../../types/web_research';
-import type { DirectSourceResearchReport } from '../../types/direct_source_research';
-import type { EvidenceIntakeSession } from '../../types/intake';
-import type { ResearchLeadTriageReport } from '../../types/research_lead_triage';
-import type { ResearchSourceRetrievalReport } from '../../types/research_source_retrieval';
+import type { ResearchCampaign } from '@/types/research_coverage';
+import type { WebResearchReport } from '@/types/web_research';
+import type { DirectSourceResearchReport } from '@/types/direct_source_research';
+import type { EvidenceIntakeSession } from '@/types/intake';
+import type { ResearchLeadTriageReport } from '@/types/research_lead_triage';
+import type { ResearchSourceRetrievalReport } from '@/types/research_source_retrieval';
 
 export interface RunResearchCampaignUseCaseDeps {
   buildCampaign(input: { maxTasks?: number }): ResearchCampaign;

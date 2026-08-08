@@ -1,9 +1,9 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
-import type { ReplayCase, ReplayLedger } from '../types/replay';
-import type { RunManifest } from '../types/run_context';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
+import type { ReplayCase, ReplayLedger } from '@/types/replay';
+import type { RunManifest } from '@/types/run_context';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
 
 export const REPLAY_CASES_PATH = 'data/replay/replay_cases.yaml';
 

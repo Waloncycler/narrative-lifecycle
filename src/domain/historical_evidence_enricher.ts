@@ -1,4 +1,4 @@
-import { AuthoritativeDirectSourceProvider } from '../infrastructure/authoritative_direct_source_provider';
+import { AuthoritativeDirectSourceProvider } from '@/infrastructure/authoritative_direct_source_provider';
 import type { EvidenceNode } from './evidence';
 import { createHash } from 'node:crypto';
 

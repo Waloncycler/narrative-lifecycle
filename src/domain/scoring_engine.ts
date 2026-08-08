@@ -1,8 +1,8 @@
 import type { EvidenceLayer, EvidenceNode } from './evidence';
 import type { ScoreDetails, ScoreResult } from './scoring';
-import { calculateDataConfidence } from '../rules/data_confidence_rules';
-import { scoreFromEvidence } from '../rules/scoring_rules';
-import { maxAllowedStage } from '../rules/stage_gate_rules';
+import { calculateDataConfidence } from '@/rules/data_confidence_rules';
+import { scoreFromEvidence } from '@/rules/scoring_rules';
+import { maxAllowedStage } from '@/rules/stage_gate_rules';
 import { stageRank } from './stages';
 import { RULE_VERSION } from './versioning_service';
 import { requireEvidenceTable } from './evidence_table';

@@ -1,5 +1,5 @@
-import type { EvidenceNode } from '../../domain/evidence';
-import { qualifiesForEarlyRadar } from '../../domain/early_radar_service';
+import type { EvidenceNode } from '@/domain/evidence';
+import { qualifiesForEarlyRadar } from '@/domain/early_radar_service';
 import {
   branchStagesForReplay,
   evidenceAvailableAt,
@@ -8,15 +8,15 @@ import {
   noTradingAdvice,
   parentStageForReplay,
   validateReplayCase,
-} from '../../domain/replay_rules';
-import type { Stage } from '../../domain/stages';
-import { isEarlyRadarStage, isStage } from '../../domain/stages';
-import { buildStageDiff } from '../../domain/stage_diff_engine';
-import { RULE_VERSION } from '../../domain/versioning_service';
-import { artifactMetadata } from '../../types/artifact_contract';
-import type { StageDiff, StageSnapshotHistory, StageSnapshotRadarCandidate, StageSnapshotTopic } from '../../types/diff';
-import type { ReplayCase, ReplayCaseResult, ReplayLedger, ReplaySliceResult } from '../../types/replay';
-import type { RunManifest } from '../../types/run_context';
+} from '@/domain/replay_rules';
+import type { Stage } from '@/domain/stages';
+import { isEarlyRadarStage, isStage } from '@/domain/stages';
+import { buildStageDiff } from '@/domain/stage_diff_engine';
+import { RULE_VERSION } from '@/domain/versioning_service';
+import { artifactMetadata } from '@/types/artifact_contract';
+import type { StageDiff, StageSnapshotHistory, StageSnapshotRadarCandidate, StageSnapshotTopic } from '@/types/diff';
+import type { ReplayCase, ReplayCaseResult, ReplayLedger, ReplaySliceResult } from '@/types/replay';
+import type { RunManifest } from '@/types/run_context';
 
 export interface ReplayUseCaseDeps {
   readReplayCases(): ReplayCase[];

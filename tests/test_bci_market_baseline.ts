@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
-import { buildOperationalResearchState } from '../src/domain/operational_research_state';
-import { normalizeEvidenceImport } from '../src/application/evidence_import_normalizer';
-import type { EvidenceImportDraft } from '../src/types/evidence_import';
-import type { TopicRegistry } from '../src/types/topic_resolution';
+import { buildOperationalResearchState } from '@/domain/operational_research_state';
+import { normalizeEvidenceImport } from '@/application/evidence_import_normalizer';
+import type { EvidenceImportDraft } from '@/types/evidence_import';
+import type { TopicRegistry } from '@/types/topic_resolution';
 
 describe('BCI market baseline', () => {
   it('reaches S4 from parent-only label and capital evidence, without importing medical branch progress', () => {

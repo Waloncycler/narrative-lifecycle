@@ -1,4 +1,4 @@
-import type { ReplayLedger } from '../types/replay';
+import type { ReplayLedger } from '@/types/replay';
 
 function list(values: string[]): string {
   return values.length ? values.join(', ') : 'none';

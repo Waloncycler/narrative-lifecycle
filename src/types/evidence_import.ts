@@ -1,4 +1,4 @@
-import type { EvidenceNode } from '../domain/evidence';
+import type { EvidenceNode } from '@/domain/evidence';
 
 export type EvidenceImportScope = 'parent' | 'branch';
 export type EvidenceImportSourceType = 'official' | 'filing' | 'news' | 'research' | 'academic' | 'company' | 'other';

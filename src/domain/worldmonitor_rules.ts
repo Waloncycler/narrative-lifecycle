@@ -6,7 +6,7 @@ import type {
   WorldMonitorSignal,
   WorldMonitorSourceConfig,
   WorldMonitorSourceGovernance,
-} from '../types/worldmonitor_adapter';
+} from '@/types/worldmonitor_adapter';
 import {
   normalizedFactsFromWorldMonitorPayload,
   recordsForWorldMonitorPayload,

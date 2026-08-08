@@ -1,7 +1,7 @@
 import type {
   WorldMonitorNormalizedFact,
   WorldMonitorPayload,
-} from '../types/worldmonitor_adapter';
+} from '@/types/worldmonitor_adapter';
 import {
   FEED_OPERATION_IDS,
   feedRecordsForOperation,

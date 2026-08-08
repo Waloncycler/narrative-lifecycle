@@ -1,5 +1,5 @@
-import type { Stage } from '../domain/stages';
-import { capStage } from '../domain/stages';
+import type { Stage } from '@/domain/stages';
+import { capStage } from '@/domain/stages';
 
 export interface DataConfidenceInput {
   sourceBreadth: number;

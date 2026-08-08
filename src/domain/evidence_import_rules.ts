@@ -3,7 +3,7 @@ import type {
   EvidenceImportGuardrailCheck,
   EvidenceValidationIssue,
   EvidenceValidationReport,
-} from '../types/evidence_import';
+} from '@/types/evidence_import';
 
 const allowedStrength = new Set(['E0', 'E1', 'E2', 'E3', 'E4']);
 const allowedLayers = new Set(['name', 'capital', 'pricing', 'reality', 'momentum', 'friction', 'data_confidence']);

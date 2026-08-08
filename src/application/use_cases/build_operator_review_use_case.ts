@@ -1,4 +1,4 @@
-import type { OperatorReview } from '../../types/operator_review';
+import type { OperatorReview } from '@/types/operator_review';
 
 export interface BuildOperatorReviewUseCaseResult {
   review: OperatorReview;

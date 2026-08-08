@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { WebResearchReport } from '../types/web_research';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
+import type { WebResearchReport } from '@/types/web_research';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
 
 export class FileWebResearchRepository {
   constructor(private readonly repoRoot: string) {}

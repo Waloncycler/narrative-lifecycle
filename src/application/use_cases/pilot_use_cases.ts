@@ -1,10 +1,10 @@
-import type { StageDiff } from '../../types/diff';
-import type { OperatorReview } from '../../types/operator_review';
-import type { PilotLedgerEntry, PilotObservation, PilotResearchLedger, PilotTopic } from '../../types/pilot';
-import type { WeeklyBrief } from '../../types/report';
-import type { RunManifest } from '../../types/run_context';
-import { artifactMetadata } from '../../types/artifact_contract';
-import { RULE_VERSION } from '../../domain/versioning_service';
+import type { StageDiff } from '@/types/diff';
+import type { OperatorReview } from '@/types/operator_review';
+import type { PilotLedgerEntry, PilotObservation, PilotResearchLedger, PilotTopic } from '@/types/pilot';
+import type { WeeklyBrief } from '@/types/report';
+import type { RunManifest } from '@/types/run_context';
+import { artifactMetadata } from '@/types/artifact_contract';
+import { RULE_VERSION } from '@/domain/versioning_service';
 import {
   agreementRate,
   assertPilotAction,
@@ -13,7 +13,7 @@ import {
   noTradingAdvice,
   pilotActionFor,
   validatePilotTopic,
-} from '../../domain/pilot_rules';
+} from '@/domain/pilot_rules';
 
 export interface PilotInitUseCaseDeps {
   readWeeklyBrief(): WeeklyBrief;

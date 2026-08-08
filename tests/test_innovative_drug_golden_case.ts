@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { expectGoldenCaseShape, loadGoldenCase } from './helpers/golden_case_loader';
-import type { EvidenceNode } from '../src/domain/evidence';
-import { classifyStage } from '../src/domain/stage_classifier';
-import { generateScore } from '../src/domain/scoring_engine';
-import { generateDashboardCardFromGoldenCase } from '../src/services/dashboard_card_generator';
+import type { EvidenceNode } from '@/domain/evidence';
+import { classifyStage } from '@/domain/stage_classifier';
+import { generateScore } from '@/domain/scoring_engine';
+import { generateDashboardCardFromGoldenCase } from '@/services/dashboard_card_generator';
 
 describe('test_innovative_drug_golden_case', () => {
   const goldenCase = loadGoldenCase('innovative_drug_license_out.yaml');

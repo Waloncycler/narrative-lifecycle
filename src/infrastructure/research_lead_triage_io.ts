@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { ResearchLeadTriageReport } from '../types/research_lead_triage';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
+import type { ResearchLeadTriageReport } from '@/types/research_lead_triage';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
 
 export class FileResearchLeadTriageRepository {
   constructor(private readonly repoRoot: string) {}

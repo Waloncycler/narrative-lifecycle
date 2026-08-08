@@ -6,16 +6,16 @@ import {
   governanceForWorldMonitorOperation,
   isDegradedWorldMonitorPayload,
   isStaleWorldMonitorPayload,
-} from '../domain/worldmonitor_rules';
-import { normalizerIdForOperation } from '../domain/worldmonitor_normalizers';
+} from '@/domain/worldmonitor_rules';
+import { normalizerIdForOperation } from '@/domain/worldmonitor_normalizers';
 import type {
   WorldMonitorOperationDescriptor,
   WorldMonitorPayload,
   WorldMonitorFactState,
   WorldMonitorSourceInventory,
   WorldMonitorSyncMode,
-} from '../types/worldmonitor_adapter';
-import { writeJsonAtomically } from '../services/run_manifest_writer';
+} from '@/types/worldmonitor_adapter';
+import { writeJsonAtomically } from '@/services/run_manifest_writer';
 
 interface OpenApiOperation {
   operationId?: string;

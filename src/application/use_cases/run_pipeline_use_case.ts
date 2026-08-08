@@ -1,4 +1,4 @@
-import type { RunContext } from '../../types/run_context';
+import type { RunContext } from '@/types/run_context';
 
 export interface RunPipelineUseCaseDeps {
   writePipelineOutputs(outputDir: string, context: RunContext): unknown;

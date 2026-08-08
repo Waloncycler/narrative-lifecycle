@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { ReviewIntelligenceProposalUseCase } from '../src/application/use_cases/intelligence_review_use_case';
-import type { EvidenceChainEntry } from '../src/types/evidence_chain';
-import type { TopicDiscoveryProposal } from '../src/types/topic_discovery';
+import { ReviewIntelligenceProposalUseCase } from '@/application/use_cases/intelligence_review_use_case';
+import type { EvidenceChainEntry } from '@/types/evidence_chain';
+import type { TopicDiscoveryProposal } from '@/types/topic_discovery';
 
 const proposal: TopicDiscoveryProposal = {
   artifact_type: 'topic_discovery_proposal', schema_version: '1.0.0', producer_version: 'v0.8.0', proposal_id: 'proposal_1', generated_at: '2026-08-03T00:00:00.000Z', session_id: 'session_1', kind: 'new_topic', status: 'pending', proposed_topic_id: 'provisional_quantum', proposed_topic_name: 'Quantum', parent_topic_id: null, proposed_branch_id: null, proposed_branch_name: null, confidence: 'medium', reason: 'new direction', uncertainty_notes: ['review'], alternatives: [], narrative_memory_match: false, evidence_refs: [], audit_required: true,

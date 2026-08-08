@@ -1,7 +1,7 @@
 import type { Stage } from './stages';
 import { isEarlyRadarStage } from './stages';
-import type { ReactivationType } from '../rules/reactivation_rules';
-import { shouldEnterRadar } from '../rules/reactivation_rules';
+import type { ReactivationType } from '@/rules/reactivation_rules';
+import { shouldEnterRadar } from '@/rules/reactivation_rules';
 import type { ResearchAction } from './dashboard_card_service';
 import { assertResearchAction } from './dashboard_card_service';
 

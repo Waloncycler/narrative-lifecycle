@@ -3,9 +3,9 @@ import { generateScore } from './scoring_engine';
 import { stageRank, type Stage } from './stages';
 import type { EvidenceNode } from './evidence';
 import type { ScoreResult } from './scoring';
-import type { StageSnapshotHistory, StageSnapshotTopic } from '../types/diff';
-import type { TopicRegistry } from '../types/topic_resolution';
-import { artifactMetadata } from '../types/artifact_contract';
+import type { StageSnapshotHistory, StageSnapshotTopic } from '@/types/diff';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import { artifactMetadata } from '@/types/artifact_contract';
 import { RULE_VERSION } from './versioning_service';
 import { marketBranchName, marketTopicName } from './market_naming';
 

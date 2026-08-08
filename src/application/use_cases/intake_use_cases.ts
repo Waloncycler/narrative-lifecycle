@@ -5,19 +5,19 @@ import {
   extractEvidenceCandidates,
   noTradingAdvice,
   reviewTemplate,
-} from '../../domain/intake_rules';
-import { buildIntakeEvaluation } from '../../domain/intake_evaluation';
-import { buildTopicResolutionAudit } from '../../domain/topic_resolver';
-import type { EvidenceImportDraft, EvidenceImportReport } from '../../types/evidence_import';
-import type { AiCandidateSuggestion, EvidenceIntakeApplyResult, EvidenceIntakeSession, IntakeEvaluationReport, RawDocument, ReviewDecision } from '../../types/intake';
-import type { RunManifest } from '../../types/run_context';
-import type { TopicRegistry, TopicResolutionAudit, TopicRegistryValidationReport } from '../../types/topic_resolution';
-import { compareRuleAndAiCandidates } from '../../domain/intake_evaluation';
-import { buildAiShadowValidationReport } from '../../domain/ai_shadow_validation';
-import { buildIntakeLearningProfile } from '../../domain/intake_learning';
-import type { IntakeLearningProfile } from '../../types/intake_learning';
-import { buildIntakeLearningCycle } from '../../domain/intake_learning_cycle';
-import type { IntakeLearningCycle } from '../../types/intake_learning_cycle';
+} from '@/domain/intake_rules';
+import { buildIntakeEvaluation } from '@/domain/intake_evaluation';
+import { buildTopicResolutionAudit } from '@/domain/topic_resolver';
+import type { EvidenceImportDraft, EvidenceImportReport } from '@/types/evidence_import';
+import type { AiCandidateSuggestion, EvidenceIntakeApplyResult, EvidenceIntakeSession, IntakeEvaluationReport, RawDocument, ReviewDecision } from '@/types/intake';
+import type { RunManifest } from '@/types/run_context';
+import type { TopicRegistry, TopicResolutionAudit, TopicRegistryValidationReport } from '@/types/topic_resolution';
+import { compareRuleAndAiCandidates } from '@/domain/intake_evaluation';
+import { buildAiShadowValidationReport } from '@/domain/ai_shadow_validation';
+import { buildIntakeLearningProfile } from '@/domain/intake_learning';
+import type { IntakeLearningProfile } from '@/types/intake_learning';
+import { buildIntakeLearningCycle } from '@/domain/intake_learning_cycle';
+import type { IntakeLearningCycle } from '@/types/intake_learning_cycle';
 
 export interface PrepareEvidenceIntakeUseCaseDeps {
   readRawDocument(input: { file?: string; text?: string }): RawDocument;

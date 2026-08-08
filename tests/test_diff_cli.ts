@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { describe, expect, it } from 'vitest';
-import { RUN_PIPELINE_FIRST_FOR_DIFF } from '../src/services/diff_artifact_loader';
+import { RUN_PIPELINE_FIRST_FOR_DIFF } from '@/services/diff_artifact_loader';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

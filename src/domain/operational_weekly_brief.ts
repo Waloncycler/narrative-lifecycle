@@ -1,8 +1,8 @@
 import type { EvidenceNode } from './evidence';
-import { artifactMetadata } from '../types/artifact_contract';
-import type { StageDiff, StageSnapshotHistory, StageSnapshotTopic } from '../types/diff';
-import type { RunContext } from '../types/run_context';
-import type { WeeklyBrief } from '../types/report';
+import { artifactMetadata } from '@/types/artifact_contract';
+import type { StageDiff, StageSnapshotHistory, StageSnapshotTopic } from '@/types/diff';
+import type { RunContext } from '@/types/run_context';
+import type { WeeklyBrief } from '@/types/report';
 
 /**
  * Builds the operator-facing brief from the formal operational Evidence Table.

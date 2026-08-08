@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { writeJsonAtomically } from './run_manifest_writer';
-import type { StageSnapshotHistory } from '../types/diff';
+import type { StageSnapshotHistory } from '@/types/diff';
 
 export function writeStageHistory(repoRoot: string, snapshot: StageSnapshotHistory): void {
   const snapshotsDir = resolve(repoRoot, 'outputs/history/stage_snapshots');

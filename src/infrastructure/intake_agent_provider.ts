@@ -1,17 +1,17 @@
 import { createHash } from 'node:crypto';
-import type { EvidenceCandidate, EvidenceIntakeSession } from '../types/intake';
-import type { AgentEvidenceCandidate, IntakeAgentAudit } from '../types/intake_agent';
-import type { EvidenceImportDraft } from '../types/evidence_import';
-import { INTAKE_AGENT_PROMPT_VERSION, verifyAgentCandidate } from '../domain/intake_agent_rules';
-import { compactIndustryContext, suggestIndustry } from '../domain/industry_packs';
-import { INTAKE_AGENT_SYSTEM_PROMPT, buildTopicContext } from '../domain/intake_agent_prompt';
-import { buildSkillContext } from '../domain/intake_agent_skill';
-import type { IndustryPack } from '../types/industry';
-import type { IntakeLearningProfile } from '../types/intake_learning';
-import { learningProfileContext } from '../types/intake_learning';
-import type { TopicRegistry } from '../types/topic_resolution';
-import type { EvidenceNode } from '../domain/evidence';
-import type { StageDiff } from '../types/diff';
+import type { EvidenceCandidate, EvidenceIntakeSession } from '@/types/intake';
+import type { AgentEvidenceCandidate, IntakeAgentAudit } from '@/types/intake_agent';
+import type { EvidenceImportDraft } from '@/types/evidence_import';
+import { INTAKE_AGENT_PROMPT_VERSION, verifyAgentCandidate } from '@/domain/intake_agent_rules';
+import { compactIndustryContext, suggestIndustry } from '@/domain/industry_packs';
+import { INTAKE_AGENT_SYSTEM_PROMPT, buildTopicContext } from '@/domain/intake_agent_prompt';
+import { buildSkillContext } from '@/domain/intake_agent_skill';
+import type { IndustryPack } from '@/types/industry';
+import type { IntakeLearningProfile } from '@/types/intake_learning';
+import { learningProfileContext } from '@/types/intake_learning';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { StageDiff } from '@/types/diff';
 
 export interface OpenAiCompatibleAgentConfig {
   provider: string;

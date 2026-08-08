@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { buildIntakeLearningCycle } from '../src/domain/intake_learning_cycle';
-import type { AiShadowValidationReport, EvidenceIntakeSession, IntakeEvaluationReport } from '../src/types/intake';
-import type { IntakeLearningProfile } from '../src/types/intake_learning';
-import type { TopicResolutionAudit } from '../src/types/topic_resolution';
+import { buildIntakeLearningCycle } from '@/domain/intake_learning_cycle';
+import type { AiShadowValidationReport, EvidenceIntakeSession, IntakeEvaluationReport } from '@/types/intake';
+import type { IntakeLearningProfile } from '@/types/intake_learning';
+import type { TopicResolutionAudit } from '@/types/topic_resolution';
 
 const session: EvidenceIntakeSession = {
   session_id: 'session_cycle',

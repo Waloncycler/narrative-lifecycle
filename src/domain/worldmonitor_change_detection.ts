@@ -4,7 +4,7 @@ import type {
   WorldMonitorFactStateEntry,
   WorldMonitorMetricDelta,
   WorldMonitorSignal,
-} from '../types/worldmonitor_adapter';
+} from '@/types/worldmonitor_adapter';
 
 export function buildWorldMonitorFactState(input: {
   signals: WorldMonitorSignal[];

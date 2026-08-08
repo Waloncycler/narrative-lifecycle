@@ -1,6 +1,6 @@
-import type { DataConfidenceBand, StageSnapshotHistory } from '../types/diff';
-import type { RunContext } from '../types/run_context';
-import { artifactMetadata } from '../types/artifact_contract';
+import type { DataConfidenceBand, StageSnapshotHistory } from '@/types/diff';
+import type { RunContext } from '@/types/run_context';
+import { artifactMetadata } from '@/types/artifact_contract';
 import type { DiffArtifacts } from './diff_artifact_loader';
 
 function confidenceBand(value: number): DataConfidenceBand {

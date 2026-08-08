@@ -1,6 +1,6 @@
 import { marketTopicName } from './market_naming';
-import type { TopicRegistry } from '../types/topic_resolution';
-import type { WebResearchLead, WebResearchQuery } from '../types/web_research';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { WebResearchLead, WebResearchQuery } from '@/types/web_research';
 
 const adviceText = /\b(buy|sell|long|short|entry|exit|position|target price|stop loss)\b/i;
 

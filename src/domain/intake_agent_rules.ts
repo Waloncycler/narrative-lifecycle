@@ -1,6 +1,6 @@
 import { noTradingAdvice } from './intake_rules';
-import type { EvidenceCandidate, EvidenceIntakeSession } from '../types/intake';
-import type { AgentCandidateVerification, AgentEvidenceCandidate, IntakeAgentVerificationReport } from '../types/intake_agent';
+import type { EvidenceCandidate, EvidenceIntakeSession } from '@/types/intake';
+import type { AgentCandidateVerification, AgentEvidenceCandidate, IntakeAgentVerificationReport } from '@/types/intake_agent';
 
 export const INTAKE_AGENT_PROMPT_VERSION = 'evidence-intake-agent-v0.7.0';
 

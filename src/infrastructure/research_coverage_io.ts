@@ -1,9 +1,9 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
-import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse } from '../types/research_coverage';
-import type { DirectSourceResearchReport } from '../types/direct_source_research';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
+import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse } from '@/types/research_coverage';
+import type { DirectSourceResearchReport } from '@/types/direct_source_research';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
 
 export class FileResearchCoverageRepository {
   constructor(private readonly repoRoot: string) {}

@@ -3,7 +3,7 @@ import type {
   EvolutionMetricSnapshot,
   EvolutionProposal,
   ResearchAgentEvolutionLedger,
-} from '../types/research_agent';
+} from '@/types/research_agent';
 
 /**
  * Evolution ledger rules for the autonomous research agent (domain layer, pure functions).

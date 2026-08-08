@@ -2,8 +2,8 @@ import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import type { StageSnapshotHistory } from '../src/types/diff';
-import { writeStageHistory } from '../src/services/stage_history_writer';
+import type { StageSnapshotHistory } from '@/types/diff';
+import { writeStageHistory } from '@/services/stage_history_writer';
 
 describe('stage history writer', () => {
   it('writes immutable snapshot copies to history and per-run storage', () => {

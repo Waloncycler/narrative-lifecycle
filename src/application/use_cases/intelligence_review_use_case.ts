@@ -1,5 +1,5 @@
-import type { EvidenceChainEntry } from '../../types/evidence_chain';
-import type { TopicDiscoveryProposal } from '../../types/topic_discovery';
+import type { EvidenceChainEntry } from '@/types/evidence_chain';
+import type { TopicDiscoveryProposal } from '@/types/topic_discovery';
 
 export type IntelligenceReviewDecision = 'accepted' | 'rejected' | 'deferred';
 

@@ -4,8 +4,8 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import { generateScore } from '../src/domain/scoring_engine';
-import { classifyStage } from '../src/domain/stage_classifier';
+import { generateScore } from '@/domain/scoring_engine';
+import { classifyStage } from '@/domain/stage_classifier';
 import { parentS4Evidence, parentS6Evidence } from './helpers/sample_evidence';
 
 const here = dirname(fileURLToPath(import.meta.url));

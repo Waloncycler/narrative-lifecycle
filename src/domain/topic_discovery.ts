@@ -1,6 +1,6 @@
-import type { EvidenceIntakeSession } from '../types/intake';
-import type { TopicDiscoveryProposal, TopicDiscoveryKind } from '../types/topic_discovery';
-import type { TopicRegistry, TopicResolutionAudit, TopicResolution } from '../types/topic_resolution';
+import type { EvidenceIntakeSession } from '@/types/intake';
+import type { TopicDiscoveryProposal, TopicDiscoveryKind } from '@/types/topic_discovery';
+import type { TopicRegistry, TopicResolutionAudit, TopicResolution } from '@/types/topic_resolution';
 
 export function buildTopicDiscoveryProposals(input: {
   session: EvidenceIntakeSession;

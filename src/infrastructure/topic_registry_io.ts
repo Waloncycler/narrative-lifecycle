@@ -1,11 +1,11 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse, stringify } from 'yaml';
-import type { EvidenceCandidate, EvidenceIntakeSession, AiCandidateSuggestion } from '../types/intake';
-import type { AliasRecord, BranchRecord, CanonicalTopicRecord, ProvisionalTopicRecord, TopicRegistry, TopicResolution, TopicResolutionAudit } from '../types/topic_resolution';
-import type { NarrativeMemory } from '../domain/reactivation';
-import type { NarrativeGraphPromotionReport } from '../types/narrative_graph_promotion';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
+import type { EvidenceCandidate, EvidenceIntakeSession, AiCandidateSuggestion } from '@/types/intake';
+import type { AliasRecord, BranchRecord, CanonicalTopicRecord, ProvisionalTopicRecord, TopicRegistry, TopicResolution, TopicResolutionAudit } from '@/types/topic_resolution';
+import type { NarrativeMemory } from '@/domain/reactivation';
+import type { NarrativeGraphPromotionReport } from '@/types/narrative_graph_promotion';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
 
 export const TOPIC_RESOLUTION_AUDIT_PATH = 'outputs/intake/latest_topic_resolution_audit.json';
 export const TOPIC_UNRESOLVED_QUEUE_PATH = 'outputs/intake/latest_unresolved_queue.json';

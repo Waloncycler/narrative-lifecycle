@@ -3,11 +3,11 @@ import { resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { describe, expect, it } from 'vitest';
-import { buildResearchBaselineCompletion } from '../src/domain/research_baseline_completion';
-import { buildResearchCampaign } from '../src/domain/research_coverage';
-import type { StageSnapshotHistory } from '../src/types/diff';
-import type { TopicRegistry } from '../src/types/topic_resolution';
-import type { AuthoritativeSourceAtlas, ResearchUniverse } from '../src/types/research_coverage';
+import { buildResearchBaselineCompletion } from '@/domain/research_baseline_completion';
+import { buildResearchCampaign } from '@/domain/research_coverage';
+import type { StageSnapshotHistory } from '@/types/diff';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { AuthoritativeSourceAtlas, ResearchUniverse } from '@/types/research_coverage';
 
 const registry: TopicRegistry = {
   canonical_topics: [

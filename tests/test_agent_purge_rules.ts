@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { agedQueueItems, purgeDecisions, staleCandidates } from '../src/domain/agent_purge_rules';
+import { agedQueueItems, purgeDecisions, staleCandidates } from '@/domain/agent_purge_rules';
 
 const now = '2026-08-01T00:00:00.000Z';
 const daysAgo = (days: number): string => new Date(Date.parse(now) - days * 86_400_000).toISOString();

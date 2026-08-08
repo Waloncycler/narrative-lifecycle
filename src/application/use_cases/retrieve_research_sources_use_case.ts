@@ -1,7 +1,7 @@
-import { buildFailedSourceItem, buildRetrievedSourceItem, selectSourceRetrievalTargets } from '../../domain/research_source_retrieval';
-import type { ResearchLeadTriageReport } from '../../types/research_lead_triage';
-import type { ResearchSourceRetrievalReport } from '../../types/research_source_retrieval';
-import type { ResearchSourceRetrievalItem } from '../../types/research_source_retrieval';
+import { buildFailedSourceItem, buildRetrievedSourceItem, selectSourceRetrievalTargets } from '@/domain/research_source_retrieval';
+import type { ResearchLeadTriageReport } from '@/types/research_lead_triage';
+import type { ResearchSourceRetrievalReport } from '@/types/research_source_retrieval';
+import type { ResearchSourceRetrievalItem } from '@/types/research_source_retrieval';
 
 export interface RetrieveResearchSourcesUseCaseDeps {
   now(): string;

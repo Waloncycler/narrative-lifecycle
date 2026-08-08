@@ -1,4 +1,4 @@
-import type { OperatorReview, OperatorReviewTrendPoint } from '../types/operator_review';
+import type { OperatorReview, OperatorReviewTrendPoint } from '@/types/operator_review';
 
 function list(values: string[]): string {
   return values.length ? values.join(', ') : 'none';

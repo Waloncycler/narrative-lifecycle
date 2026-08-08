@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildIntakeLearningProfile } from '../src/domain/intake_learning';
-import type { EvidenceIntakeSession, IntakeEvaluationReport, ReviewDecision } from '../src/types/intake';
+import { buildIntakeLearningProfile } from '@/domain/intake_learning';
+import type { EvidenceIntakeSession, IntakeEvaluationReport, ReviewDecision } from '@/types/intake';
 
 const session: EvidenceIntakeSession = {
   session_id: 'session_learning',

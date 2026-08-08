@@ -1,9 +1,9 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { DashboardCard } from '../domain/dashboard_card_service';
-import type { EarlyRadarCandidate } from '../domain/early_radar_service';
-import type { ScoreResult } from '../domain/scoring';
-import type { StageDiff } from '../types/diff';
+import type { DashboardCard } from '@/domain/dashboard_card_service';
+import type { EarlyRadarCandidate } from '@/domain/early_radar_service';
+import type { ScoreResult } from '@/domain/scoring';
+import type { StageDiff } from '@/types/diff';
 
 export const RUN_PIPELINE_FIRST = 'Please run npm run pipeline first.';
 

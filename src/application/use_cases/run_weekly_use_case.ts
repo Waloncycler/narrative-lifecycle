@@ -1,4 +1,4 @@
-import type { RunContext, RunManifest } from '../../types/run_context';
+import type { RunContext, RunManifest } from '@/types/run_context';
 
 export interface RunWeeklyUseCaseDeps {
   createRunContext(): RunContext;

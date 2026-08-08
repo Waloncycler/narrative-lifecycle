@@ -12,8 +12,8 @@
  */
 import type { EvidenceNode } from './evidence';
 import { inferStageGateInput, type StageClassification } from './stage_classifier';
-import { maxAllowedStage } from '../rules/stage_gate_rules';
-import { capStageByDataConfidence } from '../rules/data_confidence_rules';
+import { maxAllowedStage } from '@/rules/stage_gate_rules';
+import { capStageByDataConfidence } from '@/rules/data_confidence_rules';
 import { stageRank, type Stage } from './stages';
 
 /** The linear stage ladder used to expand multi-gate jumps into single steps.

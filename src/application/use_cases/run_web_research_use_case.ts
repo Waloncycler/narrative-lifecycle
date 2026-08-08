@@ -1,6 +1,6 @@
-import { buildWebResearchQueries, deduplicateWebResearchLeads, normalizeWebResearchLeads } from '../../domain/web_research';
-import type { TopicRegistry } from '../../types/topic_resolution';
-import type { WebResearchReport, WebSearchConfig, WebSearchProvider } from '../../types/web_research';
+import { buildWebResearchQueries, deduplicateWebResearchLeads, normalizeWebResearchLeads } from '@/domain/web_research';
+import type { TopicRegistry } from '@/types/topic_resolution';
+import type { WebResearchReport, WebSearchConfig, WebSearchProvider } from '@/types/web_research';
 
 export interface RunWebResearchUseCaseDeps {
   now(): string;

@@ -1,4 +1,4 @@
-import type { TopicChange } from '../types/diff';
+import type { TopicChange } from '@/types/diff';
 import type {
   OperatorReview,
   OperatorReviewAlert,
@@ -7,11 +7,11 @@ import type {
   OperatorReviewNoChangeStreak,
   OperatorReviewRepeatedIssue,
   OperatorReviewTrendPoint,
-} from '../types/operator_review';
-import type { ResearchSafeActionVerb } from '../types/report';
-import { artifactMetadata } from '../types/artifact_contract';
+} from '@/types/operator_review';
+import type { ResearchSafeActionVerb } from '@/types/report';
+import { artifactMetadata } from '@/types/artifact_contract';
 import { type OperatorReviewRunArtifact, runEntry } from './operator_review_loader';
-import { RULE_VERSION } from '../domain/versioning_service';
+import { RULE_VERSION } from '@/domain/versioning_service';
 
 const forbiddenAdvicePattern = /\b(buy|sell|long|short|entry|exit|position|target price|stop loss)\b/i;
 const confidenceRank: Record<string, number> = { low: 0, medium: 1, high: 2 };

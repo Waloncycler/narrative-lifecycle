@@ -6,7 +6,7 @@ import type {
   PilotMetricValue,
   PilotObservation,
   PilotTopic,
-} from '../types/pilot';
+} from '@/types/pilot';
 
 const forbiddenAdvicePattern = /\b(buy|sell|long|short|entry|exit|position|target price|stop loss)\b/i;
 const allowedActions = new Set<PilotAction>(['observe', 'wait', 'validate', 'review', 'monitor', 'flag_risk']);

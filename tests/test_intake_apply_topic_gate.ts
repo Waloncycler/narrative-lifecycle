@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { ApplyEvidenceIntakeReviewUseCase, RetryEvidenceIntakePipelineUseCase } from '../src/application/use_cases/intake_use_cases';
-import type { EvidenceIntakeSession } from '../src/types/intake';
-import type { TopicResolutionAudit } from '../src/types/topic_resolution';
+import { ApplyEvidenceIntakeReviewUseCase, RetryEvidenceIntakePipelineUseCase } from '@/application/use_cases/intake_use_cases';
+import type { EvidenceIntakeSession } from '@/types/intake';
+import type { TopicResolutionAudit } from '@/types/topic_resolution';
 
 const session = {
   session_id: 'session_source_sync',

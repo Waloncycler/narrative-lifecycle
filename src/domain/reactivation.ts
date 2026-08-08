@@ -1,4 +1,4 @@
-import type { ReactivationType } from '../rules/reactivation_rules';
+import type { ReactivationType } from '@/rules/reactivation_rules';
 
 export interface NarrativeMemory {
   topic_id: string;

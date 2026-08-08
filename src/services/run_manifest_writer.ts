@@ -1,6 +1,6 @@
 import { mkdirSync, renameSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { RunManifest } from '../types/run_context';
+import type { RunManifest } from '@/types/run_context';
 
 export function writeTextAtomically(path: string, contents: string): void {
   mkdirSync(resolve(path, '..'), { recursive: true });

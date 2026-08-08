@@ -1,6 +1,6 @@
-import type { DirectSourceResearchLead, DirectSourceResearchQuery, DirectSourceResearchReport } from '../../types/direct_source_research';
-import type { AuthoritativeResearchSource, AuthoritativeSourceAtlas, ResearchCampaign } from '../../types/research_coverage';
-import { directSourceQuery, matchesCampaignTerms } from '../../domain/direct_source_research';
+import type { DirectSourceResearchLead, DirectSourceResearchQuery, DirectSourceResearchReport } from '@/types/direct_source_research';
+import type { AuthoritativeResearchSource, AuthoritativeSourceAtlas, ResearchCampaign } from '@/types/research_coverage';
+import { directSourceQuery, matchesCampaignTerms } from '@/domain/direct_source_research';
 
 export interface RunDirectSourceResearchUseCaseDeps {
   now(): string;

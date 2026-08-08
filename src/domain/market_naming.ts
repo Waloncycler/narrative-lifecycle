@@ -1,4 +1,4 @@
-import type { BranchRecord, CanonicalTopicRecord, MarketNameSource } from '../types/topic_resolution';
+import type { BranchRecord, CanonicalTopicRecord, MarketNameSource } from '@/types/topic_resolution';
 
 /**
  * The registry identifier is never a display-name generator. A new node with

@@ -2,11 +2,11 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import type { DashboardCard } from '../domain/dashboard_card_service';
-import { createEarlyRadarCandidate, type EarlyRadarCandidate } from '../domain/early_radar_service';
-import { calibrateFailureCases, type FailureCaseCalibration } from '../domain/evaluation_service';
-import { MemoryService } from '../domain/memory_service';
-import { createReactivationRecord } from '../domain/reactivation_service';
+import type { DashboardCard } from '@/domain/dashboard_card_service';
+import { createEarlyRadarCandidate, type EarlyRadarCandidate } from '@/domain/early_radar_service';
+import { calibrateFailureCases, type FailureCaseCalibration } from '@/domain/evaluation_service';
+import { MemoryService } from '@/domain/memory_service';
+import { createReactivationRecord } from '@/domain/reactivation_service';
 import {
   FileEvaluationRepository,
   FileEvidenceRepository,
@@ -15,10 +15,10 @@ import {
   FileMemoryRepository,
   FileTopicRepository,
   YamlFileRepository,
-} from '../repositories/file_repository';
+} from '@/repositories/file_repository';
 import { runGoldenCases, type GoldenCaseRunResult } from './golden_case_runner';
-import { RULE_VERSION } from '../domain/versioning_service';
-import type { RunContext } from '../types/run_context';
+import { RULE_VERSION } from '@/domain/versioning_service';
+import type { RunContext } from '@/types/run_context';
 import { createRunContext } from './run_context';
 
 export interface PipelineArtifactSummary {

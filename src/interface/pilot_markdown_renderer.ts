@@ -1,4 +1,4 @@
-import type { PilotResearchLedger } from '../types/pilot';
+import type { PilotResearchLedger } from '@/types/pilot';
 
 function list(values: string[]): string {
   return values.length ? values.join(', ') : 'none';

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { canBranchLiftParentToS6 } from '../src/rules/branch_pollution_rules';
+import { canBranchLiftParentToS6 } from '@/rules/branch_pollution_rules';
 
 describe('branch pollution rule', () => {
   it('does not allow low-coverage branch S6 to upgrade parent', () => {

@@ -9,7 +9,7 @@ import {
   FileMemoryRepository,
   FileTopicRepository,
   YamlFileRepository,
-} from '../src/repositories/file_repository';
+} from '@/repositories/file_repository';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

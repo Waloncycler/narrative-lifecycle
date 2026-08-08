@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
-import type { ResearchLeadTriageItem, ResearchLeadTriageReport } from '../types/research_lead_triage';
-import type { ResearchSourceRetrievalItem } from '../types/research_source_retrieval';
+import type { ResearchLeadTriageItem, ResearchLeadTriageReport } from '@/types/research_lead_triage';
+import type { ResearchSourceRetrievalItem } from '@/types/research_source_retrieval';
 
 const RETRIEVABLE_CLASSES = new Set(['official', 'company_primary', 'academic']);
 

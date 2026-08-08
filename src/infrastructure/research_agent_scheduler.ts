@@ -1,4 +1,4 @@
-import type { ResearchAgentLoopKind, ResearchAgentRunManifest, ResearchAgentSchedulerConfig, ResearchAgentTrigger } from '../types/research_agent';
+import type { ResearchAgentLoopKind, ResearchAgentRunManifest, ResearchAgentSchedulerConfig, ResearchAgentTrigger } from '@/types/research_agent';
 
 /**
  * Embedded scheduling daemon for the autonomous research agent.

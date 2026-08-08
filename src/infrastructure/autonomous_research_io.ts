@@ -1,13 +1,13 @@
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse, stringify } from 'yaml';
-import type { EvidenceNode } from '../domain/evidence';
-import type { AutonomousResearchPolicy, AutonomousResearchRun } from '../types/autonomous_research';
-import type { NarrativeGraphPromotionReport } from '../types/narrative_graph_promotion';
-import type { StageSnapshotHistory } from '../types/diff';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
-import { renderStageDiffMarkdown } from '../services/stage_diff_markdown_renderer';
-import { renderWeeklyBriefMarkdown } from '../services/report_markdown_renderer';
+import type { EvidenceNode } from '@/domain/evidence';
+import type { AutonomousResearchPolicy, AutonomousResearchRun } from '@/types/autonomous_research';
+import type { NarrativeGraphPromotionReport } from '@/types/narrative_graph_promotion';
+import type { StageSnapshotHistory } from '@/types/diff';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
+import { renderStageDiffMarkdown } from '@/services/stage_diff_markdown_renderer';
+import { renderWeeklyBriefMarkdown } from '@/services/report_markdown_renderer';
 
 const LIVE_EVIDENCE_DIR = 'data/live_evidence';
 const AUTOMATED_EVIDENCE_PATH = `${LIVE_EVIDENCE_DIR}/automated_evidence.yaml`;

@@ -1,10 +1,10 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { ScoreResult } from '../domain/scoring';
-import type { StageSnapshotHistory } from '../types/diff';
-import type { RunContext } from '../types/run_context';
-import type { DashboardCard } from '../domain/dashboard_card_service';
-import type { EarlyRadarCandidate } from '../domain/early_radar_service';
+import type { ScoreResult } from '@/domain/scoring';
+import type { StageSnapshotHistory } from '@/types/diff';
+import type { RunContext } from '@/types/run_context';
+import type { DashboardCard } from '@/domain/dashboard_card_service';
+import type { EarlyRadarCandidate } from '@/domain/early_radar_service';
 
 export const RUN_PIPELINE_FIRST_FOR_DIFF = 'Please run npm run pipeline first.';
 

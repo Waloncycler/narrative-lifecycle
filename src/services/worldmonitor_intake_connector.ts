@@ -2,15 +2,15 @@ import {
   WORLDMONITOR_SOURCE_CATALOG,
   operationSourceConfig,
   sourceConfigForSourceId,
-} from '../domain/worldmonitor_source_catalog';
-import type { EvidenceImportDraft } from '../types/evidence_import';
-import type { EvidenceCandidate, ProvenanceRecord, RawDocument } from '../types/intake';
+} from '@/domain/worldmonitor_source_catalog';
+import type { EvidenceImportDraft } from '@/types/evidence_import';
+import type { EvidenceCandidate, ProvenanceRecord, RawDocument } from '@/types/intake';
 import type {
   ConvertedWorldMonitorCandidate,
   WorldMonitorIntakeBatchResult,
   WorldMonitorSignal,
   WorldMonitorSourceConfig,
-} from '../types/worldmonitor_adapter';
+} from '@/types/worldmonitor_adapter';
 
 /**
  * Compatibility re-export: the canonical per-source catalog now lives in the

@@ -1,6 +1,6 @@
 import { marketBranchName, marketTopicName } from './market_naming';
 import { supportsTermQuery } from './direct_source_research';
-import type { TopicRegistry } from '../types/topic_resolution';
+import type { TopicRegistry } from '@/types/topic_resolution';
 import type {
   AuthoritativeResearchSource,
   AuthoritativeSourceAtlas,
@@ -12,8 +12,8 @@ import type {
   ResearchCoverageLayer,
   ResearchUniverse,
   ResearchUniverseNode,
-} from '../types/research_coverage';
-import type { ResearchBaselineCompletionReport } from '../types/research_baseline_completion';
+} from '@/types/research_coverage';
+import type { ResearchBaselineCompletionReport } from '@/types/research_baseline_completion';
 
 const TIER_WEIGHT = {
   statutory: 70,

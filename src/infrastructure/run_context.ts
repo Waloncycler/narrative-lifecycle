@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
-import type { RunContext } from '../types/run_context';
-import { PRODUCER_VERSION } from '../types/artifact_contract';
-import { RULE_VERSION } from '../domain/versioning_service';
+import type { RunContext } from '@/types/run_context';
+import { PRODUCER_VERSION } from '@/types/artifact_contract';
+import { RULE_VERSION } from '@/domain/versioning_service';
 
 export interface Clock {
   now(): Date;

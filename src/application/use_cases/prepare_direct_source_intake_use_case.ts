@@ -1,6 +1,6 @@
-import { reviewTemplate } from '../../domain/intake_rules';
-import type { DirectSourceResearchReport } from '../../types/direct_source_research';
-import type { EvidenceCandidate, EvidenceIntakeSession } from '../../types/intake';
+import { reviewTemplate } from '@/domain/intake_rules';
+import type { DirectSourceResearchReport } from '@/types/direct_source_research';
+import type { EvidenceCandidate, EvidenceIntakeSession } from '@/types/intake';
 
 export interface PrepareDirectSourceIntakeUseCaseDeps {
   now(): string;

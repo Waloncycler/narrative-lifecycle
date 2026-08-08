@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { ResearchSourceRetrievalReport } from '../types/research_source_retrieval';
-import { writeJsonAtomically, writeTextAtomically } from '../services/run_manifest_writer';
+import type { ResearchSourceRetrievalReport } from '@/types/research_source_retrieval';
+import { writeJsonAtomically, writeTextAtomically } from '@/services/run_manifest_writer';
 
 export class FileResearchSourceRetrievalRepository {
   constructor(private readonly repoRoot: string) {}

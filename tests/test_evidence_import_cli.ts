@@ -4,7 +4,7 @@ import { cpSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { parse } from 'yaml';
-import type { EvidenceNode } from '../src/domain/evidence';
+import type { EvidenceNode } from '@/domain/evidence';
 
 const repoRoot = resolve(import.meta.dirname, '..');
 

@@ -1,9 +1,9 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { StageDiff } from '../types/diff';
-import type { OperatorReviewRunEntry } from '../types/operator_review';
-import type { WeeklyBrief } from '../types/report';
-import type { RunManifest } from '../types/run_context';
+import type { StageDiff } from '@/types/diff';
+import type { OperatorReviewRunEntry } from '@/types/operator_review';
+import type { WeeklyBrief } from '@/types/report';
+import type { RunManifest } from '@/types/run_context';
 
 export interface OperatorReviewRunArtifact {
   manifest: RunManifest;

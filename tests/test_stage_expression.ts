@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { expressionIncludesStage, maxStageInExpression, parseStageExpression } from '../src/domain/stages';
+import { expressionIncludesStage, maxStageInExpression, parseStageExpression } from '@/domain/stages';
 
 describe('stage expressions', () => {
   it('parses single stages, ranges, and alternatives explicitly', () => {
