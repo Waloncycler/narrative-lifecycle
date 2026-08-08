@@ -1,8 +1,8 @@
 import { expect } from 'vitest';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { GoldenCase } from '@/domain/golden_case';
-import { FileGoldenCaseRepository, YamlFileRepository } from '@/repositories/file_repository';
+import type { GoldenCase } from '@/features/reporting/domain/golden_case';
+import { FileGoldenCaseRepository, YamlFileRepository } from '@/platform/file_repository';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '../..');

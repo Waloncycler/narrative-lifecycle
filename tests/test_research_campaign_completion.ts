@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { RunResearchCampaignUseCase } from '@/application/use_cases/run_research_campaign_use_case';
+import { RunResearchCampaignUseCase } from '@/app/use_cases/run_research_campaign_use_case';
 
 describe('research campaign completion loop', () => {
   it('creates lead triage and then a bounded context-only source package', async () => {

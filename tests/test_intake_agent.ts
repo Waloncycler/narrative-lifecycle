@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { chunkRawDocument, extractEvidenceCandidates } from '@/domain/intake_rules';
-import { buildAgentVerificationReport, verifyAgentCandidate } from '@/domain/intake_agent_rules';
-import { OpenAiCompatibleIntakeAgentAdapter } from '@/infrastructure/intake_agent_provider';
-import type { EvidenceIntakeSession, RawDocument } from '@/types/intake';
-import type { AgentEvidenceCandidate } from '@/types/intake_agent';
-import { INTAKE_AGENT_SYSTEM_PROMPT } from '@/domain/intake_agent_prompt';
-import { suggestIndustry } from '@/domain/industry_packs';
-import { FileIndustryPackRepository } from '@/infrastructure/industry_pack_io';
-import { constrainSourceAnchoredCandidate } from '@/application/use_cases/run_intake_agent_use_case';
+import { chunkRawDocument, extractEvidenceCandidates } from '@/features/intake/domain/intake_rules';
+import { buildAgentVerificationReport, verifyAgentCandidate } from '@/features/intake/domain/intake_agent_rules';
+import { OpenAiCompatibleIntakeAgentAdapter } from '@/features/intake/io/intake_agent_provider';
+import type { EvidenceIntakeSession, RawDocument } from '@/features/intake/types/intake';
+import type { AgentEvidenceCandidate } from '@/features/intake/types/intake_agent';
+import { INTAKE_AGENT_SYSTEM_PROMPT } from '@/features/intake/domain/intake_agent_prompt';
+import { suggestIndustry } from '@/features/reporting/domain/industry_packs';
+import { FileIndustryPackRepository } from '@/platform/io/industry_pack_io';
+import { constrainSourceAnchoredCandidate } from '@/app/use_cases/run_intake_agent_use_case';
 import { resolve } from 'node:path';
 
 function session(text = '国务院正式批复中医药振兴发展规划，推动中医药现代化。各省负责地方落实。'): EvidenceIntakeSession {

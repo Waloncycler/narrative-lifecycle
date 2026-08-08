@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildWorldMonitorFactState } from '@/domain/worldmonitor_change_detection';
-import type { WorldMonitorFactState, WorldMonitorSignal } from '@/types/worldmonitor_adapter';
+import { buildWorldMonitorFactState } from '@/features/worldmonitor/domain/worldmonitor_change_detection';
+import type { WorldMonitorFactState, WorldMonitorSignal } from '@/features/worldmonitor/types/worldmonitor_adapter';
 
 describe('World Monitor fact change detection', () => {
   it('queues new and updated facts but suppresses unchanged facts', () => {

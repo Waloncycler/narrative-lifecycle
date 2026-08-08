@@ -4,9 +4,9 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import { loadEvidenceImportDraft } from '@/services/evidence_import_loader';
-import { normalizeEvidenceImport } from '@/services/evidence_import_normalizer';
-import { validateEvidenceImport } from '@/services/evidence_import_validator';
+import { loadEvidenceImportDraft } from '@/features/evidence/pipeline/evidence_import_loader';
+import { normalizeEvidenceImport } from '@/features/evidence/pipeline/evidence_import_normalizer';
+import { validateEvidenceImport } from '@/features/evidence/pipeline/evidence_import_validator';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

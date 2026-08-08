@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { ResearchAgentLoopUseCase } from '@/application/use_cases/research_agent_loop_use_case';
-import type { AutonomousResearchRun } from '@/types/autonomous_research';
+import { ResearchAgentLoopUseCase } from '@/app/use_cases/research_agent_loop_use_case';
+import type { AutonomousResearchRun } from '@/features/research/types/autonomous_research';
 
 describe('ResearchAgentLoopUseCase external research', () => {
   it('records web discovery as context-only activity without treating it as a formal import', async () => {

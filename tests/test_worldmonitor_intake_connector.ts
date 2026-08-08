@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { WorldMonitorIntakeConnector } from '@/services/worldmonitor_intake_connector';
-import type { WorldMonitorSignal } from '@/types/worldmonitor_adapter';
+import { WorldMonitorIntakeConnector } from '@/features/worldmonitor/pipeline/worldmonitor_intake_connector';
+import type { WorldMonitorSignal } from '@/features/worldmonitor/types/worldmonitor_adapter';
 
 describe('WorldMonitorIntakeConnector', () => {
   it('correctly retrieves catalog configurations for known World Monitor data sources', () => {

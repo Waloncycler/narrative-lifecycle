@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { validateEvidenceImportDrafts } from '@/domain/evidence_import_rules';
-import { classifyStage as classifyStageDomain } from '@/domain/stage_classifier';
-import { buildStageDiff as buildStageDiffDomain } from '@/domain/stage_diff_engine';
-import { normalizeEvidenceImport as normalizeEvidenceImportApplication } from '@/application/evidence_import_normalizer';
-import { loadEvidenceImportDraft } from '@/services/evidence_import_loader';
-import { normalizeEvidenceImport as normalizeEvidenceImportService } from '@/services/evidence_import_normalizer';
-import { classifyStage as classifyStageService } from '@/domain/stage_classifier';
-import { buildStageDiff as buildStageDiffService } from '@/domain/stage_diff_engine';
-import type { EvidenceNode } from '@/domain/evidence';
-import type { StageSnapshotHistory, StageSnapshotTopic } from '@/types/diff';
-import { artifactMetadata } from '@/types/artifact_contract';
+import { validateEvidenceImportDrafts } from '@/features/evidence/domain/evidence_import_rules';
+import { classifyStage as classifyStageDomain } from '@/features/stages/domain/stage_classifier';
+import { buildStageDiff as buildStageDiffDomain } from '@/features/stages/domain/stage_diff_engine';
+import { normalizeEvidenceImport as normalizeEvidenceImportApplication } from '@/app/evidence_import_normalizer';
+import { loadEvidenceImportDraft } from '@/features/evidence/pipeline/evidence_import_loader';
+import { normalizeEvidenceImport as normalizeEvidenceImportService } from '@/features/evidence/pipeline/evidence_import_normalizer';
+import { classifyStage as classifyStageService } from '@/features/stages/domain/stage_classifier';
+import { buildStageDiff as buildStageDiffService } from '@/features/stages/domain/stage_diff_engine';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
+import type { StageSnapshotHistory, StageSnapshotTopic } from '@/features/stages/types/diff';
+import { artifactMetadata } from '@/platform/types/artifact_contract';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

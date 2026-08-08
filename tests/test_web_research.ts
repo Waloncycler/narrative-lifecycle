@@ -3,9 +3,9 @@ import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { RunWebResearchUseCase } from '@/application/use_cases/run_web_research_use_case';
-import { buildWebResearchQueries, normalizeWebResearchLeads } from '@/domain/web_research';
-import type { TopicRegistry } from '@/types/topic_resolution';
+import { RunWebResearchUseCase } from '@/app/use_cases/run_web_research_use_case';
+import { buildWebResearchQueries, normalizeWebResearchLeads } from '@/features/research/domain/web_research';
+import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
 
 const registry: TopicRegistry = {
   canonical_topics: [{ topic_id: 'bci', topic_name: 'Brain-computer interface', market_name_zh: '脑机接口', market_name_en: 'Brain-computer interface', current_stage: 'S0', status: 'active' }],

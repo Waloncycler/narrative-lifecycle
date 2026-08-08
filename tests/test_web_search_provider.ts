@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HttpWebSearchProvider, webSearchConfigFromEnv } from '@/infrastructure/web_search_provider';
+import { HttpWebSearchProvider, webSearchConfigFromEnv } from '@/features/research/io/web_search_provider';
 
 describe('web search provider config selection', () => {
   it('defaults to the keyless free aggregate when no search key is configured', () => {

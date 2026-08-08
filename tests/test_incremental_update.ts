@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildIncrementalMarker } from '@/domain/versioning_service';
+import { buildIncrementalMarker } from '@/platform/core/versioning_service';
 
 describe('test_incremental_update', () => {
   it('marks records dirty only when event or evidence hashes change', () => {

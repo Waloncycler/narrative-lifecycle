@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { buildNarrativeMonitor } from '@/domain/narrative_monitor';
-import { renderAgentDashboard, renderTopicDetail, renderTopics } from '@/interface/narrative_monitor_renderer';
-import type { StageSnapshotHistory } from '@/types/diff';
-import type { WeeklyBrief } from '@/types/report';
+import { buildNarrativeMonitor } from '@/features/narrative/domain/narrative_monitor';
+import { renderAgentDashboard, renderTopicDetail, renderTopics } from '@/features/narrative/ui/narrative_monitor_renderer';
+import type { StageSnapshotHistory } from '@/features/stages/types/diff';
+import type { WeeklyBrief } from '@/features/reporting/types/report';
 
 const snapshot: StageSnapshotHistory = {
   artifact_type: 'stage_snapshot_history', schema_version: '1.0.0', producer_version: '0.4.0', rule_version: 'test', run_id: 'run_test', generated_at: '2026-07-27T00:00:00.000Z',

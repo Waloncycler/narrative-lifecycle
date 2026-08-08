@@ -6,9 +6,9 @@ import { join, resolve } from 'node:path';
 import { stringify } from 'yaml';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import type { EvidenceCandidate, EvidenceIntakeApplyResult, EvidenceIntakeSession, IntakeEvaluationReport, ReviewDecision } from '@/types/intake';
-import type { TopicResolutionAudit } from '@/types/topic_resolution';
-import type { EvidenceImportDraft } from '@/types/evidence_import';
+import type { EvidenceCandidate, EvidenceIntakeApplyResult, EvidenceIntakeSession, IntakeEvaluationReport, ReviewDecision } from '@/features/intake/types/intake';
+import type { TopicResolutionAudit } from '@/features/narrative/types/topic_resolution';
+import type { EvidenceImportDraft } from '@/features/evidence/types/evidence_import';
 
 const repoRoot = resolve(import.meta.dirname, '..');
 

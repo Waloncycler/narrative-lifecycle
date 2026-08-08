@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import type { EvidenceCandidate } from '@/types/intake';
-import type { TopicRegistry } from '@/types/topic_resolution';
-import { buildTopicResolutionAudit, resolveTopic, validateTopicRegistry } from '@/domain/topic_resolver';
+import type { EvidenceCandidate } from '@/features/intake/types/intake';
+import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
+import { buildTopicResolutionAudit, resolveTopic, validateTopicRegistry } from '@/features/narrative/domain/topic_resolver';
 
 const registry: TopicRegistry = {
   canonical_topics: [

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_DRIFT_THRESHOLDS, evolveLedger, rollingMetrics } from '@/domain/agent_evolution';
-import type { EvolutionMetricSnapshot, ResearchAgentEvolutionLedger } from '@/types/research_agent';
+import { DEFAULT_DRIFT_THRESHOLDS, evolveLedger, rollingMetrics } from '@/features/research/domain/agent_evolution';
+import type { EvolutionMetricSnapshot, ResearchAgentEvolutionLedger } from '@/features/research/types/research_agent';
 
 const at = '2026-08-01T00:00:00.000Z';
 

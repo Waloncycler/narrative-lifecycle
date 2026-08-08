@@ -4,8 +4,8 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import { FileEvidenceRepository, FileGoldenCaseRepository, YamlFileRepository } from '@/repositories/file_repository';
-import { generateDashboardCardFromGoldenCase } from '@/services/dashboard_card_generator';
+import { FileEvidenceRepository, FileGoldenCaseRepository, YamlFileRepository } from '@/platform/file_repository';
+import { generateDashboardCardFromGoldenCase } from '@/features/reporting/pipeline/dashboard_card_generator';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');

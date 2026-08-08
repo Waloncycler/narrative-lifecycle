@@ -5,13 +5,13 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import { buildOperatorReview } from '@/services/operator_review_aggregator';
-import { loadOperatorReviewArtifacts } from '@/services/operator_review_loader';
-import { renderOperatorReviewMarkdown } from '@/services/operator_review_markdown_renderer';
-import type { StageDiff, TopicChange } from '@/types/diff';
-import type { WeeklyBrief } from '@/types/report';
-import type { RunManifest } from '@/types/run_context';
-import { artifactMetadata } from '@/types/artifact_contract';
+import { buildOperatorReview } from '@/features/reporting/pipeline/operator_review_aggregator';
+import { loadOperatorReviewArtifacts } from '@/features/reporting/pipeline/operator_review_loader';
+import { renderOperatorReviewMarkdown } from '@/features/reporting/pipeline/operator_review_markdown_renderer';
+import type { StageDiff, TopicChange } from '@/features/stages/types/diff';
+import type { WeeklyBrief } from '@/features/reporting/types/report';
+import type { RunManifest } from '@/platform/types/run_context';
+import { artifactMetadata } from '@/platform/types/artifact_contract';
 
 const repoRoot = resolve(import.meta.dirname, '..');
 

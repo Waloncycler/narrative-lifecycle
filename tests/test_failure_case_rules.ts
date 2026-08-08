@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { classifyFailureTrap, validateFailureCase } from '@/domain/failure_case_service';
+import { classifyFailureTrap, validateFailureCase } from '@/features/reporting/domain/failure_case_service';
 
 describe('test_failure_case_rules', () => {
   it('requires structured warning signals and classifies failure traps', () => {

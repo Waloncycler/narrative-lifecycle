@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createRuleVersion, RULE_VERSION } from '@/domain/versioning_service';
+import { createRuleVersion, RULE_VERSION } from '@/platform/core/versioning_service';
 
 describe('test_stage_gate_versioning', () => {
   it('exposes explicit rule version metadata for auditability', () => {

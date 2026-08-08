@@ -10,9 +10,9 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { reconstructAllTopicEvolutions, type TopicEvolutionTimeline } from '@/domain/stage_evolution_reconstructor';
-import { FileAutonomousResearchRepository } from '@/infrastructure/autonomous_research_io';
-import type { EvidenceNode } from '@/domain/evidence';
+import { reconstructAllTopicEvolutions, type TopicEvolutionTimeline } from '@/features/stages/domain/stage_evolution_reconstructor';
+import { FileAutonomousResearchRepository } from '@/features/research/io/autonomous_research_io';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

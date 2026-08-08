@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
 import Ajv2020 from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
-import type { ReplayLedger } from '@/types/replay';
+import type { ReplayLedger } from '@/features/reporting/types/replay';
 
 const repoRoot = resolve(import.meta.dirname, '..');
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { shouldEnterRadar } from '@/rules/reactivation_rules';
+import { shouldEnterRadar } from '@/features/narrative/rules/reactivation_rules';
 
 describe('reactivation engine', () => {
   it('does not enter radar for ordinary repeated old story', () => {

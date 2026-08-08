@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { maxAllowedStage } from '@/rules/stage_gate_rules';
-import { classifyStage } from '@/domain/stage_classifier';
-import type { EvidenceNode } from '@/domain/evidence';
+import { maxAllowedStage } from '@/features/stages/rules/stage_gate_rules';
+import { classifyStage } from '@/features/stages/domain/stage_classifier';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 
 describe('stage gates', () => {
   it('caps stage when stable label is missing', () => {

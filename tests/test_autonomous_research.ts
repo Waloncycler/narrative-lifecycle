@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { evaluateAutonomousPromotion } from '@/domain/autonomous_promotion';
-import { buildOperationalResearchState } from '@/domain/operational_research_state';
-import { RunAutonomousResearchUseCase } from '@/application/use_cases/run_autonomous_research_use_case';
-import type { EvidenceNode } from '@/domain/evidence';
-import type { AutonomousResearchPolicy } from '@/types/autonomous_research';
-import type { EvidenceIntakeSession } from '@/types/intake';
-import type { IntakeAgentReviewBundle } from '@/types/intake_agent';
-import type { TopicRegistry, TopicResolutionAudit } from '@/types/topic_resolution';
+import { evaluateAutonomousPromotion } from '@/features/narrative/domain/autonomous_promotion';
+import { buildOperationalResearchState } from '@/features/reporting/domain/operational_research_state';
+import { RunAutonomousResearchUseCase } from '@/app/use_cases/run_autonomous_research_use_case';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
+import type { AutonomousResearchPolicy } from '@/features/research/types/autonomous_research';
+import type { EvidenceIntakeSession } from '@/features/intake/types/intake';
+import type { IntakeAgentReviewBundle } from '@/features/intake/types/intake_agent';
+import type { TopicRegistry, TopicResolutionAudit } from '@/features/narrative/types/topic_resolution';
 
 const policy: AutonomousResearchPolicy = {
   policy_id: 'test-policy', enabled: true, auto_register_provisional_topics: true, auto_register_watch_branches: true,

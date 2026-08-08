@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { ApplyEvidenceIntakeReviewUseCase, RetryEvidenceIntakePipelineUseCase } from '@/application/use_cases/intake_use_cases';
-import type { EvidenceIntakeSession } from '@/types/intake';
-import type { TopicResolutionAudit } from '@/types/topic_resolution';
+import { ApplyEvidenceIntakeReviewUseCase, RetryEvidenceIntakePipelineUseCase } from '@/app/use_cases/intake_use_cases';
+import type { EvidenceIntakeSession } from '@/features/intake/types/intake';
+import type { TopicResolutionAudit } from '@/features/narrative/types/topic_resolution';
 
 const session = {
   session_id: 'session_source_sync',
@@ -151,7 +151,7 @@ describe('intake apply Topic gate', () => {
         duplicate_detection_applied: true,
         parent_branch_guardrail_applied: true,
       },
-    } as import('../src/types/intake').EvidenceIntakeApplyResult;
+    } as import('@/features/intake/types/intake').EvidenceIntakeApplyResult;
     const useCase = new RetryEvidenceIntakePipelineUseCase({
       readLatestSession: () => session,
       readApplyResult: () => failedApply,
