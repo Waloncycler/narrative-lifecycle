@@ -9,7 +9,7 @@
 [![Node.js >= 20](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)](CONTRIBUTING.md)
 
-[English](#what-this-is) · [快速上手](#快速上手) · [架构](#architecture) · [Contributing](#contributing) · [Docs](docs/)
+[What This Is](#what-this-is) · [Quickstart](#quickstart) · [Architecture](#architecture) · [Contributing](#contributing) · [Docs](docs/README.md)
 
 </div>
 
@@ -39,7 +39,7 @@ Evidence first.  Rules second.  LLM explanation third.
 - ❌ Not a black-box LLM scoring tool
 - ❌ Not a simple news summary dashboard
 
-## 快速上手
+## Quickstart
 
 ```bash
 git clone https://github.com/Waloncycler/narrative-lifecycle.git
@@ -51,7 +51,7 @@ npm run intake:workbench
 
 Open `http://localhost:4177` — drag in a document or paste text, review Evidence candidates, then run the pipeline.
 
-Full guide → [QUICKSTART.md](QUICKSTART.md)
+Prefer the command line? Jump straight to [Run The System](#run-the-system) below, or work through the fixtures in [Golden Cases](#golden-cases-sample-data) to see a fully worked example end to end.
 
 ## Key Features
 
@@ -60,7 +60,7 @@ Full guide → [QUICKSTART.md](QUICKSTART.md)
 | **S0–S7 Stage Gate** | Deterministic lifecycle classification with configurable minimum-evidence thresholds |
 | **Evidence Intake Workbench** | Browser UI for drag-and-drop document ingestion with human review before any import |
 | **AI Shadow Validation** | Optional OpenAI-compatible AI candidate layer (MiniMax by default) — shadow-only, never auto-imports |
-| **Autonomous Research Loop** | Controlled multi-source intelligence gathering with anti-scraping retry, RSS/API feeds, and 43 authoritative sources |
+| **Autonomous Research Loop** | Controlled multi-source intelligence gathering with anti-scraping retry, RSS/API feeds, and 56 authoritative sources |
 | **Stage Diff & Weekly Brief** | Immutable per-run snapshots, stage-change diffs, and operator-facing research briefs |
 | **Topic/Branch Registry** | Canonical topic + branch separation; no branch can auto-promote its parent |
 | **Historical Replay** | `available_at` time-sliced replay to evaluate classification accuracy against known outcomes |
@@ -68,30 +68,32 @@ Full guide → [QUICKSTART.md](QUICKSTART.md)
 
 ## Architecture
 
+The codebase is organized as **feature slices**: each capability owns its full stack — pure domain logic, rules, I/O, types, and UI — in one folder. A shared `platform/` layer holds cross-cutting infrastructure, and a thin `app/` composition root wires features together into use cases.
+
 ```
-Interface (CLI · Web UI)
-        ↓
-Application (Use Cases)
-        ↓
-Domain (Stage Gate · Scoring · Evidence Rules · Reactivation)
-        ↓
-Infrastructure (File Repos · YAML · Schema · Source Adapters)
+src/
+├── features/          one folder per capability, each self-contained:
+│   ├── evidence/      Evidence Table, import, validation, chain, strength rules
+│   ├── stages/        S0–S7 classifier, Stage Gate rules, diff, evolution timeline
+│   ├── scoring/       scoring engine, quantitative framework
+│   ├── narrative/     narrative tree/graph, memory, reactivation, topic resolution
+│   ├── intake/        intake agent, learning, workbench server + UI
+│   ├── research/      autonomous research agent, web/direct-source research
+│   ├── worldmonitor/  source catalog, feed parsing, change detection
+│   └── reporting/     dashboard cards, weekly brief, operator review, pilot, replay
+│                      (each: domain/ rules/ io/ types/ pipeline/ ui/)
+├── platform/          shared infrastructure: file adapters, run context, versioning
+├── app/               composition root: use cases, ports, pipeline orchestration
+└── cli/               thin command entrypoints (one file per `npm run <script>`)
 ```
 
-### Core Modules
-
-| Layer | Responsibility |
-|---|---|
-| `src/domain/` | Evidence, Stage Gate, Scoring, Reactivation, Intake rules — **no I/O** |
-| `src/application/` | Use-case orchestration — import, pipeline, diff, weekly, replay, research |
-| `src/infrastructure/` | File repos, YAML loading, schema validation, source adapters, AI provider |
-| `src/interface/` | Thin CLI commands + web workbench renderer |
+**The rule that matters most:** `domain/` and `rules/` inside every feature are pure — no filesystem, no YAML, no network. Only `io/` and `pipeline/` touch the outside world. This boundary is enforced by [`tests/test_architecture_boundaries.ts`](tests/test_architecture_boundaries.ts), not just convention.
 
 ### Data Flow
 
 ```
 Raw source (RSS · API · Document)
-  → [WorldMonitor] Feed parsing + normalization
+  → [worldmonitor] Feed parsing + normalization
   → Evidence candidates (with source quote + provenance)
   → Human review (Intake Workbench)
   → Evidence Table
@@ -103,7 +105,7 @@ Raw source (RSS · API · Document)
 
 ## Intelligence Sources
 
-The system integrates **43 authoritative sources** across:
+The system integrates **56 authoritative sources** across:
 
 - Global macro & markets: Investing.com, Reuters, WSJ, Bloomberg (via RSS)
 - Chinese financial media: 财联社, Wind Data, 新时空
@@ -200,10 +202,10 @@ We are actively looking for contributors! Here are the best ways to get involved
 
 ### Good first issues
 
-- 🔌 **Add a new RSS/API source adapter** in [`src/infrastructure/worldmonitor_source_adapter.ts`](src/infrastructure/worldmonitor_source_adapter.ts)
+- 🔌 **Add a new RSS/API source adapter** in [`src/features/worldmonitor/io/worldmonitor_source_adapter.ts`](src/features/worldmonitor/io/worldmonitor_source_adapter.ts)
 - 📝 **Add sample evidence YAML files** for new industry domains under `data/sample_evidence/`
-- 🌐 **Improve feed parsing heuristics** in [`src/domain/worldmonitor_feed_parsing.ts`](src/domain/worldmonitor_feed_parsing.ts)
-- 🔍 **Expand the industry pack definitions** for the Intake Agent in `src/domain/industry_packs.ts`
+- 🌐 **Improve feed parsing heuristics** in [`src/features/worldmonitor/domain/worldmonitor_feed_parsing.ts`](src/features/worldmonitor/domain/worldmonitor_feed_parsing.ts)
+- 🔍 **Expand the industry pack definitions** for the Intake Agent in [`src/features/reporting/domain/industry_packs.ts`](src/features/reporting/domain/industry_packs.ts)
 - 📖 **Translate documentation** into English (most docs are currently in Chinese)
 - 🧪 **Write test cases** for edge cases in Stage Gate rules
 
@@ -224,19 +226,18 @@ We are actively looking for contributors! Here are the best ways to get involved
 
 ## Documentation
 
+The full set lives in [`docs/`](docs/README.md), organized by theme. Highlights:
+
 | Doc | Description |
 |---|---|
-| [docs/00_project_overview.md](docs/00_project_overview.md) | Full system overview |
+| [docs/01_theory_name_capital_reality_momentum.md](docs/01_theory_name_capital_reality_momentum.md) | The underlying theory |
 | [docs/02_lifecycle_states_S0_S7.md](docs/02_lifecycle_states_S0_S7.md) | Stage definitions |
 | [docs/03_minimum_evidence_standards.md](docs/03_minimum_evidence_standards.md) | Evidence rules |
 | [docs/06_scoring_system_v0_2.md](docs/06_scoring_system_v0_2.md) | Scoring formula |
 | [docs/15_system_architecture.md](docs/15_system_architecture.md) | Architecture deep-dive |
 | [docs/EVIDENCE_GUIDE.md](docs/EVIDENCE_GUIDE.md) | How to write evidence YAML |
-| [docs/QUICKSTART.md](docs/QUICKSTART.md) | Operator quickstart (Chinese) |
 | [docs/27_worldmonitor_data_sources_integration_map.md](docs/27_worldmonitor_data_sources_integration_map.md) | Intelligence source map |
-| [docs/30_self_iterating_agent_loop.md](docs/30_self_iterating_agent_loop.md) | Self-iterating agent loop |
-| [docs/31_controlled_autonomous_research_loop.md](docs/31_controlled_autonomous_research_loop.md) | Autonomous research loop |
-| [docs/35_authoritative_source_mesh_and_research_universe.md](docs/35_authoritative_source_mesh_and_research_universe.md) | Full source atlas |
+| [docs/26_governed_active_learning.md](docs/26_governed_active_learning.md) | Governed active learning |
 
 ## Golden Cases (Sample Data)
 

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -10,6 +11,9 @@ function readJson<T>(path: string): T {
 
 describe('artifact semantic snapshot', () => {
   it('preserves golden-case stages and v0.4 artifact metadata', () => {
+    // outputs/ is generated, not committed — produce a real run against the
+    // repo's own calibrated data before asserting on it.
+    execFileSync('npm', ['run', 'weekly'], { cwd: repoRoot, stdio: 'pipe' });
     const latestRun = readJson<{ run_id: string; artifact_type: string; schema_version: string; producer_version: string }>('outputs/runs/latest_run.json');
     const diff = readJson<{ artifact_type: string; producer_version: string; run_id: string; topic_changes: Array<{ topic_id: string; current_stage: string }> }>('outputs/diffs/latest_stage_diff.json');
     const report = readJson<{ artifact_type: string; producer_version: string; run_id: string; stage_snapshot: Array<{ topic_id: string; current_stage: string }> }>('outputs/reports/weekly_brief.json');
