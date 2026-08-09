@@ -14,7 +14,7 @@ function expectFiles(paths: string[]) {
 
 describe('repository structure', () => {
   it('contains the top-level project entrypoint files', () => {
-    expectFiles(['README.md', 'CONTRIBUTING.md', 'SECURITY.md']);
+    expectFiles(['README.md', 'CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', 'PLANS.md']);
   });
 
   it('contains the published core docs', () => {
@@ -32,6 +32,7 @@ describe('repository structure', () => {
       'docs/23_ui_design_system.md',
       'docs/26_governed_active_learning.md',
       'docs/27_worldmonitor_data_sources_integration_map.md',
+      'docs/28_evidence_publication_governance.md',
       'docs/OPERATOR_GUIDE.md',
       'docs/EVIDENCE_GUIDE.md',
       'docs/REPLAY_GUIDE.md',
@@ -62,6 +63,7 @@ describe('repository structure', () => {
       'schemas/provisional_topic_registry.schema.json',
       'schemas/narrative_discovery_report.schema.json',
       'schemas/narrative_graph_promotion_report.schema.json',
+      'schemas/autonomous_research_policy_audit.schema.json',
       'schemas/web_research_report.schema.json',
       'schemas/research_source_atlas.schema.json',
       'schemas/research_universe.schema.json',
@@ -87,10 +89,13 @@ describe('repository structure', () => {
       'src/features/research/domain/web_research.ts',
       'src/features/research/domain/research_coverage.ts',
       'src/features/research/domain/direct_source_research.ts',
+      'src/features/research/domain/research_source_quality.ts',
+      'src/features/research/domain/autonomous_research_policy_validation.ts',
       'src/app/use_cases/run_direct_source_research_use_case.ts',
       'src/app/use_cases/prepare_direct_source_intake_use_case.ts',
       'src/features/research/io/authoritative_direct_source_provider.ts',
       'src/cli/run_research_campaign.ts',
+      'src/cli/run_validate_autonomous_research_policy.ts',
       'data/source_atlas/authoritative_sources.yaml',
       'data/research_universe/core_topics.yaml',
     ]);

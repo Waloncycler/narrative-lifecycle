@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { parse, stringify } from 'yaml';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import type { AutonomousResearchPolicy, AutonomousResearchRun } from '@/features/research/types/autonomous_research';
+import type { AutonomousResearchPolicyAudit } from '@/features/research/types/autonomous_research_policy_audit';
 import type { NarrativeGraphPromotionReport } from '@/features/narrative/types/narrative_graph_promotion';
 import type { StageSnapshotHistory } from '@/features/stages/types/diff';
 import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
@@ -20,6 +21,13 @@ export class FileAutonomousResearchRepository {
 
   readPolicy(): AutonomousResearchPolicy {
     return JSON.parse(readFileSync(resolve(this.repoRoot, 'configs/autonomous_research_policy.json'), 'utf8')) as AutonomousResearchPolicy;
+  }
+
+  writePolicyAudit(audit: AutonomousResearchPolicyAudit): void {
+    const output = resolve(this.repoRoot, 'outputs/governance');
+    writeJsonAtomically(resolve(output, 'latest_autonomous_research_policy_audit.json'), audit);
+    writeTextAtomically(resolve(output, 'latest_autonomous_research_policy_audit.md'), renderPolicyAuditMarkdown(audit));
+    writeJsonAtomically(resolve(output, 'history', `autonomous_research_policy_${audit.generated_at.replace(/[^0-9]/g, '').slice(0, 14)}.json`), audit);
   }
 
   readOperationalEvidence(): EvidenceNode[] {
@@ -207,6 +215,28 @@ function renderNarrativeGraphPromotion(report: NarrativeGraphPromotionReport): s
   return `${lines.join('\n')}\n`;
 }
 
+function renderPolicyAuditMarkdown(audit: AutonomousResearchPolicyAudit): string {
+  const lines = [
+    '# 自动发布策略校验',
+    '',
+    `- 策略: ${audit.policy_id}`,
+    `- 状态: ${audit.status}`,
+    `- 自动发布: ${audit.automatic_publication_enabled ? '已启用' : '未启用'}`,
+    '',
+    '## 错误',
+    '',
+    ...(audit.errors.length ? audit.errors.map((item) => `- ${item}`) : ['- 无']),
+    '',
+    '## 提示',
+    '',
+    ...(audit.warnings.length ? audit.warnings.map((item) => `- ${item}`) : ['- 无']),
+    '',
+    '- 此校验不发布 Evidence、不创建 Topic/Branch，也不改变 Stage 或 Score。',
+    '',
+  ];
+  return `${lines.join('\n')}\n`;
+}
+
 function renderPromotionReport(result: AutonomousResearchRun): string {
   const report = result.report;
   const lines = [
@@ -215,6 +245,8 @@ function renderPromotionReport(result: AutonomousResearchRun): string {
     `- run_id: ${report.run_id}`,
     `- policy: ${report.policy_id}`,
     `- model_status: ${report.model_status}`,
+    `- publication_mode: ${report.publication_mode}`,
+    `- publication_requested: ${report.publication_requested}`,
     `- published: ${report.published_count}`,
     `- held: ${report.held_count}`,
     `- rejected: ${report.rejected_count}`,
@@ -227,6 +259,7 @@ function renderPromotionReport(result: AutonomousResearchRun): string {
     '',
     '- Stage First, Score Second: true',
     '- Parent/Branch separation: true',
+    `- Human review required: ${report.guardrail_check.human_review_required}`,
     '- Trading advice: prohibited',
     '',
   ];

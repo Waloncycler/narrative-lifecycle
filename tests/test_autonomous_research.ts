@@ -83,6 +83,19 @@ describe('autonomous research publication', () => {
     expect(result.items[0]?.reasons.join(' ')).toContain('fallback');
   });
 
+  it('holds candidates when publication is explicitly requested but disabled by policy', () => {
+    const result = evaluateAutonomousPromotion({
+      session,
+      topicAudit: audit,
+      agentCandidates: bundle.candidates,
+      agentAudit: bundle.audit,
+      existingEvidence: [],
+      policy: { ...policy, auto_publish_evidence: false },
+    });
+    expect(result.items[0]).toMatchObject({ decision: 'held' });
+    expect(result.items[0]?.reasons.join(' ')).toContain('disabled by policy');
+  });
+
   it('allows a provenance-complete rule-verified official source to create a provisional topic when the model falls back', () => {
     const provisionalId = 'provisional_traditional_chinese_medicine_revival';
     const verifiedSession: EvidenceIntakeSession = {
@@ -181,17 +194,21 @@ describe('autonomous research publication', () => {
       writeRun: () => undefined,
       validatePromotionReport: () => undefined, validateNarrativeGraphPromotion: () => undefined, validateSnapshot: () => undefined, validateDiff: () => undefined, validateWeeklyBrief: () => undefined,
     });
-    const result = useCase.execute();
+    const noPublish = useCase.execute();
+    expect(noPublish.report.candidate_count).toBe(1);
+    expect(noPublish.report.published_count).toBe(0);
+    expect(noPublish.report.publication_mode).toBe('review_required');
+    expect(noPublish.report.publication_requested).toBe(false);
+    expect(noPublish.report.items[0]).toMatchObject({ decision: 'held' });
+    expect(noPublish.report.items[0]?.reasons.join(' ')).toContain('not explicitly requested');
+    expect(published).toHaveLength(0);
+
+    const result = useCase.execute({ publish: true });
     expect(result.report.published_count).toBe(1);
     expect(published[0]?.topic_id).toBe('bci');
     expect(result.snapshot.topics[0]?.evidence_ids).toContain('auto_evidence_1');
     expect(result.snapshot.topics[0]?.current_stage).toBe('S2');
     expect(result.weekly_brief.stage_snapshot[0]?.topic_id).toBe('bci');
     expect(result.manifest.current_snapshot_id).toBe(result.diff.current_snapshot_id);
-
-    const noPublish = useCase.execute({ publish: false });
-    expect(noPublish.report.candidate_count).toBe(0);
-    expect(noPublish.report.published_count).toBe(0);
-    expect(published).toHaveLength(1);
   });
 });

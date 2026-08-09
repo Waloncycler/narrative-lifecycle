@@ -87,6 +87,20 @@ data/pilot/operator_observations.yaml
 npm run pilot:review
 ```
 
+## 5. 自动研究与正式发布
+
+运行 `npm run agent:run` 会完成来源覆盖、线索分诊、原文摘录、候选生成、Topic/Branch 解析和运营报告刷新。默认结果只进入研究队列；不会自动写入 Evidence Table，也不会激活主题或分支。
+
+查看 `研究待处理队列` 时，优先处理“待发布证据复核”和“引用待补全”：前者表示候选已经通过部分规则但仍需研究者决定，后者表示原始正文不足以支持事实级引用。
+
+`npm run autonomy:run` 同样默认复核而不发布。只有在维护者明确把 `configs/autonomous_research_policy.json` 中的 `auto_publish_evidence` 设为 `true`，并显式执行下面命令时，系统才会尝试受控发布：
+
+```bash
+npm run autonomy:run -- --publish-auto
+```
+
+这不是交易或阶段决策开关。它仍要通过来源 URL、原文引用、Schema、去重、Topic/Branch、E0-E4、Data Confidence 与父主题阶段跳跃保护；Stage 和 Score 只会在 Evidence Table 写入后由确定性规则重算。
+
 ## 如何判断一张 Dashboard Card
 
 不要先看结论。按这个顺序：

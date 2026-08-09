@@ -17,6 +17,7 @@ import type { DirectSourceResearchReport } from '@/features/research/types/direc
 import type { ResearchLeadTriageReport } from '@/features/research/types/research_lead_triage';
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { ResearchBaselineCompletionReport } from '@/features/research/types/research_baseline_completion';
+import type { AutonomousPromotionReport } from '@/features/research/types/autonomous_research';
 
 export interface NarrativeMonitorTopic {
   topic_id: string;
@@ -168,7 +169,8 @@ export interface NarrativeReviewQueueItem {
     | 'ordinary_candidate'
     | 'guardrail_alert'
     | 'topic_discovery'
-    | 'evidence_chain_update';
+    | 'evidence_chain_update'
+    | 'evidence_publication_review';
   priority: 'high' | 'medium' | 'low';
   title: string;
   reason: string;
@@ -196,6 +198,7 @@ export interface NarrativeMonitorRuntimeInput {
   researchLeadTriage?: ResearchLeadTriageReport | null;
   researchSourceRetrieval?: ResearchSourceRetrievalReport | null;
   researchBaselineCompletion?: ResearchBaselineCompletionReport | null;
+  autonomousPromotion?: AutonomousPromotionReport | null;
   topicDiscoveryProposals?: TopicDiscoveryProposal[];
   evidenceChain?: EvidenceChainEntry[];
   artifactTimes?: Array<{

@@ -136,13 +136,17 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
           maxOperations: body.max_operations ?? 20,
           maxCandidates: body.max_candidates ?? 30,
         });
-        let autonomy = null;
+        let review_status: ReturnType<typeof reviewOnlyStatus> | null = null;
         if (result.session) {
           const bundle = await useCases.runIntakeAgentUseCase.executeLatest();
           useCases.validateTopicsUseCase.execute();
-          autonomy = useCases.runAutonomousResearchUseCase.execute({ bundle });
+          // Source sync only prepares a human-reviewable bundle. Rebuilding
+          // operator artifacts here makes a small intake interaction perform
+          // a second, unrelated weekly-style run and obscures the review
+          // boundary. Operators can explicitly refresh the review report.
+          review_status = reviewOnlyStatus(bundle.candidates.length);
         }
-        return json(response, { result, autonomy, state: readState(repoRoot), monitor: readMonitor(repoRoot) });
+        return json(response, { result, review_status, state: readState(repoRoot), monitor: readMonitor(repoRoot) });
       }
       if (request.method === 'POST' && pathname === '/api/prepare-text') {
         const body = await readJson<{ text: string }>(request);
@@ -150,8 +154,7 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
         const bundle = await useCases.runIntakeAgentUseCase.executeLatest();
         await useCases.runAiShadowValidationUseCase.execute();
         const audit = useCases.validateTopicsUseCase.execute();
-        const autonomy = useCases.runAutonomousResearchUseCase.execute({ bundle });
-        return json(response, { session, audit, autonomy, automation: completedAutomation(), state: readState(repoRoot) });
+        return json(response, { session, audit, review_status: reviewOnlyStatus(bundle.candidates.length), automation: completedAutomation(), state: readState(repoRoot) });
       }
       if (request.method === 'POST' && pathname === '/api/upload') {
         const upload = await readMultipartFile(request);
@@ -160,8 +163,7 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
         const bundle = await useCases.runIntakeAgentUseCase.executeLatest();
         await useCases.runAiShadowValidationUseCase.execute();
         const audit = useCases.validateTopicsUseCase.execute();
-        const autonomy = useCases.runAutonomousResearchUseCase.execute({ bundle });
-        return json(response, { session, audit, autonomy, automation: completedAutomation(), state: readState(repoRoot) });
+        return json(response, { session, audit, review_status: reviewOnlyStatus(bundle.candidates.length), automation: completedAutomation(), state: readState(repoRoot) });
       }
       if (request.method === 'POST' && pathname === '/api/ai-shadow') {
         const result = await useCases.runAiShadowValidationUseCase.execute();
@@ -169,11 +171,10 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
       }
       if (request.method === 'POST' && pathname === '/api/intake-agent') {
         const bundle = await useCases.runIntakeAgentUseCase.executeLatest();
-        const autonomy = useCases.runAutonomousResearchUseCase.execute({ bundle });
-        return json(response, { bundle, autonomy, state: readState(repoRoot) });
+        return json(response, { bundle, review_status: reviewOnlyStatus(bundle.candidates.length), state: readState(repoRoot) });
       }
       if (request.method === 'POST' && pathname === '/api/autonomy/run') {
-        const autonomy = useCases.runAutonomousResearchUseCase.execute();
+        const autonomy = useCases.runAutonomousResearchUseCase.execute({ publish: false });
         return json(response, { autonomy, state: readState(repoRoot), monitor: readMonitor(repoRoot, useCases) });
       }
       if (request.method === 'POST' && pathname === '/api/topic-validate') {
@@ -246,6 +247,20 @@ function completedAutomation(): { status: 'completed'; steps: string[] } {
   return {
     status: 'completed',
     steps: ['文档解析', '规则候选', 'AI Shadow 对照', 'Topic/Branch 检查', '引用与安全校验'],
+  };
+}
+
+function reviewOnlyStatus(candidateCount: number): {
+  status: 'ready_for_review';
+  candidate_count: number;
+  formal_evidence_changed: false;
+  next_step: 'review_or_run_autonomy_report';
+} {
+  return {
+    status: 'ready_for_review',
+    candidate_count: candidateCount,
+    formal_evidence_changed: false,
+    next_step: 'review_or_run_autonomy_report',
   };
 }
 
@@ -380,6 +395,7 @@ function readMonitor(repoRoot: string, useCases?: ProductCoreUseCases) {
   const agentVerification = readJsonFile<IntakeAgentVerificationReport>(repoRoot, 'outputs/intake/latest_agent_verification.json');
   const sourceInventory = readJsonFile<WorldMonitorSourceInventory>(repoRoot, 'outputs/sources/latest_source_inventory.json');
   const sourceSync = readJsonFile<WorldMonitorSyncReport>(repoRoot, 'outputs/sources/latest_sync_report.json');
+  const autonomousPromotion = readJsonFile<import('@/features/research/types/autonomous_research').AutonomousPromotionReport>(repoRoot, 'outputs/autonomy/latest_promotion_report.json');
   const graphPromotion = readJsonFile<import('@/features/narrative/types/narrative_graph_promotion').NarrativeGraphPromotionReport>(repoRoot, 'outputs/autonomy/latest_narrative_graph_promotion.json');
   const webResearch = readJsonFile<import('@/features/research/types/web_research').WebResearchReport>(repoRoot, 'outputs/research/latest_web_research.json');
   const researchCampaign = readJsonFile<ResearchCampaign>(repoRoot, 'outputs/research/latest_campaign.json');
@@ -434,6 +450,7 @@ function readMonitor(repoRoot: string, useCases?: ProductCoreUseCases) {
       sourceInventory,
       sourceSync,
       applyResult,
+      autonomousPromotion,
       researchAgent,
       graphPromotion,
       webResearch,
@@ -587,6 +604,7 @@ function renderInteractiveWorkbench(): string {
     mark { background: #ffe5a6; box-shadow: 0 0 0 2px #ffe5a6; border-radius: 2px; padding: 1px 2px; }
     .chunk-label { display: inline-block; margin: 16px 0 5px; color: var(--subtle); font-size: 11px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
     .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 14px; padding: 16px; box-shadow: var(--shadow); }
+    .card.review-focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(23,107,99,.16), var(--shadow); }
     .card > header { height: auto; padding: 0 0 11px; background: transparent; color: var(--ink); display: flex; gap: 10px; align-items: start; border-bottom: 1px solid #edf0f2; }
     .card h2 { font-size: 15px; line-height: 1.35; margin: 0; flex: 1; }
     .quote { margin: 13px 0; border-left: 3px solid #d0a34b; padding: 8px 0 8px 12px; color: #40515d; font-size: 13px; line-height: 1.6; }
@@ -735,8 +753,19 @@ function renderInteractiveWorkbench(): string {
       if (!session) return;
       renderSource(session);
       renderCards(session, state.topic_audit, state);
+      focusRequestedCandidate();
       renderImpact(state);
       renderAutomation();
+    }
+    function focusRequestedCandidate() {
+      const candidateId = new URLSearchParams(window.location.search).get('candidate');
+      if (!candidateId) return;
+      const card = document.querySelector('.card[data-candidate="' + CSS.escape(candidateId) + '"]');
+      if (!card) return;
+      card.classList.add('review-focus');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      $('automationStatus').className = 'automation-status';
+      $('automationStatus').innerHTML = '<strong>已定位待复核候选</strong><span>请核对原文引用、主题/分支归属与限制条件，再明确选择接受、修改、拒绝或拆分。</span>';
     }
     function renderAutomation() {
       if (!automation?.steps) return;

@@ -57,6 +57,8 @@ Workbench 会生成候选 Evidence Cards，但不会正式导入。每张卡必�
 - reject: 拒绝。
 - split: 拆成多条 evidence。
 
+空的审核决定不会被视为接受。系统会记录 `review_required`，并保持 Evidence Table、Topic/Branch 与 Stage 不变。
+
 确认后运行：
 
 ```bash
@@ -64,6 +66,25 @@ npm run intake:apply -- --decisions outputs/intake/latest_review_decisions.yaml
 ```
 
 系统会继续使用现有 Schema Validator、Parent/Branch Guardrail、Duplicate Detection 和 Evidence Import。导入成功后自动运行 weekly。
+
+## Agent 与自动发布边界
+
+`npm run agent:run` 和 Workbench 的“解析材料”只会生成候选、解析主题/分支并刷新研究队列。它们不会默认把候选写入正式 Evidence Table。
+
+当原始页面来自外部检索时，先检查引用状态：
+
+- `引用可进入审核`：正文长度、引用段落和位置足以进入 Intake 审核。
+- `引用待补全`：页面虽已取得，但正文或定位不足，必须补充原始材料，不能进入正式 Evidence。
+
+受控自动发布不是 Intake 的替代品。只有维护者同时开启版本化策略 `auto_publish_evidence` 并显式运行：
+
+```bash
+npm run autonomy:run -- --publish-auto
+```
+
+系统才会尝试发布符合全部确定性门槛的候选。发布失败或未显式请求时，候选会保留为 `held` 并显示在研究队列。
+
+运行 `npm run policy:validate` 可以在不发布任何 Evidence 的情况下校验当前发布策略，并将结果写入 `outputs/governance/latest_autonomous_research_policy_audit.json`。
 
 ## 校准候选质量
 

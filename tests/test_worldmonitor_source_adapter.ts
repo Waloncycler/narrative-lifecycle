@@ -107,7 +107,7 @@ describe('World Monitor source adapter', () => {
     expect(candidate.suggested_evidence.confidence).toBe('low');
     const provenance = session.provenance_records[0];
     expect(session.raw_document.text.slice(provenance.quote_start_offset, provenance.quote_end_offset)).toBe(provenance.quote);
-    expect(session.review_template[0].decision).toBe('accept');
+    expect(session.review_template).toEqual([]);
   });
 
   it('suppresses repeated payload hashes and context-only output', async () => {

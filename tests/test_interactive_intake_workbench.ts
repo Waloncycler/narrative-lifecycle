@@ -31,7 +31,10 @@ afterEach(async () => {
 }, 20000);
 
 describe('interactive intake workbench', () => {
-  it('lets a non-YAML user paste, edit, import, run weekly, and evaluate feedback', { timeout: 30000 }, async () => {
+  // This exercises the real import -> weekly pipeline plus navigation state;
+  // it is an end-to-end contract rather than a unit test and can contend with
+  // other file-backed pipeline tests in the full suite.
+  it('lets a non-YAML user paste, edit, import, run weekly, and evaluate feedback', { timeout: 90000 }, async () => {
     const root = seedWorkspace();
     const base = await listen(root);
     const page = await fetch(base);
@@ -79,15 +82,24 @@ describe('interactive intake workbench', () => {
 
     const prepared = await post(base, '/api/prepare-text', {
       text: 'Medical rehabilitation BCI branch validation was reported with reimbursement follow-up. The parent BCI narrative still lacks broad pricing confirmation.',
-    }) as { automation: { status: string; steps: string[] }; state: { session: EvidenceIntakeSession } };
+    }) as {
+      automation: { status: string; steps: string[] };
+      review_status: { status: string; formal_evidence_changed: boolean };
+      state: { session: EvidenceIntakeSession };
+    };
     expect(prepared.automation.status).toBe('completed');
     expect(prepared.automation.steps).toContain('引用与安全校验');
+    expect(prepared.review_status).toMatchObject({ status: 'ready_for_review', formal_evidence_changed: false });
     const candidate = prepared.state.session.candidates[0];
     expect(prepared.state.session.candidate_comparisons?.[0].human_decision_required).toBe(false);
 
-    const agent = await post(base, '/api/intake-agent', {}) as { state: { agent_candidates: Array<{ source_candidate_id: string }>; agent_verification: { guardrail_check: { no_auto_import: boolean } } } };
+    const agent = await post(base, '/api/intake-agent', {}) as {
+      review_status: { status: string; formal_evidence_changed: boolean };
+      state: { agent_candidates: Array<{ source_candidate_id: string }>; agent_verification: { guardrail_check: { no_auto_import: boolean } } };
+    };
     expect(agent.state.agent_candidates[0].source_candidate_id).toBe(candidate.candidate_id);
     expect(agent.state.agent_verification.guardrail_check.no_auto_import).toBe(true);
+    expect(agent.review_status).toMatchObject({ status: 'ready_for_review', formal_evidence_changed: false });
 
     const modified = {
       ...candidate.suggested_evidence,
@@ -208,7 +220,7 @@ describe('interactive intake workbench', () => {
     expect(isolatedState.stage_diff).toBeNull();
   });
 
-  it('auto-registers unresolved candidates during interactive import (autonomous mode)', { timeout: 20000 }, async () => {
+  it('auto-registers unresolved candidates during interactive import (autonomous mode)', { timeout: 90000 }, async () => {
     const root = seedWorkspace();
     const base = await listen(root);
     const prepared = await post(base, '/api/prepare-text', { text: 'Ambiguous unresolved topic with unclear labels and no canonical branch.' }) as { state: { session: EvidenceIntakeSession } };

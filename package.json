@@ -51,6 +51,7 @@
     "research:baseline": "tsx src/cli/run_research_baseline.ts",
     "agent:run": "tsx src/cli/run_research_agent.ts",
     "autonomy:run": "tsx src/cli/run_autonomous_research.ts",
+    "policy:validate": "tsx src/cli/run_validate_autonomous_research_policy.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

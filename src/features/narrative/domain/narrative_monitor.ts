@@ -212,7 +212,7 @@ function buildReviewQueue(
       reason: item.duplicate_of_evidence_id
         ? `Possible duplicate of ${item.duplicate_of_evidence_id}.`
         : item.resolution_reason,
-      href: '/intake',
+      href: `/intake?candidate=${encodeURIComponent(item.candidate_id)}`,
     });
   }
   for (const alert of review?.high_priority_operator_alerts ?? []) {
@@ -248,6 +248,19 @@ function buildReviewQueue(
       title: `${entry.topic_id}${entry.branch_id ? ` / ${entry.branch_id}` : ''}`,
       reason: `建议将新材料标记为“${chainRelationLabel(entry.relation)}”；正式证据导入和阶段判断仍需人工确认。`,
       href: '/intake',
+    });
+  }
+  // Policy-held Evidence candidates are actionable research work. Surface
+  // them next to other review tasks instead of burying them in run artifacts.
+  for (const item of runtime.autonomousPromotion?.items.filter((item) => item.decision === 'held').slice(0, 24) ?? []) {
+    rows.push({
+      queue_id: `publication:${item.candidate_id}`,
+      candidate_id: item.candidate_id,
+      category: 'evidence_publication_review',
+      priority: item.scope === 'parent' && /stage|parent.branch|conflict/i.test(item.reasons.join(' ')) ? 'high' : 'medium',
+      title: item.branch_id ? `${item.topic_id ?? '待解析主题'} / ${item.branch_id}` : item.topic_id ?? item.evidence_id,
+      reason: item.reasons.join(' ') || '候选 Evidence 尚未通过正式发布条件。',
+      href: `/intake?candidate=${encodeURIComponent(item.candidate_id)}`,
     });
   }
   const priority = { high: 0, medium: 1, low: 2 };

@@ -21,6 +21,7 @@
 - [04 · Misclassification Correction Rules](04_misclassification_correction_rules.md)
 - [08 · Failure Case Library](08_failure_case_library.md)
 - [26 · Governed Active Learning](26_governed_active_learning.md)
+- [28 · Evidence Publication Governance](28_evidence_publication_governance.md)
 
 ## Sources & operations
 - [27 · World Monitor Data Sources Integration Map](27_worldmonitor_data_sources_integration_map.md)

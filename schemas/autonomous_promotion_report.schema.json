@@ -16,6 +16,8 @@
     "session_id": { "type": ["string", "null"] },
     "policy_id": { "type": "string", "minLength": 1 },
     "model_status": { "enum": ["passed", "fallback", "failed", "not_run"] },
+    "publication_mode": { "enum": ["review_required", "policy_auto"] },
+    "publication_requested": { "type": "boolean" },
     "candidate_count": { "type": "integer", "minimum": 0 },
     "published_count": { "type": "integer", "minimum": 0 },
     "held_count": { "type": "integer", "minimum": 0 },
@@ -49,7 +51,9 @@
         "parent_branch_separation": { "const": true },
         "no_trading_advice": { "const": true },
         "provenance_required": { "type": "boolean" },
-        "model_validation_required": { "type": "boolean" }
+        "model_validation_required": { "type": "boolean" },
+        "human_review_required": { "type": "boolean" },
+        "automatic_publication_enabled": { "type": "boolean" }
       }
     }
   }

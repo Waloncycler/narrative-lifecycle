@@ -14,6 +14,28 @@ const session = {
 } as unknown as EvidenceIntakeSession;
 
 describe('intake apply Topic gate', () => {
+  it('keeps candidates in review when no explicit operator decision exists', () => {
+    let imported = false;
+    let written: unknown = null;
+    const useCase = new ApplyEvidenceIntakeReviewUseCase({
+      readLatestSession: () => session,
+      readTopicResolutionAudit: () => ({ audit_id: 'audit_pending', session_id: session.session_id, resolutions: [] } as unknown as TopicResolutionAudit),
+      readReviewDecisions: () => [],
+      existingEvidenceIds: () => new Set(),
+      writeEvidenceDraft: () => { throw new Error('must not write a draft'); },
+      writeApplyResult: (result) => { written = result; },
+      importEvidence: () => { imported = true; throw new Error('must not import'); },
+      runWeekly: () => { throw new Error('must not run weekly'); },
+      readStageChangeSummary: () => null,
+      now: () => '2026-07-28T12:00:00.000Z',
+    });
+
+    const result = useCase.execute({});
+    expect(result).toMatchObject({ imported: false, import_status: 'review_required', accepted_count: 0, guardrail_check: { human_review_required: true } });
+    expect(imported).toBe(false);
+    expect(written).toEqual(result);
+  });
+
   it('requires a Topic Resolution Audit for the same session', () => {
     const useCase = useCaseWithAudit(null);
     expect(() => useCase.execute({})).toThrow(/topic resolution audit is required/);

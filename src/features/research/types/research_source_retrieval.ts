@@ -7,6 +7,18 @@ export interface SourcePageExcerpt {
   location_label: string;
 }
 
+export type ResearchSourceExtractorId =
+  | 'clinicaltrials_api'
+  | 'arxiv_abstract'
+  | 'sec_edgar_filing'
+  | 'federal_register'
+  | 'gov_cn_article'
+  | 'pubmed_abstract'
+  | 'pmc_jats_article'
+  | 'structured_json_record'
+  | 'company_article'
+  | 'generic_html';
+
 /** A bounded original-page package. It is still context-only until an
  * operator selects it for the existing Evidence Intake workflow. */
 export interface ResearchSourceRetrievalItem {
@@ -25,7 +37,14 @@ export interface ResearchSourceRetrievalItem {
   http_status: number | null;
   content_type: string | null;
   page_title: string | null;
+  /** The deterministic extractor used to create the bounded source package. */
+  extractor_id?: ResearchSourceExtractorId;
   excerpts: SourcePageExcerpt[];
+  /** A source package may be fetched successfully while still lacking a
+   * sufficiently specific quote for Evidence review. */
+  citation_status?: 'ready' | 'insufficient';
+  citation_notes?: string[];
+  source_text_chars?: number;
   content_hash: string | null;
   error: string | null;
   evidence_eligibility: 'context_only';

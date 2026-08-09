@@ -18,7 +18,7 @@ We follow the [Contributor Covenant](https://www.contributor-covenant.org/) Code
 **Hard limits that apply in all contributions:**
 
 - No trading advice, buy/sell signals, or investment recommendations — in code, prompts, or documentation.
-- No automated import of Evidence without human review gates.
+- No unattended Evidence import in the default workflow. Any controlled automatic publication must require an explicit versioned policy, an explicit execution request, complete provenance, and regression tests.
 - No Stage or Score mutation without Evidence Table support.
 - No branch-to-parent automatic promotion.
 
@@ -28,8 +28,8 @@ These are not style preferences. They are system safety guardrails.
 
 ### Good first issues
 
-- Adding new RSS/API data source adapters in `src/infrastructure/worldmonitor_source_adapter.ts`
-- Improving evidence extraction heuristics in `src/domain/worldmonitor_feed_parsing.ts`
+- Adding new RSS/API data source adapters in `src/features/worldmonitor/io/`
+- Improving evidence extraction heuristics in `src/features/worldmonitor/domain/`
 - Expanding the industry pack definitions for the Intake Agent
 - Adding sample evidence YAML files for new domains under `data/sample_evidence/`
 - Translating UI strings or documentation
@@ -44,7 +44,7 @@ Before building a large feature, open an issue first describing:
 
 ### What we do NOT accept
 
-- Features that allow automatic Evidence import without human review
+- Features that make automatic Evidence publication implicit, default-on, or unverifiable
 - Features that produce trading advice or price targets
 - Changes that bypass the Stage Gate rules or Evidence scoring system
 - Storing raw external payload data (hashed fingerprints only)
@@ -77,25 +77,35 @@ npm run report
 
 ## Architecture Principles
 
-This project follows a strict layered architecture:
+This project uses Feature-Sliced modules while preserving a strict dependency direction:
 
 ```
-Interface (CLI / Web UI)
+Interface (`src/cli`, feature UI)
     ↓
-Application (Use Cases)
+Application (`src/app/use_cases`)
     ↓
-Domain (Rules, Stage Gate, Scoring, Evidence)
+Feature domain (`src/features/*/domain`)
     ↓
-Infrastructure (File repos, adapters, YAML, schema)
+Feature/platform I/O (`src/features/*/io`, `src/platform/io`)
 ```
 
 Rules:
 - **Domain** has zero dependencies on Infrastructure or Interface.
 - **Application** orchestrates use cases but never accesses files directly.
-- **Infrastructure** implements adapters and repositories.
+- **Feature/platform I/O** implements adapters, repositories, YAML, JSON Schema and HTTP.
 - **Interface** is thin — it parses args, calls Application use cases, and prints.
 
 File size limits: > 300 lines → consider splitting. > 500 lines → must split.
+
+### Evidence publication changes
+
+The default command and UI paths are review-only. A pull request touching `RunAutonomousResearchUseCase`, publication policy, or a source-to-Evidence conversion must test all of the following:
+
+- default execution leaves the formal Evidence Table unchanged;
+- `--publish-auto` still requires `auto_publish_evidence=true` in the policy;
+- schema, provenance, duplicate and Parent/Branch guards remain active;
+- a branch cannot promote its parent or set its Stage;
+- a held candidate appears in the operator review queue.
 
 ## Submitting Changes
 

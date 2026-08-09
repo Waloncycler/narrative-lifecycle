@@ -317,6 +317,12 @@ flowchart TD
     end
 ```
 
+### 证据发布契约（v0.14）
+
+系统把“发现候选”和“发布正式证据”明确分开。默认的 Workbench、`agent:run`、`autonomy:run` 与定时循环只会生成可审计候选、原文摘录、Topic/Branch 解析和待处理队列；它们不会写入 Evidence Table，也不会激活 Topic 或 Branch。
+
+受控自动发布是一个显式的运维选择，而不是默认能力。它必须同时满足：版本化策略中 `auto_publish_evidence=true`、命令明确传入 `--publish-auto`、来源/引用/Schema/去重/Topic-Branch/E0-E4 校验通过，并且没有触发父主题阶段跳跃保护。即使满足这些条件，Stage 和 Score 仍只由确定性 Evidence Table 规则重算。
+
 ---
 
 ## 七、全流程实操指南 (Run The System)
@@ -363,7 +369,11 @@ npm run sources:sync -- --mode live   # 生产模式实时抓取最新动态
 npm run research:campaign             # 发起全天候多主题跨域研究巡航任务
 npm run research:triage               # 对海量外部线索按权威度与时效进行自动分诊
 npm run research:retrieve -- --max 6  # 对高优先级线索抓取原文可复核真实摘录
+npm run policy:validate                # 校验自动发布策略并生成治理审计，不发布证据
 npm run research:baseline             # 针对 S0 潜伏期核心主题生成阶段基准核验单
+npm run agent:run                     # 运行研究循环；默认只生成待审核候选和研究产物
+npm run autonomy:run                  # 复核候选发布条件并刷新运营报告，不写入正式证据
+npm run autonomy:run -- --publish-auto # 显式受控发布；仍需在策略文件中启用 auto_publish_evidence
 
 # ── 5. 影子 AI 与治理型主动学习 ─────────────────────────────────
 npm run intake:ai-shadow              # 启动 AI 影子比对候选（仅作提示，不自动入库）
@@ -377,7 +387,7 @@ npm run pilot:review                  # 生成实盘试点课题追踪与校验�
 
 # ── 7. 代码工程与质量守卫 ───────────────────────────────────────
 npm run typecheck                     # TypeScript 严苛模式全量类型检查
-npm test                              # 运行 Vitest 自动化单测体系 (390+ Tests 全部通过)
+npm test                              # 运行 Vitest 自动化测试体系（当前 402 项测试全部通过）
 ```
 
 ---
@@ -415,10 +425,12 @@ npm test                              # 运行 Vitest 自动化单测体系 (390
 
 ### 10.2 发展路线图
 - [x] **v0.13**：完成 43 个全球权威情报源网格、S0-S7 状态机动力学方程、Feature-Sliced 模块化重构；
-- [ ] **v0.14**：接入高性能 SQLite / PostgreSQL 持久化引擎，支持海量历史事件高并发检索；
-- [ ] **v0.15**：构建分布式多人协同 Web 研究中枢（支持投研团队共享叙事池与批注工作流）；
-- [ ] **v0.16**：接入彭博 (Bloomberg Terminal)、万得 (Wind Data)、Refinitiv 机构级金融数据接口；
-- [ ] **v0.17**：发布 Python Quant SDK，支持量化团队在 Jupyter Notebook 中无缝调用叙事状态转移因子。
+- [x] **v0.14**：完成 review-first Evidence 发布治理、引用就绪度检查、候选发布复核队列及发布策略的回归测试；
+- [~] **v0.15**：提升证据转化质量：已接入优先监管、披露、公司与学术来源的结构化提取、引用完整度 artifact 与发布策略审计；下一步补充审阅语料上的事实支持度与 Topic/Branch 准确率；
+- [ ] **v0.16**：在 artifact 与 Evidence 合同稳定后接入 SQLite / PostgreSQL，支持历史事件检索与可迁移存储；
+- [ ] **v0.17**：构建带认证、审计留存和批注工作流的只读多人研究界面；
+- [ ] **v0.18**：在合规授权前提下接入 Bloomberg、Wind、Refinitiv 等机构级数据适配器；
+- [ ] **v0.19**：发布 Python Research SDK，支持在 Notebook 中读取可审计叙事状态、证据与阶段迁移结果。
 
 ---
 

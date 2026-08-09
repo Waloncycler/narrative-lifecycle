@@ -76,30 +76,23 @@ export class ApplyEvidenceIntakeReviewUseCase {
 
   execute(input: { decisionsFile?: string }): EvidenceIntakeApplyResult {
     const session = this.deps.readLatestSession();
-    // Autonomous apply: when no review decisions exist, auto-accept every
-    // candidate through the template so the pipeline never waits on humans.
     let decisions: ReviewDecision[];
     try {
       decisions = this.deps.readReviewDecisions(input.decisionsFile);
     } catch {
-      decisions = reviewTemplate(session.candidates);
+      decisions = [];
     }
-    if (!decisions.length) decisions = reviewTemplate(session.candidates);
     const topicAudit = this.deps.readTopicResolutionAudit();
     if (!topicAudit) throw new Error(`topic resolution audit is required for session ${session.session_id}`);
     assertSameSession('topic resolution audit', session.session_id, topicAudit?.session_id ?? null);
-    // Autonomous apply: unresolved / newly-registered topics import as-is
-    // instead of blocking the pipeline; the topic registry auto-registers
-    // new provisional topics and branches during resolution.
     const review = evidenceDraftsFromDecisions({
       candidates: session.candidates,
       decisions,
       existingEvidenceIds: this.deps.existingEvidenceIds(),
     });
-    // Autonomous apply: rewrite each accepted draft's topic from the topic
-    // resolution audit so evidence never lands under "unknown_topic". New
-    // provisional topics / branches were already registered during resolution.
-    applyResolvedTopics(review.drafts, session.candidates, topicAudit);
+    // Explicitly accepted drafts use the audited mapping so they never land
+    // under an unresolved raw Topic identifier.
+    if (review.drafts.length) applyResolvedTopics(review.drafts, session.candidates, topicAudit);
     const draftPath = review.drafts.length ? this.deps.writeEvidenceDraft(review.drafts) : null;
     const rejectedCount = decisions.filter((decision) => decision.decision === 'reject').length;
     const base = {
@@ -116,7 +109,7 @@ export class ApplyEvidenceIntakeReviewUseCase {
       pipeline_retry_count: 0,
       pipeline_error: null,
       guardrail_check: {
-        human_review_required: false,
+        human_review_required: true,
         no_trading_advice: noTradingAdvice(review.drafts),
         duplicate_detection_applied: true,
         parent_branch_guardrail_applied: true,
@@ -127,7 +120,7 @@ export class ApplyEvidenceIntakeReviewUseCase {
       const result: EvidenceIntakeApplyResult = {
         ...base,
         imported: false,
-        import_status: review.duplicates.length ? 'duplicates_rejected' : 'no_accepted_evidence',
+        import_status: review.duplicates.length ? 'duplicates_rejected' : decisions.length ? 'no_accepted_evidence' : 'review_required',
         import_id: null,
         weekly_run_id: null,
         stage_change_summary: null,

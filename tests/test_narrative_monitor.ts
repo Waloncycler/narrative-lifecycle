@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildNarrativeMonitor } from '@/features/narrative/domain/narrative_monitor';
-import { renderAgentDashboard, renderTopicDetail, renderTopics } from '@/features/narrative/ui/narrative_monitor_renderer';
+import { renderAgentDashboard, renderQueue, renderTopicDetail, renderTopics } from '@/features/narrative/ui/narrative_monitor_renderer';
 import type { StageSnapshotHistory } from '@/features/stages/types/diff';
 import type { WeeklyBrief } from '@/features/reporting/types/report';
 
@@ -111,6 +111,21 @@ describe('narrative monitor', () => {
     expect(page).toContain('阶段基准与命名补全');
     expect(page).toContain('不改变已有阶段、证据或登记册');
     expect(page).toContain('人形机器人');
+  });
+
+  it('surfaces policy-held publication candidates in the research queue', () => {
+    const model = buildNarrativeMonitor({
+      snapshot, weekly, diff: null, review: null, unresolvedCount: 0, learningProfileVersion: null,
+      runtime: {
+        autonomousPromotion: {
+          items: [{ candidate_id: 'candidate_policy', evidence_id: 'evidence_policy', topic_id: 'bci', branch_id: null, scope: 'parent', decision: 'held', reasons: ['Automatic publication was not explicitly requested; candidate remains in the operator review queue.'] }],
+        } as never,
+      },
+    });
+    expect(model.review_queue).toEqual(expect.arrayContaining([
+      expect.objectContaining({ category: 'evidence_publication_review', candidate_id: 'candidate_policy', href: '/intake?candidate=candidate_policy' }),
+    ]));
+    expect(renderQueue(model)).toContain('待发布证据复核');
   });
 
   it('keeps opaque branch records auditable but out of market-facing branch summaries', () => {

@@ -84,9 +84,8 @@ export class RunIntakeAgentUseCase {
       if (!model) return candidate;
       return { ...candidate, suggested_evidence: model.suggested_evidence, suggested_reason: model.suggested_reason };
     });
-    // Refresh the auto-accept review template so the merged agent-only
-    // candidates are covered by apply instead of the stale sync-time template
-    // (which only saw the raw rule drafts).
+    // Keep the merged session review-only. Agent enrichment cannot become an
+    // implied acceptance decision for any candidate.
     const discovery = discoverNarrativeGraph({
       session,
       registry: this.deps.readTopicRegistry(),

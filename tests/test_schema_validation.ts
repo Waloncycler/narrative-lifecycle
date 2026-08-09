@@ -158,6 +158,13 @@ describe('schema validation', () => {
     expect(validate.errors?.length).toBeGreaterThan(0);
   });
 
+  it('keeps historical autonomous promotion reports schema-compatible', () => {
+    const schema = JSON.parse(readFileSync(resolve(schemaDir, 'autonomous_promotion_report.schema.json'), 'utf8'));
+    const historical = JSON.parse(readFileSync(resolve(repoRoot, 'outputs/autonomy/latest_promotion_report.json'), 'utf8'));
+    const validate = ajv.compile(schema);
+    expect(validate(historical), JSON.stringify(validate.errors)).toBe(true);
+  });
+
   it('rejects malformed topic lists and enforces unique seed topic ids', () => {
     const schema = JSON.parse(readFileSync(resolve(schemaDir, 'topic_list.schema.json'), 'utf8'));
     const validate = ajv.compile(schema);

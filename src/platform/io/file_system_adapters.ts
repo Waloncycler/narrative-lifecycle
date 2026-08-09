@@ -64,6 +64,7 @@ import { ResearchAgentScheduler } from '@/features/research/io/research_agent_sc
 import { FileResearchAgentRepository } from '@/features/research/io/research_agent_io';
 import { FileAutonomousResearchRepository } from '@/features/research/io/autonomous_research_io';
 import { RunAutonomousResearchUseCase } from '@/app/use_cases/run_autonomous_research_use_case';
+import { ValidateAutonomousResearchPolicyUseCase } from '@/app/use_cases/validate_autonomous_research_policy_use_case';
 import { RunWebResearchUseCase } from '@/app/use_cases/run_web_research_use_case';
 import { FileWebResearchRepository } from '@/features/research/io/web_research_io';
 import { HttpWebSearchProvider, webSearchConfigFromEnv } from '@/features/research/io/web_search_provider';
@@ -541,6 +542,13 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateDiff: (diff) => validator.validate('stage_diff.schema.json', diff),
     validateWeeklyBrief: (brief) => validator.validate('weekly_brief.schema.json', brief),
   });
+  const validateAutonomousResearchPolicyUseCase = new ValidateAutonomousResearchPolicyUseCase({
+    readPolicy: () => autonomousResearchRepository.readPolicy(),
+    writeAudit: (audit) => autonomousResearchRepository.writePolicyAudit(audit),
+    validateAudit: (audit) => validator.validate('autonomous_research_policy_audit.schema.json', audit),
+    now: () => new Date().toISOString(),
+    producerVersion: () => 'v0.15.0',
+  });
 
   const researchAgentRepository = new FileResearchAgentRepository(repoRoot);
   const directSourceProvider = new AuthoritativeDirectSourceProvider();
@@ -622,6 +630,8 @@ export function createProductCoreUseCases(repoRoot: string) {
     retrieve: (input) => researchSourceRetriever.retrieve(input),
     writeReport: (report) => researchSourceRetrievalRepository.writeReport(report),
     validateReport: (report) => validator.validate('research_source_retrieval_report.schema.json', report),
+    writeQualityReport: (report) => researchSourceRetrievalRepository.writeQualityReport(report),
+    validateQualityReport: (report) => validator.validate('research_source_quality_report.schema.json', report),
   });
   const runResearchCampaignUseCase = new RunResearchCampaignUseCase({
     buildCampaign: (input) => buildResearchCampaignUseCase.execute(input),
@@ -693,6 +703,7 @@ export function createProductCoreUseCases(repoRoot: string) {
     researchBaselineCompletionRepository,
     researchSourceRetrievalRepository,
     runAutonomousResearchUseCase,
+    validateAutonomousResearchPolicyUseCase,
     researchAgentLoopUseCase,
     researchAgentScheduler,
     researchAgentRepository,

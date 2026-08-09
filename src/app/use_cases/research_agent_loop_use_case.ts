@@ -215,7 +215,7 @@ export class ResearchAgentLoopUseCase {
       ? 'apply autonomous Evidence publication policy and rebuild live Topic state'
       : 'record a no-change operational state without reusing prior candidates', () => {
       this.deps.runValidateTopics();
-      return this.deps.runAutonomousResearch(agentBundle ?? null, Boolean(agentBundle));
+      return this.deps.runAutonomousResearch(agentBundle ?? null, false);
     }) as AutonomousResearchRun | undefined;
     metrics.imported_evidence_count = autonomousRun?.report.published_count ?? 0;
     metrics.provisional_topics_activated = autonomousRun?.graph_promotion.summary.provisional_topics_activated ?? 0;

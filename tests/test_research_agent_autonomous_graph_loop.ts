@@ -3,15 +3,15 @@ import { ResearchAgentLoopUseCase } from '@/app/use_cases/research_agent_loop_us
 import type { AutonomousResearchRun } from '@/features/research/types/autonomous_research';
 
 const graphRun = {
-  report: { published_count: 2 },
+  report: { published_count: 0 },
   graph_promotion: {
-    summary: { provisional_topics_activated: 1, watch_branches_activated: 1, held_count: 2 },
+    summary: { provisional_topics_activated: 0, watch_branches_activated: 0, held_count: 2 },
   },
   manifest: { run_id: 'run_graph' },
 } as unknown as AutonomousResearchRun;
 
 describe('ResearchAgentLoopUseCase autonomous graph flow', () => {
-  it('reports automatic Topic/Branch activation while preserving review holds', async () => {
+  it('keeps the default agent loop review-only while preserving review holds', async () => {
     const manifests: unknown[] = [];
     const useCase = new ResearchAgentLoopUseCase({
       producerVersion: () => 'v0.11.0',
@@ -21,7 +21,10 @@ describe('ResearchAgentLoopUseCase autonomous graph flow', () => {
       runAiShadow: async () => ({ report: null }),
       runLearningCycle: () => { throw new Error('no reviewed decisions'); },
       runValidateTopics: () => undefined,
-      runAutonomousResearch: () => graphRun,
+      runAutonomousResearch: (_bundle, publish) => {
+        expect(publish).toBe(false);
+        return graphRun;
+      },
       runReview: () => undefined,
       readStaleCandidates: () => [],
       readQueueItems: () => [],
@@ -35,14 +38,14 @@ describe('ResearchAgentLoopUseCase autonomous graph flow', () => {
     const manifest = await useCase.execute();
     expect(manifest.status).toBe('completed');
     expect(manifest.metrics).toMatchObject({
-      imported_evidence_count: 2,
-      provisional_topics_activated: 1,
-      watch_branches_activated: 1,
+      imported_evidence_count: 0,
+      provisional_topics_activated: 0,
+      watch_branches_activated: 0,
       graph_nodes_held: 2,
     });
     expect(manifest.guardrail_check).toMatchObject({
-      no_auto_import: false,
-      no_auto_topic_activation: false,
+      no_auto_import: true,
+      no_auto_topic_activation: true,
       human_review_required: true,
       no_auto_rule_mutation: true,
       no_trading_advice: true,

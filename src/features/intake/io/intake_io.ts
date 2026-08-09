@@ -118,9 +118,8 @@ export class FileIntakeRepository {
 
   writeMergedSession(session: EvidenceIntakeSession): void {
     writeJsonAtomically(resolve(this.repoRoot, LATEST_INTAKE_SESSION_PATH), session);
-    // Refresh the auto-accept review decisions alongside the merged session so
-    // apply never consumes the stale sync-time template (which only saw raw
-    // rule drafts before the agent merged its candidates).
+    // Persist an empty review template for the merged session. The operator
+    // must still make explicit decisions in the Workbench or decisions file.
     writeTextAtomically(resolve(this.repoRoot, LATEST_REVIEW_DECISIONS_PATH), stringify(session.review_template));
   }
 

@@ -97,13 +97,10 @@ export function extractEvidenceCandidates(input: {
   return { candidates, provenance };
 }
 
-export function reviewTemplate(candidates: EvidenceCandidate[], reviewer = 'auto_agent'): ReviewDecision[] {
-  return candidates.map((candidate) => ({
-    candidate_id: candidate.candidate_id,
-    decision: 'accept',
-    reviewer,
-    reviewed_at: new Date().toISOString(),
-  }));
+export function reviewTemplate(_candidates: EvidenceCandidate[]): ReviewDecision[] {
+  // A template represents unfinished work, never an implied approval. The UI
+  // owns the operator's explicit accept/modify/reject/split decision.
+  return [];
 }
 
 export function evidenceDraftsFromDecisions(input: {
@@ -273,7 +270,7 @@ function candidateFromQuote(input: {
     guardrail_check: {
       no_trading_advice: noTradingAdvice(draft),
       provenance_present: Boolean(input.provenance.quote),
-      human_review_required: false,
+      human_review_required: true,
     },
   };
 }

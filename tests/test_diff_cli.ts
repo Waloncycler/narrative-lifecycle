@@ -17,15 +17,24 @@ function run(root: string, runId: string, startedAt: string) {
   });
 }
 
+function seedWorkspace(): string {
+  const root = mkdtempSync(resolve(tmpdir(), 'narrative-diff-'));
+  for (const directory of ['data', 'schemas', 'configs']) {
+    cpSync(resolve(repoRoot, directory), resolve(root, directory), { recursive: true });
+  }
+  mkdirSync(resolve(root, 'outputs'), { recursive: true });
+  const pipeline = spawnSync('npx', ['tsx', resolve(repoRoot, 'src/cli/run_pipeline.ts')], {
+    cwd: repoRoot,
+    env: { ...process.env, NARRATIVE_REPO_ROOT: root },
+    encoding: 'utf8',
+  });
+  if (pipeline.status !== 0) throw new Error(pipeline.stderr || 'pipeline fixture setup failed');
+  return root;
+}
+
 describe('diff CLI', () => {
   it('writes a schema-valid baseline, history, and then no-change comparison', () => {
-    const root = mkdtempSync(resolve(tmpdir(), 'narrative-diff-'));
-    mkdirSync(resolve(root, 'outputs'), { recursive: true });
-    cpSync(resolve(repoRoot, 'outputs/dashboard_cards'), resolve(root, 'outputs/dashboard_cards'), { recursive: true });
-    cpSync(resolve(repoRoot, 'outputs/scores'), resolve(root, 'outputs/scores'), { recursive: true });
-    cpSync(resolve(repoRoot, 'outputs/early_radar_candidates.json'), resolve(root, 'outputs/early_radar_candidates.json'));
-    cpSync(resolve(repoRoot, 'outputs/system_summary.json'), resolve(root, 'outputs/system_summary.json'));
-    cpSync(resolve(repoRoot, 'schemas'), resolve(root, 'schemas'), { recursive: true });
+    const root = seedWorkspace();
 
     const first = run(root, 'run_20260705T000000000_abcdef', '2026-07-05T00:00:00.000Z');
     expect(first.status, first.stderr).toBe(0);

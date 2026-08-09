@@ -1,7 +1,9 @@
 import { buildFailedSourceItem, buildRetrievedSourceItem, selectSourceRetrievalTargets } from '@/features/research/domain/research_source_retrieval';
+import { buildResearchSourceQualityReport } from '@/features/research/domain/research_source_quality';
 import type { ResearchLeadTriageReport } from '@/features/research/types/research_lead_triage';
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { ResearchSourceRetrievalItem } from '@/features/research/types/research_source_retrieval';
+import type { ResearchSourceQualityReport } from '@/features/research/types/research_source_quality';
 
 export interface RetrieveResearchSourcesUseCaseDeps {
   now(): string;
@@ -10,6 +12,8 @@ export interface RetrieveResearchSourcesUseCaseDeps {
   retrieve(input: { url: string; timeoutMs: number }): Promise<{ httpStatus: number; contentType: string | null; body: string }>;
   writeReport(report: ResearchSourceRetrievalReport): void;
   validateReport(report: ResearchSourceRetrievalReport): void;
+  writeQualityReport(report: ResearchSourceQualityReport): void;
+  validateQualityReport(report: ResearchSourceQualityReport): void;
 }
 
 /** Fetches a bounded set of already-governed review leads. The result is an
@@ -40,8 +44,11 @@ export class RetrieveResearchSourcesUseCase {
       items,
       guardrail_check: { only_governed_source_classes_requested: true, bounded_excerpts_only: true, original_url_preserved: true, no_auto_evidence_import: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_trading_advice: true },
     };
+    const quality = buildResearchSourceQualityReport(report);
     this.deps.validateReport(report);
+    this.deps.validateQualityReport(quality);
     this.deps.writeReport(report);
+    this.deps.writeQualityReport(quality);
     return report;
   }
 }

@@ -4,6 +4,11 @@ import type { WeeklyBrief } from '@/features/reporting/types/report';
 import type { RunManifest } from '@/platform/types/run_context';
 
 export type AutonomousPromotionDecision = 'published' | 'held' | 'rejected';
+/**
+ * `review_required` is the normal operator workflow. `policy_auto` is only
+ * available when both the caller and the versioned policy explicitly opt in.
+ */
+export type EvidencePublicationMode = 'review_required' | 'policy_auto';
 
 export interface AutonomousResearchPolicy {
   policy_id: string;
@@ -56,6 +61,8 @@ export interface AutonomousPromotionReport {
   session_id: string | null;
   policy_id: string;
   model_status: 'passed' | 'fallback' | 'failed' | 'not_run';
+  publication_mode: EvidencePublicationMode;
+  publication_requested: boolean;
   candidate_count: number;
   published_count: number;
   held_count: number;
@@ -70,6 +77,8 @@ export interface AutonomousPromotionReport {
     no_trading_advice: true;
     provenance_required: boolean;
     model_validation_required: boolean;
+    human_review_required: boolean;
+    automatic_publication_enabled: boolean;
   };
 }
 

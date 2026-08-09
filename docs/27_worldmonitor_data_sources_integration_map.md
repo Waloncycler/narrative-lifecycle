@@ -103,7 +103,7 @@ Below is a curated reference map, not the canonical runtime inventory. Any stren
 World Monitor Raw Feed / Seed Snapshot JSON
        │
        ▼
-Source Registry + HTTP Adapter (src/infrastructure/worldmonitor_source_adapter.ts)
+Source Registry + HTTP Adapter (`src/features/worldmonitor/io/`)
        │
        ├─► 1. Classify access and evidence eligibility from OpenAPI
        ├─► 2. Apply terms, sensitivity, retention and polling governance
@@ -114,7 +114,7 @@ Source Registry + HTTP Adapter (src/infrastructure/worldmonitor_source_adapter.t
        ├─► 7. Generate conservative E1 / low-confidence / unresolved candidates
        │
        ▼
-Application Use Case (src/application/use_cases/sync_worldmonitor_sources_use_case.ts)
+Application Use Case (`src/app/use_cases/sync_worldmonitor_sources_use_case.ts`)
        │
        ▼
 Operator Review Gate (Human Researcher Review) -> Accept / Modify / Reject

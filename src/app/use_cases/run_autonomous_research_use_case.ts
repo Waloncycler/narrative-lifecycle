@@ -55,7 +55,14 @@ export class RunAutonomousResearchUseCase {
     const session = this.deps.readLatestSession();
     const bundle = input.bundle ?? this.deps.readLatestAgentBundle();
     const existingEvidence = this.deps.readOperationalEvidence();
-    const evaluation = session && input.publish !== false
+    // Publication is deliberately opt-in twice: the execution must request it
+    // and the versioned policy must permit it. A normal Intake or scheduled
+    // research cycle therefore creates auditable review work but cannot mutate
+    // the formal Evidence Table or graph registry.
+    const publicationRequested = input.publish === true;
+    const automaticPublicationEnabled = publicationRequested && policy.enabled && policy.auto_publish_evidence;
+    const publicationMode = automaticPublicationEnabled ? 'policy_auto' as const : 'review_required' as const;
+    const evaluation = session
       ? evaluateAutonomousPromotion({
           session,
           topicAudit: this.deps.readTopicAudit(),
@@ -66,18 +73,28 @@ export class RunAutonomousResearchUseCase {
         })
       : { items: [], drafts: [] };
 
+    const reviewHoldReason = publicationRequested
+      ? 'Automatic publication was requested but is disabled by the current policy; candidate remains in the operator review queue.'
+      : 'Automatic publication was not explicitly requested; candidate remains in the operator review queue.';
+    const evaluatedItems = automaticPublicationEnabled
+      ? evaluation.items
+      : evaluation.items.map((item) => item.decision === 'published'
+        ? { ...item, decision: 'held' as const, reasons: [...item.reasons, reviewHoldReason] }
+        : item);
+    const publicationDrafts = automaticPublicationEnabled ? evaluation.drafts : [];
+
     let validation: EvidenceValidationReport | null = null;
     let published: EvidenceNode[] = [];
     let normalized: EvidenceNode[] = [];
-    if (evaluation.drafts.length) {
+    if (publicationDrafts.length) {
       validation = this.deps.validateDrafts({
-        drafts: evaluation.drafts,
+        drafts: publicationDrafts,
         sourceFile: `autonomous://${session?.session_id ?? 'unknown'}`,
         generatedAt,
       });
       if (validation.status === 'passed') {
         normalized = this.deps.normalizeDrafts({
-          drafts: evaluation.drafts,
+          drafts: publicationDrafts,
           sourceFile: `autonomous://${session?.session_id ?? 'unknown'}`,
           importedAt: generatedAt,
         }).map((item) => ({
@@ -107,7 +124,7 @@ export class RunAutonomousResearchUseCase {
       published = normalized;
       this.deps.writePublishedEvidence(published);
     }
-    const items = evaluation.items.map((item) => publicationFailed && item.decision === 'published'
+    const items = evaluatedItems.map((item) => publicationFailed && item.decision === 'published'
       ? { ...item, decision: 'held' as const, reasons: ['Evidence schema validation failed; automatic publication was stopped.'] }
       : heldTopicIds.has(item.topic_id ?? '') && item.scope === 'parent' && item.decision === 'published'
         ? { ...item, decision: 'held' as const, reasons: [`Prospective parent stage exceeds policy review ceiling ${policy.hold_stage_jump_above}.`] }
@@ -121,6 +138,8 @@ export class RunAutonomousResearchUseCase {
       session_id: session?.session_id ?? null,
       policy_id: policy.policy_id,
       model_status: bundle?.audit.status ?? 'not_run',
+      publication_mode: publicationMode,
+      publication_requested: publicationRequested,
       candidate_count: items.length,
       published_count: published.length,
       held_count: items.filter((item) => item.decision === 'held').length,
@@ -135,18 +154,22 @@ export class RunAutonomousResearchUseCase {
         no_trading_advice: true,
         provenance_required: policy.require_provenance,
         model_validation_required: policy.require_model_validation,
+        human_review_required: !automaticPublicationEnabled,
+        automatic_publication_enabled: automaticPublicationEnabled,
       },
     };
     const operationalEvidence = this.deps.readOperationalEvidence();
     const graphPromotion = evaluateNarrativeGraphPromotions({
       registry: this.deps.readRegistry(),
       evidence: operationalEvidence,
-      policy,
+      policy: automaticPublicationEnabled
+        ? policy
+        : { ...policy, auto_promote_provisional_topics: false, auto_activate_watch_branches: false },
       runId: context.run_id,
       generatedAt,
     });
     this.deps.validateNarrativeGraphPromotion(graphPromotion);
-    this.deps.applyNarrativeGraphPromotions(graphPromotion);
+    if (automaticPublicationEnabled) this.deps.applyNarrativeGraphPromotions(graphPromotion);
     this.deps.writeNarrativeGraphPromotion(graphPromotion);
     const state = buildOperationalResearchState({
       registry: this.deps.readRegistry(),
