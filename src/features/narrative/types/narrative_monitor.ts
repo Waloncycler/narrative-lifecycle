@@ -17,6 +17,7 @@ import type { DirectSourceResearchReport } from '@/features/research/types/direc
 import type { ResearchLeadTriageReport } from '@/features/research/types/research_lead_triage';
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { ResearchBaselineCompletionReport } from '@/features/research/types/research_baseline_completion';
+import type { DeepResearchSweep } from '@/features/research/types/deep_research_sweep';
 import type { AutonomousPromotionReport } from '@/features/research/types/autonomous_research';
 
 export interface NarrativeMonitorTopic {
@@ -89,7 +90,9 @@ export interface NarrativeResearchAgentStatus {
   enabled: boolean;
   loop_running: boolean;
   next_daily_run: string | null;
+  next_deep_run: string | null;
   last_run: ResearchAgentRunManifest | null;
+  deep_research_sweep: DeepResearchSweep | null;
   run_history: ResearchAgentRunManifest[];
   evolution: ResearchAgentEvolutionLedger | null;
   scheduler: ResearchAgentSchedulerConfig;

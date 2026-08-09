@@ -20,10 +20,19 @@ export interface RecoverHistoricalProvenanceUseCaseDeps {
 export class RecoverHistoricalProvenanceUseCase {
   constructor(private readonly deps: RecoverHistoricalProvenanceUseCaseDeps) {}
 
-  async execute(input: { maxTargets?: number; maxSourcesPerTarget?: number; timeoutMs?: number; evidenceIds?: string[] } = {}): Promise<{ report: HistoricalProvenanceRecoveryReport; retrieval: ResearchSourceRetrievalReport }> {
+  async execute(input: {
+    maxTargets?: number;
+    maxSourcesPerTarget?: number;
+    timeoutMs?: number;
+    evidenceIds?: string[];
+    includeEvidenceGrade?: boolean;
+    requireTopicTitleMatch?: boolean;
+  } = {}): Promise<{ report: HistoricalProvenanceRecoveryReport; retrieval: ResearchSourceRetrievalReport }> {
     const generatedAt = this.deps.now();
     const targets = selectHistoricalProvenanceTargets({
       evidence: this.deps.readEvidence().filter((item) => !input.evidenceIds?.length || input.evidenceIds.includes(item.evidence_id)), registry: this.deps.readRegistry(), admittedEvidenceIds: this.deps.readAdmittedEvidenceIds(), limit: input.maxTargets ?? 3,
+      includeEvidenceGrade: input.includeEvidenceGrade,
+      requireTopicTitleMatch: input.requireTopicTitleMatch,
     });
     const report = await recoverHistoricalProvenance({
       targets, generatedAt, producerVersion: this.deps.producerVersion(), searchProvider: this.deps.searchProvider(),

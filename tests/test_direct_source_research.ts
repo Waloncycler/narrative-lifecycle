@@ -326,20 +326,24 @@ describe('authoritative direct-source research', () => {
       }),
       runWebResearch: async (input) => {
         plannedQueries = input.plannedQueries;
-        return { artifact_type: 'web_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'web_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'unconfigured', provider: 'disabled', queries: [], lead_count: 0, leads: [], errors: [], guardrail_check: { search_snippets_not_formal_evidence: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } };
+        return { artifact_type: 'web_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'web_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'unconfigured', provider: 'disabled', providers: [], queries: [], lead_count: 0, leads: [], errors: [], guardrail_check: { search_snippets_not_formal_evidence: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } };
       },
       runDirectSourceResearch: async () => ({ artifact_type: 'direct_source_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'direct_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'completed', queries: [], lead_count: 0, leads: [], guardrail_check: { direct_source_results_not_formal_evidence: true, original_source_url_required: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } }),
       prepareDirectSourceIntake: () => null,
     }).execute({ maxQueries: 3 });
     const companyQuery = plannedQueries.find((query) => query.campaign_task_id.endsWith('__company_nvidia'));
     expect(companyQuery).toMatchObject({ topic_id: 'bci', branch_id: null, source_ids: ['sec_edgar'], source_domains: ['investor.nvidia.com'] });
+    expect((companyQuery as { strict_source_domains?: string[] } | undefined)?.strict_source_domains).toEqual(['investor.nvidia.com']);
     expect(companyQuery?.query).toContain('NVIDIA');
-    expect(plannedQueries).toHaveLength(2);
+    // maxQueries=3 → 1 slimmed company query + 2 topic terms (English wide-net
+    // primary, then the Chinese variant) via round-robin term expansion.
+    expect(plannedQueries).toHaveLength(3);
     // Topic queries remain a wide-net pass. Their source domains enable only
     // an additional bounded Bing site pass; they do not filter out the free
     // aggregate or become an Evidence claim.
     const topicQuery = plannedQueries.find((query) => !query.campaign_task_id.includes('__company_'));
     expect(topicQuery).toMatchObject({ topic_id: 'bci', source_ids: ['clinicaltrials'], source_domains: ['clinicaltrials.gov'] });
+    expect((topicQuery as { strict_source_domains?: string[] } | undefined)?.strict_source_domains).toEqual([]);
     expect(topicQuery?.query).not.toContain('官方');
     expect(topicQuery?.query.length).toBeGreaterThan(0);
   });
@@ -357,7 +361,7 @@ describe('authoritative direct-source research', () => {
       }),
       runWebResearch: async (input) => {
         plannedQueries = input.plannedQueries;
-        return { artifact_type: 'web_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'web_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'completed', provider: 'free', queries: [], lead_count: 0, leads: [], errors: [], guardrail_check: { search_snippets_not_formal_evidence: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } };
+        return { artifact_type: 'web_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'web_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'completed', provider: 'free', providers: ['free'], queries: [], lead_count: 0, leads: [], errors: [], guardrail_check: { search_snippets_not_formal_evidence: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } };
       },
       runDirectSourceResearch: async () => ({ artifact_type: 'direct_source_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'direct_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'completed', queries: [], lead_count: 0, leads: [], guardrail_check: { direct_source_results_not_formal_evidence: true, original_source_url_required: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } }),
       prepareDirectSourceIntake: () => null,
@@ -367,6 +371,67 @@ describe('authoritative direct-source research', () => {
       expect.objectContaining({ topic_id: 'bci', branch_id: 'bci_medical_rehab', candidate_node_id: null }),
       expect.objectContaining({ topic_id: null, branch_id: null, candidate_node_id: 'solid_state_battery' }),
     ]));
+  });
+
+  it('expands topic terms round-robin (EN/ZH/aliases) without dropping scope or governance fields', async () => {
+    let plannedQueries: Array<{ query: string; topic_id: string | null; source_ids: string[]; source_domains: string[] }> = [];
+    await new RunResearchCampaignUseCase({
+      readRegistry: () => ({
+        canonical_topics: [], branches: [], provisional_topics: [], memory_topic_ids: [],
+        aliases: [
+          { alias: 'BCI', topic_id: 'bci', reason: 'test' },
+          { alias: 'brain-computer interface', topic_id: 'bci', reason: 'test' },
+          { alias: 'neuro rehab', topic_id: 'bci', reason: 'test' },
+        ],
+      }),
+      buildCampaign: () => campaign,
+      runWebResearch: async (input) => {
+        plannedQueries = input.plannedQueries;
+        return { artifact_type: 'web_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'web_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'unconfigured', provider: 'disabled', providers: [], queries: [], lead_count: 0, leads: [], errors: [], guardrail_check: { search_snippets_not_formal_evidence: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } };
+      },
+      runDirectSourceResearch: async () => ({ artifact_type: 'direct_source_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'direct_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'completed', queries: [], lead_count: 0, leads: [], guardrail_check: { direct_source_results_not_formal_evidence: true, original_source_url_required: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } }),
+      prepareDirectSourceIntake: () => null,
+    }).execute({ maxQueries: 12 });
+    // Round 1 = primary EN (scope coverage), Round 2 = ZH, Round 3 = aliases.
+    expect(plannedQueries.map((query) => query.query)).toEqual([
+      'Brain-computer interface',
+      '脑机接口',
+      'BCI',
+      'neuro rehab',
+    ]);
+    expect(plannedQueries.every((query) => query.topic_id === 'bci' && query.source_ids.join() === 'clinicaltrials' && query.source_domains.join() === 'clinicaltrials.gov')).toBe(true);
+  });
+
+  it('keeps parent/branch/seed coverage in the first round before alias expansion', async () => {
+    let plannedQueries: Array<{ query: string; branch_id: string | null; candidate_node_id?: string | null }> = [];
+    await new RunResearchCampaignUseCase({
+      readRegistry: () => ({
+        canonical_topics: [], branches: [], provisional_topics: [], memory_topic_ids: [],
+        aliases: [{ alias: 'BCI', topic_id: 'bci', reason: 'test' }],
+      }),
+      buildCampaign: () => ({
+        ...campaign,
+        tasks: [
+          campaign.tasks[0]!,
+          { ...campaign.tasks[0]!, task_id: 'campaign_branch_bci_medical_rehab', node_kind: 'branch', branch_id: 'bci_medical_rehab', display_name_zh: '脑机接口医疗康复', display_name_en: 'BCI medical rehabilitation', formal_status: 'watch_branch' },
+          { ...campaign.tasks[0]!, task_id: 'campaign_seed_solid_state_battery', node_kind: 'universe_seed', topic_id: null, branch_id: null, candidate_node_id: 'solid_state_battery', display_name_zh: '固态电池', display_name_en: 'Solid-state batteries', formal_status: 'research_seed' },
+        ],
+      }),
+      runWebResearch: async (input) => {
+        plannedQueries = input.plannedQueries;
+        return { artifact_type: 'web_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'web_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'unconfigured', provider: 'disabled', providers: [], queries: [], lead_count: 0, leads: [], errors: [], guardrail_check: { search_snippets_not_formal_evidence: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } };
+      },
+      runDirectSourceResearch: async () => ({ artifact_type: 'direct_source_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'direct_1', generated_at: '2026-08-03T00:00:00.000Z', status: 'completed', queries: [], lead_count: 0, leads: [], guardrail_check: { direct_source_results_not_formal_evidence: true, original_source_url_required: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true } }),
+      prepareDirectSourceIntake: () => null,
+    }).execute({ maxQueries: 6 });
+    // Round 0 fills each scope's primary before any alias slot is spent.
+    expect(plannedQueries.slice(0, 3).map((query) => query.query)).toEqual([
+      'Brain-computer interface',
+      'BCI medical rehabilitation',
+      'Solid-state batteries',
+    ]);
+    expect(plannedQueries[3]?.query).toBe('脑机接口');
+    expect(plannedQueries.some((query) => query.candidate_node_id === 'solid_state_battery')).toBe(true);
   });
 
   it('creates a provenance-complete E1 review session without allowing a parent-stage shortcut', () => {

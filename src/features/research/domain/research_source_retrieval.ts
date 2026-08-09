@@ -101,7 +101,7 @@ export function extractReadableSource(raw: string, contentType: string | null, s
     const text = readableText(body).slice(0, 12_000);
     return { title, text: `Federal Register Official Rule / Notice\n\n${text}`, extractor_id: 'federal_register' };
   }
-  if (isGovCnUrl(sourceUrl)) {
+  if (isChineseAuthorityUrl(sourceUrl)) {
     const article = firstElement(body, /<(?:div|section)[^>]*(?:class|id)=["'][^"']*(?:TRS_Editor|pages_content|content)[^"']*["'][^>]*>([\s\S]*?)<\/(?:div|section)>/i);
     const title = htmlTitle(body);
     if (article) return { title, text: `国务院及部委正文\n\n${readableText(article).slice(0, 12_000)}`, extractor_id: 'gov_cn_article' };
@@ -173,13 +173,21 @@ function firstText(value: unknown): string | null {
 
 function firstElement(value: string, pattern: RegExp): string | null { return pattern.exec(value)?.[1] ?? null; }
 function htmlTitle(value: string): string | null { return decodeEntities(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(value)?.[1] ?? '').trim() || null; }
-function isGovCnUrl(value: string): boolean { return /(?:^|\.)gov\.cn\//i.test(value); }
+/** Central and ministerial sites use both gov.cn and their own statutory
+ * domains. They share article-body extraction; authority is still checked by
+ * triage and Evidence Gate, not by this URL matcher. */
+function isChineseAuthorityUrl(value: string): boolean {
+  return /(?:^|\.)(?:gov\.cn|nhsa\.gov\.cn|nmpa\.gov\.cn|cde\.org\.cn|miit\.gov\.cn|ndrc\.gov\.cn|stats\.gov\.cn)\//i.test(value);
+}
 function isPubMedUrl(value: string): boolean { return /pubmed\.ncbi\.nlm\.nih\.gov/i.test(value); }
 function isPmcUrl(value: string): boolean { return /pmc\.ncbi\.nlm\.nih\.gov/i.test(value); }
 
 function excerptsFrom(text: string): ResearchSourceRetrievalItem['excerpts'] {
   const candidates = text
-    .split(/\n{2,}|(?<=[。！？；.!?])\s*(?=[A-Z\u4e00-\u9fff【《])/)
+    // Chinese authority articles often place several compact fact sentences
+    // in one semantic paragraph. Split only hard paragraphs for CJK, while
+    // retaining English sentence splitting to avoid huge unstructured quotes.
+    .split(/\n{2,}|(?<=[.!?])\s*(?=[A-Z])/)
     .map((item) => item.trim())
     .filter((item) => item.length >= 60)
     .filter((item) => !isPageChrome(item));
@@ -200,7 +208,7 @@ function assessCitationReadiness(text: string, excerpts: SourcePageExcerpt[]): {
   if (/(?:captcha|radware bot manager|cloudflare|access denied|unusual traffic|验证您是人类|安全验证)/i.test(text)) notes.push('页面为验证码、拦截或访问控制页，不是可引用原文。');
   if (text.length < 240) notes.push('可读正文过短，无法支持事实级复核。');
   if (!excerpts.length) notes.push('未提取到可引用的事实段落。');
-  if (excerpts.length && !excerpts.some((item) => item.quote.length >= 120)) notes.push('引用段落过短，需要补充包含事实与限定条件的原文。');
+  if (excerpts.length && !excerpts.some((item) => citationLengthSufficient(item.quote))) notes.push('引用段落过短，需要补充包含事实与限定条件的原文。');
   if (excerpts.some((item) => item.quote_start_offset < 0 || item.quote_end_offset <= item.quote_start_offset)) notes.push('引用位置不完整，不能进入 Evidence 审核。');
   return { status: notes.length ? 'insufficient' : 'ready', notes };
 }
@@ -252,6 +260,15 @@ function excerptScore(value: string): number {
   if (/\d/.test(value)) score += 1;
   return score;
 }
+
+/** Chinese fact sentences are denser than English prose. A meaningful
+ * 70-Han-character official statistic can be reviewable even when it is
+ * below the 120-character threshold used for Latin-script paragraphs. */
+function citationLengthSufficient(value: string): boolean {
+  return value.length >= 120 || hanCount(value) >= 60;
+}
+
+function hanCount(value: string): number { return (value.match(/[\u3400-\u9fff]/g) ?? []).length; }
 
 function isClinicalTrialsUrl(value: string): boolean { return /clinicaltrials\.gov\/study\/NCT\d+/i.test(value); }
 function decodeEntities(value: string): string { return value.replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'"); }

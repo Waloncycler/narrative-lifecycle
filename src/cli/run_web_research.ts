@@ -15,7 +15,7 @@ const report = await createProductCoreUseCases(repoRoot).runWebResearchUseCase.e
 
 console.log(JSON.stringify({
   status: report.status,
-  provider: report.provider,
+  providers: report.providers.length ? report.providers : [report.provider],
   queries: report.queries.length,
   leads: report.lead_count,
   errors: report.errors,

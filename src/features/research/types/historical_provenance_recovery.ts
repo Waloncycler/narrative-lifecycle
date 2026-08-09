@@ -9,6 +9,8 @@ export interface HistoricalProvenanceRecoveryTarget {
   event_title: string;
   event_date: string;
   known_source_url: string | null;
+  /** Controlled legacy classification used only as a retrieval hint. */
+  known_source_type?: string | null;
   search_queries: string[];
 }
 

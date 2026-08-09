@@ -22,7 +22,7 @@ export interface AppendRetrievedSourceIntakeUseCaseDeps {
 export class AppendRetrievedSourceIntakeUseCase {
   constructor(private readonly deps: AppendRetrievedSourceIntakeUseCaseDeps) {}
 
-  execute(report: ResearchSourceRetrievalReport): EvidenceIntakeSession | null {
+  execute(report: ResearchSourceRetrievalReport, options: { resolveTopics?: boolean } = {}): EvidenceIntakeSession | null {
     const ready = report.items.filter((item) => item.status === 'retrieved' && item.citation_status === 'ready' && item.next_action === 'prepare_intake' && item.excerpts.length);
     if (!ready.length) return this.deps.readLatestSession();
     const generatedAt = this.deps.now();
@@ -171,7 +171,10 @@ export class AppendRetrievedSourceIntakeUseCase {
     session.review_template = reviewTemplate(session.candidates);
     this.deps.validateSession(session);
     this.deps.writeIntakeSession(session);
-    this.deps.resolveTopics(session);
+    // Curated research packs may intentionally carry a proposed, not yet
+    // registrable taxonomy. Preserve those candidates for review without
+    // turning the act of retrieval into a Topic Registry mutation.
+    if (options.resolveTopics !== false) this.deps.resolveTopics(session);
     return session;
   }
 }

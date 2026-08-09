@@ -25,6 +25,46 @@ describe('historical provenance recovery', () => {
     expect(targets.find((item) => item.legacy_evidence_id === 'branch_legacy')).toMatchObject({ scope: 'branch', branch_id: 'rehab' });
   });
 
+  it('can explicitly recheck a reconciled parent baseline despite an old long summary', () => {
+    const targets = selectHistoricalProvenanceTargets({
+      evidence: [
+        legacy({ evidence_id: 'parent_long', event_summary: 'x'.repeat(180), event_title: 'Company implementation announcement', source_type: 'company', source_url: 'https://company.example.test/news' }),
+      ],
+      registry,
+      admittedEvidenceIds: new Set(),
+      limit: 1,
+      includeEvidenceGrade: true,
+      requireTopicTitleMatch: false,
+    });
+    expect(targets).toHaveLength(1);
+    expect(targets[0]).toMatchObject({ legacy_evidence_id: 'parent_long', scope: 'parent', known_source_type: 'company' });
+  });
+
+  it('accepts a controlled company primary URL only when it matches the original host', async () => {
+    const targets = selectHistoricalProvenanceTargets({
+      evidence: [legacy({ event_title: 'Company BCI programme announcement', source_type: 'company', source_url: 'https://company.example.test/news' })],
+      registry,
+      admittedEvidenceIds: new Set(),
+      limit: 1,
+      includeEvidenceGrade: true,
+    });
+    const report = await recoverHistoricalProvenance({
+      targets,
+      generatedAt: '2026-08-09T00:00:00.000Z',
+      producerVersion: 'test',
+      searchProvider: 'free',
+      maxSourcesPerTarget: 3,
+      search: async () => [
+        { title: 'Company BCI programme announcement', url: 'https://untrusted-company.example.test/repost' },
+        { title: 'Company BCI programme announcement', url: 'https://www.gov.cn/notice' },
+      ],
+      retrieve: async (url) => ({ httpStatus: 200, contentType: 'text/html', body: sourceBody('Company BCI programme announcement', url.includes('gov.cn') ? 'An official record corroborates the company announcement.' : 'A company primary announcement describes the programme.') }),
+    });
+    expect(report.auto_intake_ready_count).toBe(1);
+    expect(report.items[0]?.independent_source_hosts).toEqual(expect.arrayContaining(['company.example.test', 'www.gov.cn']));
+    expect(report.items[0]?.retrieved_sources.map((item) => item.url)).not.toContain('https://untrusted-company.example.test/repost');
+  });
+
   it('requires two distinct citation-ready original source hosts before a legacy row can enter the Intake Agent', async () => {
     const targets = selectHistoricalProvenanceTargets({ evidence: [legacy()], registry, admittedEvidenceIds: new Set(), limit: 2 });
     const report = await recoverHistoricalProvenance({

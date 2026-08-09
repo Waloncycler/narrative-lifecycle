@@ -134,6 +134,7 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
   const leadTriage = agent.research_lead_triage;
   const sourceRetrieval = agent.research_source_retrieval;
   const baselineCompletion = agent.research_baseline_completion;
+  const deepSweep = agent.deep_research_sweep;
   const retrievedSources = sourceRetrieval?.items.filter((item) => item.status === 'retrieved') ?? [];
   const companyTargetCount = new Set(researchCampaign?.tasks.flatMap((task) => task.company_targets?.map((company) => company.company_id) ?? []) ?? []).size;
   const companyTargetNames = [...new Map((researchCampaign?.tasks.flatMap((task) => task.company_targets ?? []) ?? [])
@@ -166,6 +167,15 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
         } catch (error) { window.alert('研究覆盖计划失败：' + error.message); }
         finally { location.reload(); }
       }
+      async function runDeepNow() {
+        const button = document.getElementById('run-deep');
+        button.disabled = true; button.textContent = '深扫中…';
+        try {
+          const response = await fetch('/api/agent/run', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ loop_kind: 'deep' }) });
+          const data = await response.json().catch(() => ({}));
+          if (data.status === 'already_running') { alert('已有一轮循环正在运行，请等待完成。'); location.reload(); return; }
+        } finally { location.reload(); }
+      }
       async function waitForAgentIdle() {
         const deadline = Date.now() + 10 * 60 * 1000; // 最长等待 10 分钟
         while (Date.now() < deadline) {
@@ -180,9 +190,12 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
         const data = Object.fromEntries(new FormData(form).entries());
         data.enabled = form.elements['enabled'].checked;
         data.quick_enabled = form.elements['quick_enabled'].checked;
+        data.deep_enabled = form.elements['deep_enabled'].checked;
         data.daily_max_operations = Number(data.daily_max_operations);
         data.quick_max_operations = Number(data.quick_max_operations);
         data.quick_interval_hours = Number(data.quick_interval_hours);
+        data.deep_max_rounds = Number(data.deep_max_rounds);
+        data.deep_queries_per_round = Number(data.deep_queries_per_round);
         for (const key of ['stale_candidate_max_age_days','queue_high_priority_max_age_days','queue_medium_priority_max_age_days','queue_low_priority_max_age_days','evolution_history_max_entries']) data[key] = Number(data[key]);
         await fetch('/api/agent/scheduler-config', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
         location.reload();
@@ -197,11 +210,12 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
     </script>
     <section class="hero-row">
       <div><p class="eyebrow">自驱动研究 Agent</p><h1>自动调研与迭代循环</h1><p class="lede">自动检索、取证、解析和政策准入。只有满足原始来源、引用、日期、主题归属与阶段保护规则的候选才会进入正式证据；其他项目保留明确原因。</p></div>
-      <div class="action-row"><button id="run-coverage-campaign" class="button secondary" onclick="runCoverageCampaign()">仅更新研究覆盖</button><button id="run-agent" class="button primary" onclick="runAgentNow()" ${agent.loop_running ? 'disabled' : ''}>${agent.loop_running ? '自动运行中…' : '自动运行并准入'}</button></div>
+      <div class="action-row"><button id="run-coverage-campaign" class="button secondary" onclick="runCoverageCampaign()">仅更新研究覆盖</button><button id="run-deep" class="button secondary" onclick="runDeepNow()" ${agent.loop_running ? 'disabled' : ''}>深度搜索</button><button id="run-agent" class="button primary" onclick="runAgentNow()" ${agent.loop_running ? 'disabled' : ''}>${agent.loop_running ? '自动运行中…' : '自动运行并准入'}</button></div>
     </section>
     <section class="system-strip">
       ${compactStatus('调度器', scheduler.enabled ? '已启用' : '已停用', scheduler.enabled ? 'operational' : 'not_configured')}
       ${compactStatus('下一轮调研', friendlyDate(agent.next_daily_run), agent.next_daily_run ? 'operational' : 'not_configured')}
+      ${compactStatus('下一轮深扫', friendlyDate(agent.next_deep_run), scheduler.deep_enabled && agent.next_deep_run ? 'operational' : 'not_configured')}
       ${compactStatus('最近一轮', friendlyDate(lastRun?.completed_at), loopState)}
       ${compactStatus('进化漂移', driftCount ? `检测到 ${driftCount} 项` : '无漂移', driftCount ? 'warn' : 'operational')}
       ${compactStatus('运行中', agent.loop_running ? '是' : '否', agent.loop_running ? 'warn' : 'operational')}
@@ -228,7 +242,8 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
       ${kpi('研究覆盖', String(researchCampaign?.summary.task_count ?? lastMetrics?.research_campaign_tasks ?? 0), researchCampaign ? `来源目标 ${researchCampaign.summary.source_target_count} · 研究种子 ${researchCampaign.summary.universe_seed_count}` : `来源目标 ${lastMetrics?.research_campaign_source_targets ?? 0} · 研究种子 ${lastMetrics?.research_campaign_seed_topics ?? 0}`)}
       ${kpi('公司核验', String(companyTargetCount), researchCampaign ? '官网/IR 仅作定向核验，不直接形成证据' : '生成覆盖计划后显示')}
       ${kpi('权威 API 线索', String(directSourceResearch?.lead_count ?? lastMetrics?.direct_source_leads ?? 0), directSourceResearch ? `${directSourceResearch.queries.filter((query) => query.status === 'completed').length} 个定向查询；只作待核验线索` : '尚未执行定向原始来源查询')}
-      ${kpi('外部线索', String(webResearch?.lead_count ?? 0), webResearch ? `${webResearch.queries.length} 个检索词；只作待核验线索` : '尚未执行外部检索')}
+      ${kpi('外部线索', String(webResearch?.lead_count ?? 0), webResearch ? `${webResearch.queries.length} 个检索词 × ${(webResearch.providers ?? [webResearch.provider]).join('+')} 并行引擎；只作待核验线索` : '尚未执行外部检索')}
+      ${kpi('深度扫描', String(lastMetrics?.deep_sweep_rounds ?? deepSweep?.totals.rounds ?? 0), deepSweep ? `累计 ${deepSweep.totals.queries} 次检索 · ${deepSweep.totals.leads} 条线索 · 追问 ${Math.max(0, deepSweep.totals.queries - (deepSweep.rounds[0]?.queries ?? 0))} 次` : `最近一轮追问 ${lastMetrics?.deep_followup_queries ?? 0} 次`)}
       ${kpi('优先复核', String(leadTriage?.summary.priority_review_count ?? 0), leadTriage ? `普通复核 ${leadTriage.summary.review_count} · 背景参考 ${leadTriage.summary.reference_only_count} · 暂缓 ${leadTriage.summary.hold_count}` : '运行覆盖计划后自动分诊')}
     </section>
     <div class="dashboard-grid">
@@ -238,7 +253,7 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
           <article class="agent-run">
             <div class="agent-run-head"><span class="state-pill ${run.status === 'completed' ? 'ok' : run.status === 'partial' ? 'warn' : 'bad'}">${agentRunStatusLabel(run.status)}</span><strong>${friendlyDate(run.started_at)}</strong><span class="chip">${loopKindLabel(run.loop_kind)} · ${triggerLabel(run.triggered_by)}</span></div>
             <div class="agent-phase-row">${run.phases.map((phase) => `<span class="phase-pill ${phase.status === 'ok' ? 'ok' : phase.status === 'failed' ? 'bad' : 'muted'}">${phaseLabel(phase.phase)}</span>`).join('')}</div>
-            <p class="muted">覆盖任务 ${run.metrics.research_campaign_tasks ?? 0} · 权威 API ${run.metrics.direct_source_queries ?? 0} 次 / 线索 ${run.metrics.direct_source_leads ?? 0} 条 · 受控源同步 ${run.metrics.sources_completed}/${run.metrics.sources_requested} · 候选 ${run.metrics.candidate_count} · 激活主题 ${run.metrics.provisional_topics_activated ?? 0} · 激活分支 ${run.metrics.watch_branches_activated ?? 0} · 暂停 ${run.metrics.graph_nodes_held ?? 0} · 漂移 ${run.metrics.drift_detected ? '有' : '无'}</p>
+            <p class="muted">覆盖任务 ${run.metrics.research_campaign_tasks ?? 0} · 权威 API ${run.metrics.direct_source_queries ?? 0} 次 / 线索 ${run.metrics.direct_source_leads ?? 0} 条${run.loop_kind === 'deep' ? ` · 深扫 ${run.metrics.deep_sweep_rounds ?? 0} 轮 / 追问 ${run.metrics.deep_followup_queries ?? 0} 词` : ''} · 受控源同步 ${run.metrics.sources_completed}/${run.metrics.sources_requested} · 候选 ${run.metrics.candidate_count} · 激活主题 ${run.metrics.provisional_topics_activated ?? 0} · 激活分支 ${run.metrics.watch_branches_activated ?? 0} · 暂停 ${run.metrics.graph_nodes_held ?? 0} · 漂移 ${run.metrics.drift_detected ? '有' : '无'}</p>
             ${technicalDetails([['运行批次', run.run_id], ['起止', `${run.started_at} → ${run.completed_at}`]])}
           </article>`).join('') : '<p class="muted">尚无 Agent 运行记录。点击“立即运行一轮”开始第一次自动调研循环。</p>'}
       </section>
@@ -254,6 +269,11 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
         ${webResearch?.leads.length ? webResearch.leads.slice(0, 12).map((lead) => `<div class="list-row"><span><strong><a class="topic-link" href="${escape(lead.url)}" target="_blank" rel="noreferrer">${escape(lead.title)}</a></strong><p>${escape(lead.source_name)} · ${lead.topic_id ? friendlyTopic(lead.topic_id) : '命名核验'}${lead.snippet ? ` · ${escape(lead.snippet)}` : ''}</p></span><span class="chip">待核验</span></div>`).join('') : `<p class="muted">${webResearch?.status === 'unconfigured' ? researchCampaign ? '覆盖计划已生成，但外部检索服务尚未配置。可配置 Brave、Tavily 或 MCP Bridge；检索服务不会使用模型密钥。' : '外部检索服务尚未配置，且尚未生成覆盖计划。' : '尚未生成外部线索。'}</p>`}
         ${webResearch?.errors.length ? `<p class="small">${webResearch.errors.map(friendlyWebResearchError).join('；')}</p>` : ''}
       </section>
+      ${deepSweep ? `<section class="panel wide-panel">
+        <div class="panel-heading"><div><p class="eyebrow">多轮迭代深搜</p><h2>最近深度扫描</h2><p class="small">第 0 轮是源感知覆盖计划；后续轮次从上一轮线索确定性推导追问检索词，并重新进入同一套分诊 → 原文提取 → Intake 通道。所有结果始终只作待核验线索。</p></div><span class="state-pill ok">${deepSweep.totals.rounds} 轮 · ${deepSweep.totals.queries} 次检索 · ${deepSweep.totals.leads} 条线索</span></div>
+        ${deepSweep.rounds.map((round) => `<div class="list-row"><span><strong>第 ${round.round} 轮</strong><p>${round.queries} 次检索 · ${round.leads} 条线索</p>${round.follow_up_queries.length ? `<p class="small">追问检索词：${round.follow_up_queries.slice(0, 8).map(escape).join('；')}</p>` : ''}</span></div>`).join('')}
+        ${technicalDetails([['批次', deepSweep.sweep_id], ['覆盖任务数', String(deepSweep.campaign_task_count)], ['守卫检查', '线索仅作背景 · 轮数与检索词均有上限 · 不自动导入']])}
+      </section>` : ''}
       <section class="panel">
         <div class="panel-heading"><div><p class="eyebrow">进化台账</p><h2>漂移监测</h2></div></div>
         ${driftFlags.length ? driftFlags.map((flag) => `<div class="guardrail-row"><span>${metricLabel(flag.metric)}<small>当前 ${pct(flag.current)} · 基线 ${pct(flag.baseline)}</small></span><strong class="${flag.detected ? 'fail' : 'pass'}">${flag.detected ? '漂移' : '正常'}</strong>${technicalDetails([['偏差', flag.deviation === null ? '—' : `${(flag.deviation * 100).toFixed(1)}%`], ['阈值', `${flag.threshold * 100}%`]])}</div>`).join('') : '<p class="muted">完成一次循环后生成漂移监测。</p>'}
@@ -275,6 +295,10 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
           <label class="agent-field"><span>快速循环（每 N 小时）</span><input type="number" name="quick_interval_hours" value="${scheduler.quick_interval_hours}" min="1"></label>
           <label class="agent-field"><span>启用快速循环</span><input type="checkbox" name="quick_enabled" ${scheduler.quick_enabled ? 'checked' : ''}></label>
           <label class="agent-field"><span>快速循环最大操作数</span><input type="number" name="quick_max_operations" value="${scheduler.quick_max_operations}" min="1"></label>
+          <label class="agent-field"><span>启用深度搜索</span><input type="checkbox" name="deep_enabled" ${scheduler.deep_enabled ? 'checked' : ''}></label>
+          <label class="agent-field"><span>深度搜索 cron</span><input name="deep_cron" value="${escape(scheduler.deep_cron)}" title="标准 5 段 cron（分 时 日 月 周）"></label>
+          <label class="agent-field"><span>深扫追查轮数</span><input type="number" name="deep_max_rounds" value="${scheduler.deep_max_rounds}" min="1" max="20"></label>
+          <label class="agent-field"><span>每轮追问检索词</span><input type="number" name="deep_queries_per_round" value="${scheduler.deep_queries_per_round}" min="1" max="50"></label>
           <label class="agent-field"><span>过期候选阈值（天）</span><input type="number" name="stale_candidate_max_age_days" value="${scheduler.purge.stale_candidate_max_age_days}" min="1"></label>
           <label class="agent-field"><span>高优先级队列阈值（天）</span><input type="number" name="queue_high_priority_max_age_days" value="${scheduler.purge.queue_high_priority_max_age_days}" min="1"></label>
           <label class="agent-field"><span>中优先级队列阈值（天）</span><input type="number" name="queue_medium_priority_max_age_days" value="${scheduler.purge.queue_medium_priority_max_age_days}" min="1"></label>
@@ -294,7 +318,7 @@ function agentRunStatusLabel(status: string): string {
   return ({ completed: '已完成', partial: '部分完成', running: '运行中', failed: '失败' } as Record<string, string>)[status] ?? status;
 }
 function loopKindLabel(kind: string): string {
-  return ({ daily: '每日循环', quick: '快速循环', manual: '手动运行' } as Record<string, string>)[kind] ?? kind;
+  return ({ daily: '每日循环', quick: '快速循环', manual: '手动运行', deep: '深度搜索' } as Record<string, string>)[kind] ?? kind;
 }
 function triggerLabel(trigger: string): string {
   return ({ scheduler: '调度触发', manual: '手动触发', cli: '命令行触发', webhook: '接口触发' } as Record<string, string>)[trigger] ?? trigger;

@@ -3,14 +3,16 @@ import type { WebSearchConfig } from '@/features/research/types/web_research';
 /** Search providers that require no API key or configuration: usable out of
  *  the box. `free` aggregates the keyless sources below into one result set. */
 const KEYLESS_PROVIDERS = new Set<WebSearchConfig['provider']>(['free', 'gdelt', 'wikipedia', 'hn', 'duckduckgo', 'reddit', 'arxiv', 'openalex', 'archive', 'bing']);
-const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'mcp_bridge']);
+// searxng / minimax intentionally stay outside the keyless set: SearXNG needs
+// a configured baseUrl and MiniMax needs a Token Plan credential.
+const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'minimax', 'searxng', 'mcp_bridge']);
 
 const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = {
   gdelt: 'https://api.gdeltproject.org/api/v2/doc/doc',
   brave: 'https://api.search.brave.com/res/v1/web/search',
   tavily: 'https://api.tavily.com/search',
   hn: 'https://hn.algolia.com/api/v1/search',
-  duckduckgo: 'https://api.duckduckgo.com',
+  duckduckgo: 'https://html.duckduckgo.com/html/',
   reddit: 'https://www.reddit.com/search.json',
   arxiv: 'https://export.arxiv.org/api/query',
   openalex: 'https://api.openalex.org/works',
@@ -18,20 +20,99 @@ const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = 
   bing: 'https://www.bing.com/search',
 };
 
+/** MiniMax Token Plan search endpoints by region. */
+const MINIMAX_SEARCH_ENDPOINTS: Record<'global' | 'cn', string> = {
+  global: 'https://api.minimax.io/v1/coding_plan/search',
+  cn: 'https://api.minimaxi.com/v1/coding_plan/search',
+};
+
 export function webSearchConfigFromEnv(env: NodeJS.ProcessEnv): WebSearchConfig {
-  const requested = env.NARRATIVE_WEB_SEARCH_PROVIDER?.trim().toLowerCase();
-  const provider = (requested
-    ?? (env.TAVILY_API_KEY ? 'tavily' : env.BRAVE_SEARCH_API_KEY ? 'brave' : env.SERPER_API_KEY ? 'mcp_bridge' : 'free')) as WebSearchConfig['provider'];
+  const provider = resolvePrimaryProvider(env);
+  return buildWebSearchConfig(provider, env);
+}
+
+/** All search engines a research pass should run, in parallel. The keyless
+ *  `free` aggregate is always included; every configured keyed/self-hosted
+ *  engine (MiniMax, SearXNG, Tavily, Brave, MCP bridge) joins it instead of
+ *  replacing it, so one query sweeps every engine the operator has enabled.
+ *  NARRATIVE_WEB_SEARCH_PROVIDERS / NARRATIVE_WEB_SEARCH_PROVIDER only add
+ *  extra engines (e.g. a standalone DuckDuckGo pass); they never narrow the
+ *  set down to a single engine. */
+export function webSearchConfigsFromEnv(env: NodeJS.ProcessEnv): WebSearchConfig[] {
+  const requested = parseRequestedProviders(env);
+  const configs: WebSearchConfig[] = [];
+  const add = (provider: WebSearchConfig['provider']): void => {
+    if (provider === 'disabled' || configs.some((config) => config.provider === provider)) return;
+    configs.push(buildWebSearchConfig(provider, env));
+  };
+
+  // The keyless free aggregate is always on: it works with zero
+  // configuration, so every other engine joins it instead of replacing it.
+  if (!requested.has('disabled')) add('free');
+
+  // Auto-detected keyed/self-hosted engines: any credential or endpoint that
+  // is present turns that engine on for every pass. MINIMAX_API_KEY also
+  // counts here (it may be a Code-Plan key in the China deployment).
+  if (env.TAVILY_API_KEY?.trim()) add('tavily');
+  if (env.BRAVE_SEARCH_API_KEY?.trim()) add('brave');
+  if (env.SERPER_API_KEY?.trim()) add('mcp_bridge');
+  if (env.SEARXNG_BASE_URL?.trim()) add('searxng');
+  if (env.MINIMAX_CODE_PLAN_KEY?.trim() || env.MINIMAX_CODING_API_KEY?.trim()
+    || env.MINIMAX_OAUTH_TOKEN?.trim() || env.MINIMAX_API_KEY?.trim()) add('minimax');
+
+  // Explicitly requested engines join the set as standalone passes.
+  for (const provider of requested) {
+    if (SUPPORTED_PROVIDERS.has(provider as WebSearchConfig['provider'])) add(provider as WebSearchConfig['provider']);
+  }
+
+  return configs.length ? configs : [buildWebSearchConfig('disabled', env)];
+}
+
+function parseRequestedProviders(env: NodeJS.ProcessEnv): Set<string> {
+  const listed = env.NARRATIVE_WEB_SEARCH_PROVIDERS?.trim().toLowerCase();
+  const single = env.NARRATIVE_WEB_SEARCH_PROVIDER?.trim().toLowerCase();
+  return new Set(listed ? listed.split(/[\s,]+/).filter(Boolean) : single ? [single] : []);
+}
+
+function resolvePrimaryProvider(env: NodeJS.ProcessEnv): WebSearchConfig['provider'] {
+  const requested = parseRequestedProviders(env).values().next().value as string | undefined;
+  // Keyless providers (including DuckDuckGo) are never auto-selected. SearXNG
+  // is auto-picked only when its base URL is present, and MiniMax only when a
+  // dedicated search-plan key exists — MINIMAX_API_KEY alone never flips the
+  // provider because it already serves the chat-completions layer.
+  return (requested
+    ?? (env.TAVILY_API_KEY ? 'tavily'
+      : env.BRAVE_SEARCH_API_KEY ? 'brave'
+      : env.SERPER_API_KEY ? 'mcp_bridge'
+      : env.SEARXNG_BASE_URL?.trim() ? 'searxng'
+      : env.MINIMAX_CODE_PLAN_KEY?.trim() || env.MINIMAX_CODING_API_KEY?.trim() ? 'minimax'
+      : 'free')) as WebSearchConfig['provider'];
+}
+
+function buildWebSearchConfig(provider: WebSearchConfig['provider'], env: NodeJS.ProcessEnv): WebSearchConfig {
   const selected = SUPPORTED_PROVIDERS.has(provider) ? provider : 'disabled';
-  const defaultEndpoint = selected === 'free' || selected === 'wikipedia' || selected === 'disabled' ? null : DEFAULT_ENDPOINTS[selected] ?? null;
+  const minimaxRegion = resolveMinimaxRegion(env);
+  const defaultEndpoint = selected === 'free' || selected === 'wikipedia' || selected === 'disabled' ? null
+    : selected === 'searxng' ? (env.NARRATIVE_WEB_SEARCH_ENDPOINT?.trim() || env.SEARXNG_BASE_URL?.trim() || null)
+    : selected === 'minimax' ? MINIMAX_SEARCH_ENDPOINTS[minimaxRegion]
+    : DEFAULT_ENDPOINTS[selected] ?? null;
   return {
     provider: selected,
     endpoint: env.NARRATIVE_WEB_SEARCH_ENDPOINT?.trim() || defaultEndpoint,
     api_key: env.NARRATIVE_WEB_SEARCH_API_KEY?.trim()
-      || (selected === 'tavily' ? env.TAVILY_API_KEY : selected === 'brave' ? env.BRAVE_SEARCH_API_KEY : selected === 'mcp_bridge' ? env.SERPER_API_KEY : null)
+      || (selected === 'tavily' ? env.TAVILY_API_KEY
+        : selected === 'brave' ? env.BRAVE_SEARCH_API_KEY
+        : selected === 'mcp_bridge' ? env.SERPER_API_KEY
+        : selected === 'minimax' ? (env.MINIMAX_CODE_PLAN_KEY?.trim() || env.MINIMAX_CODING_API_KEY?.trim() || env.MINIMAX_OAUTH_TOKEN?.trim() || env.MINIMAX_API_KEY?.trim() || null)
+        : null)
       || null,
     timeout_ms: boundedInt(env.NARRATIVE_WEB_SEARCH_TIMEOUT_MS, 15_000, 1_000, 120_000),
     max_results_per_query: boundedInt(env.NARRATIVE_WEB_SEARCH_MAX_RESULTS, 8, 1, 20),
+    region: env.NARRATIVE_WEB_SEARCH_REGION?.trim() || null,
+    safe_search: parseSafeSearch(env.NARRATIVE_WEB_SEARCH_SAFESEARCH),
+    searxng_categories: env.SEARXNG_CATEGORIES?.trim() || null,
+    searxng_language: env.SEARXNG_LANGUAGE?.trim() || null,
+    minimax_region: minimaxRegion,
   };
 }
 
@@ -55,11 +136,13 @@ export class HttpWebSearchProvider {
     if (config.provider === 'gdelt') return this.gdelt(query, config);
     if (config.provider === 'brave') return this.brave(query, config, sourceDomains);
     if (config.provider === 'tavily') return this.tavily(query, config, sourceDomains);
+    if (config.provider === 'minimax') return this.minimax(query, config);
+    if (config.provider === 'searxng') return this.searxng(query, config);
     return this.mcpBridge(query, config, sourceDomains);
   }
 
   /** Aggregates every keyless source (GDELT, Wikipedia zh+en, Hacker News,
-   *  DuckDuckGo Instant Answer, Bing RSS, Reddit, arXiv, OpenAlex, Internet Archive)
+   *  DuckDuckGo HTML, Bing RSS, Reddit, arXiv, OpenAlex, Internet Archive)
    *  into one deduplicated result set so a single query surfaces many more
    *  leads than any one free source alone. */
   private async free(query: string, config: WebSearchConfig, sourceDomains?: string[]): Promise<SearchRow[]> {
@@ -145,34 +228,116 @@ export class HttpWebSearchProvider {
     }));
   }
 
-  /** DuckDuckGo Instant Answer API: free, keyless, but returns encyclopedic
-   *  summaries and related topics rather than organic web results. */
+  /** DuckDuckGo non-JavaScript HTML search: keyless and experimental. It
+   *  scrapes the organic result page (instead of the encyclopedic Instant
+   *  Answer API) so discovery surfaces real web pages. Because this depends on
+   *  HTML structure that can change without notice, parsing stays
+   *  conservative: a structure change degrades to zero rows, never garbage. */
   private async duckduckgo(query: string, config: WebSearchConfig): Promise<SearchRow[]> {
     const url = new URL(config.endpoint as string);
     url.searchParams.set('q', query);
-    url.searchParams.set('format', 'json');
-    url.searchParams.set('no_html', '1');
-    const body = await this.request(url.toString(), { method: 'GET', headers: { 'User-Agent': 'NarrativeLifecycleResearch/1.0' } }, config.timeout_ms);
-    const value = JSON.parse(body) as {
-      Heading?: string;
-      AbstractText?: string;
-      AbstractURL?: string;
-      RelatedTopics?: Array<{ Text?: string; FirstURL?: string; Topics?: Array<{ Text?: string; FirstURL?: string }> }>;
-    };
+    if (config.region) url.searchParams.set('kl', config.region);
+    url.searchParams.set('kp', config.safe_search === 'strict' ? '1' : config.safe_search === 'off' ? '-2' : '-1');
+    const body = await this.request(url.toString(), { method: 'GET', headers: { 'User-Agent': 'NarrativeLifecycleResearch/1.0 (research bot)' } }, config.timeout_ms);
+    // Each organic result starts with an <h2 class="result__title"> block.
+    const segments = body.split(/<h2[^>]*class="[^"]*result__title[^"]*"[^>]*>/i).slice(1);
     const rows: SearchRow[] = [];
-    if (value.AbstractText && value.AbstractURL) {
-      rows.push({ title: value.Heading, url: value.AbstractURL, snippet: value.AbstractText, source_name: 'DuckDuckGo Instant Answer', published_at: null });
-    }
-    for (const topic of value.RelatedTopics ?? []) {
-      const items = topic.Topics?.length ? topic.Topics : [topic];
-      for (const item of items) {
-        if (!item.Text || !item.FirstURL) continue;
-        rows.push({ title: item.Text.split(' - ')[0], url: item.FirstURL, snippet: item.Text, source_name: 'DuckDuckGo Instant Answer', published_at: null });
-        if (rows.length >= config.max_results_per_query) break;
-      }
+    for (const segment of segments) {
       if (rows.length >= config.max_results_per_query) break;
+      const link = /<a[^>]*class="[^"]*result__a[^"]*"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i.exec(segment);
+      if (!link) continue;
+      const target = resolveDuckDuckGoUrl(link[1]);
+      if (!/^https?:\/\//i.test(target)) continue;
+      const snippet = /<a[^>]*class="[^"]*result__snippet[^"]*"[^>]*>([\s\S]*?)<\/a>/i.exec(segment)?.[1]
+        ?? /<div[^>]*class="[^"]*result__snippet[^"]*"[^>]*>([\s\S]*?)<\/div>/i.exec(segment)?.[1]
+        ?? '';
+      let domain = 'DuckDuckGo';
+      try { domain = new URL(target).hostname; } catch { /* row filtered by normalizer */ }
+      rows.push({
+        title: plainText(link[2]),
+        url: target,
+        snippet: plainText(snippet).slice(0, 800),
+        source_name: domain,
+        published_at: null,
+      });
     }
     return rows;
+  }
+
+  /** MiniMax Token Plan search: keyed, structured results (title, URL,
+   *  snippet). Matches the OpenClaw MiniMax web-search provider contract:
+   *  POST the `{ q }` body (not `query`), read `organic` results with
+   *  `link`/`date` fields, and treat a non-zero `base_resp.status_code`
+   *  as an API-level failure. The host is chosen by minimax_region
+   *  (global → minimax.io, cn → minimaxi.com). */
+  private async minimax(query: string, config: WebSearchConfig): Promise<SearchRow[]> {
+    if (!config.api_key) return [];
+    const body = await this.request(config.endpoint as string, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', Authorization: `Bearer ${config.api_key}` },
+      body: JSON.stringify({ q: query }),
+    }, config.timeout_ms);
+    const value = JSON.parse(body) as Record<string, unknown>;
+    const baseResp = value.base_resp;
+    if (baseResp && typeof baseResp === 'object') {
+      const statusCode = (baseResp as Record<string, unknown>).status_code;
+      if (typeof statusCode === 'number' && statusCode !== 0) {
+        const message = searchString((baseResp as Record<string, unknown>).status_msg);
+        throw new Error(`minimax_search_status_${statusCode}${message ? `: ${message}` : ''}`);
+      }
+    }
+    return minimaxResultRows(value).slice(0, config.max_results_per_query).flatMap((item) => {
+      const title = searchString(item.title);
+      const url = searchString(item.link ?? item.url);
+      if (!title || !url) return [];
+      let domain = 'MiniMax Search';
+      try { domain = new URL(url).hostname; } catch { /* row filtered by normalizer */ }
+      return [{
+        title,
+        url,
+        snippet: (searchString(item.snippet) ?? searchString(item.content) ?? '').slice(0, 800),
+        source_name: searchString(item.source_name) ?? domain,
+        published_at: searchString(item.date ?? item.published_at) ?? null,
+      }];
+    });
+  }
+
+  /** SearXNG self-hosted metagsearch JSON API: keyless and privacy-friendly.
+   *  http:// base URLs are restricted to loopback/private hosts (SSRF guard);
+   *  public instances must use https://. */
+  private async searxng(query: string, config: WebSearchConfig): Promise<SearchRow[]> {
+    const baseUrl = config.endpoint as string;
+    const categories = config.searxng_categories?.trim() || 'general';
+    const rows = await this.searxngFetch(baseUrl, query, categories, config);
+    // Category fallback: a non-general category returning nothing retries once
+    // with general before reporting an empty set.
+    if (!rows.length && categories !== 'general') return this.searxngFetch(baseUrl, query, 'general', config);
+    return rows;
+  }
+
+  private async searxngFetch(baseUrl: string, query: string, categories: string, config: WebSearchConfig): Promise<SearchRow[]> {
+    assertSearxngBaseUrl(baseUrl);
+    const url = new URL(`${baseUrl.replace(/\/+$/, '')}/search`);
+    url.searchParams.set('q', query);
+    url.searchParams.set('format', 'json');
+    url.searchParams.set('categories', categories);
+    if (config.searxng_language) url.searchParams.set('language', config.searxng_language);
+    const body = await this.request(url.toString(), { method: 'GET', headers: { 'User-Agent': 'NarrativeLifecycleResearch/1.0' } }, config.timeout_ms);
+    const value = JSON.parse(body) as { results?: Array<{ title?: string; url?: string; content?: string; publishedDate?: string; engine?: string }> };
+    return (value.results ?? []).slice(0, config.max_results_per_query).flatMap((item) => {
+      const title = item.title?.trim();
+      const url = item.url?.trim();
+      if (!title || !url) return [];
+      let domain = 'SearXNG';
+      try { domain = new URL(url).hostname; } catch { /* row filtered by normalizer */ }
+      return [{
+        title,
+        url,
+        snippet: (item.content ?? '').trim().slice(0, 800),
+        source_name: item.engine?.trim() || domain,
+        published_at: validDate(item.publishedDate) ? item.publishedDate as string : null,
+      }];
+    });
   }
 
   /** Bing's public RSS representation supplies general-web discovery without
@@ -190,11 +355,28 @@ export class HttpWebSearchProvider {
     url.searchParams.set('format', 'rss');
     const body = await this.request(url.toString(), { method: 'GET', headers: { 'User-Agent': 'NarrativeLifecycleResearch/1.0' } }, config.timeout_ms);
     const items = body.match(/<item>[\s\S]*?<\/item>/gi) ?? [];
+    // Bing RSS often ignores non-English queries and returns unrelated
+    // content (Windows 10 tutorials, SEO spam, its own version page). Gate
+    // general results on sharing a query token; official-domain site: passes
+    // are already deliberately scoped and stay unfiltered.
+    const queryTokens = bingRssQueryTokens(query);
+    const scoped = scopedDomains.length > 0;
     return items.slice(0, config.max_results_per_query).flatMap((item) => {
       const title = xmlText(item, 'title');
       const link = xmlText(item, 'link');
       if (!title || !link) return [];
-      return [{ title, url: link, snippet: xmlText(item, 'description') ?? '', source_name: 'Bing RSS', published_at: xmlText(item, 'pubDate') ?? null }];
+      const snippet = xmlText(item, 'description') ?? '';
+      if (isBingRssJunk(title, link)) return [];
+      // A result counts as query-related when its title OR snippet shares a
+      // query token. This drops Bing's unrelated filler (Windows 10 tutorials
+      // for Chinese BCI queries) while keeping relevant pages whose titles
+      // paraphrase the query (e.g. an official notice whose snippet quotes
+      // the policy term).
+      const sharesToken = queryTokens.length
+        && (queryTokens.some((token) => title.toLowerCase().includes(token))
+          || queryTokens.some((token) => snippet.toLowerCase().includes(token)));
+      if (!scoped && queryTokens.length && !sharesToken) return [];
+      return [{ title, url: link, snippet, source_name: 'Bing RSS', published_at: xmlText(item, 'pubDate') ?? null }];
     });
   }
 
@@ -375,6 +557,81 @@ function boundedInt(value: string | undefined, fallback: number, min: number, ma
   return Number.isFinite(parsed) ? Math.min(max, Math.max(min, Math.round(parsed))) : fallback;
 }
 
+/** DuckDuckGo HTML safe-search level; anything unrecognised falls back to
+ *  the default 'moderate' (OpenClaw default). */
+function parseSafeSearch(value: string | undefined): 'strict' | 'moderate' | 'off' {
+  const normalized = value?.trim().toLowerCase();
+  return normalized === 'strict' || normalized === 'off' ? normalized : 'moderate';
+}
+
+/** MiniMax search region resolution: explicit MINIMAX_SEARCH_REGION wins,
+ *  then the API host (MINIMAX_API_HOST / MINIMAX_BASE_URL) is inspected;
+ *  the project's China-market default ('cn') applies when unset. */
+function resolveMinimaxRegion(env: NodeJS.ProcessEnv): 'global' | 'cn' {
+  const explicit = env.MINIMAX_SEARCH_REGION?.trim().toLowerCase();
+  if (explicit === 'global' || explicit === 'cn') return explicit;
+  const host = (env.MINIMAX_API_HOST ?? env.MINIMAX_BASE_URL ?? '').toLowerCase();
+  if (host.includes('api.minimaxi.com')) return 'cn';
+  if (host.includes('api.minimax.io')) return 'global';
+  return 'cn';
+}
+
+/** DuckDuckGo HTML links are redirect URLs (//duckduckgo.com/l/?uddg=...);
+ *  resolve to the real target so downstream retrieval fetches the original
+ *  page instead of a redirect stub. */
+function resolveDuckDuckGoUrl(href: string): string {
+  if (/^https?:\/\//i.test(href)) return href;
+  try {
+    const url = new URL(href, 'https://html.duckduckgo.com/');
+    return url.searchParams.get('uddg') ?? url.href;
+  } catch {
+    return href;
+  }
+}
+
+/** Strips HTML tags and decodes the basic entities used by search pages. */
+function plainText(value: string): string {
+  return decodeEntities(value.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+}
+
+/** Extracts the results array from the MiniMax search response. The
+ *  documented shape uses `organic` (title/link/snippet/date); accept the
+ *  common containers defensively. */
+function minimaxResultRows(value: Record<string, unknown>): Array<Record<string, unknown>> {
+  const candidates: unknown[] = Array.isArray(value.organic) ? value.organic
+    : Array.isArray(value.results) ? value.results
+    : (value.data && typeof value.data === 'object' && Array.isArray((value.data as Record<string, unknown>).results))
+      ? (value.data as Record<string, unknown>).results as unknown[]
+    : Array.isArray(value.items) ? value.items
+    : [];
+  return candidates.filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === 'object');
+}
+
+function searchString(value: unknown): string | null {
+  return typeof value === 'string' && value.trim() ? value.trim() : null;
+}
+
+/** SSRF guard: http:// SearXNG base URLs must point at loopback or private
+ *  hosts; public instances are required to use https://. */
+function assertSearxngBaseUrl(value: string): void {
+  const url = new URL(value);
+  if (url.protocol === 'http:') {
+    if (!isPrivateHost(url.hostname)) throw new Error('searxng_http_base_url_must_be_private_or_loopback');
+  } else if (url.protocol !== 'https:') {
+    throw new Error('unsupported_searxng_url_protocol');
+  }
+}
+
+function isPrivateHost(host: string): boolean {
+  const lower = host.toLowerCase();
+  return lower === 'localhost' || lower.endsWith('.local')
+    || /^127\.|^0\.|^10\.|^192\.168\.|^169\.254\.|^172\.(1[6-9]|2\d|3[0-1])\./.test(lower) || lower === '::1';
+}
+
+function validDate(value: string | null | undefined): boolean {
+  return Boolean(value && !Number.isNaN(Date.parse(value)));
+}
+
 /** Minimal XML entity decoding for the fixed-shape Atom payloads we consume. */
 function decodeEntities(value: string): string {
   return value
@@ -388,6 +645,26 @@ function decodeEntities(value: string): string {
 function xmlText(source: string, tag: string): string | null {
   const value = new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`, 'i').exec(source)?.[1]?.trim() ?? '';
   return value ? decodeEntities(value.replace(/^<!\[CDATA\[|\]\]>$/g, '')) : null;
+}
+
+/** Drops Bing RSS self pages and the SEO spam it mirrors when it fails to
+ *  match the query ("How To See All Bing Related Searches" appears on many
+ *  domains; bing.com/version is Bing's own empty page). */
+function isBingRssJunk(title: string, url: string): boolean {
+  try {
+    if (new URL(url).hostname === 'www.bing.com') return true;
+  } catch { /* malformed link is filtered by the normalizer */ }
+  return /bing related searches/i.test(title);
+}
+
+/** Significant query tokens for the Bing RSS relevance gate: contiguous CJK
+ *  runs and English words of 3+ letters. Bing RSS frequently ignores
+ *  non-English queries, so a result must share at least one of these to be
+ *  considered query-related. */
+function bingRssQueryTokens(query: string): string[] {
+  const cjk = query.match(/[\u4e00-\u9fff]{2,}/g) ?? [];
+  const words = (query.match(/[a-zA-Z]{3,}/g) ?? []).map((word) => word.toLowerCase());
+  return [...cjk, ...words];
 }
 
 /** OpenAlex stores abstracts as { word: [positions] }; rebuild the original

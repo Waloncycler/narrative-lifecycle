@@ -9,7 +9,7 @@
  */
 
 export type ResearchAgentPhase = 'research' | 'analyze' | 'import' | 'produce' | 'iterate' | 'evolve';
-export type ResearchAgentLoopKind = 'daily' | 'quick' | 'manual';
+export type ResearchAgentLoopKind = 'daily' | 'quick' | 'manual' | 'deep';
 export type ResearchAgentTrigger = 'scheduler' | 'manual' | 'cli' | 'webhook';
 export type ResearchAgentRunStatus = 'running' | 'completed' | 'partial' | 'failed';
 export type ResearchAgentPhaseStatus = 'ok' | 'skipped' | 'failed';
@@ -40,6 +40,8 @@ export interface ResearchAgentRunManifest {
     sources_failed: number;
     web_research_queries: number;
     web_research_leads: number;
+    deep_sweep_rounds: number;
+    deep_followup_queries: number;
     direct_source_queries: number;
     direct_source_leads: number;
     research_campaign_tasks: number;
@@ -138,6 +140,11 @@ export interface ResearchAgentSchedulerConfig {
   quick_interval_hours: number;
   quick_max_operations: number;
   quick_enabled: boolean;
+  /** Daily multi-round deep search sweep (bounded, context-only discovery). */
+  deep_enabled: boolean;
+  deep_cron: string;
+  deep_max_rounds: number;
+  deep_queries_per_round: number;
   purge: {
     stale_candidate_max_age_days: number;
     queue_high_priority_max_age_days: number;
@@ -163,6 +170,10 @@ export const DEFAULT_SCHEDULER_CONFIG: ResearchAgentSchedulerConfig = {
   quick_interval_hours: 6,
   quick_max_operations: 12,
   quick_enabled: true,
+  deep_enabled: true,
+  deep_cron: '0 7 * * *',
+  deep_max_rounds: 20,
+  deep_queries_per_round: 50,
   purge: {
     stale_candidate_max_age_days: 30,
     queue_high_priority_max_age_days: 14,

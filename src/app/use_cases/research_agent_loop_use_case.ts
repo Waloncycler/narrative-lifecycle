@@ -8,6 +8,8 @@ import type { ResearchCampaign } from '@/features/research/types/research_covera
 import type { DirectSourceResearchReport } from '@/features/research/types/direct_source_research';
 import type { EvidenceIntakeSession } from '@/features/intake/types/intake';
 import type { AgentPurgeDecision, ResearchAgentEvolutionLedger, ResearchAgentLoopKind, ResearchAgentRunManifest, ResearchAgentTrigger } from '@/features/research/types/research_agent';
+import type { DeepResearchSweep } from '@/features/research/types/deep_research_sweep';
+import type { DeepResearchSweepResult } from '@/app/use_cases/run_deep_research_sweep_use_case';
 import { purgeDecisions, agedQueueItems, staleCandidates, type AgedQueueItemInput, type StaleCandidateInput } from '@/features/research/domain/agent_purge_rules';
 import { evolveLedger } from '@/features/research/domain/agent_evolution';
 
@@ -31,6 +33,12 @@ export interface ResearchAgentLoopDeps {
   runSourceSync(input: { mode: 'live'; maxOperations: number; maxCandidates: number; operationIds?: string[]; forceRefresh?: boolean }): Promise<WorldMonitorSyncResult>;
   runWebResearch?(input: { limit: number }): Promise<WebResearchReport>;
   runResearchCampaign?(input: { maxTasks: number; maxQueries: number; maxDirectQueries: number }): Promise<{ campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession?: EvidenceIntakeSession | null }>;
+  /** Multi-round iterative deep search sweep (loop_kind === 'deep'). Round 0
+   * is the standard source-aware campaign at larger scale; each follow-up
+   * round derives new scoped search angles from the prior round's leads and
+   * re-enters the same governed triage → retrieval → intake path. Search
+   * output always stays context-only research leads. */
+  runDeepResearchSweep?(input: { maxRounds: number; queriesPerRound: number; maxTasks?: number; maxQueries?: number; maxDirectQueries?: number }): Promise<DeepResearchSweepResult>;
   /** Bounded historic provenance repair is optional for compatibility. It
    * returns a session only when two independent original sources passed the
    * deterministic recovery gate; that session still goes through the same
@@ -60,6 +68,10 @@ export interface ResearchAgentLoopInput {
   /** Reprocess the selected source payloads once, while keeping all normal
    * change detection and publication guards in force. */
   force_refresh?: boolean;
+  /** Deep sweep bounds for loop_kind === 'deep'. Defaults to 20 follow-up
+   * rounds and 50 follow-up queries per round; the sweep itself clamps them. */
+  deep_max_rounds?: number;
+  deep_queries_per_round?: number;
   /** Requests policy-controlled Evidence publication for this specific run.
    * It still has no effect unless the versioned policy permits publication. */
   publish_auto?: boolean;
@@ -87,6 +99,8 @@ export class ResearchAgentLoopUseCase {
       sources_failed: 0,
       web_research_queries: 0,
       web_research_leads: 0,
+      deep_sweep_rounds: 0,
+      deep_followup_queries: 0,
       direct_source_queries: 0,
       direct_source_leads: 0,
       research_campaign_tasks: 0,
@@ -156,7 +170,34 @@ export class ResearchAgentLoopUseCase {
     // Phase 1: search is discovery-only. Its snippets cannot become Evidence,
     // but they make coverage gaps visible before governed source sync starts.
     let campaignResult: { campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession?: EvidenceIntakeSession | null } | undefined;
-    if (this.deps.runResearchCampaign) {
+    let deepSweep: DeepResearchSweep | null = null;
+    if (loopKind === 'deep' && this.deps.runDeepResearchSweep) {
+      const sweepResult = await run('research', 'deep multi-round research sweep across topic and branch coverage; results remain context-only research leads', () =>
+        this.deps.runDeepResearchSweep!({
+          maxRounds: input.deep_max_rounds ?? 20,
+          queriesPerRound: input.deep_queries_per_round ?? 50,
+        }),
+      ) as DeepResearchSweepResult | undefined;
+      if (sweepResult) {
+        campaignResult = sweepResult;
+        deepSweep = sweepResult.sweep;
+      }
+    }
+    if (campaignResult) {
+      metrics.web_research_queries = campaignResult.webResearch.queries.length;
+      metrics.web_research_leads = campaignResult.webResearch.lead_count;
+      metrics.direct_source_queries = campaignResult.directSourceResearch.queries.filter((query) => query.status !== 'skipped').length;
+      metrics.direct_source_leads = campaignResult.directSourceResearch.lead_count;
+      metrics.research_campaign_tasks = campaignResult.campaign.summary.task_count;
+      metrics.research_campaign_source_targets = campaignResult.campaign.summary.source_target_count;
+      metrics.research_campaign_seed_topics = campaignResult.campaign.summary.universe_seed_count;
+      if (deepSweep) {
+        metrics.web_research_queries = deepSweep.totals.queries;
+        metrics.web_research_leads = deepSweep.totals.leads;
+        metrics.deep_sweep_rounds = deepSweep.totals.rounds;
+        metrics.deep_followup_queries = Math.max(0, deepSweep.totals.queries - (deepSweep.rounds[0]?.queries ?? 0));
+      }
+    } else if (this.deps.runResearchCampaign) {
       campaignResult = await run('research', 'source-aware topic and branch coverage campaign; results remain context-only research leads', () =>
         this.deps.runResearchCampaign!({
           maxTasks: loopKind === 'quick' ? 24 : 60,

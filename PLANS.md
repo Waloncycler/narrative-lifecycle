@@ -16,6 +16,7 @@
 4. Completed: add policy-change audit records and `npm run policy:validate`.
 5. Next: link explicit reviewer outcomes to retrieved-source artifacts so claim support and Topic/Branch metrics can move beyond `pending_human_review`.
 6. Completed: allow a dated, rule-verified primary-source candidate to revalidate an unadmitted historical record with the same Evidence ID; retain operational duplicate protection and atomic import validation.
+7. Completed: add curated Research Packs for source-backed, scope-explicit original-page retrieval; proposed taxonomies stay out of the Topic Registry and all retrieved material remains review-only.
 
 ## Completed: Quantitative Methodology Contract
 

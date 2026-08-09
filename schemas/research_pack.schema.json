@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResearchPack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pack_id", "title", "description", "research_questions", "proposed_taxonomy", "sources", "guardrail_check"],
+  "properties": {
+    "pack_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "description": {"type": "string", "minLength": 1},
+    "research_questions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "proposed_taxonomy": {"type": "object", "additionalProperties": false, "required": ["parent_name", "parent_topic_id", "proposed_branches"], "properties": {"parent_name": {"type": "string", "minLength": 1}, "parent_topic_id": {"type": ["string", "null"]}, "proposed_branches": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["branch_name", "branch_id", "rationale"], "properties": {"branch_name": {"type": "string"}, "branch_id": {"type": ["string", "null"]}, "rationale": {"type": "string"}}}}}},
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["source_id", "title", "url", "published_at", "topic_id", "branch_id", "candidate_node_id", "source_class", "rationale"], "properties": {"source_id": {"type": "string", "pattern": "^[a-z0-9_]+$"}, "title": {"type": "string", "minLength": 1}, "url": {"type": "string", "format": "uri"}, "published_at": {"type": ["string", "null"], "format": "date"}, "topic_id": {"type": ["string", "null"]}, "branch_id": {"type": ["string", "null"]}, "candidate_node_id": {"type": ["string", "null"]}, "source_class": {"enum": ["official", "company_primary", "academic", "reference", "community", "secondary", "unknown"]}, "rationale": {"type": "string", "minLength": 1}}}},
+    "guardrail_check": {"type": "object", "additionalProperties": false, "required": ["source_urls_are_retrieval_targets_not_evidence", "proposed_taxonomy_is_not_auto_registered", "parent_branch_separation", "no_auto_evidence_import", "no_trading_advice"], "properties": {"source_urls_are_retrieval_targets_not_evidence": {"const": true}, "proposed_taxonomy_is_not_auto_registered": {"const": true}, "parent_branch_separation": {"const": true}, "no_auto_evidence_import": {"const": true}, "no_trading_advice": {"const": true}}}
+  }
+}

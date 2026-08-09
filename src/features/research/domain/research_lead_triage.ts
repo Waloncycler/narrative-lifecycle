@@ -1,5 +1,6 @@
 import type { DirectSourceResearchReport } from '@/features/research/types/direct_source_research';
 import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '@/features/research/types/research_coverage';
+import { normalizeDate } from '@/features/research/domain/web_research';
 import type {
   ResearchLeadDisposition,
   ResearchLeadFreshness,
@@ -88,7 +89,7 @@ function fromWebLead(lead: WebResearchLead, query: string | null, retrievedAt: s
     origin: 'web', origin_lead_id: lead.lead_id, topic_id: lead.topic_id,
     branch_id: queryMeta.branch_id ?? null, candidate_node_id: queryMeta.candidate_node_id ?? null,
     title: lead.title, url: lead.url, source_name: lead.source_name, source_domain: lead.source_domain,
-    snippet: lead.snippet, published_at: lead.published_at, retrieved_at: lead.retrieved_at || retrievedAt,
+    snippet: lead.snippet, published_at: normalizeDate(lead.published_at), retrieved_at: lead.retrieved_at || retrievedAt,
     query, source_id: null,
   };
 }
@@ -99,7 +100,7 @@ function directLeads(report: DirectSourceResearchReport | null): RawLead[] {
     origin: 'direct', origin_lead_id: lead.lead_id, topic_id: lead.topic_id, branch_id: lead.branch_id,
     candidate_node_id: lead.candidate_node_id ?? null, title: lead.title, url: lead.url,
     source_name: lead.source_name, source_domain: domainOf(lead.url), snippet: lead.snippet,
-    published_at: lead.published_at, retrieved_at: report.generated_at, query: null, source_id: lead.source_id,
+    published_at: normalizeDate(lead.published_at), retrieved_at: report.generated_at, query: null, source_id: lead.source_id,
   }));
 }
 

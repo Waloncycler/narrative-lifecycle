@@ -91,7 +91,7 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
         return json(response, { config: useCases.researchAgentRepository.readSchedulerConfig() });
       }
       if (request.method === 'POST' && pathname === '/api/agent/run') {
-        const body = await readJson<{ loop_kind?: 'daily' | 'quick' | 'manual' }>(request);
+        const body = await readJson<{ loop_kind?: 'daily' | 'quick' | 'manual' | 'deep' }>(request);
         // 完整 research loop（源同步 + 候选草拟 + 影子校验 + 报告）可能耗时数分钟，
         // 同步等待会导致浏览器请求被中止（ERR_ABORTED）。改为后台执行，立即返回，
         // 前端通过 /api/agent/state 轮询 loop_running 与 last_run。
@@ -351,7 +351,9 @@ function readAgentState(repoRoot: string, useCases: ProductCoreUseCases) {
       enabled: useCases.researchAgentRepository.readSchedulerConfig().enabled,
       loop_running: useCases.researchAgentScheduler.running,
       next_daily_run: useCases.researchAgentScheduler.nextDailyRun(),
+      next_deep_run: useCases.researchAgentScheduler.nextDeepRun(),
       last_run: readJsonFile(repoRoot, 'outputs/research_agent/latest_run.json'),
+      deep_research_sweep: readJsonFile(repoRoot, 'outputs/research_agent/latest_deep_research_sweep.json'),
       run_history: useCases.researchAgentRepository.listRunManifests(),
       evolution: useCases.researchAgentRepository.readEvolutionLedger(),
       scheduler: useCases.researchAgentRepository.readSchedulerConfig(),
@@ -378,6 +380,10 @@ function sanitizeSchedulerConfig(body: import('@/features/research/types/researc
     quick_interval_hours: clampInt(body.quick_interval_hours, defaults.quick_interval_hours, 1, 72),
     quick_max_operations: clampInt(body.quick_max_operations, defaults.quick_max_operations, 1, 200),
     quick_enabled: Boolean(body.quick_enabled ?? defaults.quick_enabled),
+    deep_enabled: Boolean(body.deep_enabled ?? defaults.deep_enabled),
+    deep_cron: typeof body.deep_cron === 'string' && body.deep_cron.trim() ? body.deep_cron.trim() : defaults.deep_cron,
+    deep_max_rounds: clampInt(body.deep_max_rounds, defaults.deep_max_rounds, 1, 20),
+    deep_queries_per_round: clampInt(body.deep_queries_per_round, defaults.deep_queries_per_round, 1, 50),
     purge: {
       ...defaults.purge,
       ...(body.purge ?? {}),
@@ -436,7 +442,9 @@ function readMonitor(repoRoot: string, useCases?: ProductCoreUseCases) {
         enabled: useCases.researchAgentRepository.readSchedulerConfig().enabled,
         loop_running: useCases.researchAgentScheduler.running,
         next_daily_run: useCases.researchAgentScheduler.nextDailyRun(),
+        next_deep_run: useCases.researchAgentScheduler.nextDeepRun(),
         last_run: readJsonFile<import('@/features/research/types/research_agent').ResearchAgentRunManifest>(repoRoot, 'outputs/research_agent/latest_run.json'),
+        deep_research_sweep: readJsonFile<import('@/features/research/types/deep_research_sweep').DeepResearchSweep>(repoRoot, 'outputs/research_agent/latest_deep_research_sweep.json'),
         run_history: useCases.researchAgentRepository.listRunManifests(),
         evolution: useCases.researchAgentRepository.readEvolutionLedger(),
         scheduler: useCases.researchAgentRepository.readSchedulerConfig(),

@@ -17,13 +17,19 @@ export function selectHistoricalProvenanceTargets(input: {
   registry: TopicRegistry;
   admittedEvidenceIds: Set<string>;
   limit: number;
+  includeEvidenceGrade?: boolean;
+  requireTopicTitleMatch?: boolean;
 }): HistoricalProvenanceRecoveryTarget[] {
   const topicTerms = new Map(input.registry.canonical_topics.map((topic) => [topic.topic_id, [topic.topic_name, topic.market_name_zh, topic.market_name_en, ...input.registry.aliases.filter((alias) => alias.topic_id === topic.topic_id).map((alias) => alias.alias)].filter((value): value is string => Boolean(value?.trim()))]));
   return input.evidence
     .filter((item) => !input.admittedEvidenceIds.has(item.evidence_id))
     .filter((item) => Boolean(item.evidence_id && item.topic_id && item.event_title && item.event_date))
-    .filter((item) => !hasEvidenceGradeExcerpt(item))
-    .filter((item) => titleSupportsTopic(item.event_title, topicTerms.get(item.topic_id) ?? []))
+    // Baseline verification intentionally rechecks long historic summaries:
+    // summary length is not evidence of source provenance.
+    .filter((item) => input.includeEvidenceGrade || !hasEvidenceGradeExcerpt(item))
+    // A reconciled baseline may be titled after a company or a policy document
+    // rather than repeating its controlled market-topic label.
+    .filter((item) => input.requireTopicTitleMatch === false || titleSupportsTopic(item.event_title, topicTerms.get(item.topic_id) ?? []))
     .map((item) => {
       const scope = item.parent_or_branch === 'branch' || item.branch_id ? 'branch' as const : 'parent' as const;
       const name = topicTerms.get(item.topic_id)?.[0] ?? item.topic_id;
@@ -37,6 +43,7 @@ export function selectHistoricalProvenanceTargets(input: {
         event_title: exact,
         event_date: item.event_date,
         known_source_url: validHttpUrl(item.source_url) ? item.source_url! : null,
+        known_source_type: item.source_type ?? item.source_name ?? null,
         search_queries: unique([
           `"${exact}"`,
           `${exact} ${name} original source`,
@@ -131,11 +138,11 @@ async function discoverUrls(target: HistoricalProvenanceRecoveryTarget, search: 
   const candidates = [target.known_source_url, ...rows
     .filter((row) => titleSimilarity(target.event_title, row.title ?? '') >= 0.45)
     .map((row) => row.url ?? null)];
-  return unique(candidates.filter((url): url is string => validHttpUrl(url) && sourceClassForUrl(url) !== 'unknown')).slice(0, Math.max(1, max));
+  return unique(candidates.filter((url): url is string => validHttpUrl(url) && sourceClassForTarget(target, url) !== 'unknown')).slice(0, Math.max(1, max));
 }
 
 function leadFor(target: HistoricalProvenanceRecoveryTarget, url: string): ResearchLeadTriageItem {
-  const sourceClass = sourceClassForUrl(url);
+  const sourceClass = sourceClassForTarget(target, url);
   return {
     triage_id: `historical_${shortHash(`${target.legacy_evidence_id}|${url}`)}`,
     origin: 'web',
@@ -171,6 +178,16 @@ function sourceClassForUrl(value: string): ResearchLeadSourceClass {
   if (host === 'doi.org' || host.endsWith('.doi.org')) return 'unknown';
   if (/(arxiv\.org|pubmed\.ncbi\.nlm\.nih\.gov|pmc\.ncbi\.nlm\.nih\.gov|openalex\.org|osti\.gov|link\.springer\.com|sciencedirect\.com|nature\.com|onlinelibrary\.wiley\.com|journals\.aps\.org|ieeexplore\.ieee\.org|\.edu$)/.test(host)) return 'academic';
   if (/(sec\.gov|edgar|exchange|disclosure)/.test(host)) return 'official';
+  return 'unknown';
+}
+
+/** A company source is accepted only when it is the same controlled legacy
+ * source host. Generic company-looking search results remain untrusted. */
+function sourceClassForTarget(target: HistoricalProvenanceRecoveryTarget, url: string): ResearchLeadSourceClass {
+  const inferred = sourceClassForUrl(url);
+  if (inferred !== 'unknown') return inferred;
+  const expectedCompany = target.known_source_type === 'company' || target.known_source_type === 'company_primary';
+  if (expectedCompany && safeHost(url) && safeHost(url) === safeHost(target.known_source_url)) return 'company_primary';
   return 'unknown';
 }
 

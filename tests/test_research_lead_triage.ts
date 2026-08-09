@@ -19,7 +19,7 @@ const companies: CompanyResearchRegistry = { registry_version: 'test', companies
 
 function webReport(): WebResearchReport {
   return {
-    artifact_type: 'web_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'web_1', generated_at: generatedAt, status: 'completed', provider: 'free',
+    artifact_type: 'web_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'web_1', generated_at: generatedAt, status: 'completed', provider: 'free', providers: ['free'],
     queries: [
       { query_id: 'parent_query', query: 'Brain-computer interface', topic_id: 'bci', branch_id: null, candidate_node_id: null, purpose: 'evidence_discovery' },
       { query_id: 'branch_query', query: 'Brain-computer interface rehabilitation', topic_id: 'bci', branch_id: 'bci_medical_rehab', candidate_node_id: null, purpose: 'evidence_discovery' },

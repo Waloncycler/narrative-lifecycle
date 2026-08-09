@@ -10,10 +10,10 @@ const host = valueFor(process.argv.slice(2), '--host') ?? process.env.HOST ?? '1
 const useCases = createProductCoreUseCases(repoRoot);
 const server = createInteractiveIntakeServer(repoRoot, useCases);
 
-// Autonomous research agent daemon: embedded scheduler for daily + quick loops.
+// Autonomous research agent daemon: embedded scheduler for daily + quick + deep loops.
 useCases.researchAgentScheduler.start();
 console.log(
-  `Research agent scheduler: enabled=${useCases.researchAgentRepository.readSchedulerConfig().enabled} next_daily=${useCases.researchAgentScheduler.nextDailyRun() ?? 'disabled'}`,
+  `Research agent scheduler: enabled=${useCases.researchAgentRepository.readSchedulerConfig().enabled} next_daily=${useCases.researchAgentScheduler.nextDailyRun() ?? 'disabled'} next_deep=${useCases.researchAgentScheduler.nextDeepRun() ?? 'disabled'}`,
 );
 
 server.listen(port, host, () => {

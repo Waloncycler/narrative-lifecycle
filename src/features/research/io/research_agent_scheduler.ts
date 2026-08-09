@@ -9,7 +9,7 @@ import type { ResearchAgentLoopKind, ResearchAgentRunManifest, ResearchAgentSche
  */
 
 export interface ResearchAgentSchedulerDeps {
-  runLoop(kind: ResearchAgentLoopKind, trigger: ResearchAgentTrigger): Promise<ResearchAgentRunManifest>;
+  runLoop(kind: ResearchAgentLoopKind, trigger: ResearchAgentTrigger, options?: { deep_max_rounds?: number; deep_queries_per_round?: number }): Promise<ResearchAgentRunManifest>;
   readConfig(): ResearchAgentSchedulerConfig;
   writeConfig(config: ResearchAgentSchedulerConfig): void;
   now(): Date;
@@ -119,9 +119,20 @@ export class ResearchAgentScheduler {
     }
   }
 
+  /** Next daily deep sweep run, or null when the deep loop is disabled. */
+  nextDeepRun(): string | null {
+    const config = this.deps.readConfig();
+    if (!config.enabled || !config.deep_enabled) return null;
+    try {
+      return nextCronTime(config.deep_cron, this.deps.now()).toISOString();
+    } catch {
+      return null;
+    }
+  }
+
   async runNow(kind: ResearchAgentLoopKind): Promise<ResearchAgentRunManifest> {
     if (this.inFlight) throw new Error('a research agent loop is already running');
-    return this.run(kind, 'manual');
+    return this.run(kind, 'manual', this.deepOptions(kind));
   }
 
   private async tick(): Promise<void> {
@@ -136,7 +147,18 @@ export class ResearchAgentScheduler {
         return;
       }
     } catch {
-      // malformed daily cron: fall through to quick loop only
+      // malformed daily cron: fall through to the remaining checks
+    }
+
+    if (config.deep_enabled) {
+      try {
+        if (cronMatches(parseCron(config.deep_cron), now)) {
+          await this.run('deep', 'scheduler', this.deepOptions('deep'));
+          return;
+        }
+      } catch {
+        // malformed deep cron: fall through to quick loop only
+      }
     }
 
     if (config.quick_enabled) {
@@ -149,10 +171,19 @@ export class ResearchAgentScheduler {
     }
   }
 
-  private async run(kind: ResearchAgentLoopKind, trigger: ResearchAgentTrigger): Promise<ResearchAgentRunManifest> {
+  private deepOptions(kind: ResearchAgentLoopKind): { deep_max_rounds?: number; deep_queries_per_round?: number } | undefined {
+    if (kind !== 'deep') return undefined;
+    const config = this.deps.readConfig();
+    return {
+      deep_max_rounds: config.deep_max_rounds,
+      deep_queries_per_round: config.deep_queries_per_round,
+    };
+  }
+
+  private async run(kind: ResearchAgentLoopKind, trigger: ResearchAgentTrigger, options?: { deep_max_rounds?: number; deep_queries_per_round?: number }): Promise<ResearchAgentRunManifest> {
     this.inFlight = true;
     try {
-      return await this.deps.runLoop(kind, trigger);
+      return await this.deps.runLoop(kind, trigger, options);
     } finally {
       this.inFlight = false;
     }

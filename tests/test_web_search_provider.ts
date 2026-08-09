@@ -1,17 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { HttpWebSearchProvider, webSearchConfigFromEnv } from '@/features/research/io/web_search_provider';
+import { HttpWebSearchProvider, webSearchConfigFromEnv, webSearchConfigsFromEnv } from '@/features/research/io/web_search_provider';
 
 describe('web search provider config selection', () => {
   it('defaults to the keyless free aggregate when no search key is configured', () => {
     const config = webSearchConfigFromEnv({ MINIMAX_API_KEY: 'chat-only-key' });
     expect(config).toMatchObject({ provider: 'free', endpoint: null, api_key: null });
   });
-
   it('honours an explicit keyless provider without an endpoint', () => {
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'wikipedia' })).toMatchObject({ provider: 'wikipedia', endpoint: null });
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'gdelt' })).toMatchObject({ provider: 'gdelt', endpoint: 'https://api.gdeltproject.org/api/v2/doc/doc' });
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'hn' })).toMatchObject({ provider: 'hn', endpoint: 'https://hn.algolia.com/api/v1/search' });
-    expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'duckduckgo' })).toMatchObject({ provider: 'duckduckgo', endpoint: 'https://api.duckduckgo.com' });
+    expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'duckduckgo' })).toMatchObject({ provider: 'duckduckgo', endpoint: 'https://html.duckduckgo.com/html/' });
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'reddit' })).toMatchObject({ provider: 'reddit', endpoint: 'https://www.reddit.com/search.json' });
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'arxiv' })).toMatchObject({ provider: 'arxiv', endpoint: 'https://export.arxiv.org/api/query' });
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'openalex' })).toMatchObject({ provider: 'openalex', endpoint: 'https://api.openalex.org/works' });
@@ -22,6 +21,21 @@ describe('web search provider config selection', () => {
   it('auto-selects a keyed provider when its key is present', () => {
     expect(webSearchConfigFromEnv({ TAVILY_API_KEY: 't' })).toMatchObject({ provider: 'tavily' });
     expect(webSearchConfigFromEnv({ BRAVE_SEARCH_API_KEY: 'b' })).toMatchObject({ provider: 'brave' });
+  });
+
+  it('resolves searxng and minimax only when explicitly selected or clearly configured', () => {
+    // Explicitly selected providers resolve their own endpoints and secrets.
+    expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'searxng', SEARXNG_BASE_URL: 'https://search.example.org' }))
+      .toMatchObject({ provider: 'searxng', endpoint: 'https://search.example.org', api_key: null });
+    expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'minimax', MINIMAX_OAUTH_TOKEN: 'oauth', MINIMAX_SEARCH_REGION: 'global' }))
+      .toMatchObject({ provider: 'minimax', api_key: 'oauth', minimax_region: 'global', endpoint: 'https://api.minimax.io/v1/coding_plan/search' });
+    // Key resolution order: CODE_PLAN → CODING_API → OAUTH → API.
+    expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'minimax', MINIMAX_API_KEY: 'chat-only', MINIMAX_CODE_PLAN_KEY: 'plan-key' }).api_key).toBe('plan-key');
+    // SearXNG auto-detects from its base URL; MiniMax only from a dedicated
+    // search-plan key, never from the chat-completions MINIMAX_API_KEY.
+    expect(webSearchConfigFromEnv({ SEARXNG_BASE_URL: 'http://127.0.0.1:8888' })).toMatchObject({ provider: 'searxng' });
+    expect(webSearchConfigFromEnv({ MINIMAX_CODE_PLAN_KEY: 'plan-key' })).toMatchObject({ provider: 'minimax' });
+    expect(webSearchConfigFromEnv({ MINIMAX_API_KEY: 'chat-only' })).toMatchObject({ provider: 'free' });
   });
 
   it('allows an explicit disabled and rejects unknown providers', () => {
@@ -40,6 +54,44 @@ describe('web search provider config selection', () => {
     const results = await provider.search({ query: '脑机接口', config });
     expect(JSON.parse(requestBody)).toMatchObject({ query: '脑机接口', max_results: 8 });
     expect(results[0]).toMatchObject({ title: '脑机接口实施意见', url: 'https://example.test/bci' });
+  });
+});
+
+describe('webSearchConfigsFromEnv multi-engine sweep', () => {
+  it('always includes the keyless free aggregate when nothing else is configured', () => {
+    expect(webSearchConfigsFromEnv({}).map((config) => config.provider)).toEqual(['free']);
+  });
+
+  it('runs every configured engine together instead of replacing free', () => {
+    const providers = webSearchConfigsFromEnv({
+      TAVILY_API_KEY: 't',
+      BRAVE_SEARCH_API_KEY: 'b',
+      SEARXNG_BASE_URL: 'http://127.0.0.1:8888',
+      MINIMAX_API_KEY: 'sk-cp-test',
+    }).map((config) => config.provider);
+    expect(providers).toEqual(['free', 'tavily', 'brave', 'searxng', 'minimax']);
+  });
+
+  it('treats MINIMAX_API_KEY as a usable search key in the sweep set', () => {
+    const configs = webSearchConfigsFromEnv({ MINIMAX_API_KEY: 'sk-cp-test' });
+    const minimax = configs.find((config) => config.provider === 'minimax');
+    expect(minimax).toMatchObject({ provider: 'minimax', api_key: 'sk-cp-test', endpoint: 'https://api.minimaxi.com/v1/coding_plan/search' });
+  });
+
+  it('adds explicitly requested keyless engines as standalone passes', () => {
+    const providers = webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDERS: 'duckduckgo,bing' }).map((config) => config.provider);
+    expect(providers).toEqual(['free', 'duckduckgo', 'bing']);
+  });
+
+  it('deduplicates engines and honours the singular provider variable', () => {
+    const providers = webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'minimax', MINIMAX_CODE_PLAN_KEY: 'plan' }).map((config) => config.provider);
+    expect(providers).toEqual(['free', 'minimax']);
+  });
+
+  it('falls back to a disabled config only when explicitly disabled', () => {
+    expect(webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'disabled' }).map((config) => config.provider)).toEqual(['disabled']);
+    // An unknown explicit name still keeps the free aggregate on.
+    expect(webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'not-a-provider' }).map((config) => config.provider)).toEqual(['free']);
   });
 });
 
@@ -129,22 +181,60 @@ describe('web search provider keyless adapters', () => {
     expect(results[1]).toMatchObject({ title: 'No link', url: 'https://news.ycombinator.com/item?id=22' });
   });
 
-  it('parses DuckDuckGo instant answers and flattens nested related topics', async () => {
-    const provider = new HttpWebSearchProvider(async () => new Response(JSON.stringify({
-      Heading: 'BCI',
-      AbstractText: 'abstract text',
-      AbstractURL: 'https://en.wikipedia.org/wiki/BCI',
-      RelatedTopics: [
-        { Text: 'Related One - source', FirstURL: 'https://duckduckgo.com/1' },
-        { Text: 'Nested', FirstURL: 'https://duckduckgo.com/2', Topics: [{ Text: 'Child - src', FirstURL: 'https://duckduckgo.com/3' }] },
-      ],
-    }), { status: 200 }));
-    const config = webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'duckduckgo', NARRATIVE_WEB_SEARCH_MAX_RESULTS: '2' });
+  it('parses DuckDuckGo HTML results and resolves uddg redirect links', async () => {
+    const html = `
+      <div class="result results_links results_links_deep web-result">
+        <div class="links_main links_deep result__body">
+          <h2 class="result__title"><a rel="nofollow" class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fexample.com%2Fbci-policy&amp;rut=abc">脑机接口 &amp; 政策 - Example</a></h2>
+          <a class="result__snippet" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fexample.com%2Fbci-policy&amp;rut=abc">2026 <b>政策</b> 文件。</a>
+          <div class="result__extras"><a class="result__url" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fexample.com%2Fbci-policy&amp;rut=abc">example.com</a></div>
+        </div>
+      </div>
+      <div class="result"><h2 class="result__title"><a class="result__a" href="https://direct.example.org/robot">Direct Link</a></h2></div>
+      <div class="result"><h2 class="result__title"><a class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fnews.example.net%2Fitem&amp;rut=def">Third Result</a></h2></div>`;
+    const provider = new HttpWebSearchProvider(async () => new Response(html, { status: 200, headers: { 'content-type': 'text/html' } }));
+    const config = webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'duckduckgo', NARRATIVE_WEB_SEARCH_REGION: 'cn-zh', NARRATIVE_WEB_SEARCH_SAFESEARCH: 'strict', NARRATIVE_WEB_SEARCH_MAX_RESULTS: '2' });
+    expect(config).toMatchObject({ region: 'cn-zh', safe_search: 'strict' });
     const results = await provider.search({ query: 'bci', config });
-    expect(results[0]).toMatchObject({ url: 'https://en.wikipedia.org/wiki/BCI' });
-    // Cap applies after the abstract row: only the first related topic row survives.
+    // Max-results cap applies before the snippet/direct-link rows.
     expect(results).toHaveLength(2);
-    expect(results[1]).toMatchObject({ title: 'Related One' });
+    expect(results[0]).toMatchObject({ title: '脑机接口 & 政策 - Example', url: 'https://example.com/bci-policy', snippet: '2026 政策 文件。', source_name: 'example.com' });
+    expect(results[1]).toMatchObject({ title: 'Direct Link', url: 'https://direct.example.org/robot' });
+  });
+
+  it('parses MiniMax Token Plan search results defensively', async () => {
+    const provider = new HttpWebSearchProvider(async () => new Response(JSON.stringify({ data: { results: [
+      { title: 'MiniMax Hit', url: 'https://search.test/mm', content: 'snippet text', published_at: '2026-07-01' },
+      { title: 'Broken Row' },
+      { title: 'MiniMax Two', url: 'https://search.test/mm2' },
+    ] } }), { status: 200 }));
+    const config = webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'minimax', MINIMAX_CODE_PLAN_KEY: 'sk-cp-test' });
+    expect(config).toMatchObject({ provider: 'minimax', api_key: 'sk-cp-test', endpoint: 'https://api.minimaxi.com/v1/coding_plan/search' });
+    const results = await provider.search({ query: '脑机接口', config });
+    expect(results).toHaveLength(2);
+    expect(results[0]).toMatchObject({ title: 'MiniMax Hit', url: 'https://search.test/mm', snippet: 'snippet text', published_at: '2026-07-01' });
+  });
+
+  it('parses SearXNG JSON results, falls back to general, and guards http base URLs', async () => {
+    const requested: string[] = [];
+    const provider = new HttpWebSearchProvider(async (input) => {
+      const url = String(input);
+      requested.push(url);
+      const categories = new URL(url).searchParams.get('categories');
+      return new Response(JSON.stringify({ results: categories === 'general'
+        ? [{ title: 'SearXNG General', url: 'https://search.test/sx', content: 'fallback hit', publishedDate: '2026-08-01T00:00:00Z', engine: 'google' }]
+        : [] }), { status: 200 });
+    });
+    const config = webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'searxng', SEARXNG_BASE_URL: 'http://localhost:8888', SEARXNG_CATEGORIES: 'news', SEARXNG_LANGUAGE: 'en' });
+    expect(config).toMatchObject({ provider: 'searxng', endpoint: 'http://localhost:8888', searxng_categories: 'news', searxng_language: 'en' });
+    const results = await provider.search({ query: 'bci', config });
+    // news returned zero rows → one retry with general before giving up.
+    expect(requested.filter((url) => url.includes('/search')).length).toBe(2);
+    expect(requested.some((url) => new URL(url).searchParams.get('categories') === 'general')).toBe(true);
+    expect(results[0]).toMatchObject({ title: 'SearXNG General', url: 'https://search.test/sx', published_at: '2026-08-01T00:00:00Z' });
+    // Public http:// instance is refused by the SSRF guard.
+    const publicConfig = webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'searxng', SEARXNG_BASE_URL: 'http://searx.example.com' });
+    await expect(provider.search({ query: 'bci', config: publicConfig })).rejects.toThrow('searxng_http_base_url_must_be_private_or_loopback');
   });
 
   it('parses credential-free Bing RSS general-web results', async () => {

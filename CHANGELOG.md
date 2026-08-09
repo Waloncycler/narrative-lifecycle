@@ -8,6 +8,8 @@
 - Verified the MiniMax OpenAI-compatible agent in a live governed run; automated publication now records immutable admission audit entries and preserves parent/branch separation.
 - Added bounded historical provenance recovery: configured public/MCP search discovers possible original pages, deterministic extraction requires two independent citation-ready source hosts, and only one scoped primary package proceeds through the existing MiniMax, resolver, Schema and policy admission chain. Search snippets, single-source records and landing pages remain held.
 - Preserved governed source publication dates from discovery through retrieval and Intake. Dated, citation-ready primary pages can now use the existing E1 policy path; ordinary daily discovery is capped at 180 days so historic material cannot masquerade as a new update.
+- Added `npm run research:pack` for curated, scope-explicit original-source retrieval. The first China innovative-drugs pack retrieves official and company primary pages into review-only Intake candidates, while proposed taxonomy and secondary locators remain held.
+- Improved Chinese authority-page extraction and citation readiness: dense 60-Han-character factual paragraphs are now eligible for review without weakening the Evidence Gate or any semantic validation.
 
 ## v0.15.1 - External Source Inventory
 

@@ -67,7 +67,7 @@ import { RunAutonomousResearchUseCase } from '@/app/use_cases/run_autonomous_res
 import { ValidateAutonomousResearchPolicyUseCase } from '@/app/use_cases/validate_autonomous_research_policy_use_case';
 import { RunWebResearchUseCase } from '@/app/use_cases/run_web_research_use_case';
 import { FileWebResearchRepository } from '@/features/research/io/web_research_io';
-import { HttpWebSearchProvider, webSearchConfigFromEnv } from '@/features/research/io/web_search_provider';
+import { HttpWebSearchProvider, webSearchConfigFromEnv, webSearchConfigsFromEnv } from '@/features/research/io/web_search_provider';
 import { FileResearchCoverageRepository } from '@/features/research/io/research_coverage_io';
 import { BuildResearchCampaignUseCase } from '@/app/use_cases/build_research_campaign_use_case';
 import { RunResearchCampaignUseCase } from '@/app/use_cases/run_research_campaign_use_case';
@@ -88,7 +88,12 @@ import { ReconcileBaselineEvidenceUseCase } from '@/app/use_cases/reconcile_base
 import { AdmitBaselineEvidenceUseCase } from '@/app/use_cases/admit_baseline_evidence_use_case';
 import { FileBaselineEvidenceReconciliationRepository } from '@/features/research/io/baseline_evidence_reconciliation_io';
 import { RecoverHistoricalProvenanceUseCase } from '@/app/use_cases/recover_historical_provenance_use_case';
+import { VerifyBaselineEvidenceUseCase } from '@/app/use_cases/verify_baseline_evidence_use_case';
 import { FileHistoricalProvenanceRecoveryRepository } from '@/features/research/io/historical_provenance_recovery_io';
+import { RunDeepResearchSweepUseCase } from '@/app/use_cases/run_deep_research_sweep_use_case';
+import { FileDeepResearchSweepRepository } from '@/features/research/io/deep_research_io';
+import { FileResearchPackRepository } from '@/features/research/io/research_pack_io';
+import { RunResearchPackUseCase } from '@/app/use_cases/run_research_pack_use_case';
 
 export class YamlLoader {
   constructor(private readonly repoRoot: string) {}
@@ -247,6 +252,7 @@ export function createProductCoreUseCases(repoRoot: string) {
   const researchLeadTriageRepository = new FileResearchLeadTriageRepository(repoRoot);
   const researchSourceRetrievalRepository = new FileResearchSourceRetrievalRepository(repoRoot);
   const researchSourceRetriever = new HttpResearchSourceRetriever();
+  const researchPackRepository = new FileResearchPackRepository(repoRoot);
   const researchBaselineCompletionRepository = new FileResearchBaselineCompletionRepository(repoRoot);
   const historicalEvidenceRecoveryRepository = new FileHistoricalEvidenceRecoveryRepository(repoRoot);
   const historicalProvenanceRecoveryRepository = new FileHistoricalProvenanceRecoveryRepository(repoRoot);
@@ -596,7 +602,7 @@ export function createProductCoreUseCases(repoRoot: string) {
   const runWebResearchUseCase = new RunWebResearchUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.5',
-    config: () => webSearchConfigFromEnv(process.env),
+    configs: () => webSearchConfigsFromEnv(process.env),
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
     search: (input) => webSearchProvider.search(input),
     writeReport: (report) => webResearchRepository.writeReport(report),
@@ -665,7 +671,24 @@ export function createProductCoreUseCases(repoRoot: string) {
     readAdmittedEvidenceIds: () => historicalProvenanceRecoveryRepository.readAdmittedEvidenceIds(),
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
     searchProvider: () => webSearchConfigFromEnv(process.env).provider,
-    search: ({ query }) => webSearchProvider.search({ query, config: webSearchConfigFromEnv(process.env) }),
+    search: async ({ query }) => {
+      // Sweep every configured engine in parallel; one provenance recovery
+      // candidate gets verified against all of them, deduped by URL.
+      const configs = webSearchConfigsFromEnv(process.env);
+      const settled = await Promise.allSettled(configs.map((config) => webSearchProvider.search({ query, config })));
+      const seen = new Set<string>();
+      const rows: Array<{ title?: string; url?: string; snippet?: string; source_name?: string; published_at?: string | null }> = [];
+      for (const result of settled) {
+        if (result.status !== 'fulfilled') continue;
+        for (const row of result.value) {
+          const key = row.url ?? row.title ?? '';
+          if (!key || seen.has(key)) continue;
+          seen.add(key);
+          rows.push(row);
+        }
+      }
+      return rows;
+    },
     retrieve: (input) => researchSourceRetriever.retrieve(input),
     write: (report) => historicalProvenanceRecoveryRepository.write(report),
     validate: (report) => validator.validate('historical_provenance_recovery_report.schema.json', report),
@@ -698,8 +721,19 @@ export function createProductCoreUseCases(repoRoot: string) {
     writeQualityReport: (report) => researchSourceRetrievalRepository.writeQualityReport(report),
     validateQualityReport: (report) => validator.validate('research_source_quality_report.schema.json', report),
   });
+  const runResearchPackUseCase = new RunResearchPackUseCase({
+    now: () => new Date().toISOString(),
+    producerVersion: () => 'v0.13.6',
+    readPack: (file) => researchPackRepository.readPack(file),
+    validatePack: (pack) => validator.validate('research_pack.schema.json', pack),
+    retrieve: (input) => researchSourceRetriever.retrieve(input),
+    validateRetrieval: (report) => validator.validate('research_source_retrieval_report.schema.json', report),
+    validateReport: (report) => validator.validate('research_pack_retrieval_report.schema.json', report),
+    writeReport: (report) => researchPackRepository.writeReport(report),
+  });
   const runResearchCampaignUseCase = new RunResearchCampaignUseCase({
     buildCampaign: (input) => buildResearchCampaignUseCase.execute(input),
+    readRegistry: () => topicRegistryRepository.readTopicRegistry(),
     runWebResearch: (input) => runWebResearchUseCase.execute(input),
     runDirectSourceResearch: (input) => runDirectSourceResearchUseCase.execute(input),
     prepareDirectSourceIntake: (report) => prepareDirectSourceIntakeUseCase.execute(report),
@@ -707,12 +741,28 @@ export function createProductCoreUseCases(repoRoot: string) {
     buildLeadTriage: () => buildResearchLeadTriageUseCase.execute(),
     retrieveSources: () => retrieveResearchSourcesUseCase.execute({ maxItems: 6 }),
   });
+  const deepResearchSweepRepository = new FileDeepResearchSweepRepository(repoRoot);
+  const runDeepResearchSweepUseCase = new RunDeepResearchSweepUseCase({
+    now: () => new Date().toISOString(),
+    producerVersion: () => 'v0.13.5',
+    runCampaign: (input) => runResearchCampaignUseCase.execute(input),
+    runWebResearch: (input) => runWebResearchUseCase.execute(input),
+    buildLeadTriage: () => buildResearchLeadTriageUseCase.execute(),
+    retrieveSources: () => retrieveResearchSourcesUseCase.execute({ maxItems: 6 }),
+    appendRetrievedSourceIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
+    writeSweep: (sweep) => deepResearchSweepRepository.writeSweep(sweep),
+  });
   const researchAgentLoopUseCase = new ResearchAgentLoopUseCase({
     producerVersion: () => 'v0.11.0',
     now: () => new Date().toISOString(),
     runSourceSync: async (input) => syncWorldMonitorSourcesUseCase.execute(input),
     runWebResearch: (input) => runWebResearchUseCase.execute(input),
     runResearchCampaign: (input) => runResearchCampaignUseCase.execute(input),
+    runDeepResearchSweep: ({ maxRounds, queriesPerRound, ...rest }) => runDeepResearchSweepUseCase.execute({
+      max_rounds: maxRounds,
+      queries_per_round: queriesPerRound,
+      ...rest,
+    }),
     runHistoricalProvenanceRecovery: async () => {
       const result = await recoverHistoricalProvenanceUseCase.execute({ maxTargets: 2, maxSourcesPerTarget: 4 });
       const session = result.report.auto_intake_ready_count ? appendRetrievedSourceIntakeUseCase.execute(result.retrieval) : null;
@@ -731,6 +781,14 @@ export function createProductCoreUseCases(repoRoot: string) {
     writeEvolutionLedger: (ledger) => researchAgentRepository.writeEvolutionLedger(ledger),
     readLearningMetrics: () => researchAgentRepository.readLearningMetrics(),
     writeRunManifest: (manifest) => researchAgentRepository.writeRunManifest(manifest),
+  });
+  const verifyBaselineEvidenceUseCase = new VerifyBaselineEvidenceUseCase({
+    reconcile: () => reconcileBaselineEvidenceUseCase.execute(),
+    recover: (input) => recoverHistoricalProvenanceUseCase.execute(input),
+    appendRetrievedSourceIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
+    runIntakeAgent: () => runIntakeAgentUseCase.executeLatest(),
+    runAiShadow: () => runAiShadowValidationUseCase.execute(),
+    runAutonomousResearch: (bundle, publish) => runAutonomousResearchUseCase.execute({ bundle, publish }),
   });
   const researchAgentScheduler = new ResearchAgentScheduler({
     runLoop: async (kind, trigger) => researchAgentLoopUseCase.execute({ loop_kind: kind, triggered_by: trigger }),
@@ -769,11 +827,15 @@ export function createProductCoreUseCases(repoRoot: string) {
     appendRetrievedSourceIntakeUseCase,
     recoverHistoricalProvenanceUseCase,
     runResearchCampaignUseCase,
+    runDeepResearchSweepUseCase,
+    deepResearchSweepRepository,
     buildResearchLeadTriageUseCase,
     researchLeadTriageRepository,
     retrieveResearchSourcesUseCase,
+    runResearchPackUseCase,
     buildResearchBaselineCompletionUseCase,
     reconcileBaselineEvidenceUseCase,
+    verifyBaselineEvidenceUseCase,
     admitBaselineEvidenceUseCase,
     researchBaselineCompletionRepository,
     buildHistoricalEvidenceRecoveryUseCase,

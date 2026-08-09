@@ -68,6 +68,16 @@ describe('research source retrieval', () => {
     expect(company.text).toContain('signed development agreement');
   });
 
+  it('accepts a concise but fact-dense Chinese authority excerpt instead of applying an English-only length gate', () => {
+    const item = buildRetrievedSourceItem({
+      lead: { triage_id: 'nhsa_1', origin_lead_id: 'lead_nhsa', topic_id: 'innovative_drug_license_out', branch_id: null, candidate_node_id: null, source_class: 'official', disposition: 'priority_review', title: '创新药统计', url: 'https://www.nhsa.gov.cn/art/2026/7/14/art_14_21423.html' } as never,
+      fetchedAt: generatedAt, httpStatus: 200, contentType: 'text/html',
+      body: '<html><title>创新药统计</title><body><div class="TRS_Editor"><p>国家药监局药品注册管理司副司长表示，截至六月底，国家药监局今年共批准药品上市注册申请两千三百一十八件，其中全球新创新药三十八个，包括二十个化学药品、十七个生物制品和一个中药。该统计为监管公开口径，研究者仍须核对原文的统计范围和日期。</p><p>原文同时说明统计口径以监管部门截至六月底的注册审批记录为准，不代表产品后续临床成功、商业化收入或任何生命周期阶段结论，研究者需要保留这一限定条件并在入库前进行核验。该段文字用于确保总正文具有足够上下文，而不是将单一统计数值误作完整结论。</p></div></body></html>',
+    });
+    expect(item).toMatchObject({ status: 'retrieved', citation_status: 'ready', extractor_id: 'gov_cn_article' });
+    expect(item.excerpts[0]?.quote).toContain('全球新创新药');
+  });
+
   it('uses the ClinicalTrials public record endpoint while preserving the original study URL upstream', async () => {
     let requestedUrl = '';
     const retriever = new HttpResearchSourceRetriever(async (url) => {

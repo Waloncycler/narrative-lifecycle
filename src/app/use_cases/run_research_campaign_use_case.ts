@@ -1,4 +1,5 @@
 import type { ResearchCampaign } from '@/features/research/types/research_coverage';
+import type { AliasRecord, TopicRegistry } from '@/features/narrative/types/topic_resolution';
 import type { WebResearchReport } from '@/features/research/types/web_research';
 import type { DirectSourceResearchReport } from '@/features/research/types/direct_source_research';
 import type { EvidenceIntakeSession } from '@/features/intake/types/intake';
@@ -6,9 +7,13 @@ import type { ResearchLeadTriageReport } from '@/features/research/types/researc
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 
 export interface RunResearchCampaignUseCaseDeps {
+  /** Optional Alias Registry access. When present, topic queries expand into
+   *  the registry aliases/abbreviations (EN/ZH/BCI...) via round-robin;
+   *  without it the campaign falls back to the task's own display names. */
+  readRegistry?(): TopicRegistry;
   buildCampaign(input: { maxTasks?: number }): ResearchCampaign;
   runWebResearch(input: {
-    plannedQueries: Array<{ query: string; topic_id: string | null; branch_id: string | null; candidate_node_id?: string | null; campaign_task_id: string; source_ids: string[]; source_domains: string[] }>;
+    plannedQueries: Array<{ query: string; topic_id: string | null; branch_id: string | null; candidate_node_id?: string | null; campaign_task_id: string; source_ids: string[]; source_domains: string[]; strict_source_domains?: string[] }>;
   }): Promise<WebResearchReport>;
   runDirectSourceResearch(input: { campaign: ResearchCampaign; maxTasks: number; maxQueries: number }): Promise<DirectSourceResearchReport>;
   prepareDirectSourceIntake(report: DirectSourceResearchReport): EvidenceIntakeSession | null;
@@ -29,7 +34,8 @@ export class RunResearchCampaignUseCase {
 
   async execute(input: { maxTasks?: number; maxQueries?: number; maxDirectQueries?: number } = {}): Promise<{ campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession: EvidenceIntakeSession | null; leadTriage: ResearchLeadTriageReport | null; sourceRetrieval: ResearchSourceRetrievalReport | null }> {
     const campaign = this.deps.buildCampaign({ maxTasks: input.maxTasks });
-    const plannedQueries = buildPlannedQueries(campaign, input.maxQueries ?? 12);
+    const aliases = this.deps.readRegistry?.()?.aliases ?? [];
+    const plannedQueries = buildPlannedQueries(campaign, input.maxQueries ?? 12, aliases);
     const [webResearch, directSourceResearch] = await Promise.all([
       this.deps.runWebResearch({ plannedQueries }),
       this.deps.runDirectSourceResearch({
@@ -54,38 +60,23 @@ export class RunResearchCampaignUseCase {
  * Topic queries, by contrast, are a wide-net discovery pass: they must not
  * inherit the task's authoritative-domain whitelist, or the keyless free
  * aggregate (Wikipedia/arXiv/OpenAlex/news...) would be filtered to zero.
- * Domain-targeted retrieval is handled by direct source research instead. */
-function buildPlannedQueries(campaign: ResearchCampaign, maxQueries: number): Array<{
-  query: string;
-  topic_id: string | null;
-  branch_id: string | null;
-  candidate_node_id?: string | null;
-  campaign_task_id: string;
-  source_ids: string[];
-  source_domains: string[];
-}> {
+ * Domain-targeted retrieval is handled by direct source research instead.
+ * Every topic query is a single-intent term (never a mixed zh+en keyword-
+ * stuffed string): scope coverage first, alias expansion second. */
+function buildPlannedQueries(campaign: ResearchCampaign, maxQueries: number, aliases: AliasRecord[] = []): PlannedWebQuery[] {
   const companyBudget = Math.min(
     Math.max(1, Math.floor(maxQueries / 3)),
     campaign.tasks.flatMap((task) => task.company_targets ?? []).length,
   );
   const topicBudget = Math.max(0, maxQueries - companyBudget);
-  const topicQueries = balancedWebTasks(campaign.tasks, topicBudget).map((task) => ({
-      // Wide-net pass uses the English term when available: free sources
-      // (HN/OpenAlex/GDELT/DDG/Wikipedia) index primarily English, and a
-      // mixed zh+en query starves every keyless source except arXiv's loose
-      // matcher. Wikipedia zh still resolves via cross-language redirects.
-      query: (task.display_name_en ?? task.display_name_zh).trim().slice(0, 280),
-      topic_id: task.topic_id,
-      branch_id: task.branch_id,
-      candidate_node_id: task.candidate_node_id,
-      campaign_task_id: task.task_id,
-      // The free aggregate stays broad, but now adds a separate bounded
-      // site-scoped pass for these governed domains. This gives the original
-      // page retriever a real chance of finding an authority source without
-      // treating the domain list as an Evidence claim.
-      source_ids: task.source_ids,
-      source_domains: task.source_domains,
-  }));
+  // Scope coverage first, but a slice of the budget must stay available for
+  // ZH/alias variants — otherwise a large task registry eats the whole budget
+  // with one English query per scope and the Chinese/abbreviation 口径 is
+  // never searched. Cap the distinct-scope pass (never below the three
+  // governed minimum slots) and round-robin the remaining slots across the
+  // selected tasks' term variants.
+  const scopeCap = Math.max(3, Math.ceil(topicBudget * 0.6));
+  const topicQueries = plannedTopicQueries(balancedWebTasks(campaign.tasks, Math.min(topicBudget, scopeCap)), topicBudget, aliases);
   const seenCompanyTasks = new Set<string>();
   const companyQueries = campaign.tasks
     .flatMap((task) => (task.company_targets ?? []).map((company) => ({ task, company })))
@@ -100,16 +91,88 @@ function buildPlannedQueries(campaign: ResearchCampaign, maxQueries: number): Ar
       const sourceDomain = hostFor(company.official_source_url);
       if (!sourceDomain) return [];
       return [{
-        query: `${company.display_name_zh} ${company.display_name_en} ${task.display_name_zh} ${task.display_name_en ?? ''} official investor relations filing`.trim().slice(0, 280),
+        // Company Query Slimming: one bounded intent per query. The default
+        // IR pass uses the English name alone; stuffing zh+en+topic+official
+        // into one string only hits the homepage or navigation pages.
+        query: `${company.display_name_en || company.display_name_zh} investor relations`.trim().slice(0, 280),
         topic_id: task.topic_id,
         branch_id: task.branch_id,
         candidate_node_id: task.candidate_node_id,
         campaign_task_id: `${task.task_id}__company_${company.company_id}`.slice(0, 180),
         source_ids: company.disclosure_source_ids,
         source_domains: [sourceDomain],
+        strict_source_domains: [sourceDomain],
       }];
     });
   return [...topicQueries, ...companyQueries].slice(0, maxQueries);
+}
+
+interface PlannedWebQuery {
+  query: string;
+  topic_id: string | null;
+  branch_id: string | null;
+  candidate_node_id?: string | null;
+  campaign_task_id: string;
+  source_ids: string[];
+  source_domains: string[];
+  strict_source_domains?: string[];
+}
+
+/** Round-robin topic term expansion. Each selected task contributes a queue
+ *  of distinct search terms — English name first (the free wide-net sources
+ *  index primarily English), then the Chinese name, then every registry
+ *  alias/abbreviation for its topic — and budget slots are filled across
+ *  tasks round by round. Scope coverage (parent/branch/seed) therefore always
+ *  precedes alias coverage: Round 1 is the primary term per scope, Round 2
+ *  the Chinese term, Round 3+ the aliases. One query per intent. */
+function plannedTopicQueries(tasks: ResearchCampaign['tasks'], budget: number, aliases: AliasRecord[]): PlannedWebQuery[] {
+  const queues = tasks.map((task) => ({ task, terms: taskSearchTerms(task, aliases) }));
+  const out: PlannedWebQuery[] = [];
+  for (let round = 0; out.length < budget; round += 1) {
+    let added = false;
+    for (const { task, terms } of queues) {
+      if (out.length >= budget) break;
+      const term = terms[round];
+      if (!term) continue;
+      out.push({
+        query: term.slice(0, 280),
+        topic_id: task.topic_id,
+        branch_id: task.branch_id,
+        candidate_node_id: task.candidate_node_id,
+        campaign_task_id: task.task_id,
+        source_ids: task.source_ids,
+        source_domains: task.source_domains,
+        // Source Atlas domains remain a search hint, but wide Topic/Branch
+        // discovery must not discard a valid corroborating result merely
+        // because it was published on another governed domain.
+        strict_source_domains: [],
+      });
+      added = true;
+    }
+    if (!added) break;
+  }
+  return out;
+}
+
+/** Distinct searchable terms for one campaign task: the English display name,
+ *  the Chinese display name, then every registry alias/abbreviation registered
+ *  for the task's topic (branches inherit their parent topic's aliases;
+ *  universe seeds and provisional topics have none). */
+function taskSearchTerms(task: ResearchCampaign['tasks'][number], aliases: AliasRecord[]): string[] {
+  const terms: string[] = [];
+  const seen = new Set<string>();
+  const add = (term: string | null | undefined): void => {
+    const normalized = term?.trim();
+    if (!normalized || seen.has(normalized.toLowerCase())) return;
+    seen.add(normalized.toLowerCase());
+    terms.push(normalized);
+  };
+  add(task.display_name_en);
+  add(task.display_name_zh);
+  if (task.topic_id) {
+    for (const alias of aliases.filter((item) => item.topic_id === task.topic_id)) add(alias.alias);
+  }
+  return terms;
 }
 
 /** A fixed query budget must not silently become an existing-topic-only

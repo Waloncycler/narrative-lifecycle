@@ -28,6 +28,18 @@ export function renderWebResearchMarkdown(report: WebResearchReport): string {
     `- 查询数: ${report.queries.length}`,
     `- 线索数: ${report.lead_count}`,
     '',
+    '## 检索执行',
+    '',
+    ...(report.provider_runs?.length
+      ? report.provider_runs.map((run) => `- ${run.provider}: 查询 ${run.query_count}，成功 ${run.successful_query_count}，空结果 ${run.zero_result_query_count}，原始结果 ${run.raw_result_count}，有效线索 ${run.normalized_lead_count}，错误 ${run.error_count}`)
+      : ['- 此历史报告未记录提供方执行明细。']),
+    '',
+    '## 来源产出',
+    '',
+    ...(report.source_yield?.length
+      ? report.source_yield.map((item) => `- ${item.source_name}: ${item.lead_count} 条线索`)
+      : ['- 暂无通过规范化的来源线索。']),
+    '',
     '## 线索',
     '',
     ...(report.leads.length ? report.leads.map((lead) => `- ${lead.title} (${lead.url})`) : ['- 暂无线索。']),

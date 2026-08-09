@@ -109,4 +109,17 @@ describe('citation-ready queue advancement', () => {
       suggested_evidence: { event_type: 'RETRIEVED_SOURCE_EXCERPT', event_date: '2026-06-05', confidence: 'medium' },
     });
   });
+
+  it('can append a curated research-pack candidate without auto-registering its proposed topic', () => {
+    let resolverCalls = 0;
+    const curated = structuredClone(report);
+    curated.items = [{ ...curated.items[1]!, topic_id: null, branch_id: null, candidate_node_id: 'china_innovative_drugs_domestic_access', next_action: 'prepare_intake' }];
+    const useCase = new AppendRetrievedSourceIntakeUseCase({
+      now: () => '2026-08-09T01:00:00.000Z', readLatestSession: () => null, existingEvidenceIds: () => new Set(),
+      writeIntakeSession: () => undefined, resolveTopics: () => { resolverCalls += 1; }, validateSession: () => undefined, validateCandidate: () => undefined,
+    });
+    const session = useCase.execute(curated, { resolveTopics: false })!;
+    expect(session.candidates[0]?.suggested_evidence.topic_id).toBe('provisional_china_innovative_drugs_domestic_access');
+    expect(resolverCalls).toBe(0);
+  });
 });
