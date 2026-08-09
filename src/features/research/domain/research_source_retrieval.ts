@@ -9,7 +9,22 @@ export function selectSourceRetrievalTargets(report: ResearchLeadTriageReport | 
   return report.items
     .filter((item) => ['priority_review', 'review'].includes(item.disposition))
     .filter((item) => RETRIEVABLE_CLASSES.has(item.source_class))
+    // Daily discovery must spend its bounded retrieval budget on fresh
+    // material first. Archive items remain available when the queue has no
+    // fresh/recent authority records and are handled explicitly by the
+    // separate historical-provenance workflow.
+    .sort((left, right) => freshnessWeight(right.freshness) - freshnessWeight(left.freshness)
+      || priorityScore(right) - priorityScore(left)
+      || left.triage_id.localeCompare(right.triage_id))
     .slice(0, limit);
+}
+
+function freshnessWeight(value: ResearchLeadTriageItem['freshness']): number {
+  return value === 'fresh' ? 3 : value === 'recent' ? 2 : value === 'undated' ? 1 : 0;
+}
+
+function priorityScore(value: ResearchLeadTriageItem): number {
+  return Number.isFinite(value.priority_score) ? value.priority_score : 0;
 }
 
 export function buildRetrievedSourceItem(input: {
@@ -23,7 +38,7 @@ export function buildRetrievedSourceItem(input: {
   const excerpts = excerptsFrom(extracted.text);
   const citation = assessCitationReadiness(extracted.text, excerpts);
   return baseItem(input.lead, input.fetchedAt, {
-    status: excerpts.length ? 'retrieved' : 'skipped',
+    status: citation.status === 'ready' ? 'retrieved' : 'skipped',
     http_status: input.httpStatus,
     content_type: input.contentType,
     page_title: extracted.title,
@@ -33,7 +48,7 @@ export function buildRetrievedSourceItem(input: {
     citation_notes: citation.notes,
     source_text_chars: extracted.text.length,
     content_hash: extracted.text ? hash(extracted.text) : null,
-    error: excerpts.length ? null : 'source_page_has_no_readable_text',
+    error: citation.status === 'ready' ? null : 'source_page_not_citation_ready',
   });
 }
 
@@ -41,7 +56,7 @@ export function buildFailedSourceItem(input: { lead: ResearchLeadTriageItem; fet
   return baseItem(input.lead, input.fetchedAt, { status: 'failed', http_status: input.httpStatus ?? null, content_type: null, page_title: null, extractor_id: 'generic_html', excerpts: [], citation_status: 'insufficient', citation_notes: ['原始页面未能取得可复核正文。'], source_text_chars: 0, content_hash: null, error: input.error.slice(0, 280) });
 }
 
-function baseItem(lead: ResearchLeadTriageItem, fetchedAt: string, detail: Omit<ResearchSourceRetrievalItem, 'retrieval_id' | 'triage_id' | 'origin_lead_id' | 'topic_id' | 'branch_id' | 'candidate_node_id' | 'source_class' | 'disposition' | 'title' | 'url' | 'fetched_at' | 'evidence_eligibility' | 'next_action'>): ResearchSourceRetrievalItem {
+function baseItem(lead: ResearchLeadTriageItem, fetchedAt: string, detail: Omit<ResearchSourceRetrievalItem, 'retrieval_id' | 'triage_id' | 'origin_lead_id' | 'topic_id' | 'branch_id' | 'candidate_node_id' | 'source_class' | 'disposition' | 'title' | 'url' | 'source_published_at' | 'fetched_at' | 'evidence_eligibility' | 'next_action'>): ResearchSourceRetrievalItem {
   return {
     retrieval_id: `source_page_${hash(`${lead.triage_id}|${lead.url}`)}`,
     triage_id: lead.triage_id,
@@ -53,6 +68,7 @@ function baseItem(lead: ResearchLeadTriageItem, fetchedAt: string, detail: Omit<
     disposition: lead.disposition,
     title: lead.title,
     url: lead.url,
+    source_published_at: lead.published_at,
     fetched_at: fetchedAt,
     ...detail,
     evidence_eligibility: 'context_only',
@@ -181,6 +197,7 @@ function excerptsFrom(text: string): ResearchSourceRetrievalItem['excerpts'] {
 
 function assessCitationReadiness(text: string, excerpts: SourcePageExcerpt[]): { status: 'ready' | 'insufficient'; notes: string[] } {
   const notes: string[] = [];
+  if (/(?:captcha|radware bot manager|cloudflare|access denied|unusual traffic|验证您是人类|安全验证)/i.test(text)) notes.push('页面为验证码、拦截或访问控制页，不是可引用原文。');
   if (text.length < 240) notes.push('可读正文过短，无法支持事实级复核。');
   if (!excerpts.length) notes.push('未提取到可引用的事实段落。');
   if (excerpts.length && !excerpts.some((item) => item.quote.length >= 120)) notes.push('引用段落过短，需要补充包含事实与限定条件的原文。');
@@ -226,7 +243,7 @@ function readableText(value: string): string {
 }
 
 function isPageChrome(value: string): boolean {
-  return /(?:skip to main|show glossary|hide glossary|search for terms|clinicaltrials\.gov|all studies|privacy policy|cookie settings|sign in|menu|donate|facebook|linkedin|twitter|免责声明|版权所有|联系我们|隐私政策)/i.test(value);
+  return /(?:skip to main|show glossary|hide glossary|search for terms|clinicaltrials\.gov|all studies|privacy policy|cookie settings|sign in|menu|donate|facebook|linkedin|twitter|免责声明|版权所有|联系我们|隐私政策|captcha|radware bot manager|cloudflare|access denied|unusual traffic|验证您是人类|安全验证)/i.test(value);
 }
 
 function excerptScore(value: string): number {

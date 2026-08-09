@@ -335,10 +335,11 @@ describe('authoritative direct-source research', () => {
     expect(companyQuery).toMatchObject({ topic_id: 'bci', branch_id: null, source_ids: ['sec_edgar'], source_domains: ['investor.nvidia.com'] });
     expect(companyQuery?.query).toContain('NVIDIA');
     expect(plannedQueries).toHaveLength(2);
-    // Topic queries stay a wide-net discovery pass and must not inherit the
-    // authoritative-domain whitelist that would zero out free-aggregate results.
+    // Topic queries remain a wide-net pass. Their source domains enable only
+    // an additional bounded Bing site pass; they do not filter out the free
+    // aggregate or become an Evidence claim.
     const topicQuery = plannedQueries.find((query) => !query.campaign_task_id.includes('__company_'));
-    expect(topicQuery).toMatchObject({ topic_id: 'bci', source_ids: [], source_domains: [] });
+    expect(topicQuery).toMatchObject({ topic_id: 'bci', source_ids: ['clinicaltrials'], source_domains: ['clinicaltrials.gov'] });
     expect(topicQuery?.query).not.toContain('官方');
     expect(topicQuery?.query.length).toBeGreaterThan(0);
   });
@@ -383,8 +384,8 @@ describe('authoritative direct-source research', () => {
     }).execute(report);
     expect(session?.candidates[0]).toMatchObject({
       original_quote: 'Rehabilitation BCI study after stroke',
-      publication_eligibility: 'manual_review',
-      suggested_evidence: { topic_id: 'bci', branch_id: 'bci_medical_rehab', scope: 'branch', evidence_strength: 'E1', confidence: 'low', stage_effect: 'split_branch' },
+      publication_eligibility: 'rule_verified',
+      suggested_evidence: { topic_id: 'bci', branch_id: 'bci_medical_rehab', scope: 'branch', evidence_strength: 'E1', confidence: 'medium', stage_effect: 'split_branch' },
       guardrail_check: { human_review_required: true, provenance_present: true, no_trading_advice: true },
     });
     const provenance = session?.provenance_records[0]!;
@@ -407,5 +408,20 @@ describe('authoritative direct-source research', () => {
     }).execute(report);
     expect(session?.candidates[0]?.suggested_evidence).toMatchObject({ topic_id: 'provisional_commercial_space', scope: 'parent', stage_effect: 'maintain', evidence_strength: 'E1', confidence: 'low' });
     expect(session?.candidates[0]?.uncertainty_notes).toContain('This record came from a research seed and can only accumulate under a provisional S0 topic.');
+  });
+
+  it('uses a bounded source excerpt and holds a retrieved lead with no publication date for operator date confirmation', () => {
+    const report: DirectSourceResearchReport = {
+      artifact_type: 'direct_source_research_report', schema_version: '1.0.0', producer_version: 'test', research_id: 'direct_unknown_date', generated_at: '2026-08-03T00:00:00.000Z', status: 'completed', queries: [], lead_count: 1,
+      leads: [{ lead_id: 'lead_unknown_date', task_id: 'campaign_formal_bci', topic_id: 'bci', branch_id: null, source_id: 'clinicaltrials', source_name: 'ClinicalTrials.gov', title: 'Short title', url: 'https://clinicaltrials.gov/study/NCT01234568', snippet: 'The official study record reports a controlled rehabilitation intervention with defined outcomes.', published_at: null, evidence_eligibility: 'context_only', next_action: 'review_source' }],
+      guardrail_check: { direct_source_results_not_formal_evidence: true, original_source_url_required: true, evidence_table_required_for_stage: true, parent_branch_separation: true, no_auto_import: true, no_trading_advice: true },
+    };
+    const session = new PrepareDirectSourceIntakeUseCase({ now: () => '2026-08-03T00:00:00.000Z', existingEvidenceIds: () => new Set(), writeIntakeSession: () => undefined, resolveTopics: () => undefined, validateSession: () => undefined, validateCandidate: () => undefined }).execute(report);
+    expect(session?.candidates[0]).toMatchObject({
+      original_quote: 'The official study record reports a controlled rehabilitation intervention with defined outcomes.',
+      temporal_provenance: { event_date_source: 'ingested_at', available_at_source: 'ingested_at', requires_operator_confirmation: true },
+      guardrail_check: { human_review_required: true },
+    });
+    expect(session?.candidates[0]?.suggested_evidence.limitation).toContain('did not provide a reliable publication date');
   });
 });

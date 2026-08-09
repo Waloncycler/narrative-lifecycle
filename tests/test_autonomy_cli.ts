@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -32,6 +32,14 @@ describe('autonomy CLI publication contract', () => {
     expect(defaultRun.status, defaultRun.stderr).toBe(0);
     expect(defaultRun.stdout).toContain('mode=review_required');
     expect(defaultRun.stdout).toContain('requested=false');
+
+    // The repository policy permits a narrowly-scoped publication path when
+    // explicitly requested. This test exercises the separate disabled-policy
+    // contract, rather than assuming the shipped policy is disabled.
+    const policyPath = resolve(root, 'configs/autonomous_research_policy.json');
+    const disabledPolicy = JSON.parse(readFileSync(policyPath, 'utf8')) as { auto_publish_evidence: boolean };
+    disabledPolicy.auto_publish_evidence = false;
+    writeFileSync(policyPath, `${JSON.stringify(disabledPolicy, null, 2)}\n`);
 
     const requestedRun = run(root, ['--publish-auto']);
     expect(requestedRun.status, requestedRun.stderr).toBe(0);

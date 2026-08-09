@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildNarrativeMonitor } from '@/features/narrative/domain/narrative_monitor';
-import { renderAgentDashboard, renderQueue, renderTopicDetail, renderTopics } from '@/features/narrative/ui/narrative_monitor_renderer';
+import { renderAgentDashboard, renderQueue, renderSources, renderSystemOverview, renderTopicDetail, renderTopics } from '@/features/narrative/ui/narrative_monitor_renderer';
 import type { StageSnapshotHistory } from '@/features/stages/types/diff';
 import type { WeeklyBrief } from '@/features/reporting/types/report';
 
@@ -18,6 +18,21 @@ const weekly = {
   stage_change_summary: { previous_snapshot_id: null, current_snapshot_id: snapshot.snapshot_id, upgrade_count: 0, downgrade_count: 0, evidence_added_count: 0, branch_mutation_candidate_count: 0, guardrail_regression_count: 0 },
   stage_changes: [], strongest_evidence: [{ evidence_id: 'parent_evidence', evidence_strength: 'E2', affected_layer: ['name'], topic: 'BCI', interpretation: 'Parent evidence.' }], why_not_higher: [], early_radar_candidates: [], next_operator_actions: [], artifact_index: [],
 } as unknown as WeeklyBrief;
+
+function candidate(candidateId: string, evidenceId: string) {
+  return {
+    candidate_id: candidateId,
+    original_quote: 'quoted fact',
+    duplicate_of_evidence_id: null,
+    suggested_evidence: {
+      evidence_id: evidenceId,
+      topic_id: 'bci',
+      branch_id: null,
+      scope: 'parent',
+      evidence_strength: 'E1',
+    },
+  };
+}
 
 describe('narrative monitor', () => {
   it('keeps parent and branch stages separate in the monitor view', () => {
@@ -128,6 +143,48 @@ describe('narrative monitor', () => {
     expect(renderQueue(model)).toContain('待发布证据复核');
   });
 
+  it('keeps historical guardrail alerts in system governance, not the material review queue', () => {
+    const model = buildNarrativeMonitor({
+      snapshot,
+      weekly,
+      diff: null,
+      review: { high_priority_operator_alerts: [{ category: 'stage_downgrade', message: 'A historical replay requires review.' }] } as never,
+      unresolvedCount: 0,
+      learningProfileVersion: null,
+    });
+    expect(model.review_queue).not.toEqual(expect.arrayContaining([
+      expect.objectContaining({ category: 'guardrail_alert' }),
+    ]));
+    expect(renderSystemOverview(model)).toContain('系统提醒');
+    expect(renderSystemOverview(model)).toContain('A historical replay requires review.');
+  });
+
+  it('removes policy-published candidates from the human review queue without hiding held candidates', () => {
+    const sessionId = 'session_auto_publish';
+    const session = {
+      session_id: sessionId, generated_at: '2026-08-09T00:00:00.000Z', raw_document: { raw_document_id: 'raw', source_name: 'test', source_kind: 'pasted_text', ingested_at: '2026-08-09T00:00:00.000Z', text: 'quoted fact held fact', character_count: 22 }, chunks: [], provenance_records: [], review_template: [],
+      candidates: [
+        candidate('candidate_published', 'auto_evidence'),
+        candidate('candidate_held', 'held_evidence'),
+      ],
+    } as never;
+    const model = buildNarrativeMonitor({
+      snapshot: null, weekly: null, diff: null, review: null, unresolvedCount: 0, learningProfileVersion: null,
+      runtime: {
+        intakeSession: session,
+        autonomousPromotion: {
+          session_id: sessionId,
+          items: [
+            { candidate_id: 'candidate_published', evidence_id: 'auto_evidence', topic_id: 'bci', branch_id: null, scope: 'parent', decision: 'published', reasons: [] },
+            { candidate_id: 'candidate_held', evidence_id: 'held_evidence', topic_id: 'bci', branch_id: null, scope: 'parent', decision: 'held', reasons: ['needs corroboration'] },
+          ],
+        } as never,
+      },
+    });
+    expect(model.inbox.find((item) => item.candidate_id === 'candidate_published')?.review_status).toBe('auto_published');
+    expect(model.review_queue.map((item) => item.candidate_id)).toEqual(['candidate_held']);
+  });
+
   it('keeps opaque branch records auditable but out of market-facing branch summaries', () => {
     const badBranchSnapshot = { ...snapshot, topics: [{ ...snapshot.topics[0]!, strongest_branch: 'NCT07530367 (S2)', branches: [
       { branch_id: 'trial', branch_name: 'NCT07530367', current_stage: 'S2', evidence_ids: ['e'], reactivation_record_id: null },
@@ -138,5 +195,14 @@ describe('narrative monitor', () => {
     const page = renderTopicDetail(model, 'bci');
     expect(page).toContain('待命名记录保留在审计中');
     expect(page).not.toContain('NCT07530367');
+  });
+
+  it('shows only registered source states and never presents external archive audits as a product capability', () => {
+    const model = buildNarrativeMonitor({ snapshot, weekly, diff: null, review: null, unresolvedCount: 0, learningProfileVersion: null });
+    const page = renderSources(model);
+    expect(page).toContain('系统来源目录');
+    expect(page).not.toContain('Tianji');
+    expect(page).not.toContain('待准入来源');
+    expect(page).not.toContain('外部来源导入');
   });
 });

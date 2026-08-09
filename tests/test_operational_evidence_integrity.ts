@@ -41,6 +41,7 @@ describe('operational evidence integrity', () => {
     writeFileSync(join(root, 'data/sample_evidence/manual_imported_evidence.yaml'), stringify([
       evidence('audited_manual'),
       evidence('legacy_unreviewed'),
+      { ...evidence('placeholder_manual'), source_url: 'https://example.invalid/imports/manual-evidence' },
     ]));
     writeFileSync(join(root, 'data/live_evidence/automated_evidence.yaml'), stringify([evidence('controlled_auto')]));
     writeFileSync(join(root, 'data/audit/evidence_import_audit.jsonl'), `${JSON.stringify({
@@ -49,7 +50,10 @@ describe('operational evidence integrity', () => {
     })}\nnot-json\n`);
     writeFileSync(join(root, 'data/audit/operational_evidence_admission.jsonl'), `${JSON.stringify({
       admission_type: 'manual_import',
-      evidence_ids: ['audited_manual'],
+      evidence_ids: ['audited_manual', 'placeholder_manual'],
+    })}\n${JSON.stringify({
+      admission_type: 'automated_publication',
+      evidence_ids: ['controlled_auto'],
     })}\nnot-json\n`);
 
     const repository = new FileAutonomousResearchRepository(root);
@@ -58,5 +62,39 @@ describe('operational evidence integrity', () => {
       .toEqual(['audited_manual', 'controlled_auto']);
     expect(repository.operationalArtifactPaths('run_test').sourceArtifacts)
       .toContain('data/audit/operational_evidence_admission.jsonl');
+  });
+
+  it('does not treat rows written directly into the research table as operational evidence', () => {
+    const root = mkdtempSync(join(tmpdir(), 'operational-evidence-table-'));
+    mkdirSync(join(root, 'data/evidence_table'), { recursive: true });
+    mkdirSync(join(root, 'data/audit'), { recursive: true });
+    writeFileSync(join(root, 'data/evidence_table/evidence_table.json'), JSON.stringify([
+      evidence('admitted_table_row'),
+      evidence('legacy_direct_row'),
+    ]));
+    writeFileSync(join(root, 'data/audit/operational_evidence_admission.jsonl'), `${JSON.stringify({
+      admission_type: 'manual_import',
+      evidence_ids: ['admitted_table_row'],
+    })}\n`);
+
+    const repository = new FileAutonomousResearchRepository(root);
+    expect(repository.readOperationalEvidence().map((item) => item.evidence_id)).toEqual(['admitted_table_row']);
+  });
+
+  it('keeps legacy automated rows out until a controlled-publication admission exists', () => {
+    const root = mkdtempSync(join(tmpdir(), 'operational-evidence-auto-'));
+    mkdirSync(join(root, 'data/live_evidence'), { recursive: true });
+    mkdirSync(join(root, 'data/audit'), { recursive: true });
+    writeFileSync(join(root, 'data/live_evidence/automated_evidence.yaml'), stringify([
+      evidence('legacy_auto'),
+      evidence('admitted_auto'),
+    ]));
+    writeFileSync(join(root, 'data/audit/operational_evidence_admission.jsonl'), `${JSON.stringify({
+      admission_type: 'automated_publication',
+      evidence_ids: ['admitted_auto'],
+    })}\n`);
+
+    const repository = new FileAutonomousResearchRepository(root);
+    expect(repository.readOperationalEvidence().map((item) => item.evidence_id)).toEqual(['admitted_auto']);
   });
 });

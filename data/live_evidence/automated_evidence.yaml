@@ -391,42 +391,34 @@
   schema_version: 0.9-autonomous-research
 - evidence_id: direct_arxiv_mn8gv5
   topic_id: provisional_ai_agents
-  branch_id: provisional_ai_agents_compute_budget_governance
+  branch_id: null
   event_date: 2026-08-06
-  event_title: Resourced Authority A Mechanism-Design Model for Participatory
-    Governance of Deployed AI Agents
-  event_summary: We give a formal mechanism design model for the continuous
-    participatory governance of a deployed AI agent. The mechanism is built on
-    the principle that governance should control an AI agent through resource
-    allocation so as to make authorization self enforcing via compute budgets.
-    The mechanism seeks to establish the Safe AI paradigm that compute is an
-    effective governance lever. We situate our work as a compliance or commons
-    overlay on a deployer. One governance period is an extensive form game in
-    which verified human stakeholders arrive sequentially and contribute, on a
-    provision or a rejection market, in a governance currency that is
-    deliberately distinct from the agents compute. A fundi
-  event_type: DIRECT_SOURCE_RECORD
-  source_name: arXiv 预印本平台
+  event_title: "[2608.06353v1] Resourced Authority A Mechanism-Design Model for
+    Participatory Governance of Deployed AI Agents"
+  event_summary: The mechanism is built on the principle that governance should
+    control an AI agent through resource allocation so as to make authorization
+    self enforcing via compute budgets.
+  event_type: RETRIEVED_SOURCE_EXCERPT
+  source_name: arxiv.org
   source_url: http://arxiv.org/abs/2608.06353v1
   source_type: academic
   evidence_strength: E1
   affected_layer:
     - reality
-  stage_effect: split_branch_branch
-  parent_or_branch: branch
+  stage_effect: maintain_parent
+  parent_or_branch: parent
   available_at: 2026-08-06
-  branch_coverage_score: 35
-  interpretation: A term-addressable original-source record may be relevant to
-    this Topic or Branch, but it is a review candidate rather than proof of any
-    lifecycle stage.
-  limitation: API metadata and title are insufficient to establish pricing,
-    adoption, revenue, scale, or a Stage transition. Verify the original record
-    and retain Parent/Branch separation. Branch mapping remains a separate
-    reviewable graph proposal and cannot upgrade the parent narrative.
-    Automatically published under policy v0.9-autonomous-research-default;
-    deterministic Stage Gate remains authoritative.
+  branch_coverage_score: 0
+  interpretation: A dated, citation-ready original source was retrieved from a
+    governed discovery lead. It is eligible for the existing policy evaluation,
+    not a direct Stage conclusion.
+  limitation: A bounded original-page excerpt and source publication date are
+    available. This E1 record cannot by itself establish pricing, adoption, or a
+    Stage transition. Automatically published under policy
+    v0.10-review-first-publication; deterministic Stage Gate remains
+    authoritative.
   positive_or_negative: neutral
-  confidence: 45
+  confidence: 70
   schema_version: 0.9-autonomous-research
 - evidence_id: direct_clinicaltrials_evl8sq
   topic_id: bci
@@ -462,9 +454,13 @@
   topic_id: bci
   branch_id: bci_medical_rehab
   event_date: 2024-04-15
-  event_title: Mirror Neuron Network Based Motor Imagery Training to Improve Brain
-    Computer Interface Performance in Spinal Cord Injury Patients
-  event_summary: WITHDRAWN · Spinal Cord Injuries
+  event_title: Mirror Neuron Network Based Motor Imagery Training Paradigms to
+    Improve Brain Computer Interface (BCI) Performance in Spinal Cord Injury
+    Patients
+  event_summary: 研究概述：The overall vision of this proposal is to demonstrate that a
+    virtual reality based motor imagery training program will improve brain
+    computer interface (BCI) performance and motor function in quadriplegic
+    subjects.
   event_type: DIRECT_SOURCE_RECORD
   source_name: 美国临床试验注册平台
   source_url: https://clinicaltrials.gov/study/NCT03098927
@@ -479,22 +475,24 @@
   interpretation: A term-addressable original-source record may be relevant to
     this Topic or Branch, but it is a review candidate rather than proof of any
     lifecycle stage.
-  limitation: API metadata and title are insufficient to establish pricing,
+  limitation: API metadata and excerpt are insufficient to establish pricing,
     adoption, revenue, scale, or a Stage transition. Verify the original record
     and retain Parent/Branch separation. Branch mapping remains a separate
     reviewable graph proposal and cannot upgrade the parent narrative.
-    Automatically published under policy v0.9-autonomous-research-default;
+    Automatically published under policy v0.10-review-first-publication;
     deterministic Stage Gate remains authoritative.
   positive_or_negative: neutral
-  confidence: 45
+  confidence: 70
   schema_version: 0.9-autonomous-research
 - evidence_id: direct_clinicaltrials_1t1huht
   topic_id: bci
   branch_id: bci_medical_rehab
   event_date: 2026-06-05
-  event_title: Impact of rTMS on BCI Control in Upper Limb Motor Rehabilitation of
-    Patients With Chronic Stroke
-  event_summary: RECRUITING · Chonic Stroke Patients With Motor Impairment of Upper Limb
+  event_title: ETUDE DE L'AMELIORATION DU CONTROLE DES INTERFACES CERVEAU-MACHINE
+    PAR LA CONNECTIVITE FONCTIONNELLE ET LA STIMULATION MAGNETIQUE
+    TRANSCRANIENNE REPETEE DANS LA REEDUCATION MOTRICE DU MEMBRE SUPERIEUR APRES
+    UN ACCIDENT VASCULAIRE CHRONIQUE
+  event_summary: 研究概述：Cerebrovascular accidents (strokes) are a major public health issue.
   event_type: DIRECT_SOURCE_RECORD
   source_name: 美国临床试验注册平台
   source_url: https://clinicaltrials.gov/study/NCT06951035
@@ -509,14 +507,14 @@
   interpretation: A term-addressable original-source record may be relevant to
     this Topic or Branch, but it is a review candidate rather than proof of any
     lifecycle stage.
-  limitation: API metadata and title are insufficient to establish pricing,
+  limitation: API metadata and excerpt are insufficient to establish pricing,
     adoption, revenue, scale, or a Stage transition. Verify the original record
     and retain Parent/Branch separation. Branch mapping remains a separate
     reviewable graph proposal and cannot upgrade the parent narrative.
-    Automatically published under policy v0.9-autonomous-research-default;
+    Automatically published under policy v0.10-review-first-publication;
     deterministic Stage Gate remains authoritative.
   positive_or_negative: neutral
-  confidence: 45
+  confidence: 70
   schema_version: 0.9-autonomous-research
 - evidence_id: wm_direct_anthropic_releases-tag_github_com_2008_repository_590187800_v0_121_0-ab44be325370
   topic_id: provisional_ai_foundation_models
@@ -1174,4 +1172,69 @@
     deterministic Stage Gate remains authoritative."
   positive_or_negative: neutral
   confidence: 45
+  schema_version: 0.9-autonomous-research
+- evidence_id: retrieved_yc0go3
+  topic_id: bci
+  branch_id: null
+  event_date: 2024-11-14
+  event_title: "[2411.09211v1] Dynamic Neural Communication: Convergence of
+    Computer Vision and Brain-Computer Interface"
+  event_summary: Interpreting human neural signals to decode static speech
+    intentions such as text or images and dynamic speech intentions such as
+    audio or video is showing great potential as an innovative communication
+    tool.
+  event_type: RETRIEVED_SOURCE_EXCERPT
+  source_name: arxiv.org
+  source_url: http://arxiv.org/abs/2411.09211v1
+  source_type: academic
+  evidence_strength: E1
+  affected_layer:
+    - reality
+  stage_effect: maintain_parent
+  parent_or_branch: parent
+  available_at: 2024-11-14
+  branch_coverage_score: 0
+  interpretation: A dated, citation-ready original source was retrieved from a
+    governed discovery lead. It is eligible for the existing policy evaluation,
+    not a direct Stage conclusion.
+  limitation: The retrieval package does not independently establish the original
+    publication date or cross-source corroboration. It remains review-only until
+    date, Topic/Branch scope, and Evidence Gate checks pass. Automatically
+    published under policy v0.10-review-first-publication; deterministic Stage
+    Gate remains authoritative.
+  positive_or_negative: neutral
+  confidence: 70
+  schema_version: 0.9-autonomous-research
+- evidence_id: retrieved_1lbvig5
+  topic_id: provisional_radiopharmaceuticals
+  branch_id: provisional_radiopharmaceuticals_artificial_intelligence_future_of_diagnostic
+  event_date: 2021-08-05
+  event_title: "[2108.02354v1] Artificial intelligence and the future of
+    diagnostic and therapeutic radiopharmaceutical development: in Silico smart
+    molecular design"
+  event_summary: Continued innovation in the development of new
+    radiopharmaceuticals is key to sustained growth and advancement of precision
+    medicine.
+  event_type: RETRIEVED_SOURCE_EXCERPT
+  source_name: arxiv.org
+  source_url: http://arxiv.org/abs/2108.02354v1
+  source_type: academic
+  evidence_strength: E1
+  affected_layer:
+    - reality
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2021-08-05
+  branch_coverage_score: 35
+  interpretation: A dated, citation-ready original source was retrieved from a
+    governed discovery lead. It is eligible for the existing policy evaluation,
+    not a direct Stage conclusion.
+  limitation: The retrieval package does not independently establish the original
+    publication date or cross-source corroboration. It remains review-only until
+    date, Topic/Branch scope, and Evidence Gate checks pass. Branch evidence
+    cannot upgrade the parent narrative by itself. Automatically published under
+    policy v0.10-review-first-publication; deterministic Stage Gate remains
+    authoritative.
+  positive_or_negative: neutral
+  confidence: 70
   schema_version: 0.9-autonomous-research

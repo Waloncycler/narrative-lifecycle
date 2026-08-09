@@ -65,6 +65,14 @@ describe('authoritative source mesh and research coverage campaign', () => {
       no_auto_import: true,
     });
 
+    const historyPrioritized = buildResearchCampaign({
+      registry, atlas, universe, companies, generatedAt: '2026-08-03T00:00:00.000Z', producerVersion: 'test', maxTasks: 80,
+      historicalRecovery: {
+        tasks: [{ task_id: 'history_bci_s3', kind: 'fill_stage_gap', priority: 'high', topic_id: 'bci', topic_name: '脑机接口', scope: 'parent', target_stages: ['S3'], required_layers: ['capital'], accepted_source_classes: ['filing'], search_intents: ['脑机接口 融资 披露 原始来源'], rationale: 'gap', intake_route: 'research_retrieve_then_intake_review', evidence_eligibility: 'context_only' }],
+      } as never,
+    });
+    expect(historyPrioritized.tasks.find((task) => task.topic_id === 'bci')).toMatchObject({ priority: 150, query: '脑机接口 融资 披露 原始来源', target_layers: expect.arrayContaining(['capital']) });
+
     const ajv = new Ajv2020({ allErrors: true, strict: false });
     addFormats(ajv);
     const validate = ajv.compile(JSON.parse(readFileSync(resolve(repoRoot, 'schemas/research_campaign.schema.json'), 'utf8')) as object);

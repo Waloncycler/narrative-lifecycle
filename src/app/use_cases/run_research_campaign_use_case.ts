@@ -12,6 +12,9 @@ export interface RunResearchCampaignUseCaseDeps {
   }): Promise<WebResearchReport>;
   runDirectSourceResearch(input: { campaign: ResearchCampaign; maxTasks: number; maxQueries: number }): Promise<DirectSourceResearchReport>;
   prepareDirectSourceIntake(report: DirectSourceResearchReport): EvidenceIntakeSession | null;
+  /** Appends citation-ready original-page excerpts to the just-created direct
+   * source session, retaining original source/date metadata when URLs match. */
+  appendRetrievedSourceIntake?(report: ResearchSourceRetrievalReport): EvidenceIntakeSession | null;
   /** Optional during the compatibility migration. When present it consumes
    * only the reports just persisted by the two research adapters. */
   buildLeadTriage?(): ResearchLeadTriageReport;
@@ -24,7 +27,7 @@ export interface RunResearchCampaignUseCaseDeps {
 export class RunResearchCampaignUseCase {
   constructor(private readonly deps: RunResearchCampaignUseCaseDeps) {}
 
-  async execute(input: { maxTasks?: number; maxQueries?: number; maxDirectQueries?: number } = {}): Promise<{ campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; leadTriage: ResearchLeadTriageReport | null; sourceRetrieval: ResearchSourceRetrievalReport | null }> {
+  async execute(input: { maxTasks?: number; maxQueries?: number; maxDirectQueries?: number } = {}): Promise<{ campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession: EvidenceIntakeSession | null; leadTriage: ResearchLeadTriageReport | null; sourceRetrieval: ResearchSourceRetrievalReport | null }> {
     const campaign = this.deps.buildCampaign({ maxTasks: input.maxTasks });
     const plannedQueries = buildPlannedQueries(campaign, input.maxQueries ?? 12);
     const [webResearch, directSourceResearch] = await Promise.all([
@@ -40,7 +43,8 @@ export class RunResearchCampaignUseCase {
     // artifacts. It cannot create Evidence or write a lifecycle state.
     const leadTriage = this.deps.buildLeadTriage?.() ?? null;
     const sourceRetrieval = leadTriage ? await this.deps.retrieveSources?.() ?? null : null;
-    return { campaign, webResearch, directSourceResearch, directSourceSession, leadTriage, sourceRetrieval };
+    const sourceRetrievalSession = sourceRetrieval ? this.deps.appendRetrievedSourceIntake?.(sourceRetrieval) ?? directSourceSession : directSourceSession;
+    return { campaign, webResearch, directSourceResearch, directSourceSession, sourceRetrievalSession, leadTriage, sourceRetrieval };
   }
 }
 
@@ -75,8 +79,12 @@ function buildPlannedQueries(campaign: ResearchCampaign, maxQueries: number): Ar
       branch_id: task.branch_id,
       candidate_node_id: task.candidate_node_id,
       campaign_task_id: task.task_id,
-      source_ids: [],
-      source_domains: [],
+      // The free aggregate stays broad, but now adds a separate bounded
+      // site-scoped pass for these governed domains. This gives the original
+      // page retriever a real chance of finding an authority source without
+      // treating the domain list as an Evidence claim.
+      source_ids: task.source_ids,
+      source_domains: task.source_domains,
   }));
   const seenCompanyTasks = new Set<string>();
   const companyQueries = campaign.tasks

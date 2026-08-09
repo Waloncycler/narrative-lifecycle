@@ -11,6 +11,7 @@ export type WebSearchProvider =
   | 'arxiv'
   | 'openalex'
   | 'archive'
+  | 'bing'
   | 'brave'
   | 'tavily'
   | 'mcp_bridge';

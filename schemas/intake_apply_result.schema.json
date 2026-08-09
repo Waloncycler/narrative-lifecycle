@@ -36,6 +36,7 @@
     "import_status": { "type": "string" },
     "import_id": { "type": ["string", "null"] },
     "weekly_run_id": { "type": ["string", "null"] },
+    "operational_evidence_ids": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
     "stage_change_summary": {},
     "pipeline_retry_count": { "type": "integer", "minimum": 0 },
     "pipeline_error": { "type": ["string", "null"] },

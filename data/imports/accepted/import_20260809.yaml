@@ -1,0 +1,57 @@
+- import_id: import_20260809
+  imported_at: 2026-08-09T07:28:34.879Z
+  source_file: outputs/intake/reviewed_evidence_draft.yaml
+  evidence_hash: d5b1666924d8f2b52dac0d227be8d9599be49413e87e7c7804641b2d3832355e
+  evidence_id: evidence_agent_1786260256591_w7s303
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  scope: branch
+  event_date: 2026-08-09
+  available_at: 2026-08-09
+  event_title: ClinicalTrials.gov record NCT03098927 carries a WITHDRAWN recruitment status.
+  event_summary: ClinicalTrials.gov record NCT03098927 carries a WITHDRAWN
+    recruitment status. Lowers confidence that VR motor-imagery BCI rehab has
+    cleared reality validation.
+  event_type: WORLDMONITOR_SIGNAL
+  source_name: unknown
+  source_url: null
+  source_type: news
+  evidence_strength: E1
+  affected_layer:
+    - name
+  stage_effect: split_branch
+  polarity: neutral
+  interpretation: Lowers confidence that VR motor-imagery BCI rehab has cleared
+    reality validation.
+  limitation: Agent output requires human review. Branch evidence cannot upgrade
+    the parent narrative by itself.
+  confidence: medium
+- import_id: import_20260809
+  imported_at: 2026-08-09T07:28:34.879Z
+  source_file: outputs/intake/reviewed_evidence_draft.yaml
+  evidence_hash: 1da0b008b20bdf2379085fcd774451167eab3979972c70716876565512775fae
+  evidence_id: evidence_agent_1786260256591_j0vigk
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  scope: branch
+  event_date: 2026-08-09
+  available_at: 2026-08-09
+  event_title: ClinicalTrials.gov record NCT06951035 is RECRUITING chronic-stroke
+    patients for rTMS-BCI upper-l
+  event_summary: ClinicalTrials.gov record NCT06951035 is RECRUITING
+    chronic-stroke patients for rTMS-BCI upper-limb rehab. Active enrollment
+    supports ongoing reality_validation for chronic-stroke BCI rehab.
+  event_type: WORLDMONITOR_SIGNAL
+  source_name: unknown
+  source_url: null
+  source_type: news
+  evidence_strength: E1
+  affected_layer:
+    - name
+  stage_effect: split_branch
+  polarity: neutral
+  interpretation: Active enrollment supports ongoing reality_validation for
+    chronic-stroke BCI rehab.
+  limitation: Agent output requires human review. Branch evidence cannot upgrade
+    the parent narrative by itself.
+  confidence: medium

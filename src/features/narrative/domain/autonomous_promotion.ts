@@ -37,6 +37,11 @@ export function evaluateAutonomousPromotion(input: {
 }): AutonomousPromotionEvaluation {
   const resolutionByCandidate = new Map(input.topicAudit?.resolutions.map((item) => [item.candidate_id, item]) ?? []);
   const agentBySource = new Map(input.agentCandidates.map((item) => [item.source_candidate_id, item]));
+  // `existingEvidence` is deliberately the operational Evidence Table, not
+  // the larger historical research store. A candidate may carry an id that
+  // exists in that store because a new primary-source retrieval is repairing
+  // its provenance. That is a revalidation opportunity, not an operational
+  // duplicate. A different duplicate id remains a hard stop.
   const existingIds = new Set(input.existingEvidence.map((item) => item.evidence_id));
   const items: AutonomousPromotionItem[] = [];
   const drafts: EvidenceCandidate['suggested_evidence'][] = [];
@@ -61,7 +66,12 @@ export function evaluateAutonomousPromotion(input: {
     if (!input.policy.enabled || !input.policy.auto_publish_evidence) reasons.push('autonomous publication is disabled by policy');
     if (!resolution || !resolvableStatuses.has(resolution.status)) reasons.push('Topic Resolver did not produce a publishable Topic or Branch mapping');
     if (!topicId || topicId === 'unknown_topic') reasons.push('unknown Topic cannot enter the Evidence Table');
-    if (candidate.duplicate_of_evidence_id || existingIds.has(resolvedDraft.evidence_id)) reasons.push('duplicate Evidence ID is already present');
+    const duplicateOperationalEvidence = existingIds.has(resolvedDraft.evidence_id);
+    const duplicateDifferentEvidence = Boolean(candidate.duplicate_of_evidence_id
+      && candidate.duplicate_of_evidence_id !== resolvedDraft.evidence_id);
+    if (duplicateOperationalEvidence || duplicateDifferentEvidence) {
+      reasons.push('duplicate Evidence ID is already present in the operational Evidence Table');
+    }
     const modelValidated = (input.agentAudit?.status === 'passed' || input.agentCandidates.length > 0)
       && (agent?.validation_status === 'passed' || candidate.publication_eligibility === 'rule_verified');
     const ruleVerified = candidate.publication_eligibility === 'rule_verified'
@@ -77,7 +87,11 @@ export function evaluateAutonomousPromotion(input: {
     if (!input.policy.permitted_source_types.includes(resolvedDraft.source_type)) reasons.push(`source type ${resolvedDraft.source_type} is not permitted by policy`);
     if (!input.policy.allow_news_auto_publish && resolvedDraft.source_type === 'news') reasons.push('news evidence requires corroboration before auto-publication');
     if (evidenceStrengthRank[resolvedDraft.evidence_strength] < evidenceStrengthRank[input.policy.minimum_evidence_strength]) reasons.push(`evidence strength ${resolvedDraft.evidence_strength} is below policy minimum ${input.policy.minimum_evidence_strength}`);
+    if (resolvedDraft.evidence_strength === 'E1' && candidate.publication_eligibility !== 'rule_verified') reasons.push('E1 automatic publication is limited to rule-verified original-source candidates');
     if (confidenceRank[resolvedDraft.confidence] < confidenceRank[input.policy.minimum_confidence]) reasons.push(`confidence ${resolvedDraft.confidence} is below policy minimum ${input.policy.minimum_confidence}`);
+    if (resolvedDraft.event_type !== 'HISTORICAL_REACQUIRED_SOURCE' && sourceAgeDays(resolvedDraft.event_date, input.session.generated_at) > (input.policy.maximum_source_age_days ?? 180)) {
+      reasons.push(`source publication date exceeds the daily discovery freshness limit of ${input.policy.maximum_source_age_days ?? 180} days`);
+    }
     if (resolvedDraft.scope === 'branch' && !resolvedDraft.branch_id) reasons.push('branch evidence requires branch_id');
     if (input.policy.hold_parent_branch_risk && resolvedDraft.scope === 'parent' && /branch-only|branch evidence cannot upgrade/i.test(`${resolvedDraft.event_title} ${resolvedDraft.event_summary} ${resolvedDraft.interpretation} ${resolvedDraft.limitation}`)) {
       reasons.push('parent/branch risk requires review');
@@ -103,4 +117,11 @@ export function evaluateAutonomousPromotion(input: {
     }
   }
   return { items, drafts };
+}
+
+function sourceAgeDays(eventDate: string, generatedAt: string): number {
+  const event = Date.parse(eventDate);
+  const generated = Date.parse(generatedAt);
+  if (Number.isNaN(event) || Number.isNaN(generated)) return Number.POSITIVE_INFINITY;
+  return Math.max(0, Math.floor((generated - event) / 86_400_000));
 }

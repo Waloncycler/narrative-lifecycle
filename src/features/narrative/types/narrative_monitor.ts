@@ -149,7 +149,7 @@ export interface NarrativeInboxItem {
   resolution_status: string;
   resolution_reason: string;
   agent_status: 'passed' | 'failed' | 'fallback' | 'not_run';
-  review_status: 'pending_review' | 'reviewed';
+  review_status: 'pending_review' | 'reviewed' | 'auto_published';
   generated_at: string;
 }
 

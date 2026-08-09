@@ -32,6 +32,10 @@ export interface ResearchSourceRetrievalItem {
   disposition: ResearchLeadDisposition;
   title: string;
   url: string;
+  /** Publication date carried from the governed discovery/direct-source lead.
+   * It is distinct from fetch time and lets Intake preserve source temporal
+   * provenance instead of incorrectly downgrading every retrieved page. */
+  source_published_at?: string | null;
   fetched_at: string;
   status: 'retrieved' | 'skipped' | 'failed';
   http_status: number | null;
@@ -49,6 +53,18 @@ export interface ResearchSourceRetrievalItem {
   error: string | null;
   evidence_eligibility: 'context_only';
   next_action: 'prepare_intake' | 'hold';
+  /** Present only for a bounded historic-row recovery. This records the
+   * corroboration that permits the primary source package to enter the normal
+   * Intake Agent flow; it is not part of the formal Evidence model. */
+  historical_recovery?: {
+    legacy_evidence_id: string;
+    event_date: string;
+    scope: 'parent' | 'branch';
+    branch_id: string | null;
+    corroboration_status: 'verified' | 'unverified';
+    corroborating_source_urls: string[];
+    independent_source_hosts: string[];
+  };
 }
 
 export interface ResearchSourceRetrievalReport {

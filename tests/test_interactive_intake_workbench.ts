@@ -42,13 +42,12 @@ describe('interactive intake workbench', () => {
     expect(html).toContain('研究概览');
     expect(html).toContain('当前还没有正式的周度研究结果');
     expect(html).toContain('aria-label="主导航"');
-    expect(html).toContain('href="/queue">研究队列');
+    expect(html).toContain('href="/queue">研究工作台');
     expect(html).toContain('href="/system">系统');
     expect(html).toContain('href="/intake">＋ 录入材料');
     const primaryNav = html.match(/<nav aria-label="主导航">([\s\S]*?)<\/nav>/)?.[1] ?? '';
-    expect(primaryNav.match(/href=/g)).toHaveLength(6);
-    expect(html).toContain('自动采集');
-    expect(html).toContain('尚未配置');
+    expect(primaryNav.match(/href=/g)).toHaveLength(5);
+    expect(html).toContain('主题态势总览');
     const intakePage = await fetch(`${base}/intake`);
     const intakeHtml = await intakePage.text();
     expect(intakeHtml).toContain('研究材料智能解析');
@@ -58,7 +57,7 @@ describe('interactive intake workbench', () => {
     expect(intakeHtml).toContain('/api/retry-weekly');
     expect(intakeHtml).toContain('aria-label="主导航"');
     expect(intakeHtml).toContain('href="/queue"');
-    expect(intakeHtml).toContain('href="/changes"');
+    expect(intakeHtml).toContain('href="/agent">自动化');
     expect(intakeHtml).toContain('href="/topics"');
     expect(intakeHtml).toContain('href="/system"');
     expect(intakeHtml).toContain('aria-current="page">＋ 录入材料');
@@ -104,6 +103,7 @@ describe('interactive intake workbench', () => {
     const modified = {
       ...candidate.suggested_evidence,
       evidence_id: 'interactive_bci_medical_rehab_reviewed_001',
+      source_url: 'https://example.test/research/bci-medical-rehab',
       source_type: 'research',
       evidence_strength: 'E2',
       confidence: 'medium',
@@ -134,12 +134,11 @@ describe('interactive intake workbench', () => {
     };
     const bci = operationalSnapshot.topics.find((topic) => topic.topic_id === 'bci');
     expect(bci?.why_not_higher_stage).toContain('Missing pricing adoption');
-    // The operational Evidence Table carries a historical backfill for this
-    // branch (including a policy/perception signal), so it clears the stable-
-    // label gate at S3. The invariant under test is unchanged: this is branch
-    // evidence, and the parent above still holds at S4.
+    // The reviewed source takes the branch to S2 on its own. Placeholder
+    // fixture URLs are excluded from operational Stage Gates; the parent
+    // remains S4 because branch evidence is isolated from its calculation.
     expect(bci?.branches.find((branch) => branch.branch_id === 'bci_medical_rehab')).toMatchObject({
-      current_stage: 'S3',
+      current_stage: 'S2',
     });
     expect(bci?.branches.find((branch) => branch.branch_id === 'bci_medical_rehab')?.evidence_ids)
       .toContain('interactive_bci_medical_rehab_reviewed_001');
@@ -168,8 +167,8 @@ describe('interactive intake workbench', () => {
     const inboxPage = await fetch(`${base}/inbox`).then((response) => response.text());
     expect(inboxPage).toContain('候选证据');
     expect(inboxPage).toContain('aria-label="研究队列导航"');
-    expect(inboxPage).toContain('href="/queue">待处理');
-    expect(inboxPage).toContain('nav-link active" href="/queue" aria-current="page">研究队列');
+    expect(inboxPage).toContain('href="/queue">待审核材料');
+    expect(inboxPage).toContain('nav-link active" href="/queue" aria-current="page">研究工作台');
     const runsPage = await fetch(`${base}/runs`).then((response) => response.text());
     expect(runsPage).toContain('系统运行');
     expect(runsPage).toContain('尚未配置');
@@ -181,11 +180,11 @@ describe('interactive intake workbench', () => {
     expect(systemPage).toContain('学习治理');
     expect(systemPage).toContain('方法论');
     const sourcesPage = await fetch(`${base}/sources`).then((response) => response.text());
-    // The sources page was redesigned into the Intelligence Atlas roster in the
-    // v0.13.5 release; assert its stable headings and domain buckets.
-    expect(sourcesPage).toContain('全球情报源与数据动脉矩阵');
-    expect(sourcesPage).toContain('全量情报源矩阵明细');
-    expect(sourcesPage).toContain('官方监管/申报');
+    // Sources distinguish catalog entries from configured connectors rather
+    // than claiming every listed source is live.
+    expect(sourcesPage).toContain('情报源与接入状态');
+    expect(sourcesPage).toContain('系统来源目录');
+    expect(sourcesPage).toContain('已配置连接器');
     const topicPage = await fetch(`${base}/topics/bci`).then((response) => response.text());
     // The topic detail page shows the parent/branch structure ("分支地图") and
     // the isolation guardrail ("隔离验证" — branch stage never lifts the parent).
@@ -198,7 +197,7 @@ describe('interactive intake workbench', () => {
     expect(queuePage).toContain('早期线索');
     const methodologyPage = await fetch(`${base}/methodology`).then((response) => response.text());
     expect(methodologyPage).toContain('量化方法论');
-    expect(methodologyPage).toContain('S_final = min');
+    expect(methodologyPage).toContain('S_current = min(S_requested, S_gate, S_confidence)');
     expect(methodologyPage).toContain('尚未完成经验校准的参考指数');
     expect(methodologyPage).toContain('没有证据表，就不允许评分');
     const governancePage = await fetch(`${base}/governance`).then((response) => response.text());
@@ -244,7 +243,7 @@ describe('interactive intake workbench', () => {
           reviewer: 'interactive_test',
           reviewed_at: '2026-07-13T00:00:00.000Z',
           topic_resolution_status: 'unresolved',
-          modified_evidence: { ...candidate.suggested_evidence, evidence_id: 'interactive_unresolved_auto_registered' },
+          modified_evidence: { ...candidate.suggested_evidence, evidence_id: 'interactive_unresolved_auto_registered', source_url: 'https://example.test/research/unresolved' },
         }],
       }),
     });

@@ -30,7 +30,12 @@ export interface ResearchAgentLoopDeps {
   now(): string;
   runSourceSync(input: { mode: 'live'; maxOperations: number; maxCandidates: number; operationIds?: string[]; forceRefresh?: boolean }): Promise<WorldMonitorSyncResult>;
   runWebResearch?(input: { limit: number }): Promise<WebResearchReport>;
-  runResearchCampaign?(input: { maxTasks: number; maxQueries: number; maxDirectQueries: number }): Promise<{ campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null }>;
+  runResearchCampaign?(input: { maxTasks: number; maxQueries: number; maxDirectQueries: number }): Promise<{ campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession?: EvidenceIntakeSession | null }>;
+  /** Bounded historic provenance repair is optional for compatibility. It
+   * returns a session only when two independent original sources passed the
+   * deterministic recovery gate; that session still goes through the same
+   * Agent, resolver, policy, import and Stage Gate path as new research. */
+  runHistoricalProvenanceRecovery?(): Promise<{ auto_intake_ready: number; session: EvidenceIntakeSession | null }>;
   runIntakeAgent(): Promise<IntakeAgentReviewBundle>;
   runAiShadow(): Promise<{ report: import('@/features/intake/types/intake').AiShadowValidationReport | null }>;
   runLearningCycle(): IntakeLearningCycle;
@@ -55,6 +60,9 @@ export interface ResearchAgentLoopInput {
   /** Reprocess the selected source payloads once, while keeping all normal
    * change detection and publication guards in force. */
   force_refresh?: boolean;
+  /** Requests policy-controlled Evidence publication for this specific run.
+   * It still has no effect unless the versioned policy permits publication. */
+  publish_auto?: boolean;
   purge?: {
     stale_candidate_max_age_days: number;
     queue_high_priority_max_age_days: number;
@@ -147,7 +155,7 @@ export class ResearchAgentLoopUseCase {
 
     // Phase 1: search is discovery-only. Its snippets cannot become Evidence,
     // but they make coverage gaps visible before governed source sync starts.
-    let campaignResult: { campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null } | undefined;
+    let campaignResult: { campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession?: EvidenceIntakeSession | null } | undefined;
     if (this.deps.runResearchCampaign) {
       campaignResult = await run('research', 'source-aware topic and branch coverage campaign; results remain context-only research leads', () =>
         this.deps.runResearchCampaign!({
@@ -155,7 +163,7 @@ export class ResearchAgentLoopUseCase {
           maxQueries: loopKind === 'quick' ? 2 : 12,
           maxDirectQueries: loopKind === 'quick' ? 6 : 18,
         }),
-      ) as { campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null } | undefined;
+      ) as { campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession?: EvidenceIntakeSession | null } | undefined;
       metrics.web_research_queries = campaignResult?.webResearch.queries.length ?? 0;
       metrics.web_research_leads = campaignResult?.webResearch.lead_count ?? 0;
       metrics.direct_source_queries = campaignResult?.directSourceResearch.queries.filter((query) => query.status !== 'skipped').length ?? 0;
@@ -197,8 +205,12 @@ export class ResearchAgentLoopUseCase {
       metrics.sources_failed = syncResult.report.failed_operation_count ?? 0;
     }
 
+    const historicalRecovery = loopKind === 'quick' || !this.deps.runHistoricalProvenanceRecovery
+      ? null
+      : await run('research', 'bounded historic original-source re-acquisition and two-source corroboration; only verified primary packages may join the current Intake session', () => this.deps.runHistoricalProvenanceRecovery!()) as { auto_intake_ready: number; session: EvidenceIntakeSession | null } | null;
+
     // Phase 2: analyze - draft candidates with the intake agent, then shadow-validate
-    const intakeSession = syncResult?.session ?? campaignResult?.directSourceSession ?? null;
+    const intakeSession = historicalRecovery?.session ?? syncResult?.session ?? campaignResult?.sourceRetrievalSession ?? campaignResult?.directSourceSession ?? null;
     const agentBundle = intakeSession
       ? (await run('analyze', 'intake agent drafting + AI shadow validation for source-backed candidates', async () => {
         const bundle = await this.deps.runIntakeAgent();
@@ -215,7 +227,7 @@ export class ResearchAgentLoopUseCase {
       ? 'apply autonomous Evidence publication policy and rebuild live Topic state'
       : 'record a no-change operational state without reusing prior candidates', () => {
       this.deps.runValidateTopics();
-      return this.deps.runAutonomousResearch(agentBundle ?? null, false);
+      return this.deps.runAutonomousResearch(agentBundle ?? null, input.publish_auto === true);
     }) as AutonomousResearchRun | undefined;
     metrics.imported_evidence_count = autonomousRun?.report.published_count ?? 0;
     metrics.provisional_topics_activated = autonomousRun?.graph_promotion.summary.provisional_topics_activated ?? 0;

@@ -20,10 +20,22 @@ const triage = {
 
 describe('research source retrieval', () => {
   it('selects only governed review leads and extracts bounded source-citable text', () => {
-    expect(selectSourceRetrievalTargets(triage, 6).map((item) => item.triage_id)).toEqual(['official_1', 'academic_1']);
+    expect(selectSourceRetrievalTargets(triage, 6).map((item) => item.triage_id)).toEqual(['academic_1', 'official_1']);
     const parsed = extractReadableSource('<html><head><title>Official BCI record</title><script>bad()</script></head><body><p>This original official source contains a sufficiently long factual paragraph about a recorded clinical development and its date for independent review.</p><p>A second sufficiently long paragraph provides a distinct factual statement that can be checked against the original document before evidence intake.</p></body></html>', 'text/html');
     expect(parsed.title).toBe('Official BCI record');
     expect(parsed.text).not.toContain('bad()');
+  });
+
+  it('uses the daily retrieval budget on fresh authority records before archive records', () => {
+    const ranked = {
+      triage_id: 'triage_ranked',
+      items: [
+        { triage_id: 'archive_high', origin_lead_id: 'archive', topic_id: 'bci', branch_id: null, candidate_node_id: null, source_class: 'official', disposition: 'priority_review', priority_score: 100, freshness: 'archive', title: 'Archive', url: 'https://official.example/archive' },
+        { triage_id: 'fresh_medium', origin_lead_id: 'fresh', topic_id: 'bci', branch_id: null, candidate_node_id: null, source_class: 'academic', disposition: 'review', priority_score: 70, freshness: 'fresh', title: 'Fresh', url: 'https://journal.example/fresh' },
+        { triage_id: 'recent_high', origin_lead_id: 'recent', topic_id: 'bci', branch_id: null, candidate_node_id: null, source_class: 'official', disposition: 'priority_review', priority_score: 90, freshness: 'recent', title: 'Recent', url: 'https://official.example/recent' },
+      ],
+    } as never;
+    expect(selectSourceRetrievalTargets(ranked, 2).map((item) => item.triage_id)).toEqual(['fresh_medium', 'recent_high']);
   });
 
   it('prioritizes an arXiv abstract and ClinicalTrials structured study fields over page chrome', () => {
@@ -77,6 +89,16 @@ describe('research source retrieval', () => {
     expect(item.citation_status).toBe('insufficient');
     expect(item.next_action).toBe('hold');
     expect(item.citation_notes?.join(' ')).toContain('正文过短');
+  });
+
+  it('rejects CAPTCHA and access-control pages even when they contain enough boilerplate text', () => {
+    const item = buildRetrievedSourceItem({
+      lead: { triage_id: 'captcha_1', origin_lead_id: 'lead_captcha', topic_id: 'bci', branch_id: null, candidate_node_id: null, source_class: 'academic', disposition: 'review', title: 'BCI article', url: 'https://journal.example/article' } as never,
+      fetchedAt: generatedAt, httpStatus: 200, contentType: 'text/html',
+      body: '<html><title>Radware Bot Manager Captcha</title><body><p>Captcha verification is required before accessing this page. Please complete the security validation and enable cookies to continue. This access-control message is deliberately long enough that a naive text-length check would accept it as a source document.</p></body></html>',
+    });
+    expect(item).toMatchObject({ status: 'skipped', citation_status: 'insufficient', next_action: 'hold' });
+    expect(item.citation_notes?.join(' ')).toContain('验证码');
   });
 
   it('writes a schema-valid context-only retrieval package without importing evidence', async () => {

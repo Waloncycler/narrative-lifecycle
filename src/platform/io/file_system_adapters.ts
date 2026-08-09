@@ -80,6 +80,15 @@ import { RetrieveResearchSourcesUseCase } from '@/app/use_cases/retrieve_researc
 import { FileResearchSourceRetrievalRepository, HttpResearchSourceRetriever } from '@/features/research/io/research_source_retrieval_io';
 import { BuildResearchBaselineCompletionUseCase } from '@/app/use_cases/build_research_baseline_completion_use_case';
 import { FileResearchBaselineCompletionRepository } from '@/features/research/io/research_baseline_completion_io';
+import { BuildHistoricalEvidenceRecoveryUseCase } from '@/app/use_cases/build_historical_evidence_recovery_use_case';
+import { FileHistoricalEvidenceRecoveryRepository } from '@/features/research/io/historical_evidence_recovery_io';
+import { loadRuntimeEnv } from '@/platform/io/runtime_env';
+import { AppendRetrievedSourceIntakeUseCase } from '@/app/use_cases/append_retrieved_source_intake_use_case';
+import { ReconcileBaselineEvidenceUseCase } from '@/app/use_cases/reconcile_baseline_evidence_use_case';
+import { AdmitBaselineEvidenceUseCase } from '@/app/use_cases/admit_baseline_evidence_use_case';
+import { FileBaselineEvidenceReconciliationRepository } from '@/features/research/io/baseline_evidence_reconciliation_io';
+import { RecoverHistoricalProvenanceUseCase } from '@/app/use_cases/recover_historical_provenance_use_case';
+import { FileHistoricalProvenanceRecoveryRepository } from '@/features/research/io/historical_provenance_recovery_io';
 
 export class YamlLoader {
   constructor(private readonly repoRoot: string) {}
@@ -205,6 +214,7 @@ function resolveTopicsAndRegister(session: EvidenceIntakeSession, topicRegistryR
 }
 
 export function createProductCoreUseCases(repoRoot: string) {
+  loadRuntimeEnv(repoRoot);
   const validator = new FileSchemaValidator(repoRoot);
   const runRepository = new FileRunRepository(repoRoot);
   const historyRepository = new FileHistoryRepository(repoRoot);
@@ -238,6 +248,8 @@ export function createProductCoreUseCases(repoRoot: string) {
   const researchSourceRetrievalRepository = new FileResearchSourceRetrievalRepository(repoRoot);
   const researchSourceRetriever = new HttpResearchSourceRetriever();
   const researchBaselineCompletionRepository = new FileResearchBaselineCompletionRepository(repoRoot);
+  const historicalEvidenceRecoveryRepository = new FileHistoricalEvidenceRecoveryRepository(repoRoot);
+  const historicalProvenanceRecoveryRepository = new FileHistoricalProvenanceRecoveryRepository(repoRoot);
   const webSearchProvider = new HttpWebSearchProvider();
 
   const importEvidenceUseCase = new ImportEvidenceUseCase({
@@ -374,6 +386,7 @@ export function createProductCoreUseCases(repoRoot: string) {
       return { report: result.report as EvidenceImportReport, failed: result.failed };
     },
     runWeekly: () => runAutonomousResearchUseCase.execute({ publish: false }).manifest,
+    readOperationalEvidenceIds: () => new Set(autonomousResearchRepository.readOperationalEvidence().map((item) => item.evidence_id)),
     readStageChangeSummary: () => intakeRepository.readStageChangeSummary(),
     now: () => new Date().toISOString(),
   });
@@ -508,6 +521,21 @@ export function createProductCoreUseCases(repoRoot: string) {
   });
 
   const autonomousResearchRepository = new FileAutonomousResearchRepository(repoRoot);
+  const baselineEvidenceReconciliationRepository = new FileBaselineEvidenceReconciliationRepository(repoRoot);
+  const reconcileBaselineEvidenceUseCase = new ReconcileBaselineEvidenceUseCase({
+    now: () => new Date().toISOString(),
+    producerVersion: () => 'v0.16.0',
+    readRegistry: () => topicRegistryRepository.readTopicRegistry(),
+    readEvidence: () => baselineEvidenceReconciliationRepository.readEvidence(),
+    readAdmittedEvidenceIds: () => baselineEvidenceReconciliationRepository.readAdmittedEvidenceIds(),
+    write: (report) => baselineEvidenceReconciliationRepository.write(report),
+    validate: (report) => validator.validate('baseline_evidence_reconciliation_report.schema.json', report),
+  });
+  const admitBaselineEvidenceUseCase = new AdmitBaselineEvidenceUseCase({
+    reconcile: () => reconcileBaselineEvidenceUseCase.execute(),
+    appendAdmission: (input) => baselineEvidenceReconciliationRepository.appendAdmission(input),
+    now: () => new Date().toISOString(),
+  });
   const buildResearchBaselineCompletionUseCase = new BuildResearchBaselineCompletionUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.5',
@@ -515,6 +543,13 @@ export function createProductCoreUseCases(repoRoot: string) {
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
     writeReport: (report) => researchBaselineCompletionRepository.writeReport(report),
     validateReport: (report) => validator.validate('research_baseline_completion_report.schema.json', report),
+  });
+  const buildHistoricalEvidenceRecoveryUseCase = new BuildHistoricalEvidenceRecoveryUseCase({
+    now: () => new Date().toISOString(),
+    producerVersion: () => 'v0.13.5',
+    readTimelines: () => historicalEvidenceRecoveryRepository.readTimelines(),
+    writeReport: (report) => historicalEvidenceRecoveryRepository.writeReport(report),
+    validateReport: (report) => validator.validate('historical_evidence_recovery_report.schema.json', report),
   });
   const runAutonomousResearchUseCase = new RunAutonomousResearchUseCase({
     createRunContext,
@@ -529,7 +564,13 @@ export function createProductCoreUseCases(repoRoot: string) {
     readOperationalEvidence: () => autonomousResearchRepository.readOperationalEvidence(),
     readPreviousOperatorRunId: () => autonomousResearchRepository.readPreviousOperatorRunId(),
     operationalArtifactPaths: (runId) => autonomousResearchRepository.operationalArtifactPaths(runId),
-    validateDrafts: ({ drafts, sourceFile, generatedAt }) => validateEvidenceImport({ repoRoot, drafts, sourceFile, generatedAt }),
+    validateDrafts: ({ drafts, sourceFile, generatedAt, permittedExistingEvidenceIds }) => validateEvidenceImport({
+      repoRoot,
+      drafts,
+      sourceFile,
+      generatedAt,
+      permittedExistingEvidenceIds,
+    }),
     normalizeDrafts: ({ drafts, sourceFile, importedAt }) => normalizeEvidenceImport({ drafts, sourceFile, importedAt }),
     writePublishedEvidence: (rows) => autonomousResearchRepository.writePublishedEvidence(rows),
     applyNarrativeGraphPromotions: (report) => topicRegistryRepository.applyNarrativeGraphPromotions(report),
@@ -581,6 +622,7 @@ export function createProductCoreUseCases(repoRoot: string) {
       return companies;
     },
     buildBaselineCompletion: () => buildResearchBaselineCompletionUseCase.execute(),
+    buildHistoricalRecovery: () => buildHistoricalEvidenceRecoveryUseCase.execute(),
     writeCampaign: (campaign) => researchCoverageRepository.writeCampaign(campaign),
     validateCampaign: (campaign) => validator.validate('research_campaign.schema.json', campaign),
   });
@@ -604,6 +646,29 @@ export function createProductCoreUseCases(repoRoot: string) {
     resolveTopics: (session) => resolveTopicsAndRegister(session, topicRegistryRepository),
     validateSession: (session) => validator.validate('intake_session.schema.json', session),
     validateCandidate: (candidate) => validator.validate('evidence_candidate.schema.json', candidate),
+  });
+  const appendRetrievedSourceIntakeUseCase = new AppendRetrievedSourceIntakeUseCase({
+    now: () => new Date().toISOString(),
+    readLatestSession: () => {
+      try { return intakeRepository.readLatestSession(); } catch { return null; }
+    },
+    existingEvidenceIds: () => intakeRepository.existingEvidenceIds(),
+    writeIntakeSession: (session) => intakeRepository.writeIntakeSession(session, renderIntakeWorkbench(session)),
+    resolveTopics: (session) => resolveTopicsAndRegister(session, topicRegistryRepository),
+    validateSession: (session) => validator.validate('intake_session.schema.json', session),
+    validateCandidate: (candidate) => validator.validate('evidence_candidate.schema.json', candidate),
+  });
+  const recoverHistoricalProvenanceUseCase = new RecoverHistoricalProvenanceUseCase({
+    now: () => new Date().toISOString(),
+    producerVersion: () => 'v0.14.0',
+    readEvidence: () => historicalProvenanceRecoveryRepository.readEvidence(),
+    readAdmittedEvidenceIds: () => historicalProvenanceRecoveryRepository.readAdmittedEvidenceIds(),
+    readRegistry: () => topicRegistryRepository.readTopicRegistry(),
+    searchProvider: () => webSearchConfigFromEnv(process.env).provider,
+    search: ({ query }) => webSearchProvider.search({ query, config: webSearchConfigFromEnv(process.env) }),
+    retrieve: (input) => researchSourceRetriever.retrieve(input),
+    write: (report) => historicalProvenanceRecoveryRepository.write(report),
+    validate: (report) => validator.validate('historical_provenance_recovery_report.schema.json', report),
   });
   const buildResearchLeadTriageUseCase = new BuildResearchLeadTriageUseCase({
     now: () => new Date().toISOString(),
@@ -638,6 +703,7 @@ export function createProductCoreUseCases(repoRoot: string) {
     runWebResearch: (input) => runWebResearchUseCase.execute(input),
     runDirectSourceResearch: (input) => runDirectSourceResearchUseCase.execute(input),
     prepareDirectSourceIntake: (report) => prepareDirectSourceIntakeUseCase.execute(report),
+    appendRetrievedSourceIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
     buildLeadTriage: () => buildResearchLeadTriageUseCase.execute(),
     retrieveSources: () => retrieveResearchSourcesUseCase.execute({ maxItems: 6 }),
   });
@@ -647,6 +713,11 @@ export function createProductCoreUseCases(repoRoot: string) {
     runSourceSync: async (input) => syncWorldMonitorSourcesUseCase.execute(input),
     runWebResearch: (input) => runWebResearchUseCase.execute(input),
     runResearchCampaign: (input) => runResearchCampaignUseCase.execute(input),
+    runHistoricalProvenanceRecovery: async () => {
+      const result = await recoverHistoricalProvenanceUseCase.execute({ maxTargets: 2, maxSourcesPerTarget: 4 });
+      const session = result.report.auto_intake_ready_count ? appendRetrievedSourceIntakeUseCase.execute(result.retrieval) : null;
+      return { auto_intake_ready: result.report.auto_intake_ready_count, session };
+    },
     runIntakeAgent: () => runIntakeAgentUseCase.executeLatest(),
     runAiShadow: async () => ({ report: (await runAiShadowValidationUseCase.execute()).report as AiShadowValidationReport | null }),
     runLearningCycle: () => buildIntakeLearningCycleUseCase.execute(),
@@ -695,12 +766,19 @@ export function createProductCoreUseCases(repoRoot: string) {
     buildResearchCampaignUseCase,
     runDirectSourceResearchUseCase,
     prepareDirectSourceIntakeUseCase,
+    appendRetrievedSourceIntakeUseCase,
+    recoverHistoricalProvenanceUseCase,
     runResearchCampaignUseCase,
     buildResearchLeadTriageUseCase,
     researchLeadTriageRepository,
     retrieveResearchSourcesUseCase,
     buildResearchBaselineCompletionUseCase,
+    reconcileBaselineEvidenceUseCase,
+    admitBaselineEvidenceUseCase,
     researchBaselineCompletionRepository,
+    buildHistoricalEvidenceRecoveryUseCase,
+    historicalEvidenceRecoveryRepository,
+    historicalProvenanceRecoveryRepository,
     researchSourceRetrievalRepository,
     runAutonomousResearchUseCase,
     validateAutonomousResearchPolicyUseCase,

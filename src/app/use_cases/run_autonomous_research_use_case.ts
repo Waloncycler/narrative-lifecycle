@@ -30,7 +30,12 @@ export interface RunAutonomousResearchUseCaseDeps {
     artifactIndex: string[];
     runArtifacts: string[];
   };
-  validateDrafts(input: { drafts: import('@/features/evidence/types/evidence_import').EvidenceImportDraft[]; sourceFile: string; generatedAt: string }): EvidenceValidationReport;
+  validateDrafts(input: {
+    drafts: import('@/features/evidence/types/evidence_import').EvidenceImportDraft[];
+    sourceFile: string;
+    generatedAt: string;
+    permittedExistingEvidenceIds?: Set<string>;
+  }): EvidenceValidationReport;
   normalizeDrafts(input: { drafts: import('@/features/evidence/types/evidence_import').EvidenceImportDraft[]; sourceFile: string; importedAt: string }): NormalizedEvidenceImport[];
   writePublishedEvidence(rows: EvidenceNode[]): void;
   applyNarrativeGraphPromotions(report: NarrativeGraphPromotionReport): void;
@@ -87,10 +92,18 @@ export class RunAutonomousResearchUseCase {
     let published: EvidenceNode[] = [];
     let normalized: EvidenceNode[] = [];
     if (publicationDrafts.length) {
+      const permittedExistingEvidenceIds = new Set(
+        session?.candidates
+          .filter((candidate) => candidate.publication_eligibility === 'rule_verified'
+            && candidate.duplicate_of_evidence_id === candidate.suggested_evidence.evidence_id
+            && publicationDrafts.some((draft) => draft.evidence_id === candidate.suggested_evidence.evidence_id))
+          .map((candidate) => candidate.suggested_evidence.evidence_id) ?? [],
+      );
       validation = this.deps.validateDrafts({
         drafts: publicationDrafts,
         sourceFile: `autonomous://${session?.session_id ?? 'unknown'}`,
         generatedAt,
+        permittedExistingEvidenceIds,
       });
       if (validation.status === 'passed') {
         normalized = this.deps.normalizeDrafts({

@@ -54,9 +54,15 @@ export function validateEvidenceImportDrafts(input: {
   sourceFile: string;
   generatedAt: string;
   existingEvidenceIds?: Set<string>;
+  /** A narrowly-scoped revalidation may replace a legacy research-store row
+   * with the same id after new primary-source provenance has been verified.
+   * This never waives duplicate checks for a different id or for two drafts in
+   * the same batch. */
+  permittedExistingEvidenceIds?: Set<string>;
   schemaErrors?: EvidenceValidationIssue[];
 }): EvidenceValidationReport {
   const existingIds = input.existingEvidenceIds ?? new Set<string>();
+  const permittedExistingIds = input.permittedExistingEvidenceIds ?? new Set<string>();
   const seen = new Set<string>();
   const errors: EvidenceValidationIssue[] = [...(input.schemaErrors ?? [])];
   const warnings: EvidenceValidationIssue[] = [];
@@ -66,7 +72,8 @@ export function validateEvidenceImportDrafts(input: {
     const text = JSON.stringify(evidence);
 
     if (!evidence.evidence_id) errors.push(issue(evidence, 'evidence_id is required', 'evidence_id'));
-    if (seen.has(evidence.evidence_id) || existingIds.has(evidence.evidence_id)) {
+    if (seen.has(evidence.evidence_id)
+      || (existingIds.has(evidence.evidence_id) && !permittedExistingIds.has(evidence.evidence_id))) {
       errors.push(issue(evidence, 'evidence_id must be unique', 'evidence_id'));
     }
     seen.add(evidence.evidence_id);

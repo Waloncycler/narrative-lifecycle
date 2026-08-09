@@ -130,7 +130,7 @@ export function buildNarrativeMonitor(input: {
       sync_id: sourceSync?.sync_id ?? null,
       session_id: sourceSession?.session_id ?? null,
       discovered_count: sourceSync?.candidate_count ?? 0,
-      pending_review_count: sourceApply ? 0 : sourceSession?.candidates.length ?? 0,
+      pending_review_count: sourceApply ? 0 : inbox.filter((item) => item.review_status === 'pending_review').length,
       imported_count: sourceApply?.imported ? sourceApply.accepted_count : 0,
       weekly_run_id: sourceApply?.weekly_run_id ?? null,
       status: sourceLoopStatus,
@@ -161,6 +161,14 @@ function buildInbox(runtime: NarrativeMonitorRuntimeInput): NarrativeInboxItem[]
   if (!session) return [];
   const resolutions = new Map((runtime.topicAudit?.session_id === session.session_id ? runtime.topicAudit.resolutions : []).map((item) => [item.candidate_id, item]));
   const verification = runtime.agentVerification?.session_id === session.session_id ? runtime.agentVerification : null;
+  // A promotion report is bound to one Intake session. Only that matching
+  // report can remove a candidate from the review queue; an older successful
+  // run must never hide a newly parsed candidate with the same-looking id.
+  const publicationByCandidate = new Map(
+    runtime.autonomousPromotion?.session_id === session.session_id
+      ? runtime.autonomousPromotion.items.map((item) => [item.candidate_id, item.decision])
+      : [],
+  );
   return session.candidates.map((candidate) => {
     const resolution = resolutions.get(candidate.candidate_id);
     const agentCheck = verification?.candidates.find((item) => item.agent_candidate_id.includes(candidate.candidate_id.replace('candidate_', '')));
@@ -176,7 +184,7 @@ function buildInbox(runtime: NarrativeMonitorRuntimeInput): NarrativeInboxItem[]
       resolution_status: resolution?.status ?? 'not_checked',
       resolution_reason: resolution?.reason ?? 'Topic Resolver has not produced a matching audit for this session.',
       agent_status: agentCheck?.status ?? (verification ? (verification.fallback_count ? 'fallback' : verification.failed_count ? 'failed' : 'passed') : 'not_run'),
-      review_status: 'pending_review',
+      review_status: publicationByCandidate.get(candidate.candidate_id) === 'published' ? 'auto_published' : 'pending_review',
       generated_at: session.generated_at,
     };
   });
@@ -188,7 +196,31 @@ function buildReviewQueue(
   review: OperatorReview | null,
 ): NarrativeReviewQueueItem[] {
   const rows: NarrativeReviewQueueItem[] = [];
-  for (const item of inbox) {
+  const heldReasonsByCandidate = new Map<string, string[]>();
+  const orphanedPublicationRows: NarrativeReviewQueueItem[] = [];
+
+  // A policy hold is an explanation for a candidate, not a second task. Merge
+  // it into the candidate row whenever the candidate is still in the Intake
+  // inbox so the researcher does not have to review the same material twice.
+  for (const item of runtime.autonomousPromotion?.items.filter((item) => item.decision === 'held').slice(0, 24) ?? []) {
+    const reasons = item.reasons.join(' ') || '候选 Evidence 尚未通过正式发布条件。';
+    if (item.candidate_id) {
+      const existing = heldReasonsByCandidate.get(item.candidate_id) ?? [];
+      existing.push(reasons);
+      heldReasonsByCandidate.set(item.candidate_id, existing);
+      continue;
+    }
+    orphanedPublicationRows.push({
+      queue_id: `publication:${item.evidence_id}`,
+      candidate_id: null,
+      category: 'evidence_publication_review',
+      priority: item.scope === 'parent' && /stage|parent.branch|conflict/i.test(reasons) ? 'high' : 'medium',
+      title: item.branch_id ? `${item.topic_id ?? '待解析主题'} / ${item.branch_id}` : item.topic_id ?? item.evidence_id,
+      reason: reasons,
+      href: '/intake',
+    });
+  }
+  for (const item of inbox.filter((candidate) => candidate.review_status !== 'auto_published')) {
     const resolutionCategory = item.resolution_status === 'new_branch'
       ? 'new_branch'
       : item.resolution_status === 'reactivation'
@@ -196,73 +228,39 @@ function buildReviewQueue(
         : item.resolution_status === 'new_provisional_topic' || item.resolution_status === 'unresolved'
           ? 'new_topic'
           : null;
+    const heldReasons = heldReasonsByCandidate.get(item.candidate_id) ?? [];
     const category = item.duplicate_of_evidence_id
       ? 'possible_duplicate'
       : item.scope === 'branch' && !item.branch_id
         ? 'parent_branch_conflict'
         : ['E3', 'E4'].includes(item.evidence_strength)
           ? 'high_strength'
-          : resolutionCategory ?? 'ordinary_candidate';
+          : resolutionCategory ?? (heldReasons.length ? 'evidence_publication_review' : 'ordinary_candidate');
     rows.push({
       queue_id: `candidate:${item.candidate_id}`,
       candidate_id: item.candidate_id,
       category,
       priority: ['parent_branch_conflict', 'high_strength'].includes(category) ? 'high' : category === 'ordinary_candidate' ? 'low' : 'medium',
       title: `${item.topic_id} · ${item.evidence_strength}`,
-      reason: item.duplicate_of_evidence_id
+      reason: [item.duplicate_of_evidence_id
         ? `Possible duplicate of ${item.duplicate_of_evidence_id}.`
-        : item.resolution_reason,
+        : item.resolution_reason, ...heldReasons].filter(Boolean).join(' '),
       href: `/intake?candidate=${encodeURIComponent(item.candidate_id)}`,
     });
   }
-  for (const alert of review?.high_priority_operator_alerts ?? []) {
+  for (const [candidateId, reasons] of heldReasonsByCandidate) {
+    if (inbox.some((item) => item.candidate_id === candidateId)) continue;
     rows.push({
-      queue_id: `alert:${alert.category}:${rows.length}`,
-      candidate_id: null,
-      category: 'guardrail_alert',
-      priority: 'high',
-      title: alert.category,
-      reason: alert.message,
-      href: '/governance',
-    });
-  }
-  for (const proposal of runtime.topicDiscoveryProposals ?? []) {
-    if (proposal.status !== 'pending') continue;
-    rows.push({
-      queue_id: `topic-proposal:${proposal.proposal_id}`,
-      candidate_id: proposal.evidence_refs[0]?.candidate_id ?? null,
-      category: 'topic_discovery',
-      priority: proposal.kind === 'unresolved' || proposal.confidence === 'low' ? 'high' : 'medium',
-      title: proposal.proposed_topic_name ?? proposal.proposed_topic_id ?? '未解析主题',
-      reason: `${proposal.reason} ${proposal.narrative_memory_match ? '已发现叙事记忆关联。' : '未发现明确的叙事记忆关联。'}`,
-      href: '/intake',
-    });
-  }
-  for (const entry of runtime.evidenceChain ?? []) {
-    if (entry.status !== 'candidate') continue;
-    rows.push({
-      queue_id: `evidence-chain:${entry.chain_entry_id}`,
-      candidate_id: entry.source_candidate_id,
-      category: 'evidence_chain_update',
-      priority: entry.relation === 'contradicts' ? 'high' : 'medium',
-      title: `${entry.topic_id}${entry.branch_id ? ` / ${entry.branch_id}` : ''}`,
-      reason: `建议将新材料标记为“${chainRelationLabel(entry.relation)}”；正式证据导入和阶段判断仍需人工确认。`,
-      href: '/intake',
-    });
-  }
-  // Policy-held Evidence candidates are actionable research work. Surface
-  // them next to other review tasks instead of burying them in run artifacts.
-  for (const item of runtime.autonomousPromotion?.items.filter((item) => item.decision === 'held').slice(0, 24) ?? []) {
-    rows.push({
-      queue_id: `publication:${item.candidate_id}`,
-      candidate_id: item.candidate_id,
+      queue_id: `publication:${candidateId}`,
+      candidate_id: candidateId,
       category: 'evidence_publication_review',
-      priority: item.scope === 'parent' && /stage|parent.branch|conflict/i.test(item.reasons.join(' ')) ? 'high' : 'medium',
-      title: item.branch_id ? `${item.topic_id ?? '待解析主题'} / ${item.branch_id}` : item.topic_id ?? item.evidence_id,
-      reason: item.reasons.join(' ') || '候选 Evidence 尚未通过正式发布条件。',
-      href: `/intake?candidate=${encodeURIComponent(item.candidate_id)}`,
+      priority: 'medium',
+      title: '待确认候选',
+      reason: reasons.join(' '),
+      href: `/intake?candidate=${encodeURIComponent(candidateId)}`,
     });
   }
+  rows.push(...orphanedPublicationRows);
   const priority = { high: 0, medium: 1, low: 2 };
   return rows.sort((a, b) => priority[a.priority] - priority[b.priority]);
 }

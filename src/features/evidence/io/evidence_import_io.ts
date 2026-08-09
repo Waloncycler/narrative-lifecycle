@@ -69,12 +69,14 @@ export function validateEvidenceImport(input: {
   drafts: EvidenceImportDraft[];
   sourceFile: string;
   generatedAt?: string;
+  permittedExistingEvidenceIds?: Set<string>;
 }): EvidenceValidationReport {
   return validateEvidenceImportDrafts({
     drafts: input.drafts,
     sourceFile: input.sourceFile,
     generatedAt: input.generatedAt ?? new Date().toISOString(),
     existingEvidenceIds: loadExistingEvidenceIds(input.repoRoot),
+    permittedExistingEvidenceIds: input.permittedExistingEvidenceIds,
     schemaErrors: schemaErrors(input.repoRoot, input.drafts),
   });
 }

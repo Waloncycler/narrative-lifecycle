@@ -14,6 +14,7 @@ import type {
   ResearchUniverseNode,
 } from '@/features/research/types/research_coverage';
 import type { ResearchBaselineCompletionReport } from '@/features/research/types/research_baseline_completion';
+import type { HistoricalEvidenceRecoveryReport, HistoricalEvidenceRecoveryTask } from '@/features/research/types/historical_evidence_recovery';
 
 const TIER_WEIGHT = {
   statutory: 70,
@@ -48,6 +49,8 @@ export function buildResearchCampaign(input: {
   /** Read-only gap plan generated from the current snapshot. It only changes
    * research order and coverage layers; it cannot create Evidence or Stage. */
   baselineCompletion?: ResearchBaselineCompletionReport | null;
+  /** Read-only timeline-gap plan. It can only prioritize existing research. */
+  historicalRecovery?: HistoricalEvidenceRecoveryReport | null;
 }): ResearchCampaign {
   const knownNames = new Set(input.registry.canonical_topics.flatMap((topic) => [
     normalize(marketTopicName(topic)),
@@ -60,11 +63,15 @@ export function buildResearchCampaign(input: {
   const baselineByTopic = new Map(input.baselineCompletion?.items
     .filter((item) => item.kind === 'parent_evidence_baseline')
     .map((item) => [item.topic_id, item]) ?? []);
+  const recoveryByTopic = new Map(input.historicalRecovery?.tasks
+    .filter((item) => item.scope === 'parent')
+    .map((item) => [item.topic_id, item]) ?? []);
   const topics = input.registry.canonical_topics
     .filter((topic) => topic.status !== 'archived')
     .map((topic) => {
       const matchedSeed = input.universe.nodes.find((node) => [node.node_id, node.display_name_zh, node.display_name_en, ...node.aliases]
         .some((name) => normalize(name) === normalize(marketTopicName(topic)) || normalize(name) === normalize(topic.market_name_en ?? '')));
+      const recovery = recoveryByTopic.get(topic.topic_id);
       return {
       node_kind: topic.status === 'active' ? 'formal_topic' as const : 'provisional_topic' as const,
       topic_id: topic.topic_id,
@@ -75,10 +82,11 @@ export function buildResearchCampaign(input: {
       // A curated S0 topic is eligible for coverage, not an implicit Stage
       // upgrade. Established topics keep a small recurring coverage reserve;
       // the remaining curated core rotates across runs.
-      priority: baselineByTopic.has(topic.topic_id) ? 125 : topic.status === 'active' ? (topic.current_stage === 'S0' ? 90 : 95) : 65,
-      target_layers: mergeLayers(matchedSeed?.target_layers ?? ['name', 'reality', 'capital'] as ResearchCoverageLayer[], baselineByTopic.get(topic.topic_id)?.required_layers ?? []),
+      priority: recovery ? 150 : baselineByTopic.has(topic.topic_id) ? 125 : topic.status === 'active' ? (topic.current_stage === 'S0' ? 90 : 95) : 65,
+      target_layers: mergeLayers(mergeLayers(matchedSeed?.target_layers ?? ['name', 'reality', 'capital'] as ResearchCoverageLayer[], baselineByTopic.get(topic.topic_id)?.required_layers ?? []), recovery?.required_layers ?? []),
       preferred_source_ids: matchedSeed?.preferred_source_ids ?? [] as string[],
       formal_status: topic.status === 'active' ? 'formal' as const : 'provisional' as const,
+      historical_recovery: recovery,
       };
     });
 
@@ -193,11 +201,14 @@ export function usableMarketLabel(value: string): boolean {
 }
 
 function taskForTopic(node: {
-  node_kind: 'formal_topic' | 'provisional_topic'; topic_id: string; candidate_node_id: null; display_name_zh: string; display_name_en: string | null; domain: string; priority: number; target_layers: ResearchCoverageLayer[]; preferred_source_ids: string[]; formal_status: 'formal' | 'provisional';
+  node_kind: 'formal_topic' | 'provisional_topic'; topic_id: string; candidate_node_id: null; display_name_zh: string; display_name_en: string | null; domain: string; priority: number; target_layers: ResearchCoverageLayer[]; preferred_source_ids: string[]; formal_status: 'formal' | 'provisional'; historical_recovery?: HistoricalEvidenceRecoveryTask;
 }, atlas: AuthoritativeSourceAtlas, companies: CompanyResearchTarget[]): ResearchCampaignTask {
-  return makeTask({ ...node, branch_id: null, rationale: node.formal_status === 'formal'
+  const task = makeTask({ ...node, branch_id: null, rationale: node.historical_recovery
+    ? `${node.historical_recovery.rationale} This remains research-only and must continue through source retrieval and Intake review.`
+    : node.formal_status === 'formal'
     ? 'Track missing lifecycle layers and identify independently corroborable developments.'
     : 'Collect source-grounded material before this provisional topic can be considered for activation.' }, atlas, companies);
+  return node.historical_recovery?.search_intents[0] ? { ...task, query: node.historical_recovery.search_intents[0] } : task;
 }
 
 function taskForSeed(node: ResearchUniverseNode, atlas: AuthoritativeSourceAtlas, companies: CompanyResearchTarget[]): ResearchCampaignTask {

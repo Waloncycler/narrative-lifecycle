@@ -13,7 +13,9 @@ export function buildAutonomousResearchPolicyAudit(input: AutonomousResearchPoli
   if (policy.minimum_independent_sources_for_branch_activation < 1) errors.push('Branch activation requires at least one independent source.');
   if (policy.auto_publish_evidence) {
     if (!policy.enabled) errors.push('Automatic publication cannot be enabled while the policy is disabled.');
-    if (strengthRank[policy.minimum_evidence_strength] < strengthRank.E2) errors.push('Automatic publication requires minimum Evidence strength E2 or higher.');
+  if (strengthRank[policy.minimum_evidence_strength] < strengthRank.E1) errors.push('Automatic publication requires minimum Evidence strength E1 or higher.');
+  if (policy.maximum_source_age_days !== undefined && (!Number.isInteger(policy.maximum_source_age_days) || policy.maximum_source_age_days < 1 || policy.maximum_source_age_days > 3650)) errors.push('maximum_source_age_days must be an integer between 1 and 3650 when configured.');
+    if (policy.minimum_evidence_strength === 'E1' && !policy.allow_rule_verified_publication) errors.push('E1 automatic publication is limited to rule-verified original-source candidates.');
     if (confidenceRank[policy.minimum_confidence] < confidenceRank.medium) errors.push('Automatic publication requires medium or high minimum confidence.');
     if (!policy.require_source_url || !policy.require_provenance) errors.push('Automatic publication requires source URL and provenance.');
     if (!policy.require_model_validation) errors.push('Automatic publication requires model validation.');

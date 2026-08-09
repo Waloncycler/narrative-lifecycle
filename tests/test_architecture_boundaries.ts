@@ -61,4 +61,23 @@ describe('layered architecture boundaries', () => {
       expect(body, file).not.toMatch(/buildStageDiff|classifyStage|scoreNarrative|writePipelineOutputs|writeJsonAtomically/);
     }
   });
+
+  it('blocks legacy scripts from writing live stages or evolution timelines', () => {
+    const blockedScripts = [
+      'scripts/run_universal_intelligence.ts',
+      'scripts/batch_historical_backfill_v2.ts',
+      'scripts/real_historical_backfill.ts',
+      'scripts/inject_memory_history.ts',
+      'scripts/inject_world_models.ts',
+      'scripts/update_snapshot_stage.ts',
+      'scripts/fix_snapshot_schema.ts',
+      'scripts/enrich_historical_origins.ts',
+    ];
+    for (const file of blockedScripts) {
+      const body = readFileSync(resolve(repoRoot, file), 'utf8');
+      expect(body, file).toContain('retired');
+      expect(body, file).not.toMatch(/writeFileSync|writeJsonAtomically|writeTextAtomically/);
+      expect(body, file).not.toMatch(/evolution_timelines|latest_stage_snapshot/);
+    }
+  });
 });

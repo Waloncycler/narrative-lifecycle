@@ -58,6 +58,7 @@ describe('evidence intake CLI', () => {
     const reviewed: EvidenceImportDraft = {
       ...candidates[0].suggested_evidence,
       evidence_id: 'intake_bci_medical_rehab_reviewed_001',
+      source_url: 'https://example.test/research/bci-medical-rehab',
       source_type: 'research',
       evidence_strength: 'E2',
       confidence: 'medium',

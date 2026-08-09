@@ -1,56 +1,65 @@
-# 06 Scoring System v0.2
+# 06 Quantitative Methodology Contract
 
-## Purpose
+## Authority and Boundary
 
-Scores are auxiliary. They do not override stage gates.
+This document describes the executable quantitative framework. The source of
+truth is `src/features/scoring/domain/quantitative_framework.ts` together with
+the Stage Gate and Data Confidence rules. The Methodology UI and operator
+materials must describe the same executable rules. `README.md` remains the
+project's complete theory and project narrative; it is not a runtime formula
+specification and must not be simplified or rewritten to mirror this contract.
+
+Scores are auxiliary research measurements. They never override the Evidence
+Table, Stage Gate, Data Confidence cap, Parent/Branch isolation, or a missing
+historical record.
 
 ```text
+Evidence Table first.
 Stage First, Score Second.
+No Evidence Table, no scoring.
 ```
 
-## Score Dimensions
+The system is research-only. It does not output trading actions, positions,
+target prices, or forecasts of price movement.
 
-| Dimension | Meaning |
-|---|---|
-| Policy Perception | policy naming and support |
-| Market Perception | media, industry, investor attention and explanation |
-| Trading Perception | stable trading label and stock pool |
-| Capital Confirmation | leader, breadth, volume, persistence |
-| Pricing Adoption | valuation reframing and financial translation |
-| Parent Reality | reality validation for parent narrative |
-| Branch Reality | reality validation for branches |
-| Branch Coverage | representativeness of branch evidence |
-| Feedback | perception-capital-reality loop quality |
-| Execution Friction | technology, commercialization, regulation, mapping |
-| Valuation Friction | crowding, valuation saturation, good-news fatigue |
-| Data Confidence | evidence completeness |
-| Transition Probability | probability of next-stage transition |
-| Narrative Delta Score | material change vs previous narrative state |
+## Current Stage
 
-## Critical Caps
+```text
+S_current = min(S_requested, S_gate, S_confidence)
+```
 
-- No Pricing Adoption → no S5.
-- No Hard Reality Evidence → no S6.
-- Branch high stage does not automatically upgrade parent.
-- Data insufficiency caps confidence and may cap maximum stage.
+- `S_gate` is the maximum stage permitted by stable label, capital
+  confirmation, pricing adoption, and hard reality evidence.
+- `S_confidence` is the maximum stage permitted by data confidence.
+- Parent and Branch calculations are separate. A Branch result cannot raise
+  its Parent result.
 
-## Data Confidence
+## Auxiliary Measurements
 
-Data Confidence is computed from:
+| Measurement | Executable notation | Use |
+|---|---|---|
+| Evidence quality | `q_e = 100 * w(E) * a(source) * c * 2^(-age/h)` | Dated, source-weighted contribution of one Evidence item. `h = 180` days by default; E0 contributes zero. |
+| Layer support | `Q_l = 100 * [1 - product_s(1 - max(q_e,s)/100)]` | Aggregates the strongest contribution per source, separately for positive and negative evidence. |
+| Data confidence | `C = .25B + .25A + .20R + .15X + .15L` | Breadth, authority, recency, polarity coverage, and six-layer coverage. Missing coverage reduces confidence; it is not negative evidence. |
+| Transition readiness | `R_t = 100 * G * (C/100) * (1 - F/100)` | An uncalibrated readiness index. It is not a transition probability. |
+| Narrative delta | `Delta N = .20Q + .25G_delta + .20M + .15B_mu + .10E + .10C` | Material change versus Narrative Memory. Returns no numeric result when memory is insufficient. |
+| Agent optimization | `O = .80Q + .20E` | Quality and efficiency evaluation. Hard blockers prohibit promotion; they are not a subtractive score term. |
+| Model cost | `Cost = (T_in P_in + T_out P_out) / 10^6` | Cost accounting. Values come from configuration, never guessed in code. |
 
-- Source breadth
-- Source authority
-- Source recency
-- Positive/negative balance
-- Layer coverage
+## Promotion and Circuit Breakers
 
-## Narrative Delta Score
+Agent optimization can only enter reviewed promotion when the sample has at
+least 50 reviewed items, citation accuracy is at least 95%, unsupported claims
+are at most 2%, Parent/Branch error is at most 1%, E3/E4 overstatement is at
+most 2%, and cost and latency remain within configured limits.
 
-For old themes, score material difference from previous state:
+The system stops or falls back to rules when a run exceeds its cost budget,
+fails three times consecutively, has a rolling error rate above 20% on at
+least 10 samples, reaches five times baseline traffic, or exhausts retries.
 
-- New Evidence Quality
-- Stage Gate Impact
-- Missing Evidence Filled
-- Branch Mutation Strength
-- Expectation Reset
-- Data Confidence
+## Calibration Status
+
+Evidence quality, layer support, data confidence, and Stage Gates are
+deterministic measurements. Transition readiness and Narrative Delta are
+auxiliary indices. They remain explicitly uncalibrated until historical replay
+and held-out evaluation support a versioned calibration change.

@@ -36,6 +36,14 @@ export const EVIDENCE_INTAKE_SKILLS: readonly IntakeAgentSkill[] = [
     ],
   },
   {
+    id: 'temporal_discipline',
+    name: 'Historical date discipline',
+    instructions: [
+      'Use event_date only when it is explicit in source metadata or the quoted document; never infer it from current time.',
+      'When a date is absent, say so in limitation and uncertainty_notes; the operator must confirm it before historical replay or formal import.',
+    ],
+  },
+  {
     id: 'new_fact_budget',
     name: 'New-fact budget',
     instructions: [

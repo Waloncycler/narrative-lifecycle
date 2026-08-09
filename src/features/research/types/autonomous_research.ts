@@ -33,6 +33,9 @@ export interface AutonomousResearchPolicy {
   allow_rule_verified_publication: boolean;
   minimum_evidence_strength: 'E0' | 'E1' | 'E2' | 'E3' | 'E4';
   minimum_confidence: 'low' | 'medium' | 'high';
+  /** Daily discovery should not continually re-import old papers as if they
+   * were new changes. Historical recovery has its own double-source route. */
+  maximum_source_age_days?: number;
   permitted_source_types: Array<'official' | 'filing' | 'news' | 'research' | 'academic' | 'company' | 'other'>;
   allow_news_auto_publish: boolean;
   require_source_url: boolean;

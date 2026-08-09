@@ -2,7 +2,7 @@ import type { WebSearchConfig } from '@/features/research/types/web_research';
 
 /** Search providers that require no API key or configuration: usable out of
  *  the box. `free` aggregates the keyless sources below into one result set. */
-const KEYLESS_PROVIDERS = new Set<WebSearchConfig['provider']>(['free', 'gdelt', 'wikipedia', 'hn', 'duckduckgo', 'reddit', 'arxiv', 'openalex', 'archive']);
+const KEYLESS_PROVIDERS = new Set<WebSearchConfig['provider']>(['free', 'gdelt', 'wikipedia', 'hn', 'duckduckgo', 'reddit', 'arxiv', 'openalex', 'archive', 'bing']);
 const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'mcp_bridge']);
 
 const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = {
@@ -15,6 +15,7 @@ const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = 
   arxiv: 'https://export.arxiv.org/api/query',
   openalex: 'https://api.openalex.org/works',
   archive: 'https://archive.org/advancedsearch.php',
+  bing: 'https://www.bing.com/search',
 };
 
 export function webSearchConfigFromEnv(env: NodeJS.ProcessEnv): WebSearchConfig {
@@ -42,7 +43,7 @@ export class HttpWebSearchProvider {
   async search(input: { query: string; config: WebSearchConfig; sourceDomains?: string[] }): Promise<SearchRow[]> {
     const { config, query, sourceDomains } = input;
     if (!config.endpoint && !KEYLESS_PROVIDERS.has(config.provider)) return [];
-    if (config.provider === 'free') return this.free(query, config);
+    if (config.provider === 'free') return this.free(query, config, sourceDomains);
     if (config.provider === 'wikipedia') return this.wikipedia(query, config);
     if (config.provider === 'hn') return this.hn(query, config);
     if (config.provider === 'duckduckgo') return this.duckduckgo(query, config);
@@ -50,6 +51,7 @@ export class HttpWebSearchProvider {
     if (config.provider === 'arxiv') return this.arxiv(query, config);
     if (config.provider === 'openalex') return this.openalex(query, config);
     if (config.provider === 'archive') return this.archive(query, config);
+    if (config.provider === 'bing') return this.bing(query, config);
     if (config.provider === 'gdelt') return this.gdelt(query, config);
     if (config.provider === 'brave') return this.brave(query, config, sourceDomains);
     if (config.provider === 'tavily') return this.tavily(query, config, sourceDomains);
@@ -57,15 +59,20 @@ export class HttpWebSearchProvider {
   }
 
   /** Aggregates every keyless source (GDELT, Wikipedia zh+en, Hacker News,
-   *  DuckDuckGo Instant Answer, Reddit, arXiv, OpenAlex, Internet Archive)
+   *  DuckDuckGo Instant Answer, Bing RSS, Reddit, arXiv, OpenAlex, Internet Archive)
    *  into one deduplicated result set so a single query surfaces many more
    *  leads than any one free source alone. */
-  private async free(query: string, config: WebSearchConfig): Promise<SearchRow[]> {
+  private async free(query: string, config: WebSearchConfig, sourceDomains?: string[]): Promise<SearchRow[]> {
     const sources = [
       this.gdelt(query, { ...config, endpoint: DEFAULT_ENDPOINTS.gdelt as string }),
       this.wikipedia(query, config),
       this.hn(query, { ...config, endpoint: DEFAULT_ENDPOINTS.hn as string }),
       this.duckduckgo(query, { ...config, endpoint: DEFAULT_ENDPOINTS.duckduckgo as string }),
+      this.bing(query, { ...config, endpoint: DEFAULT_ENDPOINTS.bing as string }),
+      // Keep broad discovery intact, then add a bounded official-domain pass.
+      // The latter is the bridge from a market/theme query to a retrievable
+      // primary page; it is never itself formal Evidence.
+      ...(sourceDomains?.length ? [this.bing(query, { ...config, endpoint: DEFAULT_ENDPOINTS.bing as string }, sourceDomains)] : []),
       this.reddit(query, { ...config, endpoint: DEFAULT_ENDPOINTS.reddit as string }),
       this.arxiv(query, { ...config, endpoint: DEFAULT_ENDPOINTS.arxiv as string }),
       this.openalex(query, { ...config, endpoint: DEFAULT_ENDPOINTS.openalex as string }),
@@ -166,6 +173,29 @@ export class HttpWebSearchProvider {
       if (rows.length >= config.max_results_per_query) break;
     }
     return rows;
+  }
+
+  /** Bing's public RSS representation supplies general-web discovery without
+   * a credential. It is still only a discovery feed: every returned URL must
+   * pass the original-page retrieval and citation gate before Intake. */
+  private async bing(query: string, config: WebSearchConfig, sourceDomains?: string[]): Promise<SearchRow[]> {
+    const url = new URL(config.endpoint as string);
+    const scopedDomains = [...new Set(sourceDomains ?? [])]
+      .filter((domain) => /^[a-z0-9.-]+$/i.test(domain))
+      .slice(0, 3);
+    const siteScope = scopedDomains.length
+      ? ` (${scopedDomains.map((domain) => `site:${domain}`).join(' OR ')})`
+      : '';
+    url.searchParams.set('q', `${query}${siteScope}`);
+    url.searchParams.set('format', 'rss');
+    const body = await this.request(url.toString(), { method: 'GET', headers: { 'User-Agent': 'NarrativeLifecycleResearch/1.0' } }, config.timeout_ms);
+    const items = body.match(/<item>[\s\S]*?<\/item>/gi) ?? [];
+    return items.slice(0, config.max_results_per_query).flatMap((item) => {
+      const title = xmlText(item, 'title');
+      const link = xmlText(item, 'link');
+      if (!title || !link) return [];
+      return [{ title, url: link, snippet: xmlText(item, 'description') ?? '', source_name: 'Bing RSS', published_at: xmlText(item, 'pubDate') ?? null }];
+    });
   }
 
   /** Reddit full-text search: community narratives, discussion threads, and
@@ -353,6 +383,11 @@ function decodeEntities(value: string): string {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/&amp;/g, '&');
+}
+
+function xmlText(source: string, tag: string): string | null {
+  const value = new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`, 'i').exec(source)?.[1]?.trim() ?? '';
+  return value ? decodeEntities(value.replace(/^<!\[CDATA\[|\]\]>$/g, '')) : null;
 }
 
 /** OpenAlex stores abstracts as { word: [positions] }; rebuild the original

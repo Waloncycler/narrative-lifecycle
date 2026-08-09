@@ -10469,3 +10469,56 @@
   positive_or_negative: neutral
   confidence: 45
   schema_version: 0.2-manual-import
+- evidence_id: evidence_agent_1786260256591_w7s303
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  event_date: 2026-08-09
+  event_title: ClinicalTrials.gov record NCT03098927 carries a WITHDRAWN recruitment status.
+  event_summary: ClinicalTrials.gov record NCT03098927 carries a WITHDRAWN
+    recruitment status. Lowers confidence that VR motor-imagery BCI rehab has
+    cleared reality validation.
+  event_type: WORLDMONITOR_SIGNAL
+  source_name: unknown
+  source_url: https://example.invalid/imports/manual-evidence
+  source_type: manual_news
+  evidence_strength: E1
+  affected_layer:
+    - perception
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-09
+  branch_coverage_score: 35
+  interpretation: Lowers confidence that VR motor-imagery BCI rehab has cleared
+    reality validation.
+  limitation: Agent output requires human review. Branch evidence cannot upgrade
+    the parent narrative by itself.
+  positive_or_negative: neutral
+  confidence: 70
+  schema_version: 0.2-manual-import
+- evidence_id: evidence_agent_1786260256591_j0vigk
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  event_date: 2026-08-09
+  event_title: ClinicalTrials.gov record NCT06951035 is RECRUITING chronic-stroke
+    patients for rTMS-BCI upper-l
+  event_summary: ClinicalTrials.gov record NCT06951035 is RECRUITING
+    chronic-stroke patients for rTMS-BCI upper-limb rehab. Active enrollment
+    supports ongoing reality_validation for chronic-stroke BCI rehab.
+  event_type: WORLDMONITOR_SIGNAL
+  source_name: unknown
+  source_url: https://example.invalid/imports/manual-evidence
+  source_type: manual_news
+  evidence_strength: E1
+  affected_layer:
+    - perception
+  stage_effect: split_branch_branch
+  parent_or_branch: branch
+  available_at: 2026-08-09
+  branch_coverage_score: 35
+  interpretation: Active enrollment supports ongoing reality_validation for
+    chronic-stroke BCI rehab.
+  limitation: Agent output requires human review. Branch evidence cannot upgrade
+    the parent narrative by itself.
+  positive_or_negative: neutral
+  confidence: 70
+  schema_version: 0.2-manual-import

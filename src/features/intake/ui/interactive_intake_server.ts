@@ -39,6 +39,8 @@ const interactiveDecisionPath = 'outputs/intake/interactive_review_decisions.yam
 type ProductCoreUseCases = ReturnType<typeof createProductCoreUseCases>;
 
 export function createInteractiveIntakeServer(repoRoot: string, useCases: ProductCoreUseCases = createProductCoreUseCases(repoRoot)): Server {
+  let operateRunning = false;
+  let operateResult: { status: 'idle' | 'running' | 'completed' | 'failed'; published_evidence?: number; message?: string } = { status: 'idle' };
   return createServer(async (request, response) => {
     try {
       const pathname = new URL(request.url ?? '/', 'http://localhost').pathname;
@@ -70,6 +72,7 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
       }
       if (request.method === 'GET' && pathname === '/api/monitor') return json(response, readMonitor(repoRoot, useCases));
       if (request.method === 'GET' && pathname === '/api/agent/state') return json(response, readAgentState(repoRoot, useCases));
+      if (request.method === 'GET' && pathname === '/api/operate/status') return json(response, operateResult);
       if (request.method === 'POST' && pathname === '/api/intelligence-review') {
         const body = await readJson<{ proposal_id?: string; chain_entry_id?: string; decision: 'accepted' | 'rejected' | 'deferred'; reviewer: string; note?: string }>(request);
         const result = useCases.reviewIntelligenceProposalUseCase.execute({
@@ -98,6 +101,16 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
         void useCases.researchAgentScheduler
           .runNow(body.loop_kind ?? 'manual')
           .catch((error) => console.error('research agent loop failed:', error instanceof Error ? error.message : error));
+        return json(response, { status: 'started' });
+      }
+      if (request.method === 'POST' && pathname === '/api/operate') {
+        if (operateRunning || useCases.researchAgentScheduler.running) return json(response, { status: 'already_running' });
+        operateRunning = true;
+        operateResult = { status: 'running' };
+        void useCases.researchAgentLoopUseCase.execute({ loop_kind: 'daily', triggered_by: 'cli', publish_auto: true })
+          .then((manifest) => { operateResult = { status: 'completed', published_evidence: manifest.metrics.imported_evidence_count }; })
+          .catch((error) => { operateResult = { status: 'failed', message: error instanceof Error ? error.message : String(error) }; })
+          .finally(() => { operateRunning = false; });
         return json(response, { status: 'started' });
       }
       if (request.method === 'POST' && pathname === '/api/research/search') {
@@ -283,7 +296,14 @@ function writeDecisions(repoRoot: string, decisions: ReviewDecision[]): void {
 function readState(repoRoot: string): Record<string, unknown> {
   const session = readJsonFile<EvidenceIntakeSession>(repoRoot, 'outputs/intake/latest_session.json');
   const latestApply = readJsonFile<EvidenceIntakeApplyResult>(repoRoot, 'outputs/intake/latest_apply_result.json');
-  const apply = latestApply?.session_id === session?.session_id ? latestApply : null;
+  const apply = latestApply && latestApply.session_id === session?.session_id
+    // Older Apply artifacts reported the validator status `passed` even when
+    // they had no post-import operational-table proof. Render those legacy
+    // records conservatively instead of calling them a completed import.
+    ? latestApply.import_status === 'passed'
+      ? { ...latestApply, imported: false, import_status: 'imported_not_operational', operational_evidence_ids: [] }
+      : latestApply
+    : null;
   const latestWeekly = readJsonFile<WeeklyBrief>(repoRoot, 'outputs/operator_runs/latest_weekly_brief.json')
     ?? readJsonFile<WeeklyBrief>(repoRoot, 'outputs/reports/weekly_brief.json');
   // Intake is session-scoped: a newly pasted, unreviewed document must never
@@ -641,7 +661,7 @@ function renderInteractiveWorkbench(): string {
 <body>
   <header class="topbar">
     <a class="brand" href="/" style="color:white;text-decoration:none"><div class="brand-mark" aria-hidden="true">N</div><h1>叙事生命周期 · 研究材料智能解析</h1></a>
-    <nav class="app-nav" aria-label="主导航"><a href="/">总览</a><a href="/changes">变化</a><a href="/topics">主题</a><a href="/queue">研究队列</a><a href="/agent">Agent 状态</a><a href="/system">系统</a></nav>
+    <nav class="app-nav" aria-label="主导航"><a href="/">总览</a><a href="/topics">主题</a><a href="/queue">研究工作台</a><a href="/agent">自动化</a><a href="/system">系统</a></nav>
     <a class="intake-action" href="/intake" aria-current="page">＋ 录入材料</a>
     <div class="trust-badge">研究者确认模式</div>
   </header>
@@ -808,6 +828,7 @@ function renderInteractiveWorkbench(): string {
       if (message.includes('multipart') || message.includes('boundary')) return '文件上传格式不正确，请重新选择文件。';
       if (message.includes('file field')) return '没有读取到文件，请重新选择。';
       if (message.includes('pipeline retry')) return '无法确认需要重试的材料批次，请刷新页面。';
+      if (message.includes('traceable source_url')) return '部分候选没有可追溯的原始来源链接，不能导入。请改为拒绝，或先补充原始链接。';
       return '操作未完成，请重试或展开技术详情查看原因。';
     }
     function operatorText(value) {
@@ -880,6 +901,8 @@ function renderInteractiveWorkbench(): string {
     function importStatusDisplay(value) {
       return ({
         imported: '已导入并完成更新',
+        imported_not_operational: '导入记录已保存，但尚未进入运行态证据表',
+        passed: '已导入（旧记录）',
         imported_pipeline_failed: '证据已导入，研究更新待重试',
         no_evidence_imported: '未产生正式证据',
         rejected: '未导入'
@@ -932,6 +955,7 @@ function renderInteractiveWorkbench(): string {
           select('scope','影响范围',ev.scope,['parent','branch']) +
           select('evidence_strength','证据强度',ev.evidence_strength,['E0','E1','E2','E3','E4']) +
           select('confidence','信息可靠度',ev.confidence,['low','medium','high']) +
+          input('source_url','原始来源链接',ev.source_url ?? '') +
           textarea('event_title','事实标题',ev.event_title) +
           textarea('event_summary','事实摘要',ev.event_summary) +
           textarea('interpretation','为什么重要',operatorText(ev.interpretation)) +
@@ -965,6 +989,7 @@ function renderInteractiveWorkbench(): string {
           event_summary: value(card, 'event_summary'),
           interpretation: value(card, 'interpretation'),
           limitation: value(card, 'limitation'),
+          source_url: value(card, 'source_url') || null,
           affected_layer: Array.from(card.querySelectorAll('input[name="layer"]:checked')).map((item) => item.value)
         };
         const reviewedAt = new Date().toISOString();
@@ -985,9 +1010,11 @@ function renderInteractiveWorkbench(): string {
       const impactedTopics = (weekly?.stage_snapshot ?? []).filter((topic) => sessionTopics.includes(topic.topic_id));
       const batchStatus = !apply
         ? '本批材料尚未导入；不会展示其他批次的研究结果。'
+        : apply.import_status === 'imported_not_operational'
+          ? '导入记录已保存，但未能在运行态证据表中确认；系统不会把它显示为已完成。'
         : apply.import_status === 'imported_pipeline_failed'
           ? '证据已成功导入，但本轮研究更新失败；可安全重试，系统不会再次导入证据。'
-          : apply.imported && apply.weekly_run_id
+          : apply.import_status === 'imported' && apply.weekly_run_id
           ? '本批材料已导入并完成研究更新。'
           : '本批材料未产生正式证据。';
       $('retryButton').hidden = apply?.import_status !== 'imported_pipeline_failed';

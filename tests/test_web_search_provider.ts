@@ -16,6 +16,7 @@ describe('web search provider config selection', () => {
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'arxiv' })).toMatchObject({ provider: 'arxiv', endpoint: 'https://export.arxiv.org/api/query' });
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'openalex' })).toMatchObject({ provider: 'openalex', endpoint: 'https://api.openalex.org/works' });
     expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'archive' })).toMatchObject({ provider: 'archive', endpoint: 'https://archive.org/advancedsearch.php' });
+    expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'bing' })).toMatchObject({ provider: 'bing', endpoint: 'https://www.bing.com/search' });
   });
 
   it('auto-selects a keyed provider when its key is present', () => {
@@ -144,6 +145,41 @@ describe('web search provider keyless adapters', () => {
     // Cap applies after the abstract row: only the first related topic row survives.
     expect(results).toHaveLength(2);
     expect(results[1]).toMatchObject({ title: 'Related One' });
+  });
+
+  it('parses credential-free Bing RSS general-web results', async () => {
+    const provider = new HttpWebSearchProvider(async () => new Response(
+      '<rss><channel><item><title><![CDATA[工信部发布原文]]></title><link>https://www.miit.gov.cn/article</link><description><![CDATA[政策正文]]></description><pubDate>Sat, 09 Aug 2026 00:00:00 GMT</pubDate></item></channel></rss>',
+      { status: 200 },
+    ));
+    const config = webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'bing' });
+    const results = await provider.search({ query: '存储芯片 政策', config });
+    expect(results[0]).toMatchObject({ title: '工信部发布原文', url: 'https://www.miit.gov.cn/article', snippet: '政策正文' });
+  });
+
+  it('adds a bounded official-domain Bing pass to the free aggregate', async () => {
+    const requested: string[] = [];
+    const provider = new HttpWebSearchProvider(async (input) => {
+      const url = String(input);
+      requested.push(url);
+      if (url.includes('bing.com')) {
+        return new Response('<rss><channel><item><title>官方原文</title><link>https://www.miit.gov.cn/article</link><description>可复核正文</description></item></channel></rss>', { status: 200 });
+      }
+      if (url.includes('wikipedia.org')) return new Response(JSON.stringify({ pages: [] }), { status: 200 });
+      if (url.includes('gdeltproject')) return new Response(JSON.stringify({ articles: [] }), { status: 200 });
+      if (url.includes('hn.algolia')) return new Response(JSON.stringify({ hits: [] }), { status: 200 });
+      if (url.includes('duckduckgo')) return new Response(JSON.stringify({ RelatedTopics: [] }), { status: 200 });
+      if (url.includes('reddit.com')) return new Response(JSON.stringify({ data: { children: [] } }), { status: 200 });
+      if (url.includes('arxiv.org')) return new Response('<feed/>', { status: 200 });
+      if (url.includes('openalex.org')) return new Response(JSON.stringify({ results: [] }), { status: 200 });
+      if (url.includes('archive.org')) return new Response(JSON.stringify({ response: { docs: [] } }), { status: 200 });
+      throw new Error(`unexpected fetch ${url}`);
+    });
+    const config = webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'free' });
+    const results = await provider.search({ query: '人形机器人', config, sourceDomains: ['miit.gov.cn', 'www.gov.cn'] });
+    expect(results.some((item) => item.url === 'https://www.miit.gov.cn/article')).toBe(true);
+    const scoped = requested.find((url) => url.includes('bing.com') && decodeURIComponent(url).includes('site:miit.gov.cn'));
+    expect(scoped).toBeDefined();
   });
 
   it('retries a transient 429 once and then succeeds', async () => {

@@ -1,7 +1,8 @@
-import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse, stringify } from 'yaml';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
+import { hasOperationalSourceProvenance, normalizeOperationalEvidenceSourceType } from '@/features/evidence/domain/evidence_source_normalization';
 import type { AutonomousResearchPolicy, AutonomousResearchRun } from '@/features/research/types/autonomous_research';
 import type { AutonomousResearchPolicyAudit } from '@/features/research/types/autonomous_research_policy_audit';
 import type { NarrativeGraphPromotionReport } from '@/features/narrative/types/narrative_graph_promotion';
@@ -33,8 +34,8 @@ export class FileAutonomousResearchRepository {
   readOperationalEvidence(): EvidenceNode[] {
     const rows = [
       ...this.readAuditedManualEvidence(),
-      ...this.readYamlRows(AUTOMATED_EVIDENCE_PATH),
-      ...this.readJsonEvidenceTable(),
+      ...this.readAuditedAutomatedEvidence(),
+      ...this.readAdmittedEvidenceTableRows(),
     ];
     const byId = new Map(rows.map((item) => [item.evidence_id, item]));
     return [...byId.values()];
@@ -50,6 +51,19 @@ export class FileAutonomousResearchRepository {
     }
   }
 
+  /**
+   * The JSON table is a research store, not an implicit production queue.
+   * Legacy enrichment and backfill jobs wrote directly into it, so a row only
+   * becomes operational once its id appears in the controlled admission log.
+   */
+  private readAdmittedEvidenceTableRows(): EvidenceNode[] {
+    const admittedIds = this.readEvidenceAdmissionIds(['manual_import', 'migration_baseline', 'automated_publication']);
+    return this.readJsonEvidenceTable()
+      .filter((item) => admittedIds.has(item.evidence_id))
+      .filter(hasOperationalSourceProvenance)
+      .map(normalizeOperationalEvidenceSourceType);
+  }
+
   writePublishedEvidence(rows: EvidenceNode[]): void {
     const existing = this.readYamlRows(AUTOMATED_EVIDENCE_PATH);
     const merged = new Map(existing.map((item) => [item.evidence_id, item]));
@@ -62,6 +76,16 @@ export class FileAutonomousResearchRepository {
     for (const row of rows) jsonMerged.set(row.evidence_id, row);
     mkdirSync(resolve(this.repoRoot, 'data/evidence_table'), { recursive: true });
     writeTextAtomically(jsonPath, JSON.stringify([...jsonMerged.values()], null, 2));
+    if (rows.length) {
+      mkdirSync(resolve(this.repoRoot, 'data/audit'), { recursive: true });
+      appendFileSync(resolve(this.repoRoot, MANUAL_EVIDENCE_ADMISSION_PATH), `${JSON.stringify({
+        admission_id: `automated_publication_${new Date().toISOString().replaceAll(/[:.]/g, '')}`,
+        admitted_at: new Date().toISOString(),
+        admission_type: 'automated_publication',
+        evidence_ids: rows.map((row) => row.evidence_id),
+        policy: 'explicit_controlled_publication',
+      })}\n`, 'utf8');
+    }
   }
 
   readLatestSnapshot(): StageSnapshotHistory | null {
@@ -163,12 +187,22 @@ export class FileAutonomousResearchRepository {
    * import audit alone is not enough: old bulk jobs used that format too.
    */
   private readAuditedManualEvidence(): EvidenceNode[] {
-    const admittedIds = this.readAdmittedManualEvidenceIds();
+    const admittedIds = this.readEvidenceAdmissionIds(['manual_import', 'migration_baseline']);
     return this.readYamlRows(MANUAL_EVIDENCE_PATH)
-      .filter((item) => admittedIds.has(item.evidence_id));
+      .filter((item) => admittedIds.has(item.evidence_id))
+      .filter(hasOperationalSourceProvenance)
+      .map(normalizeOperationalEvidenceSourceType);
   }
 
-  private readAdmittedManualEvidenceIds(): Set<string> {
+  private readAuditedAutomatedEvidence(): EvidenceNode[] {
+    const admittedIds = this.readEvidenceAdmissionIds(['automated_publication']);
+    return this.readYamlRows(AUTOMATED_EVIDENCE_PATH)
+      .filter((item) => admittedIds.has(item.evidence_id))
+      .filter(hasOperationalSourceProvenance)
+      .map(normalizeOperationalEvidenceSourceType);
+  }
+
+  private readEvidenceAdmissionIds(allowedTypes: string[]): Set<string> {
     const path = resolve(this.repoRoot, MANUAL_EVIDENCE_ADMISSION_PATH);
     if (!existsSync(path)) return new Set();
     const ids = new Set<string>();
@@ -177,7 +211,7 @@ export class FileAutonomousResearchRepository {
       try {
         const record = JSON.parse(line) as { admission_type?: string; evidence_ids?: unknown };
         const evidenceIds = record.evidence_ids;
-        if ((record.admission_type !== 'manual_import' && record.admission_type !== 'migration_baseline') || !Array.isArray(evidenceIds)) continue;
+        if (!allowedTypes.includes(record.admission_type ?? '') || !Array.isArray(evidenceIds)) continue;
         for (const evidenceId of evidenceIds) {
           if (typeof evidenceId === 'string' && evidenceId.trim()) ids.add(evidenceId);
         }

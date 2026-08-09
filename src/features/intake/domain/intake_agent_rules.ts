@@ -29,7 +29,7 @@ export function mergeAgentOnlyCandidates(ruleCandidates: EvidenceCandidate[], ag
       guardrail_check: {
         no_trading_advice: noTradingAdvice(candidate),
         provenance_present: Boolean(candidate.original_quote),
-        human_review_required: false,
+        human_review_required: true,
       },
     } satisfies EvidenceCandidate));
   return [...ruleCandidates, ...extras];
@@ -72,7 +72,7 @@ export function verifyAgentCandidate(input: {
       parent_branch_valid: parentBranchValid,
       evidence_strength_checked: evidenceStrengthChecked,
       no_trading_advice: noAdvice,
-      human_review_required: false,
+      human_review_required: true,
     },
   };
 }

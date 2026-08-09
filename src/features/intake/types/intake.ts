@@ -43,6 +43,13 @@ export interface EvidenceCandidate {
   uncertainty_notes: string[];
   field_explanations: Record<string, string>;
   e_strength_rationale: string;
+  /** The date provenance prevents a retrieval-time timestamp from masquerading
+   * as the date a historical source was actually available. */
+  temporal_provenance?: {
+    event_date_source: 'source_metadata' | 'document_text' | 'ingested_at';
+    available_at_source: 'source_metadata' | 'document_text' | 'ingested_at';
+    requires_operator_confirmation: boolean;
+  };
   /** How far a deterministic source parser verified this candidate. */
   publication_eligibility?: 'manual_review' | 'rule_verified';
   duplicate_of_evidence_id?: string | null;
@@ -179,6 +186,8 @@ export interface EvidenceIntakeApplyResult {
   import_status: string;
   import_id: string | null;
   weekly_run_id: string | null;
+  /** Evidence IDs observed in the operational Evidence Table after Weekly. */
+  operational_evidence_ids?: string[];
   stage_change_summary: unknown | null;
   pipeline_retry_count?: number;
   pipeline_error?: string | null;

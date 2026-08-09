@@ -67,6 +67,9 @@ export interface ApplyEvidenceIntakeReviewUseCaseDeps {
   writeApplyResult(result: EvidenceIntakeApplyResult): void;
   importEvidence(file: string): { report: EvidenceImportReport; failed: boolean };
   runWeekly(): RunManifest;
+  /** Confirms that an import is visible to the operational Evidence Table
+   * used by the Stage Gate, not merely stored as an accepted YAML file. */
+  readOperationalEvidenceIds?(): Set<string>;
   readStageChangeSummary(): unknown;
   now(): string;
 }
@@ -85,6 +88,7 @@ export class ApplyEvidenceIntakeReviewUseCase {
     const topicAudit = this.deps.readTopicResolutionAudit();
     if (!topicAudit) throw new Error(`topic resolution audit is required for session ${session.session_id}`);
     assertSameSession('topic resolution audit', session.session_id, topicAudit?.session_id ?? null);
+    assertAcceptedCandidatesHaveConfirmedDates(session, decisions);
     const review = evidenceDraftsFromDecisions({
       candidates: session.candidates,
       decisions,
@@ -93,6 +97,7 @@ export class ApplyEvidenceIntakeReviewUseCase {
     // Explicitly accepted drafts use the audited mapping so they never land
     // under an unresolved raw Topic identifier.
     if (review.drafts.length) applyResolvedTopics(review.drafts, session.candidates, topicAudit);
+    assertTraceableSourceUrls(review.drafts);
     const draftPath = review.drafts.length ? this.deps.writeEvidenceDraft(review.drafts) : null;
     const rejectedCount = decisions.filter((decision) => decision.decision === 'reject').length;
     const base = {
@@ -172,16 +177,54 @@ export class ApplyEvidenceIntakeReviewUseCase {
       this.deps.writeApplyResult(result);
       return result;
     }
+    const operationalIds = this.deps.readOperationalEvidenceIds?.() ?? new Set(review.drafts.map((draft) => draft.evidence_id));
+    const committedEvidenceIds = review.drafts
+      .map((draft) => draft.evidence_id)
+      .filter((evidenceId) => operationalIds.has(evidenceId));
     const result: EvidenceIntakeApplyResult = {
       ...base,
       imported: true,
-      import_status: imported.report.status,
+      import_status: committedEvidenceIds.length === review.drafts.length ? 'imported' : 'imported_not_operational',
       import_id: imported.report.import_id,
       weekly_run_id: manifest.run_id,
+      operational_evidence_ids: committedEvidenceIds,
       stage_change_summary: this.deps.readStageChangeSummary(),
     };
     this.deps.writeApplyResult(result);
     return result;
+  }
+}
+
+/** Intake decisions cannot be given fictional provenance by the normalizer.
+ * Older fixtures may contain placeholders, but newly reviewed material must
+ * retain a real original-source URL all the way to the Evidence Table. */
+function assertTraceableSourceUrls(drafts: EvidenceImportDraft[]): void {
+  const missing = drafts.filter((draft) => !isTraceableHttpUrl(draft.source_url));
+  if (missing.length) {
+    throw new Error(`traceable source_url is required before import: ${missing.map((draft) => draft.evidence_id).join(', ')}`);
+  }
+}
+
+function isTraceableHttpUrl(value: string | null | undefined): boolean {
+  try {
+    const url = new URL(value ?? '');
+    return (url.protocol === 'http:' || url.protocol === 'https:') && !/example\.invalid$/i.test(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
+/** A retrieval timestamp is useful for auditing, but it is not proof of when
+ * a historical event was known. Force an operator to correct it before the
+ * ordinary Evidence importer can make the row eligible for a timeline. */
+function assertAcceptedCandidatesHaveConfirmedDates(session: EvidenceIntakeSession, decisions: ReviewDecision[]): void {
+  const pending = new Set(session.candidates
+    .filter((candidate) => candidate.temporal_provenance?.requires_operator_confirmation)
+    .map((candidate) => candidate.candidate_id));
+  const accepted = decisions.filter((decision) => decision.decision !== 'reject');
+  const blocked = accepted.filter((decision) => pending.has(decision.candidate_id));
+  if (blocked.length) {
+    throw new Error(`source publication date must be confirmed before import: ${blocked.map((item) => item.candidate_id).join(', ')}`);
   }
 }
 

@@ -1,0 +1,61 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import Ajv2020 from 'ajv/dist/2020';
+import addFormats from 'ajv-formats';
+import { describe, expect, it } from 'vitest';
+import { recoverHistoricalProvenance, selectHistoricalProvenanceTargets } from '@/features/research/domain/historical_provenance_recovery';
+import type { EvidenceNode } from '@/features/evidence/domain/evidence';
+import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
+
+const registry: TopicRegistry = {
+  canonical_topics: [{ topic_id: 'bci', topic_name: 'BCI', current_stage: 'S0', status: 'active', market_name_en: 'Brain-computer interface' }],
+  aliases: [], branches: [{ branch_id: 'rehab', topic_id: 'bci', branch_name: 'Medical rehabilitation', status: 'watch' }], provisional_topics: [], memory_topic_ids: [],
+};
+const legacy = (overrides: Partial<EvidenceNode> = {}): EvidenceNode => ({
+  evidence_id: 'legacy_policy_1', topic_id: 'bci', branch_id: null, parent_or_branch: 'parent', event_date: '2024-01-10', available_at: '2024-01-10',
+  event_title: 'National BCI programme approval', event_type: 'historical_reference', source_name: 'official', source_url: 'https://www.gov.cn/policy', evidence_strength: 'E3', affected_layer: ['reality'], stage_effect: 'upgrade', confidence: 80,
+  ...overrides,
+});
+const sourceBody = (title: string, detail: string) => `<html><head><title>${title}</title></head><body><article><p>${detail} The authoritative notice records the responsible institution, the approved programme, its date, and the concrete implementation scope so that the original claim can be independently checked.</p><p>The same notice states a remaining limitation and confirms that the record alone is not a lifecycle-stage conclusion.</p></article></body></html>`;
+
+describe('historical provenance recovery', () => {
+  it('selects only non-operational rows without a source-grade excerpt and preserves branch scope', () => {
+    const targets = selectHistoricalProvenanceTargets({ evidence: [legacy(), legacy({ evidence_id: 'operational', event_summary: 'x'.repeat(160) }), legacy({ evidence_id: 'branch_legacy', branch_id: 'rehab', parent_or_branch: 'branch' }), legacy({ evidence_id: 'wrong_topic', event_title: 'Advanced mammalian gene transfer', source_url: 'https://doi.org/10.1/example' })], registry, admittedEvidenceIds: new Set(['operational']), limit: 10 });
+    expect(targets.map((item) => item.legacy_evidence_id)).toEqual(['branch_legacy', 'legacy_policy_1']);
+    expect(targets.find((item) => item.legacy_evidence_id === 'branch_legacy')).toMatchObject({ scope: 'branch', branch_id: 'rehab' });
+  });
+
+  it('requires two distinct citation-ready original source hosts before a legacy row can enter the Intake Agent', async () => {
+    const targets = selectHistoricalProvenanceTargets({ evidence: [legacy()], registry, admittedEvidenceIds: new Set(), limit: 2 });
+    const report = await recoverHistoricalProvenance({
+      targets, generatedAt: '2026-08-09T00:00:00.000Z', producerVersion: 'test', searchProvider: 'free', maxSourcesPerTarget: 3,
+      search: async () => [
+        { title: 'National BCI programme approval', url: 'https://www.gov.cn/policy', source_name: 'State Council' },
+        { title: 'National BCI programme approval', url: 'https://www.fda.gov/notice', source_name: 'Regulator' },
+      ],
+      retrieve: async (url) => ({ httpStatus: 200, contentType: 'text/html', body: sourceBody('National BCI programme approval', url.includes('fda') ? 'A separate regulator record corroborates the programme.' : 'An official policy record describes the programme.') }),
+    });
+    expect(report).toMatchObject({ auto_intake_ready_count: 1, citation_ready_unverified_count: 0 });
+    const item = report.items[0]!;
+    expect(item.independent_source_hosts).toEqual(expect.arrayContaining(['www.gov.cn', 'www.fda.gov']));
+    const primary = item.retrieved_sources.find((source) => source.historical_recovery?.corroboration_status === 'verified');
+    expect(primary).toMatchObject({ next_action: 'prepare_intake', historical_recovery: { legacy_evidence_id: 'legacy_policy_1', scope: 'parent', corroborating_source_urls: ['https://www.fda.gov/notice'] } });
+    expect(item.retrieved_sources.filter((source) => source.next_action === 'prepare_intake')).toHaveLength(1);
+
+    const ajv = new Ajv2020({ allErrors: true, strict: false }); addFormats(ajv);
+    const schema = JSON.parse(readFileSync(resolve(process.cwd(), 'schemas/historical_provenance_recovery_report.schema.json'), 'utf8')) as object;
+    expect(ajv.compile(schema)(report)).toBe(true);
+  });
+
+  it('keeps one-source recovery out of automatic Intake and never converts a branch into parent evidence', async () => {
+    const targets = selectHistoricalProvenanceTargets({ evidence: [legacy({ evidence_id: 'branch_legacy', branch_id: 'rehab', parent_or_branch: 'branch' })], registry, admittedEvidenceIds: new Set(), limit: 1 });
+    const report = await recoverHistoricalProvenance({
+      targets, generatedAt: '2026-08-09T00:00:00.000Z', producerVersion: 'test', searchProvider: 'free', maxSourcesPerTarget: 2,
+      search: async () => [{ title: 'National BCI programme approval', url: 'https://www.gov.cn/policy' }],
+      retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body: sourceBody('National BCI programme approval', 'An official policy record describes the programme.') }),
+    });
+    expect(report).toMatchObject({ auto_intake_ready_count: 0, citation_ready_unverified_count: 1 });
+    expect(report.items[0]?.target).toMatchObject({ scope: 'branch', branch_id: 'rehab' });
+    expect(report.items[0]?.retrieved_sources.every((source) => source.next_action === 'hold')).toBe(true);
+  });
+});

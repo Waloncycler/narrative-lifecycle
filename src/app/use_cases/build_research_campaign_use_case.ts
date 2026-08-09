@@ -2,6 +2,7 @@ import { buildResearchCampaign } from '@/features/research/domain/research_cover
 import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
 import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse } from '@/features/research/types/research_coverage';
 import type { ResearchBaselineCompletionReport } from '@/features/research/types/research_baseline_completion';
+import type { HistoricalEvidenceRecoveryReport } from '@/features/research/types/historical_evidence_recovery';
 
 export interface BuildResearchCampaignUseCaseDeps {
   now(): string;
@@ -11,6 +12,7 @@ export interface BuildResearchCampaignUseCaseDeps {
   readUniverse(): ResearchUniverse;
   readCompanyRegistry(): CompanyResearchRegistry;
   buildBaselineCompletion?(): ResearchBaselineCompletionReport;
+  buildHistoricalRecovery?(): HistoricalEvidenceRecoveryReport;
   writeCampaign(campaign: ResearchCampaign): void;
   validateCampaign(campaign: ResearchCampaign): void;
 }
@@ -20,6 +22,7 @@ export class BuildResearchCampaignUseCase {
 
   execute(input: { maxTasks?: number } = {}): ResearchCampaign {
     const baselineCompletion = this.deps.buildBaselineCompletion?.() ?? null;
+    const historicalRecovery = this.deps.buildHistoricalRecovery?.() ?? null;
     const campaign = buildResearchCampaign({
       registry: this.deps.readRegistry(),
       atlas: this.deps.readSourceAtlas(),
@@ -29,6 +32,7 @@ export class BuildResearchCampaignUseCase {
       producerVersion: this.deps.producerVersion(),
       maxTasks: input.maxTasks,
       baselineCompletion,
+      historicalRecovery,
     });
     this.deps.validateCampaign(campaign);
     this.deps.writeCampaign(campaign);

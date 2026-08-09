@@ -5,17 +5,17 @@ import { WORLDMONITOR_SOURCE_CATALOG } from '@/features/worldmonitor/domain/worl
 
 export function renderNarrativeMonitor(model: NarrativeMonitorModel): string {
   const body = model.status === 'insufficient_data'
-    ? `<section class="hero-row"><div><p class="eyebrow">今日概览</p><h1>研究热度视图 (Terminal View)</h1><p class="lede">当前还没有正式的周度研究结果；系统只展示已经真实产生的状态。</p></div>${oneClickAutoRun(model)}</section>${systemStatusBar(model)}${emptyState('尚无周度研究结果', '完成一次自动调研循环后，系统才会显示经过阶段门槛验证的主题状态。', '/agent', '立即自动调研')}`
+    ? `<section class="hero-row"><div><p class="eyebrow">研究总览</p><h1>主题态势总览</h1><p class="lede">当前还没有正式的周度研究结果；系统只展示已经真实产生的状态。</p></div>${oneClickAutoRun(model)}</section>${systemStatusBar(model)}${emptyState('尚无周度研究结果', '完成一次自动调研循环后，系统才会显示经过阶段门槛验证的主题状态。', '/agent', '立即自动调研')}`
     : `
       <section class="hero-row">
-        <div><p class="eyebrow">Terminal View</p><h1>研究热度视图 (Macro Heatmap)</h1><p class="lede">全景扫描当前投资线索。颜色代表变化方向，密度点代表证据强度。</p></div>
+        <div><p class="eyebrow">研究总览</p><h1>主题态势总览</h1><p class="lede">查看正式主题的当前阶段、证据覆盖与需要核验的变化。候选材料不会直接改变主题阶段。</p></div>
         ${oneClickAutoRun(model)}<div class="run-meta"><span>最近更新</span><strong>${friendlyDate(model.generated_at)}</strong>${technicalDetails([['运行批次', model.run_id]])}</div>
       </section>
       ${systemStatusBar(model)}
       ${metricGrid(model)}
       <section class="panel wide-panel">
         <div class="panel-heading">
-          <div><p class="eyebrow">赛道全景</p><h2>主题热度网格</h2></div>
+          <div><p class="eyebrow">主题分布</p><h2>当前主题</h2></div>
           <a class="text-link" href="/changes">查看详细变化 →</a>
         </div>
         <div class="heatmap-grid">
@@ -26,7 +26,7 @@ export function renderNarrativeMonitor(model: NarrativeMonitorModel): string {
             return `<a class="heatmap-card" href="/topics/${encodeURIComponent(topic.topic_id)}" style="${style}">
               <span class="stage ${stageDisplay(topic.current_stage).includes('早期') ? 'early' : 'mid'}">${stageDisplay(topic.current_stage)}</span>
               <h3>${escape(topic.topic_name)}</h3>
-              <p>${escape(topic.weakest_layer)}</p>
+              <p>${escape(topic.baseline_status === 'baseline_required' ? '需补充父主题基准证据' : friendlyReason(topic.why_not_higher_stage))}</p>
               <div class="heatmap-density">
                 ${[...Array(6)].map((_, i) => `<div class="heatmap-tick ${i < Math.min(6, Math.max(1, topic.evidence_count)) ? 'active' : ''}"></div>`).join('')}
               </div>
@@ -45,8 +45,8 @@ function oneClickAutoRun(model: NarrativeMonitorModel): string {
   const agent = model.research_agent;
   const running = agent?.loop_running ?? false;
   return `<div class="one-click-run">
-    <button class="button primary" id="one-click-run" onclick="runAgentNow()" ${running ? 'disabled' : ''}>${running ? '自动调研中…' : '一键自动调研'}</button>
-    <p class="small" id="one-click-status">${running ? '正在同步数据源、草拟并导入证据、更新主题与阶段。' : '自动完成：同步数据源 → 拆解候选 → 智能识别主题 → 导入证据 → 更新研究结果。'}</p>
+    <button class="button primary" id="one-click-run" onclick="runAgentNow()" ${running ? 'disabled' : ''}>${running ? '自动调研中…' : '自动运行并准入'}</button>
+    <p class="small" id="one-click-status">${running ? '正在同步数据源、草拟并导入证据、更新主题与阶段。' : '自动完成检索、取证、解析与政策准入；不合格材料会保留原因。'}</p>
   </div>
   <script>
     async function runAgentNow() {
@@ -55,7 +55,7 @@ function oneClickAutoRun(model: NarrativeMonitorModel): string {
       button.disabled = true; button.textContent = '自动调研中…';
       status.textContent = '正在同步数据源、草拟并导入证据、更新主题与阶段，请稍候。';
       try {
-        const response = await fetch('/api/agent/run', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ loop_kind: 'manual' }) });
+        const response = await fetch('/api/operate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
         const data = await response.json().catch(() => ({}));
         if (data.status === 'already_running') { status.textContent = '已有一轮自动调研正在运行，页面即将刷新。'; }
         await waitForAgentIdle();
@@ -65,8 +65,8 @@ function oneClickAutoRun(model: NarrativeMonitorModel): string {
     async function waitForAgentIdle() {
       const deadline = Date.now() + 10 * 60 * 1000;
       while (Date.now() < deadline) {
-        const data = await fetch('/api/agent/state').then((r) => r.json()).catch(() => null);
-        if (data?.research_agent?.loop_running === false) return;
+        const data = await fetch('/api/operate/status').then((r) => r.json()).catch(() => null);
+        if (data?.status === 'completed' || data?.status === 'failed') return;
         await new Promise((resolve) => setTimeout(resolve, 3000));
       }
     }
@@ -150,7 +150,7 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
         const button = document.getElementById('run-agent');
         button.disabled = true; button.textContent = '运行中…';
         try {
-          const response = await fetch('/api/agent/run', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ loop_kind: 'manual' }) });
+          const response = await fetch('/api/operate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
           const data = await response.json().catch(() => ({}));
           if (data.status === 'already_running') { alert('已有一轮循环正在运行，请等待完成。'); location.reload(); return; }
           await waitForAgentIdle();
@@ -169,8 +169,9 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
       async function waitForAgentIdle() {
         const deadline = Date.now() + 10 * 60 * 1000; // 最长等待 10 分钟
         while (Date.now() < deadline) {
-          const data = await fetch('/api/agent/state').then((r) => r.json()).catch(() => null);
-          if (data?.research_agent?.loop_running === false) return;
+          const data = await fetch('/api/operate/status').then((r) => r.json()).catch(() => null);
+          if (data?.status === 'completed') { alert('自动循环完成：本轮已写入正式证据 ' + (data.published_evidence ?? 0) + ' 条。'); return; }
+          if (data?.status === 'failed') throw new Error(data.message || '自动循环失败');
           await new Promise((resolve) => setTimeout(resolve, 3000));
         }
       }
@@ -195,8 +196,8 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
       setTimeout(() => { if (!document.hidden) location.reload(); }, 30000);
     </script>
     <section class="hero-row">
-      <div><p class="eyebrow">自驱动研究 Agent</p><h1>自动调研与迭代循环</h1><p class="lede">按已配置来源同步信息、拆解候选、识别主题和细分方向，并持续积累正式证据。满足独立来源门槛的暂定主题与观察分支可按策略激活；冲突、未解析和高阶段跳跃会自动暂停并进入复核。阶段与评分始终只由正式证据和确定性规则计算。</p></div>
-      <div class="action-row"><button id="auto-confirm-chain-btn" class="button secondary" onclick="confirmAllChainEntries()">全自动确认提案与证据链</button><button id="run-coverage-campaign" class="button secondary" onclick="runCoverageCampaign()">启动主题覆盖研究</button><button id="run-agent" class="button primary" onclick="runAgentNow()" ${agent.loop_running ? 'disabled' : ''}>${agent.loop_running ? '运行中…' : '立即运行一轮'}</button></div>
+      <div><p class="eyebrow">自驱动研究 Agent</p><h1>自动调研与迭代循环</h1><p class="lede">自动检索、取证、解析和政策准入。只有满足原始来源、引用、日期、主题归属与阶段保护规则的候选才会进入正式证据；其他项目保留明确原因。</p></div>
+      <div class="action-row"><button id="run-coverage-campaign" class="button secondary" onclick="runCoverageCampaign()">仅更新研究覆盖</button><button id="run-agent" class="button primary" onclick="runAgentNow()" ${agent.loop_running ? 'disabled' : ''}>${agent.loop_running ? '自动运行中…' : '自动运行并准入'}</button></div>
     </section>
     <section class="system-strip">
       ${compactStatus('调度器', scheduler.enabled ? '已启用' : '已停用', scheduler.enabled ? 'operational' : 'not_configured')}
@@ -319,6 +320,7 @@ function graphPromotionReason(item: { decision: string; independent_source_count
 
 export function renderSystemOverview(model: NarrativeMonitorModel): string {
   const system = model.system;
+  const alerts = [...new Map(model.alerts.map((item) => [`${item.category}:${item.message}`, item])).values()].slice(0, 5);
   return pageShell('system', '系统', `
     ${systemNav('system')}
     <section class="hero-row"><div><p class="eyebrow">系统管理</p><h1>系统</h1><p class="lede">集中查看运行、来源、学习治理和方法说明。这里不会直接改变主题阶段。</p></div><span class="state-pill ${stateClass(system.pipeline_state)}">${stateLabel(system.pipeline_state)}</span></section>
@@ -327,7 +329,8 @@ export function renderSystemOverview(model: NarrativeMonitorModel): string {
       ${systemHubCard('/sources', '数据源', '来源目录、同步、变化状态与研究闭环', model.source_sync ? `${model.source_sync.completed_operation_count}/${model.source_sync.requested_operation_count} 最近同步` : '尚未同步')}
       ${systemHubCard('/governance', '学习治理', '规则保护、主动学习、晋级门槛与改进提案', model.learning_profile_version ? '已有学习记录' : '尚未生成学习记录')}
       ${systemHubCard('/methodology', '方法论', '阶段门槛、数据可信度与对照量化规则', '可查看研究方法')}
-    </section>`);
+    </section>
+    ${alerts.length ? `<section class="panel" style="margin-top:18px"><div class="panel-heading"><div><p class="eyebrow">需要关注</p><h2>系统提醒</h2><p class="small">运行、规则与历史一致性问题集中在这里，不占用研究材料审核队列。</p></div><a class="text-link" href="/governance">查看治理详情</a></div>${alerts.map((alert) => `<div class="list-row"><strong>${escape(queueCategoryLabel('guardrail_alert'))} · ${escape(alert.category)}</strong><p>${friendlyReason(alert.message)}</p></div>`).join('')}</section>` : ''}`);
 }
 
 export function renderSources(model: NarrativeMonitorModel): string {
@@ -344,9 +347,10 @@ export function renderSources(model: NarrativeMonitorModel): string {
   const contextOnlyCount = operations.filter((item) => item.evidence_eligibility === 'context_only').length;
   const dedicatedNormalizerCount = operations.filter((item) => item.normalizer_id !== 'generic_record').length;
 
-  // Build the complete 63-source roster combining catalog and operations
+  // A catalog entry is a declared capability, not evidence of a configured
+  // connector. Keep actual status visible instead of assuming it is live.
   const catalogEntries = Object.values(WORLDMONITOR_SOURCE_CATALOG);
-  const totalCount = Math.max(catalogEntries.length, operations.length, 63);
+  const totalCount = Math.max(catalogEntries.length, operations.length);
 
   const roster = catalogEntries.map((cat) => {
     const matchedOp = operations.find((o) =>
@@ -366,7 +370,7 @@ export function renderSources(model: NarrativeMonitorModel): string {
       stage_effect: cat.default_stage_effect,
       url: matchedOp?.production_url ?? matchedOp?.governance?.terms_url ?? 'worldmonitor://direct-api',
       normalizer: matchedOp?.normalizer_id ?? 'direct_stream',
-      status: matchedOp?.access_state === 'production_ready' ? 'production_ready' : 'production_ready',
+      status: matchedOp?.access_state ?? 'cataloged_not_connected',
     };
   });
 
@@ -414,19 +418,16 @@ export function renderSources(model: NarrativeMonitorModel): string {
     <section class="hero-row">
       <div>
         <p class="eyebrow">情报与数据资产</p>
-        <h1>全球情报源与数据动脉矩阵 (Intelligence Atlas)</h1>
-        <p class="lede">全景展示系统当前接入的 63 个权威数据大动脉。从万得、财联社、华尔街日报、路透社，到 arXiv、SEC EDGAR、工信部及新时空/英为财情，所有源头均已无缝整合进全自动化演化流水线。</p>
+        <h1>情报源与接入状态</h1>
+        <p class="lede">这里只展示本系统已注册的来源及其真实连接状态。来源目录不等于已接入，更不等于已成为正式证据。</p>
       </div>
-      <span class="state-pill ok" style="font-size:12px;padding:6px 12px;">已激活 63 个全球全天候情报流</span>
+      <span class="state-pill ${liveReadyCount ? 'ok' : 'muted-state'}" style="font-size:12px;padding:6px 12px;">${liveReadyCount ? `${liveReadyCount} 个已配置连接器` : '尚无已配置连接器'}</span>
     </section>
 
     <section class="system-strip">
-      ${compactStatus('全网情报源', String(totalCount) + ' 个', 'operational')}
-      ${compactStatus('顶级财经/投研', String(domainCounts.financial) + ' 家', 'operational')}
-      ${compactStatus('硬核科技/创投', String(domainCounts.technology) + ' 家', 'operational')}
-      ${compactStatus('学术期刊/文献', String(domainCounts.research) + ' 家', 'operational')}
-      ${compactStatus('官方监管/申报', String(domainCounts.official) + ' 家', 'operational')}
-      ${compactStatus('宏观与地缘', String(domainCounts.geopolitics) + ' 家', 'operational')}
+      ${compactStatus('系统来源目录', String(totalCount) + ' 项', 'operational')}
+      ${compactStatus('已配置连接器', String(liveReadyCount) + ' 项', liveReadyCount ? 'operational' : 'review_required')}
+      ${compactStatus('待治理审核', String(governanceReviewCount) + ' 项', governanceReviewCount ? 'review_required' : 'operational')}
     </section>
 
     <!-- Interactive 63 Source Roster -->
@@ -434,7 +435,7 @@ export function renderSources(model: NarrativeMonitorModel): string {
       <div class="panel-heading" style="flex-wrap: wrap;">
         <div>
           <p class="eyebrow">数据大动脉</p>
-          <h2>全量情报源矩阵明细 (Active Intelligence Roster)</h2>
+          <h2>系统来源目录</h2>
         </div>
         <div style="display:flex;gap:12px;align-items:center;">
           <input id="source-search-input" type="text" placeholder="🔍 实时搜索源名称 / 机构 / 领域 / URL..." oninput="filterSources()" style="width:320px;padding:8px 12px;background:var(--nav);border:1px solid var(--line);border-radius:3px;color:var(--ink);font-size:12px;outline:none;" />
@@ -460,7 +461,7 @@ export function renderSources(model: NarrativeMonitorModel): string {
               <th style="width:140px;">叙事核心层级</th>
               <th style="width:120px;">证据等级</th>
               <th style="width:160px;">事件类型 / 解析流</th>
-              <th>生产接入端点 / RSS 订阅流</th>
+              <th>目录端点 / 条款页</th>
               <th style="width:90px;">运行状态</th>
             </tr>
           </thead>
@@ -469,7 +470,7 @@ export function renderSources(model: NarrativeMonitorModel): string {
               <tr class="source-item-row" data-domain="${item.domain}" data-text="${escape((item.name + ' ' + item.url + ' ' + item.domain + ' ' + item.event_type).toLowerCase())}">
                 <td>
                   <strong style="color:#eceff4;font-size:12px;">${escape(item.name)}</strong>
-                  <small style="color:var(--muted);display:block;margin-top:2px;">ID: ${escape(item.id)}</small>
+                  <small style="color:var(--muted);display:block;margin-top:2px;">来源编号：${escape(item.id)}</small>
                 </td>
                 <td><span style="font-size:11px;font-weight:600;">${domainLabelMap[item.domain] ?? item.domain}</span></td>
                 <td>
@@ -483,7 +484,7 @@ export function renderSources(model: NarrativeMonitorModel): string {
                     ${escape(item.url.length > 55 ? item.url.substring(0, 55) + '...' : item.url)}
                   </a>
                 </td>
-                <td><span class="state-pill ok" style="font-size:9px;">24/7 就绪</span></td>
+                <td><span class="state-pill ${item.status === 'production_ready' ? 'ok' : 'muted-state'}" style="font-size:9px;">${item.status === 'production_ready' ? '已配置' : '仅目录'}</span></td>
               </tr>
             `).join('')}
           </tbody>
@@ -495,10 +496,10 @@ export function renderSources(model: NarrativeMonitorModel): string {
     <div class="dashboard-grid">
       <section class="panel">
         <div class="panel-heading"><div><p class="eyebrow">来源控制</p><h2>盘点与同步调度</h2></div></div>
-        <p class="muted">全量 63 个数据源支持实时增量轮询与一键全网回溯。所有抓取到的事实会自动进入引用验证与四道量化硬门槛，只有通过核验的记录才可写入正式演化时间线。</p>
+        <p class="muted">仅“已配置”且通过治理检查的连接器可以同步。来源目录、外部审计记录和搜索结果都不会自动写入正式证据；每条材料仍须经过引用、主题/分支、去重与 Evidence Gate。</p>
         <div class="action-row" style="margin-top: 16px;">
-          <button class="button secondary" type="button" onclick="sourceAction('inventory')">刷新全网来源目录</button>
-          <button class="button primary" type="button" onclick="sourceAction('live')">一键全量采集与同步</button>
+          <button class="button secondary" type="button" onclick="sourceAction('inventory')">刷新已注册来源目录</button>
+          <button class="button primary" type="button" onclick="sourceAction('live')">同步已配置来源</button>
         </div>
         <p id="source-action-status" class="small" role="status" style="margin-top: 8px;"></p>
       </section>
@@ -580,7 +581,7 @@ export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string)
       <!-- Column 1: Timeline -->
       <section class="panel" style="grid-column: 1;">
         <div class="panel-heading">
-          <div><p class="eyebrow">演化时间线</p><h2>Evolution Timeline</h2></div>
+          <div><p class="eyebrow">已核验的阶段变化</p><h2>阶段演化与证据链</h2></div>
         </div>
         <div class="timeline-container" id="evolution-timeline-root">
           <p class="muted">加载中...</p>
@@ -638,31 +639,41 @@ export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string)
             const data = await res.json();
             const topicHistory = data.find(t => t.topic_id === topicId);
             const root = document.getElementById('evolution-timeline-root');
+            const escapeTimeline = (value) => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+            const historyStatus = (status) => ({
+              verified: '历史链路已核验',
+              partial: '历史证据不完整',
+              insufficient: '历史材料待核验',
+              no_parent_evidence: '尚无母主题证据'
+            })[status] || '历史状态待确认';
+            const historySummary = (history) => '<div class="timeline-integrity ' + escapeTimeline(history.history_status) + '">' +
+              '<strong>' + historyStatus(history.history_status) + '</strong><span>' + escapeTimeline(history.history_status_reason || '') + '</span>' +
+              '<small>可用于重建的母主题证据 ' + escapeTimeline(history.eligible_parent_evidence_count ?? 0) + ' 条；排除 ' + escapeTimeline((history.excluded_evidence || []).length) + ' 条。</small>' +
+            '</div>';
             if (topicHistory && topicHistory.transitions && topicHistory.transitions.length > 0) {
-              root.innerHTML = topicHistory.transitions.map(evt => {
-                // Interpolated rungs are filled steps on the continuous ladder
-                // that do not yet have their own distinct evidence; render them
-                // muted with a dashed marker and a "待补证据" note so the path
-                // stays continuous without overstating what the evidence proves.
-                const interp = Boolean(evt.interpolated);
+              root.innerHTML = historySummary(topicHistory) + topicHistory.transitions.map(evt => {
+                const gap = evt.transition_kind === 'historical_evidence_gap';
+                const regression = evt.transition_kind === 'confidence_regression';
                 const gate = evt.gate_unlocked || '';
-                const gatesHtml = interp
-                  ? '<div class="timeline-gates"><span class="timeline-gate pending">待补该阶段证据</span></div>'
-                  : (gate ? '<div class="timeline-gates"><span class="timeline-gate unlocked">' + gate + '</span></div>' : '');
-                const title = interp
-                  ? '连续阶段过渡（尚缺该步独立证据）'
-                  : (evt.trigger_evidence_title || 'Unknown Event');
-                const src = interp ? '' : '<p class="small" style="margin:0;color:var(--muted)">' + (evt.trigger_evidence_url || 'Unknown Source') + '</p>';
-                return '<div class="timeline-event ' + (interp ? 'interpolated' : 'milestone') + '">' +
-                  '<span class="timeline-date">' + evt.transition_date.split('T')[0] + '</span>' +
+                const missing = (evt.missing_intermediate_stages || []).join('、');
+                const gatesHtml = gap
+                  ? '<div class="timeline-gates"><span class="timeline-gate pending">历史证据缺口：' + escapeTimeline(missing || '前序阶段') + '</span></div>'
+                  : (gate ? '<div class="timeline-gates"><span class="timeline-gate ' + (regression ? 'warning' : 'unlocked') + '">' + escapeTimeline(gate) + '</span></div>' : '');
+                const title = evt.trigger_evidence_title || '未命名证据';
+                const stageNote = gap ? '（观测到跨阶段，未补造中间阶段）' : regression ? '（信息完整度变化）' : '';
+                const src = '<p class="small" style="margin:0;color:var(--muted)">' + escapeTimeline(evt.trigger_evidence_url || '来源链接缺失') + '</p>';
+                return '<div class="timeline-event ' + (gap ? 'historical-gap' : regression ? 'regression' : 'milestone') + '">' +
+                  '<span class="timeline-date">事件发生：' + escapeTimeline(String(evt.transition_date).split('T')[0]) + '</span>' +
                   '<div class="timeline-content">' +
-                    '<span class="timeline-stage">' + evt.from_stage + ' → ' + evt.to_stage + '</span>' +
-                    '<h3 class="timeline-title">' + title + '</h3>' +
+                    '<span class="timeline-stage">' + escapeTimeline(evt.from_stage) + ' → ' + escapeTimeline(evt.to_stage) + stageNote + '</span>' +
+                    '<h3 class="timeline-title">' + escapeTimeline(title) + '</h3>' +
                     src +
                     gatesHtml +
                   '</div>' +
                 '</div>';
               }).join('');
+            } else if (topicHistory) {
+              root.innerHTML = historySummary(topicHistory) + '<p class="muted">尚无可核验的阶段变化。请补充带来源、摘要、解释和限制说明的母主题证据。</p>';
             } else {
               root.innerHTML = '<p class="muted">尚无演化历史数据。</p>';
             }
@@ -771,9 +782,9 @@ export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string)
 export function renderQueue(model: NarrativeMonitorModel): string {
   return pageShell('queue', '研究待处理队列', `
     ${researchQueueNav('queue')}
-    <section class="hero-row"><div><p class="eyebrow">研究者待办</p><h1>研究待处理队列</h1><p class="lede">展示系统提出的待确认事项与早期线索。正式主题、证据链和阶段变化仍需研究者确认。</p></div><a class="button primary" href="/intake">录入新材料</a></section>
-    <section class="panel"><div class="panel-heading"><div><p class="eyebrow">优先处理</p><h2>按风险排序</h2></div><span class="count">${model.review_queue.length}</span></div>
-      ${model.review_queue.length ? model.review_queue.map((item) => `<a class="review-row" href="${item.href}"><span class="state-pill ${item.priority === 'high' ? 'bad' : item.priority === 'medium' ? 'warn' : 'muted-state'}">${priorityLabel(item.priority)}</span><div><strong>${escape(queueCategoryLabel(item.category))} · ${displayName(item.title)}</strong><p>${friendlyReason(item.reason)}</p></div><span>→</span></a>`).join('') : '<p class="muted">当前没有待审核事项。</p>'}
+    <section class="hero-row"><div><p class="eyebrow">研究工作台</p><h1>待确认研究事项</h1><p class="lede">这里只放现在能处理的材料、主题关系与早期线索。系统告警和历史运行问题请在“系统”查看。</p></div><a class="button primary" href="/intake">录入新材料</a></section>
+    <section class="panel"><div class="panel-heading"><div><p class="eyebrow">证据审核</p><h2>需要处理的候选材料</h2><p class="small">同一材料的重复检测、引用不足和发布限制会合并显示为一项。</p></div><span class="count">${model.review_queue.length}</span></div>
+      ${model.review_queue.length ? model.review_queue.map((item) => `<a class="review-row" href="${item.href}"><span class="state-pill ${item.priority === 'high' ? 'bad' : item.priority === 'medium' ? 'warn' : 'muted-state'}">${priorityLabel(item.priority)}</span><div><strong>${escape(queueCategoryLabel(item.category))} · ${queueItemTitle(item.title)}</strong><p>${friendlyReason(item.reason)}</p></div><span>→</span></a>`).join('') : '<p class="muted">当前没有需要人工处理的候选材料。</p>'}
     </section>
     <section class="panel" style="margin-top:18px"><div class="panel-heading"><div><p class="eyebrow">Agent 提案</p><h2>主题与证据链建议</h2><p class="small">确认这里只确认研究关系，不会自动激活主题、导入证据或改变阶段。</p></div><span class="count">${model.topic_discovery_proposals.filter((item) => item.status === 'pending').length + model.evidence_chain.filter((item) => item.status === 'candidate').length}</span></div>
       ${model.topic_discovery_proposals.filter((item) => item.status === 'pending').map((item) => `<div class="list-row"><strong>主题发现：${displayName(item.proposed_topic_name ?? item.proposed_topic_id ?? '未解析主题')}</strong><p>${friendlyReason(item.reason)} ${item.narrative_memory_match ? '已命中叙事记忆。' : ''}</p><span class="chip">${item.kind} · ${item.confidence}</span><div class="action-row"><button class="button secondary" type="button" onclick="reviewIntelligence('proposal','${escape(item.proposal_id)}','accepted')">确认提案</button><button class="button" type="button" onclick="reviewIntelligence('proposal','${escape(item.proposal_id)}','deferred')">暂缓</button><button class="button" type="button" onclick="reviewIntelligence('proposal','${escape(item.proposal_id)}','rejected')">拒绝</button></div></div>`).join('') || '<p class="muted">当前没有待确认的主题发现提案。</p>'}
@@ -804,14 +815,14 @@ export function renderMethodology(): string {
     </section>
     <div class="warning-band"><strong>先判断阶段，再计算分数。</strong><span>没有证据表，就不允许评分。当前公式只用于对照校准，不改变正式研究结果；总分不能覆盖硬门槛。</span></div>
     <div class="method-grid">
-      ${formulaPanel('1. 单条证据质量', 'q_e = 100 · w(E) · a(source) · c · 2^(-age / h)', 'E0-E4 强度、来源权威、字段置信度和时间半衰期共同决定证据质量。默认 h=180 天。E0 的贡献恒为 0。')}
-      ${formulaPanel('2. 维度支持度', 'Q_l = 100 · [1 - Π_s(1 - max(q_e,s)/100)]', '同一来源只保留该维度的最强证据，防止转载和重复记录刷分；不同独立来源使用合并概率方式聚合。正负证据分别计算。')}
-      ${formulaPanel('3. 数据可信度', 'C = .25B + .25A + .20R + .15X + .15L', 'B=来源广度，A=来源权威，R=时效性，X=正反证据覆盖，L=六层覆盖。缺失不是负面证据，只降低 C 并触发阶段上限。')}
-      ${formulaPanel('4. 最终阶段', 'S_final = min(S_requested, S_gate, S_confidence)', '阶段门槛依次要求稳定标签、资本确认、预期采纳和硬现实证据。整体主题与细分分支分别计算，分支的高阶段不能进入整体主题公式。')}
-      ${formulaPanel('5. 阶段转换成熟度', 'R_t = 100 · G · (C/100) · (1 - F/100)', 'G=门槛完成度，F=摩擦支持度。当前是尚未完成经验校准的参考指数，不能解释为概率；需要历史回放结果才能校准。')}
-      ${formulaPanel('6. 叙事变化幅度', 'ΔN = .20Q + .25GΔ + .20M + .15Bμ + .10E + .10C', 'Q=新证据质量，GΔ=门槛影响，M=旧缺口填补，Bμ=分支演变，E=预期重置。必须先查询叙事记忆；记忆不足时不输出数值。')}
-      ${formulaPanel('7. 智能解析优化分', 'O = .80Quality + .20Efficiency - hard blockers', '质量由引用准确率、字段准确率、主题归属准确率、事实召回率和无依据判断率构成。样本少于 50、整体主题与分支错误超过 1%，或 E3/E4 夸大超过 2%时禁止晋级。')}
-      ${formulaPanel('8. 成本与熔断', 'Cost = Tin·Pin/10⁶ + Tout·Pout/10⁶', '单次成本超预算、连续失败≥3、滚动错误率>20%、流量达到基线5倍或重试耗尽时立即熔断并回退规则候选。价格通过配置输入，不在代码中猜测。')}
+      ${formulaPanel('1. 单条证据质量', mathFormula('q_e = 100 × w(E) × a(source) × c × 2^(-age/h)', '<var>q</var><sub>e</sub> = 100 × <var>w</var>(<var>E</var>) × <var>a</var>(source) × <var>c</var> × 2<sup>−age / h</sup>'), 'E0-E4 强度、来源权威、字段置信度和时间半衰期共同决定证据质量。默认 h = 180 天；E0 的贡献恒为 0。')}
+      ${formulaPanel('2. 维度支持度', mathFormula('Q_l = 100 × [1 − product_s(1 − max(q_e,s)/100)]', '<var>Q</var><sub>l</sub> = 100 × [1 − ∏<sub>s</sub>(1 − max(<var>q</var><sub>e,s</sub>) / 100)]'), '同一来源只保留该维度的最强证据，防止转载和重复记录刷分；不同独立来源使用合并概率方式聚合。正负证据分别计算。')}
+      ${formulaPanel('3. 数据可信度', mathFormula('C = 0.25B + 0.25A + 0.20R + 0.15X + 0.15L', '<var>C</var> = 0.25<var>B</var> + 0.25<var>A</var> + 0.20<var>R</var> + 0.15<var>X</var> + 0.15<var>L</var>'), 'B=来源广度，A=来源权威，R=时效性，X=正反证据覆盖，L=六层覆盖。缺失不是负面证据，只降低 C 并触发阶段上限。')}
+      ${formulaPanel('4. 当前阶段', mathFormula('S_current = min(S_requested, S_gate, S_confidence)', '<var>S</var><sub>current</sub> = min(<var>S</var><sub>requested</sub>, <var>S</var><sub>gate</sub>, <var>S</var><sub>confidence</sub>)'), '阶段门槛依次要求稳定标签、资本确认、预期采纳和硬现实证据；数据可信度可施加上限。整体主题与细分分支分别计算，分支的高阶段不能进入整体主题公式。')}
+      ${formulaPanel('5. 阶段转换成熟度', mathFormula('R_t = 100 × G × (C/100) × (1 − F/100)', '<var>R</var><sub>t</sub> = 100 × <var>G</var> × (<var>C</var> / 100) × (1 − <var>F</var> / 100)'), 'G=按阶段门槛权重计算的完成度，F=摩擦支持度。它是尚未完成经验校准的参考指数，不是跃迁概率；需要历史回放结果才能校准。')}
+      ${formulaPanel('6. 叙事变化幅度', mathFormula('Delta N = 0.20Q + 0.25G_delta + 0.20M + 0.15B_mu + 0.10E + 0.10C', 'Δ<var>N</var> = 0.20<var>Q</var> + 0.25<var>G</var><sub>Δ</sub> + 0.20<var>M</var> + 0.15<var>B</var><sub>μ</sub> + 0.10<var>E</var> + 0.10<var>C</var>'), 'Q=新证据质量，GΔ=门槛影响，M=旧缺口填补，Bμ=分支演变，E=预期重置。必须先查询叙事记忆；记忆不足时不输出数值。')}
+      ${formulaPanel('7. 智能解析优化分', mathFormula('O = 0.80Q + 0.20E', '<var>O</var> = 0.80<var>Q</var> + 0.20<var>E</var>'), 'Q=质量分，已包含无依据判断、整体主题/分支误判和 E3/E4 夸大的惩罚；E=成本与时延效率。硬阻断不从 O 中扣分，而是直接禁止晋级。')}
+      ${formulaPanel('8. 成本与熔断', mathFormula('Cost = (T_in P_in + T_out P_out) / 10^6', '<var>Cost</var> = (<var>T</var><sub>in</sub><var>P</var><sub>in</sub> + <var>T</var><sub>out</sub><var>P</var><sub>out</sub>) / 10<sup>6</sup>'), '单次成本超预算、连续失败≥3、滚动错误率>20%、流量达到基线5倍或重试耗尽时立即熔断并回退规则候选。价格通过配置输入，不在代码中猜测。')}
     </div>
     <section class="panel method-notes"><div class="panel-heading"><div><p class="eyebrow">科学性状态</p><h2>哪些是正式测量，哪些仍需校准</h2></div></div>
       <dl class="fact-list"><dt>正式规则</dt><dd>证据表、阶段门槛、数据可信度上限、整体主题与分支隔离</dd><dt>对照指标</dt><dd>证据质量、维度支持度、阶段转换成熟度、叙事变化幅度、智能解析优化分</dd><dt>晋级条件</dt><dd>历史回放校准、留出集验证、规则版本评审、黄金案例全部通过</dd><dt>禁止推断</dt><dd>不得从价格上涨反推叙事正确，也不得用模型分数覆盖证据表与阶段门槛</dd></dl>
@@ -843,6 +854,7 @@ type PageKey = 'overview' | 'changes' | 'topics' | 'inbox' | 'queue' | 'agent' |
 
 function pageShell(active: PageKey, title: string, body: string): string {
   const activeGroup = active === 'inbox' ? 'queue'
+    : active === 'changes' ? 'overview'
     : active === 'agent' ? 'agent'
     : ['system', 'runs', 'sources', 'methodology', 'governance'].includes(active) ? 'system'
       : active;
@@ -851,13 +863,13 @@ function pageShell(active: PageKey, title: string, body: string): string {
     return `<a class="nav-link ${current ? 'active' : ''}" href="${href}"${current ? ' aria-current="page"' : ''}>${label}</a>`;
   };
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escape(title)} · 叙事生命周期研究系统</title><style>${styles()}</style></head><body>
-  <header class="topbar"><a class="brand" href="/"><span class="brand-mark">N</span><span>叙事生命周期</span></a><nav aria-label="主导航">${nav('overview','总览','/')}${nav('changes','变化','/changes')}${nav('topics','主题','/topics')}${nav('queue','研究队列','/queue')}${nav('agent','Agent 状态','/agent')}${nav('system','系统','/system')}</nav><a class="nav-action" href="/intake">＋ 录入材料</a><span class="trust">研究者确认模式</span></header>
+  <header class="topbar"><a class="brand" href="/"><span class="brand-mark">N</span><span>叙事生命周期</span></a><nav aria-label="主导航">${nav('overview','总览','/')}${nav('topics','主题','/topics')}${nav('queue','研究工作台','/queue')}${nav('agent','自动化','/agent')}${nav('system','系统','/system')}</nav><a class="nav-action" href="/intake">＋ 录入材料</a><span class="trust">研究者确认模式</span></header>
   <main class="app">${body}</main></body></html>`;
 }
 
 function researchQueueNav(active: 'queue' | 'inbox'): string {
   return `<nav class="section-nav" aria-label="研究队列导航">
-    <a class="${active === 'queue' ? 'active' : ''}" href="/queue">待处理</a>
+    <a class="${active === 'queue' ? 'active' : ''}" href="/queue">待审核材料</a>
     <a class="${active === 'inbox' ? 'active' : ''}" href="/inbox">候选证据</a>
     <a href="/queue#early-radar">早期线索</a>
   </nav>`;
@@ -880,13 +892,19 @@ function systemHubCard(href: string, title: string, description: string, status:
 }
 
 function formulaPanel(title: string, formula: string, explanation: string): string {
-  return `<section class="panel formula-panel"><h2>${escape(title)}</h2><code class="formula">${escape(formula)}</code><p>${escape(explanation)}</p></section>`;
+  return `<section class="panel formula-panel"><h2>${escape(title)}</h2><div class="formula" role="math">${formula}</div><p>${escape(explanation)}</p></section>`;
+}
+
+function mathFormula(ariaLabel: string, html: string): string {
+  return `<span class="math-expression" aria-label="${escape(ariaLabel)}">${html}</span>`;
 }
 
 function metricGrid(model: NarrativeMonitorModel): string {
   const changed = model.changes.filter((item) => item.change_type !== 'no_change').length;
   const imported = model.research_agent?.last_run?.metrics?.imported_evidence_count ?? model.metrics.evidence_added_count;
-  const values = [['新增原始资料', model.inbox.length ? 1 : 0], ['新增候选', model.inbox.length], ['研究队列', model.review_queue.length], ['已导入证据', imported], ['主题变化', changed], ['系统提醒', model.alerts.length]];
+  const pendingProposals = model.topic_discovery_proposals.filter((item) => item.status === 'pending').length + model.evidence_chain.filter((item) => item.status === 'candidate').length;
+  const distinctAlerts = new Set(model.alerts.map((item) => `${item.category}:${item.message}`)).size;
+  const values = [['待审核材料', model.review_queue.length], ['主题关系建议', pendingProposals], ['早期线索', model.early_radar.length], ['本轮已入库', imported], ['主题变化', changed], ['系统提醒', distinctAlerts]];
   return `<section class="metric-grid">${values.map(([label, value]) => `<div class="metric"><span>${label}</span><strong>${value}</strong></div>`).join('')}</section>`;
 }
 
@@ -894,11 +912,8 @@ function systemStatusBar(model: NarrativeMonitorModel): string {
   const system = model.system;
   return `<section class="system-strip">
     ${compactStatus('最近成功更新', friendlyDate(system.last_successful_run), system.pipeline_state)}
-    ${compactStatus('下次计划更新', friendlyDate(system.next_scheduled_run), 'not_configured')}
     ${compactStatus('智能解析服务', system.provider_state === 'not_configured' ? '尚未配置' : stateLabel(system.provider_state), system.provider_state)}
-    ${compactStatus('备用解析规则', system.fallback_state === 'active' ? '已启用' : system.fallback_state === 'inactive' ? '未启用' : '未知', system.fallback_state === 'active' ? 'fallback' : 'operational')}
     ${compactStatus('数据新鲜度', freshnessLabel(system.data_freshness), system.data_freshness === 'fresh' ? 'operational' : system.data_freshness)}
-    ${compactStatus('自动采集', system.automatic_ingestion === 'configured' ? '已启用' : '尚未配置', system.automatic_ingestion === 'configured' ? 'operational' : 'not_configured')}
   </section>`;
 }
 
@@ -1024,6 +1039,9 @@ function displayNameText(value: string): string {
   } as Record<string, string>)[value] ?? value;
 }
 function displayName(value: string): string { return escape(displayNameText(value)); }
+function queueItemTitle(value: string): string {
+  return escape(value.split(' · ').map(displayNameText).join(' · '));
+}
 function layerLabel(value: string): string {
   return escape(({
     name: '认知与命名',
@@ -1039,7 +1057,7 @@ function layerLabel(value: string): string {
   } as Record<string, string>)[value] ?? value);
 }
 function priorityLabel(value: string): string { return ({ high: '高', medium: '中', low: '低' } as Record<string, string>)[value] ?? '未标注'; }
-function reviewStatusLabel(value: string): string { return ({ pending_review: '等待校验', reviewed: '已完成校验' } as Record<string, string>)[value] ?? '校验状态待确认'; }
+function reviewStatusLabel(value: string): string { return ({ pending_review: '等待校验', reviewed: '已完成校验', auto_published: '已自动入库' } as Record<string, string>)[value] ?? '校验状态待确认'; }
 function friendlyTopic(value: string): string {
   const provisionalNames: Record<string, string> = {
     provisional_ai_agents: 'AI 智能体（待核验）',
@@ -1106,6 +1124,12 @@ function friendlyReason(value: string): string {
   } as Record<string, string>)[value];
   if (exact) return exact;
   return escape(value
+    .replace(/Possible duplicate of [^.]+\./g, '与已有正式证据可能重复。')
+    .replaceAll('duplicate Evidence ID is already present', '证据编号已存在，系统未重复导入。')
+    .replace(/Matched canonical topic [^.]+\./g, '已匹配现有主题。')
+    .replaceAll('E1 automatic publication is limited to rule-verified original-source candidates', '自动入库仅适用于已核验的原始来源 E1 证据。')
+    .replaceAll('evidence strength E0 is below policy minimum E1', '证据强度尚未达到自动入库门槛。')
+    .replaceAll('confidence low is below policy minimum medium', '信息可靠度低于自动入库所需门槛。')
     .replaceAll('Topic', '主题')
     .replaceAll('Branch', '分支')
     .replaceAll('Evidence', '证据')
@@ -1250,12 +1274,18 @@ function styles(): string { return `
 
 /* Timeline & Radar CSS */
 .timeline-container { position: relative; padding-left: 20px; border-left: 2px solid var(--line); margin-top: 20px; }
+.timeline-integrity { display: grid; gap: 5px; margin: 0 0 18px -20px; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--nav); color: var(--muted); font-size: 12px; }
+.timeline-integrity strong { color: #eceff4; font-size: 13px; }
+.timeline-integrity.partial, .timeline-integrity.insufficient { border-left-color: var(--amber); }
+.timeline-integrity.no_parent_evidence { border-left-color: #bf616a; }
+.timeline-integrity small { color: var(--muted); }
 .timeline-event { position: relative; margin-bottom: 24px; }
 .timeline-event::before { content: ''; position: absolute; left: -26px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); }
 .timeline-event.milestone::before { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px rgba(136,192,208,0.6); }
-.timeline-event.interpolated::before { background: var(--nav); border-color: #4c566a; border-style: dashed; }
-.timeline-event.interpolated .timeline-content { border-style: dashed; opacity: 0.78; }
-.timeline-event.interpolated .timeline-stage { background: transparent; border: 1px dashed #4c566a; color: var(--muted); }
+.timeline-event.historical-gap::before { background: var(--nav); border-color: var(--amber); border-style: dashed; }
+.timeline-event.historical-gap .timeline-content { border-style: dashed; border-color: var(--amber); }
+.timeline-event.historical-gap .timeline-stage { background: transparent; border: 1px dashed var(--amber); color: var(--amber); }
+.timeline-event.regression::before { background: #bf616a; border-color: #bf616a; }
 .timeline-gate.pending { border-style: dashed; border-color: var(--amber); color: var(--amber); }
 .timeline-date { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 4px; display: block; }
 .timeline-content { background: var(--nav); padding: 12px; border-radius: 3px; border: 1px solid var(--line); }
@@ -1264,6 +1294,7 @@ function styles(): string { return `
 .timeline-gates { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .timeline-gate { font-size: 9px; text-transform: uppercase; padding: 2px 4px; border-radius: 2px; border: 1px solid #4c566a; color: var(--muted); }
 .timeline-gate.unlocked { border-color: #a3be8c; color: #a3be8c; }
+.timeline-gate.warning { border-color: #bf616a; color: #bf616a; }
 
 .gate-lede { margin: 0 0 12px; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .radar-wrap { width: 100%; max-width: 300px; margin: 0 auto; }
@@ -1305,4 +1336,11 @@ function styles(): string { return `
 .heatmap-density { display: flex; gap: 2px; margin-top: auto; }
 .heatmap-tick { flex: 1; height: 4px; background: var(--line); border-radius: 2px; }
 .heatmap-tick.active { background: var(--accent); }
+.system-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.formula-panel .formula { display: flex; align-items: center; min-height: 58px; overflow-x: auto; padding: 12px 16px; border: 1px solid var(--line); border-radius: 3px; background: var(--nav); color: #b7e3ee; font: 500 18px/1.45 "Cambria Math", "STIX Two Math", Cambria, serif; letter-spacing: 0; white-space: nowrap; }
+.math-expression { display: inline-block; }
+.math-expression var { font-style: italic; }
+.math-expression sub, .math-expression sup { position: relative; font-size: .68em; line-height: 0; vertical-align: baseline; }
+.math-expression sub { bottom: -.28em; }
+.math-expression sup { top: -.5em; }
 `; }

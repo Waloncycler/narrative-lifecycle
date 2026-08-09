@@ -53,10 +53,12 @@ export class PrepareDirectSourceIntakeUseCase {
       const section = sections[index]!;
       const chunkId = `chunk_${rawDocumentId}_${index}`;
       const provenanceId = `prov_${rawDocumentId}_${index}`;
-      // The title occurs verbatim in the stored raw section. The API summary
-      // remains structured context, not an invented extension of the quote.
-      const quote = lead.title;
-      const quoteStart = section.indexOf(lead.title);
+      // Prefer the returned bounded excerpt over a headline. A title alone is
+      // a discovery pointer, not enough source text for a research decision.
+      const quote = boundedQuote(lead.snippet) ?? lead.title;
+      const quoteStart = section.indexOf(quote);
+      const temporal = sourceDate(lead.published_at, generatedAt);
+      const verifiedPrimary = !temporal.requiresConfirmation && isRuleVerifiedPrimary(lead.source_id);
       const evidenceId = `direct_${lead.source_id}_${stableId(lead.url)}`;
       session.chunks.push({ chunk_id: chunkId, raw_document_id: rawDocumentId, index, text: section, start_offset: offset, end_offset: offset + section.length });
       session.provenance_records.push({
@@ -80,8 +82,8 @@ export class PrepareDirectSourceIntakeUseCase {
           topic_id: topicId,
           branch_id: branchId,
           scope: branchId ? 'branch' : 'parent',
-          event_date: sourceDate(lead.published_at, generatedAt),
-          available_at: sourceDate(lead.published_at, generatedAt),
+          event_date: temporal.value,
+          available_at: temporal.value,
           event_title: lead.title,
           event_summary: lead.snippet || 'Source API returned a title without an additional bounded summary.',
           event_type: 'DIRECT_SOURCE_RECORD',
@@ -93,8 +95,10 @@ export class PrepareDirectSourceIntakeUseCase {
           stage_effect: branchId ? 'split_branch' : 'maintain',
           polarity: 'neutral',
           interpretation: 'A term-addressable original-source record may be relevant to this Topic or Branch, but it is a review candidate rather than proof of any lifecycle stage.',
-          limitation: 'API metadata and title are insufficient to establish pricing, adoption, revenue, scale, or a Stage transition. Verify the original record and retain Parent/Branch separation.',
-          confidence: 'low',
+          limitation: temporal.requiresConfirmation
+            ? 'The source API did not provide a reliable publication date. Confirm the original page date before formal Evidence import or historical replay.'
+            : 'API metadata and excerpt are insufficient to establish pricing, adoption, revenue, scale, or a Stage transition. Verify the original record and retain Parent/Branch separation.',
+          confidence: verifiedPrimary ? 'medium' : 'low',
         },
         suggested_reason: `Retrieved from ${lead.source_name} using the coverage task's own term; retained as E1 review context only.`,
         uncertainty_notes: [
@@ -108,8 +112,15 @@ export class PrepareDirectSourceIntakeUseCase {
           evidence_strength: 'E1 because this is a discovery-level API record rather than a reviewed primary-document extraction.',
           affected_layer: 'Reality is only a hypothesis from the record type; no Stage conclusion is implied.',
         },
-        e_strength_rationale: 'The result is an authentic source pointer but not a complete, independently reviewed source document.',
-        publication_eligibility: 'manual_review',
+        e_strength_rationale: verifiedPrimary
+          ? 'A governed original-source API supplied a dated, bounded record with a traceable URL. It is E1: one source, not cross-source corroboration.'
+          : 'The result is an authentic source pointer but not a complete, independently reviewed source document.',
+        temporal_provenance: {
+          event_date_source: temporal.requiresConfirmation ? 'ingested_at' : 'source_metadata',
+          available_at_source: temporal.requiresConfirmation ? 'ingested_at' : 'source_metadata',
+          requires_operator_confirmation: temporal.requiresConfirmation,
+        },
+        publication_eligibility: verifiedPrimary ? 'rule_verified' : 'manual_review',
         duplicate_of_evidence_id: this.deps.existingEvidenceIds().has(evidenceId) ? evidenceId : null,
         guardrail_check: { no_trading_advice: true, provenance_present: true, human_review_required: true },
       };
@@ -131,9 +142,18 @@ function stableId(value: string): string {
   return (hash >>> 0).toString(36);
 }
 
-function sourceDate(value: string | null, fallback: string): string {
+function sourceDate(value: string | null, fallback: string): { value: string; requiresConfirmation: boolean } {
   const match = value?.match(/^\d{4}-\d{2}-\d{2}/);
-  return match ? match[0] : fallback.slice(0, 10);
+  return match ? { value: match[0], requiresConfirmation: false } : { value: fallback.slice(0, 10), requiresConfirmation: true };
+}
+
+function boundedQuote(value: string): string | null {
+  const quote = value.replace(/\s+/g, ' ').trim();
+  return quote.length >= 24 ? quote.slice(0, 360) : null;
+}
+
+function isRuleVerifiedPrimary(sourceId: string): boolean {
+  return ['clinicaltrials', 'pubmed', 'nmpa', 'cde', 'sec_edgar', 'federal_register'].includes(sourceId);
 }
 
 function sourceType(sourceId: string): 'official' | 'academic' | 'research' {

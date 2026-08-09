@@ -95,6 +95,64 @@ describe('intake apply Topic gate', () => {
     expect(imported).toBe(true);
   });
 
+  it('blocks a formally accepted retrieved candidate until its source publication date is confirmed', () => {
+    const datePending = {
+      ...session,
+      candidates: [{ candidate_id: 'candidate_date_pending', temporal_provenance: { event_date_source: 'ingested_at', available_at_source: 'ingested_at', requires_operator_confirmation: true } }],
+    } as unknown as EvidenceIntakeSession;
+    const useCase = new ApplyEvidenceIntakeReviewUseCase({
+      readLatestSession: () => datePending,
+      readTopicResolutionAudit: () => ({ audit_id: 'audit_date_pending', session_id: datePending.session_id, resolutions: [] } as unknown as TopicResolutionAudit),
+      readReviewDecisions: () => [{ candidate_id: 'candidate_date_pending', decision: 'accept', reviewer: 'operator', reviewed_at: '2026-07-28T12:00:00.000Z' }],
+      existingEvidenceIds: () => new Set(), writeEvidenceDraft: () => { throw new Error('must not write a date-unverified draft'); }, writeApplyResult: () => undefined,
+      importEvidence: () => { throw new Error('must not import'); }, runWeekly: () => { throw new Error('must not run weekly'); }, readStageChangeSummary: () => null, now: () => '2026-07-28T12:00:00.000Z',
+    });
+    expect(() => useCase.execute({})).toThrow(/publication date must be confirmed/);
+  });
+
+  it('blocks a reviewed draft without a traceable original-source URL before normalization', () => {
+    const missingSource = {
+      ...session,
+      candidates: [{
+        candidate_id: 'candidate_missing_source',
+        suggested_evidence: {
+          evidence_id: 'evidence_missing_source', topic_id: 'bci', branch_id: null, scope: 'parent', event_date: '2026-07-28', available_at: '2026-07-28',
+          event_title: 'Untraceable draft', event_summary: 'The candidate lacks a source URL.', event_type: 'TEST', source_name: 'unknown', source_url: null, source_type: 'news', evidence_strength: 'E1', affected_layer: ['name'], stage_effect: 'maintain', polarity: 'neutral', interpretation: 'Research-only.', limitation: 'Needs original source.', confidence: 'low',
+        },
+      }],
+    } as unknown as EvidenceIntakeSession;
+    const useCase = new ApplyEvidenceIntakeReviewUseCase({
+      readLatestSession: () => missingSource,
+      readTopicResolutionAudit: () => ({ audit_id: 'audit_missing_source', session_id: missingSource.session_id, resolutions: [] } as unknown as TopicResolutionAudit),
+      readReviewDecisions: () => [{ candidate_id: 'candidate_missing_source', decision: 'accept', reviewer: 'operator', reviewed_at: '2026-07-28T12:00:00.000Z' }],
+      existingEvidenceIds: () => new Set(), writeEvidenceDraft: () => { throw new Error('must not write'); }, writeApplyResult: () => undefined,
+      importEvidence: () => { throw new Error('must not import'); }, runWeekly: () => { throw new Error('must not run weekly'); }, readStageChangeSummary: () => null, now: () => '2026-07-28T12:00:00.000Z',
+    });
+    expect(() => useCase.execute({})).toThrow(/traceable source_url is required/);
+  });
+
+  it('does not report operational completion until imported IDs appear in the Evidence Table', () => {
+    const safeSession = {
+      ...session,
+      candidates: [{
+        candidate_id: 'candidate_operational_check',
+        suggested_evidence: {
+          evidence_id: 'evidence_operational_check', topic_id: 'bci', branch_id: null, scope: 'parent', event_date: '2026-07-28', available_at: '2026-07-28',
+          event_title: 'Traceable fact', event_summary: 'A traceable fact.', event_type: 'TEST', source_name: 'official', source_url: 'https://official.example/fact', source_type: 'official', evidence_strength: 'E1', affected_layer: ['name'], stage_effect: 'maintain', polarity: 'neutral', interpretation: 'Research-only.', limitation: 'Needs follow-up.', confidence: 'low',
+        },
+      }],
+    } as unknown as EvidenceIntakeSession;
+    const useCase = new ApplyEvidenceIntakeReviewUseCase({
+      readLatestSession: () => safeSession,
+      readTopicResolutionAudit: () => ({ audit_id: 'audit_operational_check', session_id: safeSession.session_id, resolutions: [] } as unknown as TopicResolutionAudit),
+      readReviewDecisions: () => [{ candidate_id: 'candidate_operational_check', decision: 'accept', reviewer: 'operator', reviewed_at: '2026-07-28T12:00:00.000Z' }],
+      existingEvidenceIds: () => new Set(), writeEvidenceDraft: () => 'draft.yaml', writeApplyResult: () => undefined,
+      importEvidence: () => ({ report: { import_id: 'import_operational_check', status: 'passed' }, failed: false } as never), runWeekly: () => ({ run_id: 'run_operational_check' } as never),
+      readOperationalEvidenceIds: () => new Set(), readStageChangeSummary: () => null, now: () => '2026-07-28T12:00:00.000Z',
+    });
+    expect(useCase.execute({})).toMatchObject({ imported: true, import_status: 'imported_not_operational', operational_evidence_ids: [] });
+  });
+
   it('persists an imported_pipeline_failed result when Weekly fails after import', () => {
     const safeSession = {
       ...session,

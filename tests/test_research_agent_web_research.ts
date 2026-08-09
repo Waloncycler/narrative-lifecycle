@@ -61,4 +61,23 @@ describe('ResearchAgentLoopUseCase external research', () => {
     });
     expect(result.guardrail_check.no_auto_import).toBe(true);
   });
+
+  it('routes only a double-source historic recovery session through the same Agent and publication boundary', async () => {
+    let agentCalled = false;
+    let publishedRequested: boolean | undefined;
+    const result = await new ResearchAgentLoopUseCase({
+      producerVersion: () => 'v0.test', now: () => '2026-08-03T00:00:00.000Z',
+      runSourceSync: async () => ({ report: { requested_operation_count: 0, completed_operation_count: 0, failed_operation_count: 0 }, session: null } as never),
+      runHistoricalProvenanceRecovery: async () => ({ auto_intake_ready: 1, session: { session_id: 'history_session' } as never }),
+      runIntakeAgent: async () => { agentCalled = true; return { candidates: [] } as never; }, runAiShadow: async () => ({ report: null }),
+      runLearningCycle: () => { throw new Error('no reviewed decisions'); }, runValidateTopics: () => undefined,
+      runAutonomousResearch: (_bundle, publish) => { publishedRequested = publish; return ({ report: { published_count: 0 }, graph_promotion: { summary: { provisional_topics_activated: 0, watch_branches_activated: 0, held_count: 0 } }, manifest: { run_id: 'run_history' } } as unknown as AutonomousResearchRun); },
+      runReview: () => undefined, readStaleCandidates: () => [], readQueueItems: () => [], discardPurged: () => undefined,
+      readEvolutionLedger: () => null, writeEvolutionLedger: () => undefined,
+      readLearningMetrics: () => ({ acceptance_rate: null, shadow_agreement_rate: null, golden_gate_pass_rate: null }), writeRunManifest: () => undefined,
+    }).execute({ loop_kind: 'daily', publish_auto: true });
+    expect(agentCalled).toBe(true);
+    expect(publishedRequested).toBe(true);
+    expect(result.phases.some((phase) => phase.detail.includes('historic original-source re-acquisition'))).toBe(true);
+  });
 });

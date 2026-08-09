@@ -22,6 +22,10 @@
 - [08 · Failure Case Library](08_failure_case_library.md)
 - [26 · Governed Active Learning](26_governed_active_learning.md)
 - [28 · Evidence Publication Governance](28_evidence_publication_governance.md)
+- [29 · Timeline Credibility](29_timeline_credibility.md)
+- Historical source recovery: `npm run research:recover-history` produces a review-only plan in `outputs/research/latest_historical_evidence_recovery.md`.
+- [31 · Historical Baseline Evidence Admission](31_historical_baseline_admission.md)
+- [32 · Automated Evidence Governance](32_automated_evidence_governance.md)
 
 ## Sources & operations
 - [27 · World Monitor Data Sources Integration Map](27_worldmonitor_data_sources_integration_map.md)

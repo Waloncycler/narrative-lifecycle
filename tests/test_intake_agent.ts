@@ -142,6 +142,7 @@ describe('smart evidence intake agent', () => {
     expect(report.guardrail_check.parent_branch_checked).toBe(true);
     expect(report.guardrail_check.stage_not_reclassified).toBe(true);
     expect(report.guardrail_check.scoring_not_run).toBe(true);
+    expect(report.candidates[0]?.checks.human_review_required).toBe(true);
   });
 
   it('keeps a direct-source research seed anchored when the model proposes another parent', async () => {

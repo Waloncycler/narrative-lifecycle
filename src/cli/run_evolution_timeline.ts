@@ -12,6 +12,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { reconstructAllTopicEvolutions, type TopicEvolutionTimeline } from '@/features/stages/domain/stage_evolution_reconstructor';
 import { FileAutonomousResearchRepository } from '@/features/research/io/autonomous_research_io';
+import { FileSchemaValidator } from '@/platform/io/file_system_adapters';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -64,9 +65,11 @@ function printTimeline(timeline: TopicEvolutionTimeline): void {
   console.log(`📊 ${timeline.topic_name} (${timeline.topic_id})`);
   console.log(`${'─'.repeat(80)}`);
   console.log(`   首次出现: ${timeline.first_emergence_date}`);
+  console.log(`   首次可获得: ${timeline.first_available_at}`);
   console.log(`   当前阶段: ${timeline.current_stage}`);
   console.log(`   演化路径: ${timeline.evolution_path}`);
-  console.log(`   证据总数: ${timeline.total_evidence_count}`);
+  console.log(`   证据总数: ${timeline.total_evidence_count}（可用于重建的母主题证据: ${timeline.eligible_parent_evidence_count}）`);
+  console.log(`   历史可信度: ${timeline.history_status} — ${timeline.history_status_reason}`);
 
   if (timeline.transitions.length > 0) {
     console.log(`\n   ⏱️  阶段跃迁时间线:`);
@@ -74,6 +77,7 @@ function printTimeline(timeline: TopicEvolutionTimeline): void {
       console.log(`   ┌─ ${t.transition_date}: ${t.from_stage} → ${t.to_stage}`);
       console.log(`   │  触发证据: ${t.trigger_evidence_title}`);
       console.log(`   │  门槛突破: ${t.gate_unlocked}`);
+      if (t.missing_intermediate_stages.length) console.log(`   │  历史缺口: ${t.missing_intermediate_stages.join(', ')}`);
       console.log(`   │  累计证据: ${t.cumulative_evidence_ids.length} 条`);
       console.log(`   └─ 门槛状态: label=${t.gate_state.hasStableLabel ? '✅' : '❌'} capital=${t.gate_state.hasCapitalConfirmation ? '✅' : '❌'} pricing=${t.gate_state.hasPricingAdoption ? '✅' : '❌'} reality=${t.gate_state.hasHardRealityEvidence ? '✅' : '❌'}`);
     }
@@ -97,6 +101,7 @@ const topicRegistry = loadTopicRegistry();
 console.log(`📦 已加载 ${allEvidence.length} 条证据, ${topicRegistry.length} 个主题`);
 
 const timelines = reconstructAllTopicEvolutions(allEvidence, topicRegistry);
+new FileSchemaValidator(repoRoot).validate('stage_evolution_timeline.schema.json', timelines);
 
 // Print to console
 for (const tl of timelines) {

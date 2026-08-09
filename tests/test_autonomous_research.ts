@@ -96,6 +96,80 @@ describe('autonomous research publication', () => {
     expect(result.items[0]?.reasons.join(' ')).toContain('disabled by policy');
   });
 
+  it('holds stale daily-discovery sources while leaving double-source historical recovery to its separate route', () => {
+    const staleSession: EvidenceIntakeSession = {
+      ...session,
+      generated_at: '2026-08-03T00:00:00.000Z',
+      candidates: [{
+        ...session.candidates[0], publication_eligibility: 'rule_verified',
+        suggested_evidence: { ...session.candidates[0].suggested_evidence, event_date: '2024-01-01', available_at: '2024-01-01', event_type: 'RETRIEVED_SOURCE_EXCERPT' },
+      }],
+    };
+    const result = evaluateAutonomousPromotion({ session: staleSession, topicAudit: audit, agentCandidates: bundle.candidates, agentAudit: bundle.audit, existingEvidence: [], policy: { ...policy, maximum_source_age_days: 180 } });
+    expect(result.items[0]).toMatchObject({ decision: 'held' });
+    expect(result.items[0]?.reasons.join(' ')).toContain('freshness limit');
+
+    const recovered = evaluateAutonomousPromotion({ session: { ...staleSession, candidates: [{ ...staleSession.candidates[0]!, suggested_evidence: { ...staleSession.candidates[0]!.suggested_evidence, event_type: 'HISTORICAL_REACQUIRED_SOURCE' } }] }, topicAudit: audit, agentCandidates: bundle.candidates, agentAudit: bundle.audit, existingEvidence: [], policy: { ...policy, maximum_source_age_days: 180 } });
+    expect(recovered.items[0]).toMatchObject({ decision: 'published' });
+  });
+
+  it('allows a provenance-complete revalidation to replace an unadmitted historical row', () => {
+    const revalidatedSession: EvidenceIntakeSession = {
+      ...session,
+      candidates: [{
+        ...session.candidates[0],
+        duplicate_of_evidence_id: 'auto_evidence_1',
+        publication_eligibility: 'rule_verified',
+      }],
+    };
+    const result = evaluateAutonomousPromotion({
+      session: revalidatedSession,
+      topicAudit: audit,
+      agentCandidates: bundle.candidates,
+      agentAudit: bundle.audit,
+      existingEvidence: [],
+      policy,
+    });
+    expect(result.items[0]).toMatchObject({ decision: 'published', evidence_id: 'auto_evidence_1' });
+  });
+
+  it('still holds a revalidation when the same id is already operational', () => {
+    const revalidatedSession: EvidenceIntakeSession = {
+      ...session,
+      candidates: [{
+        ...session.candidates[0],
+        duplicate_of_evidence_id: 'auto_evidence_1',
+        publication_eligibility: 'rule_verified',
+      }],
+    };
+    const result = evaluateAutonomousPromotion({
+      session: revalidatedSession,
+      topicAudit: audit,
+      agentCandidates: bundle.candidates,
+      agentAudit: bundle.audit,
+      existingEvidence: [evidence({ evidence_id: 'auto_evidence_1' })],
+      policy,
+    });
+    expect(result.items[0]).toMatchObject({ decision: 'held' });
+    expect(result.items[0]?.reasons.join(' ')).toContain('operational Evidence Table');
+  });
+
+  it('holds a candidate that duplicates a different Evidence record', () => {
+    const duplicateSession: EvidenceIntakeSession = {
+      ...session,
+      candidates: [{ ...session.candidates[0], duplicate_of_evidence_id: 'different_evidence' }],
+    };
+    const result = evaluateAutonomousPromotion({
+      session: duplicateSession,
+      topicAudit: audit,
+      agentCandidates: bundle.candidates,
+      agentAudit: bundle.audit,
+      existingEvidence: [],
+      policy,
+    });
+    expect(result.items[0]).toMatchObject({ decision: 'held' });
+  });
+
   it('allows a provenance-complete rule-verified official source to create a provisional topic when the model falls back', () => {
     const provisionalId = 'provisional_traditional_chinese_medicine_revival';
     const verifiedSession: EvidenceIntakeSession = {

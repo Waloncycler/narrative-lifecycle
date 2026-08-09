@@ -22,15 +22,18 @@ export interface OpenAiCompatibleAgentConfig {
 }
 
 export function intakeAgentConfigFromEnv(env: NodeJS.ProcessEnv): OpenAiCompatibleAgentConfig {
+  const deepseekConfigured = Boolean(env.DEEPSEEK_API_KEY);
   const minimaxConfigured = Boolean(env.MINIMAX_API_KEY);
-  const provider = env.NARRATIVE_AGENT_PROVIDER ?? (minimaxConfigured ? 'minimax' : 'disabled');
+  const provider = env.NARRATIVE_AGENT_PROVIDER ?? (deepseekConfigured ? 'deepseek' : minimaxConfigured ? 'minimax' : 'disabled');
+  const deepseekBaseUrl = (env.DEEPSEEK_BASE_URL ?? 'https://api.deepseek.com/v1').replace(/\/$/, '');
   const minimaxBaseUrl = (env.MINIMAX_BASE_URL ?? 'https://api.minimaxi.com/v1').replace(/\/$/, '');
+  const deepseekModel = env.DEEPSEEK_MODEL ?? 'deepseek-chat';
   const minimaxModel = env.MINIMAX_MODEL ?? 'MiniMax-M3';
   return {
     provider,
-    endpoint: env.NARRATIVE_AGENT_ENDPOINT ?? (minimaxConfigured ? `${minimaxBaseUrl}/chat/completions` : undefined),
-    apiKey: env.NARRATIVE_AGENT_API_KEY ?? env.MINIMAX_API_KEY,
-    model: env.NARRATIVE_AGENT_MODEL ?? (minimaxConfigured ? minimaxModel : 'intake-agent-disabled'),
+    endpoint: env.NARRATIVE_AGENT_ENDPOINT ?? (deepseekConfigured ? `${deepseekBaseUrl}/chat/completions` : minimaxConfigured ? `${minimaxBaseUrl}/chat/completions` : undefined),
+    apiKey: env.NARRATIVE_AGENT_API_KEY ?? env.DEEPSEEK_API_KEY ?? env.MINIMAX_API_KEY,
+    model: env.NARRATIVE_AGENT_MODEL ?? (deepseekConfigured ? deepseekModel : minimaxConfigured ? minimaxModel : 'intake-agent-disabled'),
     timeoutMs: Number(env.NARRATIVE_AGENT_TIMEOUT_MS ?? 600000),
   };
 }
@@ -476,7 +479,7 @@ function normalizeModelCandidate(raw: Record<string, unknown>, index: number, se
     validation_status: 'passed',
     validation_errors: [],
     fallback_used: false,
-    human_review_required: false,
+    human_review_required: true,
   };
 }
 
@@ -517,7 +520,7 @@ function fallbackCandidate(rule: EvidenceCandidate, session: EvidenceIntakeSessi
     validation_status: 'fallback',
     validation_errors: [reason],
     fallback_used: true,
-    human_review_required: false,
+    human_review_required: true,
   };
 }
 

@@ -27,6 +27,16 @@
     "uncertainty_notes": { "type": "array", "items": { "type": "string" } },
     "field_explanations": { "type": "object", "additionalProperties": { "type": "string" } },
     "e_strength_rationale": { "type": "string", "minLength": 1 },
+    "temporal_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_date_source", "available_at_source", "requires_operator_confirmation"],
+      "properties": {
+        "event_date_source": { "enum": ["source_metadata", "document_text", "ingested_at"] },
+        "available_at_source": { "enum": ["source_metadata", "document_text", "ingested_at"] },
+        "requires_operator_confirmation": { "type": "boolean" }
+      }
+    },
     "publication_eligibility": { "enum": ["manual_review", "rule_verified"] },
     "duplicate_of_evidence_id": { "type": ["string", "null"] },
     "provider": { "type": "string" },

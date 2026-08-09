@@ -161,3 +161,17 @@
   status: provisional
   reason: Rule inference detected "innovative_drug_approval" from quote language;
     keep as provisional S0 until audited.
+- provisional_topic_id: provisional_radiopharmaceuticals
+  proposed_name: Radiopharmaceuticals
+  source_candidate_id: candidate_retrieved_1lbvig5
+  created_at: 2026-08-09T07:13:37.042Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_radiopharmaceuticals; keep
+    as provisional S0 until audited.
+- provisional_topic_id: provisional_climate_adaptation
+  proposed_name: Climate Adaptation
+  source_candidate_id: candidate_retrieved_1wtp8j1
+  created_at: 2026-08-09T07:29:07.396Z
+  status: provisional
+  reason: Model proposed provisional topic provisional_climate_adaptation; keep as
+    provisional S0 until audited.

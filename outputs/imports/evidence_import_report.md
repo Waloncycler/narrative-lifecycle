@@ -2,7 +2,7 @@
 
 ## Summary
 
-- import_id: import_20260804
+- import_id: import_20260809
 - source_file: outputs/intake/reviewed_evidence_draft.yaml
 - status: passed
 - accepted_count: 2
@@ -10,8 +10,8 @@
 
 ## Accepted Evidence
 
-- direct_clinicaltrials_1eos217
-- direct_clinicaltrials_1mkte81
+- evidence_agent_1786260256591_w7s303
+- evidence_agent_1786260256591_j0vigk
 
 ## Rejected Evidence
 
@@ -19,7 +19,7 @@
 
 ## Written Artifacts
 
-- accepted_copy_path: data/imports/accepted/import_20260804.yaml
+- accepted_copy_path: data/imports/accepted/import_20260809.yaml
 - rejected_copy_path: none
 - fixture_target_path: data/sample_evidence/manual_imported_evidence.yaml
 - audit_log_path: data/audit/evidence_import_audit.jsonl

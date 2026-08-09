@@ -58,6 +58,28 @@ weekly 会完成：
 - `branch_mutation_candidate`: branch 发生变化，不能自动理解为 parent 升级。
 - `no_change`: 没有变化，这是合法状态。
 
+### 看阶段时间线
+
+运行：
+
+```bash
+npm run timeline:rebuild
+```
+
+主题页的“阶段演化与证据链”只展示可核验的母主题变化。看到“历史证据不完整”或“历史证据缺口”并不是失败：这说明系统在诚实地告诉你，主题可能早已成熟，但当前还没有足以给中间阶段逐一标日期的来源材料。补充材料必须走候选、审核、导入流程，不能手动修改阶段或时间线。
+
+### 补齐历史来源
+
+运行：
+
+```bash
+npm run research:recover-history
+```
+
+先看 `outputs/research/latest_historical_evidence_recovery.md`。每项任务会说明需要补哪几个阶段门槛、需要哪类原始来源，以及检索意图。标准操作顺序是：检索权威原页、确认引用和发布日期、在 Intake 审核候选、再走现有 Evidence 导入。没有发布日期的候选不能直接导入，这是为了避免把今天的抓取时间误当作历史事件发生时间。
+
+随后运行 `npm run research:campaign`，恢复任务会提高对应母主题的检索优先级；再按现有的 `research:retrieve` 和 Intake 流程处理来源。这个优先级不会改变阶段或评分。
+
 ## 4. 记录结果
 
 运行：
@@ -99,7 +121,15 @@ npm run pilot:review
 npm run autonomy:run -- --publish-auto
 ```
 
-这不是交易或阶段决策开关。它仍要通过来源 URL、原文引用、Schema、去重、Topic/Branch、E0-E4、Data Confidence 与父主题阶段跳跃保护；Stage 和 Score 只会在 Evidence Table 写入后由确定性规则重算。
+这不是交易或阶段决策开关。它仍要通过来源 URL、原文引用、Schema、去重、Topic/Branch、E0-E4、Data Confidence 与父主题阶段跳跃保护；Stage 和 Score 只会在 Evidence Table 写入后由确定性规则重算。MiniMax 负责候选理解和引用对应建议，不能绕过这些检查，也不能直接改变 Stage、Score、Topic Registry 或规则。
+
+日常自动闭环使用：
+
+```bash
+npm run operate
+```
+
+它会显式请求当前版本策略允许的自动发布，并把每项通过或保留的理由写入 `outputs/autonomy/latest_promotion_report.json`。原始引用充分的受治理来源可以自动准入；低可信度、相互冲突、未定位引用或已在运行态的重复记录会自动保留，而不是伪造为已入表。
 
 ## 如何判断一张 Dashboard Card
 

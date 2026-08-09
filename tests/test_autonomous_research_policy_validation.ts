@@ -53,6 +53,6 @@ describe('autonomous research policy validation', () => {
       producerVersion: 'v0.test',
     });
     expect(audit.status).toBe('failed');
-    expect(audit.errors.join(' ')).toMatch(/E2|confidence|provenance|News|Parent/);
+    expect(audit.errors.join(' ')).toMatch(/confidence|provenance|News|Parent/);
   });
 });

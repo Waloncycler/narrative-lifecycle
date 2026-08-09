@@ -1,0 +1,19 @@
+{
+  "artifact_type": "autonomous_research_policy_audit",
+  "schema_version": "1.0.0",
+  "producer_version": "v0.15.0",
+  "generated_at": "2026-08-09T04:04:09.403Z",
+  "policy_id": "v0.10-review-first-publication",
+  "status": "failed",
+  "automatic_publication_enabled": true,
+  "errors": [
+    "Automatic publication requires minimum Evidence strength E2 or higher."
+  ],
+  "warnings": [],
+  "guardrail_check": {
+    "explicit_policy_required": true,
+    "evidence_table_required_for_stage": true,
+    "parent_branch_separation": true,
+    "no_trading_advice": true
+  }
+}

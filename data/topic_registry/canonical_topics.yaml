@@ -278,3 +278,15 @@
   status: provisional
   naming_status: unresolved
   naming_sources: []
+- topic_id: provisional_radiopharmaceuticals
+  topic_name: Radiopharmaceuticals
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []
+- topic_id: provisional_climate_adaptation
+  topic_name: Climate Adaptation
+  current_stage: S0
+  status: provisional
+  naming_status: unresolved
+  naming_sources: []

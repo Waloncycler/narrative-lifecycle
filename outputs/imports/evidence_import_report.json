@@ -1,6 +1,6 @@
 {
-  "validation_id": "validation_20260804",
-  "generated_at": "2026-08-04T01:43:57.959Z",
+  "validation_id": "validation_20260809",
+  "generated_at": "2026-08-09T07:28:34.805Z",
   "source_file": "outputs/intake/reviewed_evidence_draft.yaml",
   "status": "passed",
   "accepted_count": 2,
@@ -8,8 +8,8 @@
   "errors": [],
   "warnings": [],
   "accepted_evidence_ids": [
-    "direct_clinicaltrials_1eos217",
-    "direct_clinicaltrials_1mkte81"
+    "evidence_agent_1786260256591_w7s303",
+    "evidence_agent_1786260256591_j0vigk"
   ],
   "rejected_evidence_ids": [],
   "guardrail_check": {
@@ -19,9 +19,9 @@
     "affected_layer_valid": true,
     "source_metadata_present": true
   },
-  "import_id": "import_20260804",
-  "imported_at": "2026-08-04T01:43:58.026Z",
-  "accepted_copy_path": "data/imports/accepted/import_20260804.yaml",
+  "import_id": "import_20260809",
+  "imported_at": "2026-08-09T07:28:34.879Z",
+  "accepted_copy_path": "data/imports/accepted/import_20260809.yaml",
   "fixture_target_path": "data/sample_evidence/manual_imported_evidence.yaml",
   "audit_log_path": "data/audit/evidence_import_audit.jsonl"
 }
