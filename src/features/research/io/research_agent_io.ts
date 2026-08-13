@@ -1,10 +1,11 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { EvidenceIntakeSession } from '@/features/intake/types/intake';
 import type { IntakeLearningCycle } from '@/features/intake/types/intake_learning_cycle';
 import type { AgentPurgeDecision, ResearchAgentEvolutionLedger, ResearchAgentRunManifest, ResearchAgentSchedulerConfig } from '@/features/research/types/research_agent';
 import { DEFAULT_SCHEDULER_CONFIG } from '@/features/research/types/research_agent';
-import { writeJsonAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact } from '@/platform/io/run_manifest_writer';
 import type { StaleCandidateInput, AgedQueueItemInput } from '@/features/research/domain/agent_purge_rules';
 
 /**
@@ -23,7 +24,7 @@ interface AgentCandidateLedgerEntry {
 
 function readJson<T>(path: string): T | null {
   try {
-    return JSON.parse(readFileSync(path, 'utf8')) as T;
+    return readGenericArtifact(path)! as T;
   } catch {
     return null;
   }
@@ -33,27 +34,27 @@ function safeResolve(repoRoot: string, relative: string): string {
   return resolve(repoRoot, relative);
 }
 
-export class FileResearchAgentRepository {
-  private readonly ledgerPath: string;
-  private readonly evolutionPath: string;
-  private readonly historyDir: string;
-  private readonly latestRunPath: string;
-  private readonly schedulerConfigPath: string;
+export class DbResearchAgentRepository {
+  private readonly ledgerId = 'research_agent/agent_candidate_ledger.json';
+  private readonly evolutionId = 'research_agent/evolution_ledger.json';
+  private readonly historyPrefix = 'research_agent/history';
+  private readonly latestRunId = 'research_agent/latest_run.json';
+  private readonly schedulerConfigId = 'configs/research_agent_scheduler.json';
 
-  constructor(private readonly repoRoot: string) {
-    this.ledgerPath = safeResolve(repoRoot, 'outputs/research_agent/agent_candidate_ledger.json');
-    this.evolutionPath = safeResolve(repoRoot, 'outputs/research_agent/evolution_ledger.json');
-    this.historyDir = safeResolve(repoRoot, 'outputs/research_agent/history');
-    this.latestRunPath = safeResolve(repoRoot, 'outputs/research_agent/latest_run.json');
-    this.schedulerConfigPath = safeResolve(repoRoot, 'configs/research_agent_scheduler.json');
+  constructor(private readonly repoRoot: string = process.cwd()) {
+    this.ledgerId = 'research_agent/agent_candidate_ledger.json';
+    this.evolutionId = 'research_agent/evolution_ledger.json';
+    this.historyPrefix = 'research_agent/history';
+    this.latestRunId = 'research_agent/latest_run.json';
+    this.schedulerConfigId = 'configs/research_agent_scheduler.json';
   }
 
   private readLedger(): AgentCandidateLedgerEntry[] {
-    return readJson<AgentCandidateLedgerEntry[]>(this.ledgerPath) ?? [];
+    return readJson<AgentCandidateLedgerEntry[]>(this.ledgerId) ?? [];
   }
 
   private writeLedger(entries: AgentCandidateLedgerEntry[]): void {
-    writeJsonAtomically(this.ledgerPath, entries);
+    writeGenericArtifact(this.ledgerId, entries);
   }
 
   /**
@@ -128,11 +129,11 @@ export class FileResearchAgentRepository {
   }
 
   readEvolutionLedger(): ResearchAgentEvolutionLedger | null {
-    return readJson<ResearchAgentEvolutionLedger>(this.evolutionPath);
+    return readJson<ResearchAgentEvolutionLedger>(this.evolutionId);
   }
 
   writeEvolutionLedger(ledger: ResearchAgentEvolutionLedger): void {
-    writeJsonAtomically(this.evolutionPath, ledger);
+    writeGenericArtifact(this.evolutionId, ledger);
   }
 
   readLearningMetrics(): { acceptance_rate: number | null; shadow_agreement_rate: number | null; golden_gate_pass_rate: number | null } {
@@ -174,19 +175,19 @@ export class FileResearchAgentRepository {
   }
 
   writeRunManifest(manifest: ResearchAgentRunManifest): void {
-    mkdirSync(this.historyDir, { recursive: true });
-    writeJsonAtomically(resolve(this.historyDir, `${manifest.run_id}.json`), manifest);
-    writeJsonAtomically(this.latestRunPath, manifest);
+    mkdirSync(this.historyPrefix, { recursive: true });
+    writeGenericArtifact(resolve(this.historyPrefix, `${manifest.run_id}.json`), manifest);
+    writeGenericArtifact(this.latestRunId, manifest);
   }
 
   listRunManifests(): ResearchAgentRunManifest[] {
-    if (!existsSync(this.historyDir)) return [];
-    const files = readdirJson(this.historyDir);
+    if (!existsSync(this.historyPrefix)) return [];
+    const files = readdirJson(this.historyPrefix);
     return files.map((file) => readJson<ResearchAgentRunManifest>(file)).filter((m): m is ResearchAgentRunManifest => m !== null).sort((a, b) => b.started_at.localeCompare(a.started_at));
   }
 
   readSchedulerConfig(): ResearchAgentSchedulerConfig {
-    const existing = readJson<ResearchAgentSchedulerConfig>(this.schedulerConfigPath);
+    const existing = readJson<ResearchAgentSchedulerConfig>(this.schedulerConfigId);
     if (!existing) {
       this.writeSchedulerConfig(DEFAULT_SCHEDULER_CONFIG);
       return DEFAULT_SCHEDULER_CONFIG;
@@ -195,7 +196,7 @@ export class FileResearchAgentRepository {
   }
 
   writeSchedulerConfig(config: ResearchAgentSchedulerConfig): void {
-    writeJsonAtomically(this.schedulerConfigPath, config);
+    writeGenericArtifact(this.schedulerConfigId, config);
   }
 }
 

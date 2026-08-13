@@ -1,29 +1,31 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
 import type { ReplayCase, ReplayLedger } from '@/features/reporting/types/replay';
 import type { RunManifest } from '@/platform/types/run_context';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { DbArtifactRepository } from '@/platform/io/db_artifact_repository';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
 export const REPLAY_CASES_PATH = 'data/replay/replay_cases.yaml';
 
-export class FileReplayRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbReplayRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readReplayCases(): ReplayCase[] {
-    return parse(readFileSync(resolve(this.repoRoot, REPLAY_CASES_PATH), 'utf8')) as ReplayCase[];
+    return readGenericArtifact(resolve(this.repoRoot, REPLAY_CASES_PATH))! as ReplayCase[];
   }
 
   readLatestRun(): RunManifest | null {
-    const target = resolve(this.repoRoot, 'outputs/runs/latest_run.json');
+    const target = 'runs/latest_run.json';
     if (!existsSync(target)) return null;
-    return JSON.parse(readFileSync(target, 'utf8')) as RunManifest;
+    return readGenericArtifact(target)! as RunManifest;
   }
 
   writeReplayLedger(ledger: ReplayLedger, markdown: string): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/replay/latest_replay_ledger.json'), ledger);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/replay/latest_replay_ledger.md'), markdown);
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/replay/history', `${ledger.ledger_id}.json`), ledger);
+    const dbArtifact = new DbArtifactRepository();
+    dbArtifact.writeArtifact('replay_ledger_latest', 'replay_ledger', ledger, markdown);
+    dbArtifact.writeArtifact(`replay_ledger_${ledger.ledger_id}`, 'replay_ledger', ledger);
   }
 
   sourceArtifacts(): string[] {

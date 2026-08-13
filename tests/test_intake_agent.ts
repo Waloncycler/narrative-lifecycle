@@ -6,7 +6,7 @@ import type { EvidenceIntakeSession, RawDocument } from '@/features/intake/types
 import type { AgentEvidenceCandidate } from '@/features/intake/types/intake_agent';
 import { INTAKE_AGENT_SYSTEM_PROMPT } from '@/features/intake/domain/intake_agent_prompt';
 import { suggestIndustry } from '@/features/reporting/domain/industry_packs';
-import { FileIndustryPackRepository } from '@/platform/io/industry_pack_io';
+import { DbIndustryPackRepository } from '@/platform/io/industry_pack_io';
 import { constrainSourceAnchoredCandidate } from '@/app/use_cases/run_intake_agent_use_case';
 import { resolve } from 'node:path';
 
@@ -42,7 +42,7 @@ describe('smart evidence intake agent', () => {
   });
 
   it('loads the repository industry pack catalog for runtime context', () => {
-    const repository = new FileIndustryPackRepository(resolve(import.meta.dirname, '..'));
+    const repository = new DbIndustryPackRepository(resolve(import.meta.dirname, '..'));
     const packs = repository.readIndustryPacks();
     expect(packs.map((pack) => pack.industry_id)).toEqual(expect.arrayContaining(['medicine', 'semiconductor', 'ai_software']));
   });

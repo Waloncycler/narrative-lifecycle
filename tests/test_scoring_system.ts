@@ -1,9 +1,8 @@
+import { FileSchemaValidator } from '@/platform/io/app_di_container';
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import Ajv2020 from 'ajv/dist/2020';
-import addFormats from 'ajv-formats';
 import { generateScore } from '@/features/scoring/domain/scoring_engine';
 import { classifyStage } from '@/features/stages/domain/stage_classifier';
 import { parentS4Evidence, parentS6Evidence } from '@tests/helpers/sample_evidence';
@@ -67,10 +66,9 @@ describe('test_scoring_system', () => {
       'valuation_friction',
     ]);
 
-    const ajv = new Ajv2020({ allErrors: true, strict: false });
-    addFormats(ajv);
-    const validateScore = ajv.compile(JSON.parse(readFileSync(resolve(repoRoot, 'schemas/score.schema.json'), 'utf8')));
-    expect(validateScore(score), JSON.stringify(validateScore.errors)).toBe(true);
+    const validator = new FileSchemaValidator();
+    const validateScore = (data: any) => { validator.validate('score.schema.json', data); return true; };
+    expect(() => validateScore(score)).not.toThrow();
   });
 
   it('rejects forged high-stage classifications that do not match the evidence table gates', () => {

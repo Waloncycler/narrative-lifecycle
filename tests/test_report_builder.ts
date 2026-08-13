@@ -1,10 +1,10 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
+import { FileSchemaValidator } from '@/platform/io/app_di_container';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import Ajv2020 from 'ajv/dist/2020';
-import addFormats from 'ajv-formats';
 import { buildWeeklyBrief } from '@/features/reporting/pipeline/report_builder';
 import { loadCanonicalStageDiff, loadReportArtifacts } from '@/features/reporting/pipeline/report_artifact_loader';
 import { renderWeeklyBriefMarkdown } from '@/features/reporting/pipeline/report_markdown_renderer';
@@ -25,11 +25,10 @@ describe('report builder', () => {
     const report = buildWeeklyBrief(artifacts, loadCanonicalStageDiff(repoRoot), { run_id: 'run_20260705T000000000_abcdef', started_at: '2026-07-05T00:00:00.000Z', rule_version: 'narrative-lifecycle-rules-v0.1', artifact_version: 'v0.3.1' });
     const markdown = renderWeeklyBriefMarkdown(report);
 
-    const ajv = new Ajv2020({ allErrors: true, strict: false });
-    addFormats(ajv);
-    const validateReport = ajv.compile(JSON.parse(readFileSync(resolve(repoRoot, 'schemas/weekly_brief.schema.json'), 'utf8')));
+    const validator = new FileSchemaValidator();
+    const validateReport = (data: any) => { validator.validate('weekly_brief.schema.json', data); return true; };
 
-    expect(validateReport(report), JSON.stringify(validateReport.errors)).toBe(true);
+    expect(() => validateReport(report)).not.toThrow();
     expect(report.executive_summary.dashboard_card_count).toBe(3);
     expect(report.executive_summary.score_count).toBe(3);
     expect(report.executive_summary.golden_case_passed).toBe(3);

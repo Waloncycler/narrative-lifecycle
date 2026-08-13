@@ -1,21 +1,22 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { ResearchLeadTriageReport } from '@/features/research/types/research_lead_triage';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
-export class FileResearchLeadTriageRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbResearchLeadTriageRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   writeReport(report: ResearchLeadTriageReport): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/research/latest_lead_triage.json'), report);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/research/history/${report.triage_id}.json`), report);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/research/latest_lead_triage.md'), renderResearchLeadTriageMarkdown(report));
+    writeGenericArtifact('research/latest_lead_triage.json', report);
+    writeGenericArtifact(`research/history/${report.triage_id}.json`, report);
+    writeGenericTextArtifact('research/latest_lead_triage.md', renderResearchLeadTriageMarkdown(report));
   }
 
   readLatestReport(): ResearchLeadTriageReport | null {
-    const path = resolve(this.repoRoot, 'outputs/research/latest_lead_triage.json');
+    const path = 'research/latest_lead_triage.json';
     if (!existsSync(path)) return null;
-    try { return JSON.parse(readFileSync(path, 'utf8')) as ResearchLeadTriageReport; } catch { return null; }
+    try { return readGenericArtifact(path)! as ResearchLeadTriageReport; } catch { return null; }
   }
 }
 

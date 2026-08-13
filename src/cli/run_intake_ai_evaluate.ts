@@ -1,6 +1,6 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 import type { AiShadowValidationReport } from '@/features/intake/types/intake';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -15,5 +15,5 @@ console.log(JSON.stringify({
   ai_candidate_count: report.ai_candidate_count,
   fallback_count: report.fallback_count,
   citation_accuracy: report.citation_accuracy,
-  output: 'outputs/intake/latest_real_ai_shadow_evaluation.json',
+  output: '<stored in db>',
 }, null, 2));

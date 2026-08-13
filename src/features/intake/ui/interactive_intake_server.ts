@@ -17,7 +17,7 @@ import type { ResearchLeadTriageReport } from '@/features/research/types/researc
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { ResearchBaselineCompletionReport } from '@/features/research/types/research_baseline_completion';
 import { DEFAULT_SCHEDULER_CONFIG } from '@/features/research/types/research_agent';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 import { intakeAgentConfigFromEnv } from '@/features/intake/io/intake_agent_provider';
 import { buildNarrativeMonitor } from '@/features/narrative/domain/narrative_monitor';
 import {
@@ -524,10 +524,21 @@ function readCurrentSnapshot(repoRoot: string): StageSnapshotHistory | null {
   return baseline;
 }
 
+import { db } from '@/db/index';
+import { genericArtifacts } from '@/db/schema';
+import { eq } from 'drizzle-orm';
+
 function readJsonFile<T = unknown>(repoRoot: string, relativePath: string): T | null {
+  const artifactId = relativePath.replace(/^outputs\//, '');
+  const record = db.select().from(genericArtifacts).where(eq(genericArtifacts.artifact_id, artifactId)).get();
+  if (record && record.content_json) {
+    try { return JSON.parse(record.content_json) as T; } catch { return null; }
+  }
+  
+  // Fallback for non-outputs paths (if any)
   const path = resolve(repoRoot, relativePath);
   if (!existsSync(path)) return null;
-  return JSON.parse(readFileSync(path, 'utf8')) as T;
+  try { return JSON.parse(readFileSync(path, 'utf8')) as T; } catch { return null; }
 }
 
 function html(response: ServerResponse, body: string): void {

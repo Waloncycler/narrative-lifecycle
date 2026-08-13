@@ -1,3 +1,4 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse, stringify } from 'yaml';
@@ -7,7 +8,7 @@ import type { AutonomousResearchPolicy, AutonomousResearchRun } from '@/features
 import type { AutonomousResearchPolicyAudit } from '@/features/research/types/autonomous_research_policy_audit';
 import type { NarrativeGraphPromotionReport } from '@/features/narrative/types/narrative_graph_promotion';
 import type { StageSnapshotHistory } from '@/features/stages/types/diff';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { renderStageDiffMarkdown } from '@/features/stages/pipeline/stage_diff_markdown_renderer';
 import { renderWeeklyBriefMarkdown } from '@/features/reporting/pipeline/report_markdown_renderer';
 
@@ -17,18 +18,18 @@ const MANUAL_EVIDENCE_PATH = 'data/sample_evidence/manual_imported_evidence.yaml
 const MANUAL_EVIDENCE_AUDIT_PATH = 'data/audit/evidence_import_audit.jsonl';
 const MANUAL_EVIDENCE_ADMISSION_PATH = 'data/audit/operational_evidence_admission.jsonl';
 
-export class FileAutonomousResearchRepository {
-  constructor(private readonly repoRoot: string) {}
+export class AutonomousResearchArtifactRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readPolicy(): AutonomousResearchPolicy {
-    return JSON.parse(readFileSync(resolve(this.repoRoot, 'configs/autonomous_research_policy.json'), 'utf8')) as AutonomousResearchPolicy;
+    return readGenericArtifact(resolve(this.repoRoot, 'configs/autonomous_research_policy.json'))! as AutonomousResearchPolicy;
   }
 
   writePolicyAudit(audit: AutonomousResearchPolicyAudit): void {
-    const output = resolve(this.repoRoot, 'outputs/governance');
-    writeJsonAtomically(resolve(output, 'latest_autonomous_research_policy_audit.json'), audit);
-    writeTextAtomically(resolve(output, 'latest_autonomous_research_policy_audit.md'), renderPolicyAuditMarkdown(audit));
-    writeJsonAtomically(resolve(output, 'history', `autonomous_research_policy_${audit.generated_at.replace(/[^0-9]/g, '').slice(0, 14)}.json`), audit);
+    const output = 'governance';
+    writeGenericArtifact(resolve(output, 'latest_autonomous_research_policy_audit.json'), audit);
+    writeGenericTextArtifact(resolve(output, 'latest_autonomous_research_policy_audit.md'), renderPolicyAuditMarkdown(audit));
+    writeGenericArtifact(resolve(output, 'history', `autonomous_research_policy_${audit.generated_at.replace(/[^0-9]/g, '').slice(0, 14)}.json`), audit);
   }
 
   readOperationalEvidence(): EvidenceNode[] {
@@ -45,7 +46,7 @@ export class FileAutonomousResearchRepository {
     const jsonPath = resolve(this.repoRoot, 'data/evidence_table/evidence_table.json');
     if (!existsSync(jsonPath)) return [];
     try {
-      return JSON.parse(readFileSync(jsonPath, 'utf8')) as EvidenceNode[];
+      return readGenericArtifact(jsonPath)! as EvidenceNode[];
     } catch {
       return [];
     }
@@ -68,14 +69,14 @@ export class FileAutonomousResearchRepository {
     const existing = this.readYamlRows(AUTOMATED_EVIDENCE_PATH);
     const merged = new Map(existing.map((item) => [item.evidence_id, item]));
     for (const row of rows) merged.set(row.evidence_id, row);
-    writeTextAtomically(resolve(this.repoRoot, AUTOMATED_EVIDENCE_PATH), stringify([...merged.values()]));
+    writeGenericTextArtifact(resolve(this.repoRoot, AUTOMATED_EVIDENCE_PATH), stringify([...merged.values()]));
 
     const jsonPath = resolve(this.repoRoot, 'data/evidence_table/evidence_table.json');
     const existingJson = this.readJsonEvidenceTable();
     const jsonMerged = new Map(existingJson.map((item) => [item.evidence_id, item]));
     for (const row of rows) jsonMerged.set(row.evidence_id, row);
     mkdirSync(resolve(this.repoRoot, 'data/evidence_table'), { recursive: true });
-    writeTextAtomically(jsonPath, JSON.stringify([...jsonMerged.values()], null, 2));
+    writeGenericTextArtifact(jsonPath, JSON.stringify([...jsonMerged.values()], null, 2));
     if (rows.length) {
       mkdirSync(resolve(this.repoRoot, 'data/audit'), { recursive: true });
       appendFileSync(resolve(this.repoRoot, MANUAL_EVIDENCE_ADMISSION_PATH), `${JSON.stringify({
@@ -89,15 +90,15 @@ export class FileAutonomousResearchRepository {
   }
 
   readLatestSnapshot(): StageSnapshotHistory | null {
-    const path = resolve(this.repoRoot, 'outputs/operator_runs/latest_stage_snapshot.json');
-    return existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) as StageSnapshotHistory : null;
+    const path = 'operator_runs/latest_stage_snapshot.json';
+    return existsSync(path) ? readGenericArtifact(path)! as StageSnapshotHistory : null;
   }
 
   readPreviousOperatorRunId(): string | null {
-    const path = resolve(this.repoRoot, 'outputs/operator_runs/latest_run.json');
+    const path = 'operator_runs/latest_run.json';
     if (!existsSync(path)) return null;
     try {
-      return (JSON.parse(readFileSync(path, 'utf8')) as { run_id?: string }).run_id ?? null;
+      return (readGenericArtifact(path)! as { run_id?: string }).run_id ?? null;
     } catch {
       return null;
     }
@@ -133,47 +134,47 @@ export class FileAutonomousResearchRepository {
   }
 
   writeRun(result: AutonomousResearchRun): void {
-    const output = resolve(this.repoRoot, 'outputs/autonomy');
+    const output = 'autonomy';
     mkdirSync(output, { recursive: true });
-    writeJsonAtomically(resolve(output, 'latest_promotion_report.json'), result.report);
-    writeJsonAtomically(resolve(output, 'latest_stage_snapshot.json'), result.snapshot);
-    writeJsonAtomically(resolve(output, 'latest_stage_diff.json'), result.diff);
-    writeJsonAtomically(resolve(output, 'latest_run.json'), result);
-    writeJsonAtomically(resolve(output, 'history', `autonomous_run_${result.report.run_id}.json`), result);
-    writeTextAtomically(resolve(output, 'latest_promotion_report.md'), renderPromotionReport(result));
+    writeGenericArtifact(resolve(output, 'latest_promotion_report.json'), result.report);
+    writeGenericArtifact(resolve(output, 'latest_stage_snapshot.json'), result.snapshot);
+    writeGenericArtifact(resolve(output, 'latest_stage_diff.json'), result.diff);
+    writeGenericArtifact(resolve(output, 'latest_run.json'), result);
+    writeGenericArtifact(resolve(output, 'history', `autonomous_run_${result.report.run_id}.json`), result);
+    writeGenericTextArtifact(resolve(output, 'latest_promotion_report.md'), renderPromotionReport(result));
 
     // Operator runs are the one canonical live-research chain. Golden-case
     // outputs intentionally remain untouched as regression fixtures.
-    const operatorRoot = resolve(this.repoRoot, 'outputs/operator_runs');
+    const operatorRoot = 'operator_runs';
     const runRoot = resolve(operatorRoot, result.manifest.run_id);
-    writeJsonAtomically(resolve(operatorRoot, 'latest_stage_snapshot.json'), result.snapshot);
-    writeJsonAtomically(resolve(operatorRoot, 'latest_stage_diff.json'), result.diff);
-    writeTextAtomically(resolve(operatorRoot, 'latest_stage_diff.md'), renderStageDiffMarkdown(result.diff));
-    writeJsonAtomically(resolve(operatorRoot, 'latest_weekly_brief.json'), result.weekly_brief);
-    writeTextAtomically(resolve(operatorRoot, 'latest_weekly_brief.md'), renderWeeklyBriefMarkdown(result.weekly_brief));
-    writeJsonAtomically(resolve(runRoot, 'stage_snapshot.json'), result.snapshot);
-    writeJsonAtomically(resolve(runRoot, 'stage_diff.json'), result.diff);
-    writeTextAtomically(resolve(runRoot, 'stage_diff.md'), renderStageDiffMarkdown(result.diff));
-    writeJsonAtomically(resolve(runRoot, 'weekly_brief.json'), result.weekly_brief);
-    writeTextAtomically(resolve(runRoot, 'weekly_brief.md'), renderWeeklyBriefMarkdown(result.weekly_brief));
-    writeJsonAtomically(resolve(runRoot, 'run_manifest.json'), result.manifest);
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/history/operator_report_runs', `${result.weekly_brief.report_id}.json`), result.weekly_brief);
-    writeJsonAtomically(resolve(operatorRoot, 'latest_run.json'), result.manifest);
+    writeGenericArtifact(resolve(operatorRoot, 'latest_stage_snapshot.json'), result.snapshot);
+    writeGenericArtifact(resolve(operatorRoot, 'latest_stage_diff.json'), result.diff);
+    writeGenericTextArtifact(resolve(operatorRoot, 'latest_stage_diff.md'), renderStageDiffMarkdown(result.diff));
+    writeGenericArtifact(resolve(operatorRoot, 'latest_weekly_brief.json'), result.weekly_brief);
+    writeGenericTextArtifact(resolve(operatorRoot, 'latest_weekly_brief.md'), renderWeeklyBriefMarkdown(result.weekly_brief));
+    writeGenericArtifact(resolve(runRoot, 'stage_snapshot.json'), result.snapshot);
+    writeGenericArtifact(resolve(runRoot, 'stage_diff.json'), result.diff);
+    writeGenericTextArtifact(resolve(runRoot, 'stage_diff.md'), renderStageDiffMarkdown(result.diff));
+    writeGenericArtifact(resolve(runRoot, 'weekly_brief.json'), result.weekly_brief);
+    writeGenericTextArtifact(resolve(runRoot, 'weekly_brief.md'), renderWeeklyBriefMarkdown(result.weekly_brief));
+    writeGenericArtifact(resolve(runRoot, 'run_manifest.json'), result.manifest);
+    writeGenericArtifact(resolve(this.repoRoot, 'outputs/history/operator_report_runs', `${result.weekly_brief.report_id}.json`), result.weekly_brief);
+    writeGenericArtifact(resolve(operatorRoot, 'latest_run.json'), result.manifest);
   }
 
   writeNarrativeGraphPromotion(report: NarrativeGraphPromotionReport): void {
-    const output = resolve(this.repoRoot, 'outputs/autonomy');
+    const output = 'autonomy';
     mkdirSync(resolve(output, 'history'), { recursive: true });
-    writeJsonAtomically(resolve(output, 'latest_narrative_graph_promotion.json'), report);
-    writeJsonAtomically(resolve(output, 'history', `narrative_graph_promotion_${report.run_id}.json`), report);
-    writeTextAtomically(resolve(output, 'latest_narrative_graph_promotion.md'), renderNarrativeGraphPromotion(report));
+    writeGenericArtifact(resolve(output, 'latest_narrative_graph_promotion.json'), report);
+    writeGenericArtifact(resolve(output, 'history', `narrative_graph_promotion_${report.run_id}.json`), report);
+    writeGenericTextArtifact(resolve(output, 'latest_narrative_graph_promotion.md'), renderNarrativeGraphPromotion(report));
   }
 
   private readYamlRows(relativePath: string): EvidenceNode[] {
     const path = resolve(this.repoRoot, relativePath);
     if (!existsSync(path)) return [];
     try {
-      const value = parse(readFileSync(path, 'utf8')) as EvidenceNode[];
+      const value = readGenericArtifact(path)! as EvidenceNode[];
       return Array.isArray(value) ? value : [];
     } catch {
       return [];
@@ -206,7 +207,7 @@ export class FileAutonomousResearchRepository {
     const path = resolve(this.repoRoot, MANUAL_EVIDENCE_ADMISSION_PATH);
     if (!existsSync(path)) return new Set();
     const ids = new Set<string>();
-    for (const line of readFileSync(path, 'utf8').split('\n')) {
+    for (const line of (readGenericTextArtifact(path) ?? "").split('\n')) {
       if (!line.trim()) continue;
       try {
         const record = JSON.parse(line) as { admission_type?: string; evidence_ids?: unknown };

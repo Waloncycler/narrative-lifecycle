@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseIntakePrepareArgs } from '@/features/intake/ui/intake_args';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(here, '../..');
@@ -14,6 +14,6 @@ console.log(JSON.stringify({
   raw_document_id: session.raw_document.raw_document_id,
   chunk_count: session.chunks.length,
   candidate_count: session.candidates.length,
-  workbench: 'outputs/intake/latest_workbench.html',
-  review_decisions: 'outputs/intake/latest_review_decisions.yaml',
+  workbench: '<stored in db>',
+  review_decisions: '<stored in db>',
 }, null, 2));

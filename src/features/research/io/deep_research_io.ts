@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import type { DeepResearchSweep } from '@/features/research/types/deep_research_sweep';
-import { writeJsonAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact } from '@/platform/io/run_manifest_writer';
 
 /**
  * File-backed repository for deep research sweep artifacts.
@@ -9,7 +9,7 @@ import { writeJsonAtomically } from '@/platform/io/run_manifest_writer';
  * workbench and monitors can quickly inspect the most recent multi-round
  * deep search without scanning a history directory.
  */
-export class FileDeepResearchSweepRepository {
+export class DbDeepResearchSweepRepository {
   private readonly latestSweepPath: string;
 
   constructor(repoRoot: string) {
@@ -17,6 +17,6 @@ export class FileDeepResearchSweepRepository {
   }
 
   writeSweep(sweep: DeepResearchSweep): void {
-    writeJsonAtomically(this.latestSweepPath, sweep);
+    writeGenericArtifact(this.latestSweepPath, sweep);
   }
 }

@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseIntakePrepareArgs } from '@/features/intake/ui/intake_args';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(here, '../..');
@@ -17,7 +17,7 @@ console.log(JSON.stringify({
   failed_count: bundle.verification.failed_count,
   fallback_count: bundle.verification.fallback_count,
   import_permission: bundle.import_permission,
-  candidates: 'outputs/intake/latest_agent_candidates.json',
-  verification: 'outputs/intake/latest_agent_verification.json',
-  review: 'outputs/intake/latest_agent_review.md',
+  candidates: '<stored in db>',
+  verification: '<stored in db>',
+  review: '<stored in db>',
 }, null, 2));

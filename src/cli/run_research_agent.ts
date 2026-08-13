@@ -1,6 +1,6 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 import type { ResearchAgentLoopKind } from '@/features/research/types/research_agent';
 
 const here = dirname(fileURLToPath(import.meta.url));

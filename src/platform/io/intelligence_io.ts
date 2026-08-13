@@ -3,21 +3,22 @@ import { resolve } from 'node:path';
 import type { EvidenceChainEntry } from '@/features/evidence/types/evidence_chain';
 import type { TopicDiscoveryProposal } from '@/features/narrative/types/topic_discovery';
 import type { NarrativeDiscoveryRecord, NarrativeDiscoveryReport } from '@/features/narrative/types/narrative_discovery';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
+import { DbArtifactRepository } from '@/platform/io/db_artifact_repository';
 export const TOPIC_PROPOSALS_PATH = 'outputs/intake/latest_topic_discovery_proposals.json';
 export const EVIDENCE_CHAIN_PATH = 'outputs/intake/latest_evidence_chain.json';
 export const NARRATIVE_DISCOVERY_PATH = 'outputs/intake/latest_narrative_discovery.json';
 const NARRATIVE_DISCOVERY_LEDGER_PATH = 'outputs/intake/narrative_discovery_ledger.json';
 
-export class FileIntelligenceRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbIntelligenceRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   writeTopicDiscoveryProposals(proposals: TopicDiscoveryProposal[]): void {
-    writeJsonAtomically(resolve(this.repoRoot, TOPIC_PROPOSALS_PATH), proposals);
+    const dbArtifact = new DbArtifactRepository();
     const stamp = compactTimestamp(proposals[0]?.generated_at ?? new Date().toISOString());
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/intake/history/topic_proposals_${stamp}.json`), proposals);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/intake/latest_topic_discovery_proposals.md'), renderTopicProposals(proposals));
+    dbArtifact.writeArtifact(`topic_proposals_${stamp}`, 'topic_proposals', proposals, renderTopicProposals(proposals));
+    dbArtifact.writeArtifact('topic_proposals_latest', 'topic_proposals', proposals, renderTopicProposals(proposals));
   }
 
   readTopicDiscoveryProposals(): TopicDiscoveryProposal[] {
@@ -29,10 +30,10 @@ export class FileIntelligenceRepository {
     const byKey = new Map(prior.map((entry) => [entry.idempotency_key, entry]));
     for (const entry of entries) if (!byKey.has(entry.idempotency_key)) byKey.set(entry.idempotency_key, entry);
     const merged = [...byKey.values()].sort((a, b) => a.generated_at.localeCompare(b.generated_at));
-    writeJsonAtomically(resolve(this.repoRoot, EVIDENCE_CHAIN_PATH), merged);
+    const dbArtifact = new DbArtifactRepository();
     const stamp = compactTimestamp(entries[0]?.generated_at ?? new Date().toISOString());
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/intake/history/evidence_chain_${stamp}.json`), entries);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/intake/latest_evidence_chain.md'), renderEvidenceChain(merged));
+    dbArtifact.writeArtifact(`evidence_chain_${stamp}`, 'evidence_chain', entries);
+    dbArtifact.writeArtifact('evidence_chain_latest', 'evidence_chain', merged, renderEvidenceChain(merged));
   }
 
   readEvidenceChain(): EvidenceChainEntry[] {
@@ -40,14 +41,15 @@ export class FileIntelligenceRepository {
   }
 
   writeNarrativeDiscovery(report: NarrativeDiscoveryReport): void {
-    writeJsonAtomically(resolve(this.repoRoot, NARRATIVE_DISCOVERY_PATH), report);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/intake/history/${report.report_id}.json`), report);
     const known = this.readNarrativeDiscoveryRecords();
     const byKey = new Map<string, NarrativeDiscoveryRecord>();
     for (const record of known) byKey.set(discoveryKey(record), record);
     for (const record of report.records) byKey.set(discoveryKey(record), record);
-    writeJsonAtomically(resolve(this.repoRoot, NARRATIVE_DISCOVERY_LEDGER_PATH), [...byKey.values()]);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/intake/latest_narrative_discovery.md'), renderNarrativeDiscovery(report));
+    
+    const dbArtifact = new DbArtifactRepository();
+    dbArtifact.writeArtifact(`narrative_discovery_${report.report_id}`, 'narrative_discovery_report', report);
+    dbArtifact.writeArtifact('narrative_discovery_latest', 'narrative_discovery_report', report, renderNarrativeDiscovery(report));
+    dbArtifact.writeArtifact('narrative_discovery_ledger', 'narrative_discovery_ledger', [...byKey.values()]);
   }
 
   readNarrativeDiscoveryRecords(): NarrativeDiscoveryRecord[] {

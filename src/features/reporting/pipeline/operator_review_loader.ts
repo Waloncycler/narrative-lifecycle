@@ -1,3 +1,4 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { StageDiff } from '@/features/stages/types/diff';
@@ -13,7 +14,7 @@ export interface OperatorReviewRunArtifact {
 }
 
 function readJson<T>(path: string): T {
-  return JSON.parse(readFileSync(path, 'utf8')) as T;
+  return readGenericArtifact(path)! as T;
 }
 
 function optionalJson<T>(path: string): T | null {

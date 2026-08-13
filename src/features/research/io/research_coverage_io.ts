@@ -1,12 +1,13 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
 import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse } from '@/features/research/types/research_coverage';
 import type { DirectSourceResearchReport } from '@/features/research/types/direct_source_research';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
-export class FileResearchCoverageRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbResearchCoverageRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readSourceAtlas(): AuthoritativeSourceAtlas {
     return this.readYaml<AuthoritativeSourceAtlas>('data/source_atlas/authoritative_sources.yaml');
@@ -21,27 +22,27 @@ export class FileResearchCoverageRepository {
   }
 
   writeCampaign(campaign: ResearchCampaign): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/research/latest_campaign.json'), campaign);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/research/history/${campaign.campaign_id}.json`), campaign);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/research/latest_campaign.md'), renderResearchCampaignMarkdown(campaign));
+    writeGenericArtifact('research/latest_campaign.json', campaign);
+    writeGenericArtifact(`research/history/${campaign.campaign_id}.json`, campaign);
+    writeGenericTextArtifact('research/latest_campaign.md', renderResearchCampaignMarkdown(campaign));
   }
 
   writeDirectResearch(report: DirectSourceResearchReport): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/research/latest_direct_source_research.json'), report);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/research/history/${report.research_id}.json`), report);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/research/latest_direct_source_research.md'), renderDirectSourceResearchMarkdown(report));
+    writeGenericArtifact('research/latest_direct_source_research.json', report);
+    writeGenericArtifact(`research/history/${report.research_id}.json`, report);
+    writeGenericTextArtifact('research/latest_direct_source_research.md', renderDirectSourceResearchMarkdown(report));
   }
 
   readLatestDirectResearch(): DirectSourceResearchReport | null {
-    const path = resolve(this.repoRoot, 'outputs/research/latest_direct_source_research.json');
+    const path = 'research/latest_direct_source_research.json';
     if (!existsSync(path)) return null;
-    try { return JSON.parse(readFileSync(path, 'utf8')) as DirectSourceResearchReport; } catch { return null; }
+    try { return readGenericArtifact(path)! as DirectSourceResearchReport; } catch { return null; }
   }
 
   private readYaml<T>(relativePath: string): T {
     const path = resolve(this.repoRoot, relativePath);
     if (!existsSync(path)) throw new Error(`research coverage configuration missing: ${relativePath}`);
-    return parse(readFileSync(path, 'utf8')) as T;
+    return readGenericArtifact(path)! as T;
   }
 }
 

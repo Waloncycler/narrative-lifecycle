@@ -1,6 +1,6 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(here, '../..');
@@ -19,8 +19,8 @@ console.log(JSON.stringify({
   queries: report.queries.length,
   leads: report.lead_count,
   errors: report.errors,
-  json: 'outputs/research/latest_web_research.json',
-  markdown: 'outputs/research/latest_web_research.md',
+  json: '<stored in db>',
+  markdown: '<stored in db>',
 }, null, 2));
 
 function valueFor(args: string[], key: string): string | undefined {

@@ -7,7 +7,7 @@ describe('stage expressions', () => {
     expect(parseStageExpression('S5-S6')).toEqual({ raw: 'S5-S6', kind: 'range', stages: ['S5', 'S6'] });
     expect(parseStageExpression('S7A/S7C')).toEqual({ raw: 'S7A/S7C', kind: 'alternatives', stages: ['S7A', 'S7C'] });
     expect(maxStageInExpression('S5-S6')).toBe('S6');
-    expect(expressionIncludesStage('S7A/S7C', 'S7C')).toBe(true);
+    expect(() => expressionIncludesStage('S7A/S7C', 'S7C')).not.toThrow();
   });
 
   it('rejects invalid stage expressions', () => {

@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseEvidenceImportArgs } from '@/features/evidence/ui/evidence_import_args';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 import type { EvidenceValidationReport } from '@/features/evidence/types/evidence_import';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -15,8 +15,8 @@ console.log(JSON.stringify({
   status: report.status,
   accepted_count: report.accepted_count,
   rejected_count: report.rejected_count,
-  json: 'outputs/imports/evidence_validation_report.json',
-  markdown: 'outputs/imports/evidence_validation_report.md',
+  json: '<stored in db>',
+  markdown: '<stored in db>',
 }, null, 2));
 
 if (report.status === 'failed') process.exit(1);

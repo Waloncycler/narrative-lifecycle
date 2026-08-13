@@ -20,8 +20,8 @@ export interface ResearchSourceQualityReport {
   average_source_text_chars: number | 'insufficient_data';
   extractor_counts: Partial<Record<ResearchSourceExtractorId, number>>;
   source_class_summary: Partial<Record<ResearchLeadSourceClass, { retrieved_count: number; citation_ready_count: number }>>;
-  reviewed_claim_support_rate: 'pending_human_review';
-  reviewed_topic_branch_accuracy: 'pending_human_review';
+  reviewed_claim_support_rate: number | 'pending_human_review' | 'insufficient_data';
+  reviewed_topic_branch_accuracy: number | 'pending_human_review' | 'insufficient_data';
   guardrail_check: {
     metrics_do_not_create_evidence: true;
     claim_support_requires_human_review: true;

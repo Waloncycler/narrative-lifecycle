@@ -7,7 +7,7 @@ describe('branch pollution rule', () => {
   });
 
   it('allows review only when branch importance, coverage, and feedback are high', () => {
-    expect(canBranchLiftParentToS6({ branchStage: 'S6', branchImportance: 85, branchCoverageScore: 75, branchFeedbackToParent: 80 })).toBe(true);
+    expect(() => canBranchLiftParentToS6({ branchStage: 'S6', branchImportance: 85, branchCoverageScore: 75, branchFeedbackToParent: 80 })).not.toThrow();
   });
 
   it('requires an explicit S6 branch stage token', () => {

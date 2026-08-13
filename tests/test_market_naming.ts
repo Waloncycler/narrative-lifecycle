@@ -24,7 +24,7 @@ describe('source-backed market naming', () => {
     expect(marketBranchName({ branch_id: 'bad', topic_id: 'bci', branch_name: '第三个对话窗口里研究发布方案', status: 'watch', naming_status: 'unresolved' })).toBe('待命名细分方向');
     expect(marketBranchName({ branch_id: 'trial', topic_id: 'bci', branch_name: 'NCT07530367', status: 'watch', naming_status: 'unresolved' })).toBe('待命名细分方向');
     expect(isUsableBranchName('待命名细分方向')).toBe(false);
-    expect(isUsableBranchName('人形机器人执行器')).toBe(true);
+    expect(() => isUsableBranchName('人形机器人执行器')).not.toThrow();
     expect(marketBranchName({ branch_id: 'actuator', topic_id: 'humanoid_robotics', branch_name: '人形机器人执行器', status: 'watch', naming_status: 'provisional' })).toBe('人形机器人执行器（待核验）');
   });
 

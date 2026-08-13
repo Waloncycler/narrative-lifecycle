@@ -4,8 +4,8 @@ import { parse } from 'yaml';
 import { DEFAULT_INDUSTRY_PACKS } from '@/features/reporting/domain/industry_packs';
 import type { IndustryPack } from '@/features/reporting/types/industry';
 
-export class FileIndustryPackRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbIndustryPackRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readIndustryPacks(): IndustryPack[] {
     const path = resolve(this.repoRoot, 'data/industry_packs/packs.yaml');

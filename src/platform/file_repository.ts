@@ -16,14 +16,14 @@ export interface TopicRecord {
 }
 
 export class YamlFileRepository {
-  constructor(private readonly repoRoot: string) {}
+  constructor() {}
 
   readYamlFile<T>(relativePath: string): T {
-    return parse(readFileSync(resolve(this.repoRoot, relativePath), 'utf8')) as T;
+    return parse(readFileSync(resolve(process.cwd(), relativePath), 'utf8')) as T;
   }
 
   readYamlDirectory<T>(relativeDirectory: string, fileFilter: (file: string) => boolean = () => true): T[] {
-    return readdirSync(resolve(this.repoRoot, relativeDirectory))
+    return readdirSync(resolve(process.cwd(), relativeDirectory))
       .filter((file) => (file.endsWith('.yaml') || file.endsWith('.yml')) && fileFilter(file))
       .sort()
       .flatMap((file) => {
@@ -33,8 +33,8 @@ export class YamlFileRepository {
   }
 }
 
-export class FileEvidenceRepository {
-  constructor(private readonly files: YamlFileRepository) {}
+export class DbEvidenceRepository {
+  constructor(private readonly files: YamlFileRepository, private readonly repoRoot: string = process.cwd()) {}
 
   listSampleEvidence(): EvidenceNode[] {
     // Golden cases use frozen fixture files only. Imported/manual evidence is
@@ -44,8 +44,8 @@ export class FileEvidenceRepository {
   }
 }
 
-export class FileGoldenCaseRepository {
-  constructor(private readonly files: YamlFileRepository) {}
+export class DbGoldenCaseRepository {
+  constructor(private readonly files: YamlFileRepository, private readonly repoRoot: string = process.cwd()) {}
 
   listGoldenCases(): GoldenCase[] {
     return this.files.readYamlDirectory<GoldenCase>('data/golden_cases');
@@ -56,32 +56,32 @@ export class FileGoldenCaseRepository {
   }
 }
 
-export class FileFailureCaseRepository {
-  constructor(private readonly files: YamlFileRepository) {}
+export class DbFailureCaseRepository {
+  constructor(private readonly files: YamlFileRepository, private readonly repoRoot: string = process.cwd()) {}
 
   listFailureCases(): FailureCase[] {
     return this.files.readYamlDirectory<FailureCase>('data/failure_cases');
   }
 }
 
-export class FileEvaluationRepository {
-  constructor(private readonly files: YamlFileRepository) {}
+export class DbEvaluationRepository {
+  constructor(private readonly files: YamlFileRepository, private readonly repoRoot: string = process.cwd()) {}
 
   listEvaluationResults(): EvaluationResult[] {
     return this.files.readYamlDirectory<EvaluationResult>('data/evaluation_results');
   }
 }
 
-export class FileTopicRepository {
-  constructor(private readonly files: YamlFileRepository) {}
+export class DbTopicRepository {
+  constructor(private readonly files: YamlFileRepository, private readonly repoRoot: string = process.cwd()) {}
 
   listTopics(): TopicRecord[] {
     return this.files.readYamlFile<TopicRecord[]>('data/seed_topics.yaml');
   }
 }
 
-export class FileMemoryRepository {
-  constructor(private readonly topics: FileTopicRepository) {}
+export class DbMemoryRepository {
+  constructor(private readonly topics: DbTopicRepository, private readonly repoRoot: string = process.cwd()) {}
 
   listSeedMemories(): NarrativeMemory[] {
     return this.topics.listTopics().map((topic) => ({

@@ -1,6 +1,6 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(here, '../..');
@@ -31,7 +31,7 @@ console.log(JSON.stringify({
   insufficient: result.recovered.report.insufficient_count,
   policy_publication_requested: publish,
   autonomy: result.autonomy,
-  json: 'outputs/research/latest_historical_provenance_recovery.json',
+  json: '<stored in db>',
 }, null, 2));
 
 function readPositiveInt(name: string, fallback: number): number {

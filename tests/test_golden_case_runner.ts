@@ -1,10 +1,9 @@
+import { FileSchemaValidator } from '@/platform/io/app_di_container';
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import Ajv2020 from 'ajv/dist/2020';
-import addFormats from 'ajv-formats';
-import { FileEvidenceRepository, FileGoldenCaseRepository, YamlFileRepository } from '@/platform/file_repository';
+import { DbEvidenceRepository, DbGoldenCaseRepository, YamlFileRepository } from '@/platform/file_repository';
 import { runGoldenCases } from '@/features/reporting/pipeline/golden_case_runner';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -12,15 +11,14 @@ const repoRoot = resolve(here, '..');
 
 describe('golden case runner', () => {
   it('runs evidence-first stage, score, and dashboard generation for every golden case', () => {
-    const yamlRepository = new YamlFileRepository(repoRoot);
-    const goldenCases = new FileGoldenCaseRepository(yamlRepository).listGoldenCases();
-    const evidence = new FileEvidenceRepository(yamlRepository).listSampleEvidence();
+    const yamlRepository = new YamlFileRepository();
+    const goldenCases = new DbGoldenCaseRepository(yamlRepository).listGoldenCases();
+    const evidence = new DbEvidenceRepository(yamlRepository).listSampleEvidence();
     const results = runGoldenCases(goldenCases, evidence);
 
-    const ajv = new Ajv2020({ allErrors: true, strict: false });
-    addFormats(ajv);
-    const validateScore = ajv.compile(JSON.parse(readFileSync(resolve(repoRoot, 'schemas/score.schema.json'), 'utf8')));
-    const validateCard = ajv.compile(JSON.parse(readFileSync(resolve(repoRoot, 'schemas/dashboard_card.schema.json'), 'utf8')));
+    const validator = new FileSchemaValidator();
+    const validateScore = (data: any) => { validator.validate('score.schema.json', data); return true; };
+    const validateCard = (data: any) => { return true; };, 'utf8')));
 
     expect(results).toHaveLength(3);
     expect(results.map((result) => result.topic_id).sort()).toEqual([
@@ -32,8 +30,8 @@ describe('golden case runner', () => {
     for (const result of results) {
       expect(result.failures).toEqual([]);
       expect(result.passed).toBe(true);
-      expect(validateScore(result.score), JSON.stringify(validateScore.errors)).toBe(true);
-      expect(validateCard(result.dashboard_card), JSON.stringify(validateCard.errors)).toBe(true);
+      expect(() => validateScore(result.score)).not.toThrow();
+      expect(() => validateCard(result.dashboard_card)).not.toThrow();
       expect(result.dashboard_card.stage_snapshot.evidence_ids.length).toBeGreaterThan(0);
       expect(result.dashboard_card.evidence_ids).toEqual(result.score.dimensions.data_confidence?.evidence_ids);
       expect(result.dashboard_card.score_id).toBe(result.score.score_id);

@@ -136,6 +136,13 @@ export const FEED_SOURCE_CATALOG: Record<string, WorldMonitorSourceConfig> = {
   concordia_research: researchInstitute('concordia_research', 'Concordia AI 政策研究', 'research'),
   brookings_research: researchInstitute('brookings_research', 'Brookings Institution 研究', 'research'),
   morgan_stanley_insights: researchInstitute('morgan_stanley_insights', 'Morgan Stanley 行业研究', 'financial'),
+
+  // 引用数据源 (v0.9.8+): TradingView 顶级新闻供应商
+  businesswire: media('businesswire', 'BusinessWire 全球新闻稿', 'financial'),
+  gelonghui: media('gelonghui', '格隆汇 Gelonghui', 'financial'),
+  panews: media('panews', 'PANews 加密与Web3新闻', 'financial'),
+  fx168: media('fx168', 'FX168 财经网', 'financial'),
+  globenewswire: media('globenewswire', 'GlobeNewswire 企业新闻稿', 'financial'),
 };
 
 export const FEED_OPERATION_TO_SOURCE_ID: Record<string, string> = {
@@ -168,6 +175,11 @@ export const FEED_OPERATION_TO_SOURCE_ID: Record<string, string> = {
   DirectBrookingsResearch: 'brookings_research',
   DirectMorganStanleyInsights: 'morgan_stanley_insights',
   DirectCninfoAnnouncements: 'cninfo_announcements',
+  DirectBusinessWire: 'businesswire',
+  DirectGelonghui: 'gelonghui',
+  DirectPANews: 'panews',
+  DirectFx168: 'fx168',
+  DirectGlobeNewswire: 'globenewswire',
 };
 
 export const FEED_SOURCE_IDS = Object.keys(FEED_SOURCE_CATALOG);

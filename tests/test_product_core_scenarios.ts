@@ -1,8 +1,7 @@
+import { FileSchemaValidator } from '@/platform/io/app_di_container';
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import Ajv2020 from 'ajv/dist/2020';
-import addFormats from 'ajv-formats';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import type { StageSnapshotHistory, StageSnapshotTopic } from '@/features/stages/types/diff';
 import { artifactMetadata } from '@/platform/types/artifact_contract';
@@ -159,10 +158,8 @@ describe('v0.4 product core scenarios', () => {
   });
 
   it('rejects old stage diff schemas without explicit compatibility metadata', () => {
-    const ajv = new Ajv2020({ allErrors: true, strict: false });
-    addFormats(ajv);
-    const validate = ajv.compile(JSON.parse(readFileSync(resolve(repoRoot, 'schemas/stage_diff.schema.json'), 'utf8')));
+    const validator = new FileSchemaValidator();
     const oldShape = { diff_id: 'stage_diff_run_20260720T000000000_abcde0', run_id: 'run_20260720T000000000_abcde0', generated_at: '2026-07-20T00:00:00.000Z', status: 'ok', previous_snapshot_id: null, current_snapshot_id: 'stage_snapshot_run_20260720T000000000_abcde0', summary: {}, topic_changes: [], early_radar_changes: [], guardrail_changes: [], next_operator_actions: [] };
-    expect(validate(oldShape)).toBe(false);
+    expect(() => validator.validate('stage_diff.schema.json', oldShape)).toThrow();
   });
 });

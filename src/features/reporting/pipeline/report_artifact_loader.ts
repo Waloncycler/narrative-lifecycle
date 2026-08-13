@@ -1,3 +1,7 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
+import { db } from '@/db/index';
+import { genericArtifacts, stageDiffs } from '@/db/schema';
+import { like } from 'drizzle-orm';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { DashboardCard } from '@/features/reporting/domain/dashboard_card_service';
@@ -33,7 +37,9 @@ export interface PipelineSystemSummaryArtifact {
 }
 
 export function loadCanonicalStageDiff(repoRoot: string): StageDiff {
-  return readJson<StageDiff>(repoRoot, 'outputs/diffs/latest_stage_diff.json');
+  const diffs = db.select().from(stageDiffs).orderBy(stageDiffs.generated_at).all();
+  if (diffs.length === 0) throw new Error(RUN_PIPELINE_FIRST);
+  return JSON.parse(diffs[diffs.length - 1].diff_json) as StageDiff;
 }
 
 export interface EvaluationSummaryArtifact {
@@ -58,31 +64,22 @@ export interface ReportArtifacts {
 }
 
 function readJson<T>(repoRoot: string, relativePath: string): T {
-  const path = resolve(repoRoot, relativePath);
-  if (!existsSync(path)) {
-    throw new Error(RUN_PIPELINE_FIRST);
-  }
-  return JSON.parse(readFileSync(path, 'utf8')) as T;
+  const id = relativePath.includes('outputs/') ? relativePath.substring(relativePath.indexOf('outputs/') + 8) : relativePath;
+  const data = readGenericArtifact(id);
+  if (!data) throw new Error(RUN_PIPELINE_FIRST);
+  return data as T;
 }
 
-function readJsonDirectory<T>(repoRoot: string, relativeDirectory: string): { values: T[]; files: string[] } {
-  const directory = resolve(repoRoot, relativeDirectory);
-  if (!existsSync(directory)) {
-    throw new Error(RUN_PIPELINE_FIRST);
+function readJsonDirectory<T>(repoRoot: string, relativeDirectory: string): { files: string[]; values: T[] } {
+  const prefix = relativeDirectory.replace(/^outputs\//, '') + '/';
+  const records = db.select().from(genericArtifacts).where(like(genericArtifacts.artifact_id, `${prefix}%`)).all();
+  if (records.length > 0) {
+    return {
+      files: records.map(r => `${relativeDirectory}/${r.artifact_id.split('/').pop()!}`),
+      values: records.map(r => JSON.parse(r.content_json) as T)
+    };
   }
-  const files = readdirSync(directory)
-    .filter((file) => file.endsWith('.json'))
-    .sort()
-    .map((file) => `${relativeDirectory}/${file}`);
-
-  if (files.length === 0) {
-    throw new Error(RUN_PIPELINE_FIRST);
-  }
-
-  return {
-    values: files.map((file) => readJson<T>(repoRoot, file)),
-    files,
-  };
+  throw new Error(RUN_PIPELINE_FIRST);
 }
 
 export function loadReportArtifacts(repoRoot: string): ReportArtifacts {

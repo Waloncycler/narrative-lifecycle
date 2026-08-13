@@ -1,23 +1,24 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { parse } from 'yaml';
 import type { ResearchPack, ResearchPackRetrievalReport } from '@/features/research/types/research_pack';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
-export class FileResearchPackRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbResearchPackRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readPack(file: string): ResearchPack {
     const path = resolve(this.repoRoot, file);
     if (relative(this.repoRoot, path).startsWith('..') || !existsSync(path)) throw new Error(`research pack not found: ${file}`);
-    return parse(readFileSync(path, 'utf8')) as ResearchPack;
+    return readGenericArtifact(path)! as ResearchPack;
   }
 
   writeReport(report: ResearchPackRetrievalReport): void {
-    const root = resolve(this.repoRoot, 'outputs/research/packs');
-    writeJsonAtomically(resolve(root, 'latest_research_pack_retrieval.json'), report);
-    writeJsonAtomically(resolve(root, 'history', `${report.pack_id}_${report.generated_at.replace(/[-:.TZ]/g, '').slice(0, 17)}.json`), report);
-    writeTextAtomically(resolve(root, 'latest_research_pack_retrieval.md'), renderResearchPackMarkdown(report));
+    const root = 'research/packs';
+    writeGenericArtifact(resolve(root, 'latest_research_pack_retrieval.json'), report);
+    writeGenericArtifact(resolve(root, 'history', `${report.pack_id}_${report.generated_at.replace(/[-:.TZ]/g, '').slice(0, 17)}.json`), report);
+    writeGenericTextArtifact(resolve(root, 'latest_research_pack_retrieval.md'), renderResearchPackMarkdown(report));
   }
 }
 

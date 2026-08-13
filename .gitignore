@@ -75,3 +75,5 @@ data/imports/*.yaml
 # Test fixtures that must stay tracked (consumed by the test suite).
 !data/imports/evidence_draft.invalid.yaml
 !data/imports/bci_market_baseline_2026_08.yaml
+
+/generated/prisma

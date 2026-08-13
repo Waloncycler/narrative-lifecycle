@@ -1,18 +1,19 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import type { HistoricalProvenanceRecoveryReport } from '@/features/research/types/historical_provenance_recovery';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
 const EVIDENCE_TABLE_PATH = 'data/evidence_table/evidence_table.json';
 const ADMISSION_PATH = 'data/audit/operational_evidence_admission.jsonl';
 
-export class FileHistoricalProvenanceRecoveryRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbHistoricalProvenanceRecoveryRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readEvidence(): EvidenceNode[] {
     try {
-      const value = JSON.parse(readFileSync(resolve(this.repoRoot, EVIDENCE_TABLE_PATH), 'utf8')) as unknown;
+      const value = readGenericArtifact(resolve(this.repoRoot, EVIDENCE_TABLE_PATH))! as unknown;
       return Array.isArray(value) ? value as EvidenceNode[] : [];
     } catch { return []; }
   }
@@ -21,7 +22,7 @@ export class FileHistoricalProvenanceRecoveryRepository {
     const path = resolve(this.repoRoot, ADMISSION_PATH);
     if (!existsSync(path)) return new Set();
     const ids = new Set<string>();
-    for (const line of readFileSync(path, 'utf8').split('\n')) {
+    for (const line of (readGenericTextArtifact(path) ?? "").split('\n')) {
       try {
         const record = JSON.parse(line) as { evidence_ids?: unknown };
         if (Array.isArray(record.evidence_ids)) for (const id of record.evidence_ids) if (typeof id === 'string') ids.add(id);
@@ -31,10 +32,10 @@ export class FileHistoricalProvenanceRecoveryRepository {
   }
 
   write(report: HistoricalProvenanceRecoveryReport): void {
-    const output = resolve(this.repoRoot, 'outputs/research');
-    writeJsonAtomically(resolve(output, 'latest_historical_provenance_recovery.json'), report);
-    writeJsonAtomically(resolve(output, 'history', `${report.recovery_run_id}.json`), report);
-    writeTextAtomically(resolve(output, 'latest_historical_provenance_recovery.md'), renderMarkdown(report));
+    const output = 'research';
+    writeGenericArtifact(resolve(output, 'latest_historical_provenance_recovery.json'), report);
+    writeGenericArtifact(resolve(output, 'history', `${report.recovery_run_id}.json`), report);
+    writeGenericTextArtifact(resolve(output, 'latest_historical_provenance_recovery.md'), renderMarkdown(report));
   }
 }
 

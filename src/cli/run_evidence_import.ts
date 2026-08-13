@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseEvidenceImportArgs } from '@/features/evidence/ui/evidence_import_args';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 import type { EvidenceImportReport } from '@/features/evidence/types/evidence_import';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -18,8 +18,8 @@ const payload = {
   accepted_copy_path: report.accepted_copy_path,
   fixture_target_path: report.fixture_target_path,
   audit_log_path: report.audit_log_path,
-  json: 'outputs/imports/evidence_import_report.json',
-  markdown: 'outputs/imports/evidence_import_report.md',
+  json: '<stored in db>',
+  markdown: '<stored in db>',
 };
 
 if (result.failed) {

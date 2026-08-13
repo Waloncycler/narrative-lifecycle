@@ -5,7 +5,7 @@ import { resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { SyncWorldMonitorSourcesUseCase } from '@/app/use_cases/sync_worldmonitor_sources_use_case';
 import { signalsFromWorldMonitorPayload } from '@/features/worldmonitor/domain/worldmonitor_rules';
-import { FileWorldMonitorSourceRepository, WorldMonitorHttpClient } from '@/features/worldmonitor/io/worldmonitor_source_adapter';
+import { DbWorldMonitorSourceRepository, WorldMonitorHttpClient } from '@/features/worldmonitor/io/worldmonitor_source_adapter';
 import type {
   WorldMonitorOperationDescriptor,
   WorldMonitorPayload,
@@ -22,17 +22,18 @@ afterEach(async () => {
 describe('World Monitor source adapter', () => {
   it('inventories OpenAPI operations without claiming that catalogued means connected', async () => {
     const root = await fixtureRoot();
-    const repository = new FileWorldMonitorSourceRepository(root.dashboard, root.reference);
+    const repository = new DbWorldMonitorSourceRepository(root.dashboard, root.reference);
     const inventory = repository.buildInventory({
       generatedAt: '2026-07-28T12:00:00.000Z',
       productionConfigured: false,
     });
 
     // Counts reflect the built-in catalog (expanded in the v0.13.5 open-source
-    // release) plus the two synthetic fixture services below.
-    expect(inventory.service_count).toBe(64);
-    expect(inventory.operation_count).toBe(66);
-    expect(inventory.pollable_operation_count).toBe(63);
+    // release, plus the v0.9.8 TradingView top-provider additions) plus the two
+    // synthetic fixture services below.
+    expect(inventory.service_count).toBe(69);
+    expect(inventory.operation_count).toBe(71);
+    expect(inventory.pollable_operation_count).toBe(68);
     expect(inventory.sandbox_operation_count).toBe(1);
     expect(inventory.operations.find((item) => item.operation_id === 'ListEarthquakes')?.access_state).toBe('sandbox_available');
     expect(inventory.operations.find((item) => item.operation_id === 'GetCountryRisk')?.evidence_eligibility).toBe('context_only');

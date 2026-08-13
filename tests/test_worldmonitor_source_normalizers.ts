@@ -623,6 +623,69 @@ describe('World Monitor feed-style sources (RSS/Atom, HTML, JSON lists)', () => 
     expect(sourceConfigForOperation({ operation_id: 'DirectHuggingFaceModels', service: 'HuggingFaceModels' } as WorldMonitorOperationDescriptor)?.primary_layer).toBe('reality');
     expect(sourceConfigForOperation({ operation_id: 'DirectCrunchbaseNews', service: 'CrunchbaseNews' } as WorldMonitorOperationDescriptor)?.primary_layer).toBe('name');
   });
+
+  it('normalizes TradingView top-provider feeds (Gelonghui JSON, BusinessWire RSS)', () => {
+    const gelonghui = facts('DirectGelonghui', {
+      statusCode: 200,
+      totalCount: 2,
+      result: [
+        {
+          type: 'contents',
+          data: {
+            title: '净利飙涨715倍！存储龙头江波龙半年报炸场',
+            summary: '业绩爆发受益于存储行业景气回归',
+            timestamp: 1786371048,
+            link: 'https://www.gelonghui.com/p/5993440',
+            nick: '茶山',
+          },
+        },
+        {
+          type: 'contents',
+          data: {
+            title: 'Meta发布可单卡运行轻量AI模型',
+            timestamp: 1786371100,
+            link: 'https://www.gelonghui.com/p/5993441',
+          },
+        },
+      ],
+    });
+    expect(gelonghui).toHaveLength(2);
+    expect(gelonghui[0]).toMatchObject({
+      title: '净利飙涨715倍！存储龙头江波龙半年报炸场',
+      source_url: 'https://www.gelonghui.com/p/5993440',
+      event_type: 'NEWS_ARTICLE_PUBLISHED',
+      normalizer_id: 'news_article',
+    });
+    expect(gelonghui[0].event_at).toBe(new Date(1786371048 * 1000).toISOString());
+    expect(gelonghui[0].summary).toContain('业绩爆发受益于存储行业景气回归');
+
+    const businessWire = facts('DirectBusinessWire', {
+      __xml: `<rss version="2.0"><channel><item>
+        <title>Example Corp Announces Record Q2 Results</title>
+        <link>https://www.businesswire.com/news/home/20260728005123/en/</link>
+        <guid>20260728005123</guid>
+        <pubDate>Tue, 28 Jul 2026 08:00:00 GMT</pubDate>
+        <description><![CDATA[Quarterly financial highlights.]]></description>
+      </item></channel></rss>`,
+    });
+    expect(businessWire).toHaveLength(1);
+    expect(businessWire[0]).toMatchObject({
+      title: 'Example Corp Announces Record Q2 Results',
+      source_url: 'https://www.businesswire.com/news/home/20260728005123/en/',
+      event_type: 'NEWS_ARTICLE_PUBLISHED',
+      normalizer_id: 'news_article',
+    });
+    expect(businessWire[0].event_at).toBe('2026-07-28T08:00:00.000Z');
+  });
+
+  it('maps TradingView top-provider operations to media lifecycle layers', () => {
+    expect(sourceConfigForOperation({ operation_id: 'DirectBusinessWire', service: 'BusinessWire' } as WorldMonitorOperationDescriptor)?.primary_layer).toBe('name');
+    expect(sourceConfigForOperation({ operation_id: 'DirectGelonghui', service: 'Gelonghui' } as WorldMonitorOperationDescriptor)?.primary_layer).toBe('name');
+    expect(sourceConfigForOperation({ operation_id: 'DirectPANews', service: 'PANews' } as WorldMonitorOperationDescriptor)?.primary_layer).toBe('name');
+    expect(sourceConfigForOperation({ operation_id: 'DirectFx168', service: 'Fx168' } as WorldMonitorOperationDescriptor)?.primary_layer).toBe('name');
+    expect(sourceConfigForOperation({ operation_id: 'DirectGlobeNewswire', service: 'GlobeNewswire' } as WorldMonitorOperationDescriptor)?.primary_layer).toBe('name');
+    expect(sourceConfigForOperation({ operation_id: 'DirectBusinessWire', service: 'BusinessWire' } as WorldMonitorOperationDescriptor)?.default_event_type).toBe('NEWS_ARTICLE_PUBLISHED');
+  });
 });
 
 function facts(operationId: string, body: unknown) {

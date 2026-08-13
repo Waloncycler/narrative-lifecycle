@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RUN_PIPELINE_FIRST_FOR_DIFF } from '@/app/errors';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 import { resolveRunContext } from '@/platform/io/run_context';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -15,8 +15,8 @@ try {
     status: diff.status,
     previous_snapshot_id: diff.previous_snapshot_id,
     current_snapshot_id: diff.current_snapshot_id,
-    json: 'outputs/diffs/latest_stage_diff.json',
-    markdown: 'outputs/diffs/latest_stage_diff.md',
+    json: '<stored in db>',
+    markdown: '<stored in db>',
   }, null, 2));
 } catch (error) {
   if (error instanceof Error && error.message === RUN_PIPELINE_FIRST_FOR_DIFF) {

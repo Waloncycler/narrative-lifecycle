@@ -48,6 +48,11 @@ const FEED_OPERATION_EVENT_TYPES: Record<string, string> = {
   DirectBrookingsResearch: 'RESEARCH_REPORT_PUBLISHED',
   DirectMorganStanleyInsights: 'RESEARCH_REPORT_PUBLISHED',
   DirectCninfoAnnouncements: 'OFFICIAL_ANNOUNCEMENT',
+  DirectBusinessWire: 'NEWS_ARTICLE_PUBLISHED',
+  DirectGelonghui: 'NEWS_ARTICLE_PUBLISHED',
+  DirectPANews: 'NEWS_ARTICLE_PUBLISHED',
+  DirectFx168: 'NEWS_ARTICLE_PUBLISHED',
+  DirectGlobeNewswire: 'NEWS_ARTICLE_PUBLISHED',
 };
 
 const MEDIA_OPERATIONS = new Set([
@@ -59,6 +64,11 @@ const MEDIA_OPERATIONS = new Set([
   'DirectYicaiNews',
   'DirectCrunchbaseNews',
   'DirectBloombergTech',
+  'DirectBusinessWire',
+  'DirectGelonghui',
+  'DirectPANews',
+  'DirectFx168',
+  'DirectGlobeNewswire',
 ]);
 
 export const FEED_OPERATION_IDS = Object.keys(FEED_OPERATION_EVENT_TYPES);
@@ -110,6 +120,20 @@ const JSON_OPERATIONS: Record<string, (body: unknown) => Record<string, unknown>
       date: string(record.publishTime),
       url: string(record.attachPath),
     }) as Record<string, unknown>)
+    .filter((record) => Boolean(record.title)),
+  // Gelonghui article API returns { result: [{ type, data: {...} }] }; each
+  // item nests the article fields under `data` and the timestamp is seconds.
+  DirectGelonghui: (body) => objectArray(object(body)?.result)
+    .map((entry) => {
+      const data = object(entry?.data) ?? {};
+      return {
+        title: string(data.title),
+        summary: string(data.summary),
+        date: number(data.timestamp) ?? null,
+        link: string(data.link),
+        author: string(data.nick),
+      } as Record<string, unknown>;
+    })
     .filter((record) => Boolean(record.title)),
 };
 
@@ -196,6 +220,11 @@ export function normalizerIdForFeedOperation(operationId: string): string {
     DirectBrookingsResearch: 'research_report',
     DirectMorganStanleyInsights: 'research_report',
     DirectCninfoAnnouncements: 'cninfo_announcement',
+    DirectBusinessWire: 'news_article',
+    DirectGelonghui: 'news_article',
+    DirectPANews: 'news_article',
+    DirectFx168: 'news_article',
+    DirectGlobeNewswire: 'news_article',
   };
   return ids[operationId] ?? 'feed_signal';
 }

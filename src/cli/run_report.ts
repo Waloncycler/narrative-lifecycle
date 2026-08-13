@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RUN_PIPELINE_FIRST } from '@/app/errors';
-import { createProductCoreUseCases } from '@/platform/io/file_system_adapters';
+import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 import { resolveRunContext } from '@/platform/io/run_context';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -13,8 +13,8 @@ try {
   const { report } = buildWeeklyBriefUseCase.execute(context);
   console.log(JSON.stringify({
     report_id: report.report_id,
-    markdown: 'outputs/reports/weekly_brief.md',
-    json: 'outputs/reports/weekly_brief.json',
+    markdown: '<stored in db>',
+    json: '<stored in db>',
     system_status: report.executive_summary.system_status,
   }, null, 2));
 } catch (error) {

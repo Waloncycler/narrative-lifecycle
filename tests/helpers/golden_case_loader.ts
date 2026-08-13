@@ -2,12 +2,12 @@ import { expect } from 'vitest';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { GoldenCase } from '@/features/reporting/domain/golden_case';
-import { FileGoldenCaseRepository, YamlFileRepository } from '@/platform/file_repository';
+import { DbGoldenCaseRepository, YamlFileRepository } from '@/platform/file_repository';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '../..');
 
-const repository = new FileGoldenCaseRepository(new YamlFileRepository(repoRoot));
+const repository = new DbGoldenCaseRepository(new YamlFileRepository());
 
 export function loadGoldenCase(fileName: string): GoldenCase {
   const topicId = fileName.replace(/\.ya?ml$/, '');

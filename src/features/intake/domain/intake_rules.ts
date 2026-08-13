@@ -1,5 +1,6 @@
 import type { EvidenceImportDraft } from '@/features/evidence/types/evidence_import';
 import type { DocumentChunk, EvidenceCandidate, ProvenanceRecord, RawDocument, ReviewDecision } from '@/features/intake/types/intake';
+import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 
 const forbiddenAdvicePattern = /\b(buy|sell|long|short|entry|exit|position|target price|stop loss)\b|买入|卖出|加仓|减仓|持仓|目标价|止损|做多|做空/i;
 
@@ -10,6 +11,22 @@ export function noTradingAdvice(value: unknown): boolean {
     .replace(/\b(?:this|it|content|research|analysis)\s+(?:is\s+)?not\s+(?:a\s+)?(?:buy\s+or\s+sell|trading|investment)\s+advice\b/gi, '')
     .replace(/不构成(?:买卖|投资|交易)建议/g, '');
   return !forbiddenAdvicePattern.test(text);
+}
+
+export function convertRetrievalToRawDocuments(report: ResearchSourceRetrievalReport): RawDocument[] {
+  return report.items
+    .filter((item) => item.status === 'retrieved' && item.citation_status === 'ready')
+    .map((item) => {
+      const text = item.excerpts.map((e) => e.quote).join('\n\n');
+      return {
+        raw_document_id: item.retrieval_id,
+        source_name: item.url,
+        source_kind: 'html',
+        ingested_at: item.fetched_at,
+        text,
+        character_count: text.length,
+      };
+    });
 }
 
 export function chunkRawDocument(document: RawDocument, maxChunkLength = 900): DocumentChunk[] {

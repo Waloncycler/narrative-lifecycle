@@ -1,7 +1,7 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import Ajv2020 from 'ajv/dist/2020';
-import addFormats from 'ajv-formats';
+
 import { parse, stringify } from 'yaml';
 import { normalizeEvidenceImport } from '@/app/evidence_import_normalizer';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
@@ -25,7 +25,8 @@ export const EVIDENCE_IMPORT_AUDIT_PATH = 'data/audit/evidence_import_audit.json
 export const OPERATIONAL_EVIDENCE_ADMISSION_PATH = 'data/audit/operational_evidence_admission.jsonl';
 
 export function loadEvidenceImportDraft(repoRoot: string, sourceFile = DEFAULT_EVIDENCE_IMPORT_FILE): EvidenceImportDraft[] {
-  const value = parse(readFileSync(resolve(repoRoot, sourceFile), 'utf8')) as EvidenceImportDraft | EvidenceImportDraft[];
+  const content = readFileSync(resolve(repoRoot, sourceFile), 'utf8');
+  const value = parse(content) as EvidenceImportDraft | EvidenceImportDraft[];
   return Array.isArray(value) ? value : [value];
 }
 
@@ -44,24 +45,26 @@ function loadExistingEvidenceIds(repoRoot: string): Set<string> {
     const directory = resolve(repoRoot, relativeDirectory);
     if (!existsSync(directory)) continue;
     for (const file of readdirSync(directory).filter((item) => item.endsWith('.yaml') || item.endsWith('.yml'))) {
-      const rows = parse(readFileSync(resolve(directory, file), 'utf8')) as EvidenceNode[];
+      const rows = readGenericArtifact(resolve(directory, file))! as EvidenceNode[];
       for (const row of rows) ids.add(row.evidence_id);
     }
   }
   return ids;
 }
 
+import { FileSchemaValidator } from '@/platform/io/app_di_container';
+
 function schemaErrors(repoRoot: string, drafts: EvidenceImportDraft[]): EvidenceValidationIssue[] {
-  const ajv = new Ajv2020({ allErrors: true, strict: false });
-  addFormats(ajv);
-  const schema = JSON.parse(readFileSync(resolve(repoRoot, 'schemas/evidence_import.schema.json'), 'utf8')) as object;
-  const validate = ajv.compile(schema);
-  if (validate(drafts)) return [];
-  return (validate.errors ?? []).map((error) => ({
-    evidence_id: 'schema',
-    field: error.instancePath || error.schemaPath,
-    message: error.message ?? 'schema validation failed',
-  }));
+  try {
+    new FileSchemaValidator().validate('evidence_import.schema.json', drafts);
+    return [];
+  } catch (err: any) {
+    return [{
+      evidence_id: 'schema',
+      field: 'root',
+      message: err.message,
+    }];
+  }
 }
 
 export function validateEvidenceImport(input: {
@@ -91,7 +94,7 @@ export function isIdempotentEvidenceImport(input: {
 }): boolean {
   const fixturePath = resolve(input.repoRoot, MANUAL_IMPORTED_EVIDENCE_PATH);
   if (!existsSync(fixturePath)) return false;
-  const existing = parse(readFileSync(fixturePath, 'utf8')) as EvidenceNode[];
+  const existing = readGenericArtifact(fixturePath)! as EvidenceNode[];
   const existingById = new Map(existing.map((item) => [item.evidence_id, item]));
   const normalized = normalizeEvidenceImport({
     drafts: input.drafts,
@@ -278,7 +281,7 @@ export function writeAcceptedEvidenceImport(repoRoot: string, report: EvidenceVa
   const fixturePath = resolve(repoRoot, MANUAL_IMPORTED_EVIDENCE_PATH);
   mkdirSync(dirname(fixturePath), { recursive: true });
   const existingRows = existsSync(fixturePath)
-    ? parse(readFileSync(fixturePath, 'utf8')) as EvidenceNode[]
+    ? readGenericArtifact(fixturePath)! as EvidenceNode[]
     : [];
   writeFileSync(fixturePath, stringify(mergeEvidenceRows(existingRows, fixtureRows)));
 

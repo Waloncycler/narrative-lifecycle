@@ -1,18 +1,19 @@
-import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse, stringify } from 'yaml';
 import type { EvidenceCandidate, EvidenceIntakeSession, AiCandidateSuggestion } from '@/features/intake/types/intake';
 import type { AliasRecord, BranchRecord, CanonicalTopicRecord, ProvisionalTopicRecord, TopicRegistry, TopicResolution, TopicResolutionAudit } from '@/features/narrative/types/topic_resolution';
 import type { NarrativeMemory } from '@/features/narrative/domain/reactivation';
 import type { NarrativeGraphPromotionReport } from '@/features/narrative/types/narrative_graph_promotion';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { DbArtifactRepository } from '@/platform/io/db_artifact_repository';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
 export const TOPIC_RESOLUTION_AUDIT_PATH = 'outputs/intake/latest_topic_resolution_audit.json';
 export const TOPIC_UNRESOLVED_QUEUE_PATH = 'outputs/intake/latest_unresolved_queue.json';
 export const TOPIC_REGISTRY_VALIDATION_PATH = 'outputs/intake/latest_topic_registry_validation.json';
 
-export class FileTopicRegistryRepository {
-  constructor(private readonly repoRoot: string) {}
+export class TopicRegistryArtifactRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readTopicRegistry(): TopicRegistry {
     return {
@@ -25,11 +26,10 @@ export class FileTopicRegistryRepository {
   }
 
   writeTopicResolutionAudit(audit: TopicResolutionAudit): void {
-    writeJsonAtomically(resolve(this.repoRoot, TOPIC_RESOLUTION_AUDIT_PATH), audit);
-    writeJsonAtomically(resolve(this.repoRoot, TOPIC_UNRESOLVED_QUEUE_PATH), audit.unresolved_queue);
-    writeJsonAtomically(resolve(this.repoRoot, TOPIC_REGISTRY_VALIDATION_PATH), audit.registry_validation);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/intake/history/${audit.audit_id}.json`), audit);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/intake/latest_topic_resolution_audit.md'), renderTopicAuditMarkdown(audit));
+    const dbArtifact = new DbArtifactRepository();
+    dbArtifact.writeArtifact(`audit_${audit.audit_id}`, 'topic_resolution_audit', audit, renderTopicAuditMarkdown(audit));
+    dbArtifact.writeArtifact(`unresolved_queue_latest`, 'unresolved_queue', audit.unresolved_queue);
+    dbArtifact.writeArtifact(`topic_registry_validation_latest`, 'registry_validation', audit.registry_validation);
   }
 
   readTopicResolutionAudit(): TopicResolutionAudit | null {
@@ -140,7 +140,7 @@ export class FileTopicRegistryRepository {
   }
 
   private writeYaml(relativePath: string, value: unknown): void {
-    writeTextAtomically(resolve(this.repoRoot, relativePath), stringify(value));
+    writeFileSync(resolve(this.repoRoot, relativePath), stringify(value));
   }
 
   private readYaml<T>(relativePath: string, fallback: T): T {

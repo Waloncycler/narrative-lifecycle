@@ -1,4 +1,5 @@
 import type { ResearchSourceQualityInput, ResearchSourceQualityReport } from '@/features/research/types/research_source_quality';
+import type { IntakeEvaluationReport } from '@/features/intake/types/intake';
 
 export function buildResearchSourceQualityReport(input: ResearchSourceQualityInput): ResearchSourceQualityReport {
   const retrieved = input.items.filter((item) => item.status === 'retrieved');
@@ -44,6 +45,24 @@ export function buildResearchSourceQualityReport(input: ResearchSourceQualityInp
       topic_branch_accuracy_requires_human_review: true,
       no_trading_advice: true,
     },
+  };
+}
+
+export function updateQualityReportWithReviewDecisions(
+  report: ResearchSourceQualityReport,
+  evaluation: IntakeEvaluationReport
+): ResearchSourceQualityReport {
+  if (evaluation.candidate_count === 0) {
+    return { ...report };
+  }
+
+  const supportedCount = evaluation.feedback.filter(f => f.final_decision !== 'reject').length;
+  const accurateTopicCount = evaluation.feedback.filter(f => !f.parent_branch_error).length;
+
+  return {
+    ...report,
+    reviewed_claim_support_rate: rate(supportedCount, evaluation.candidate_count),
+    reviewed_topic_branch_accuracy: rate(accurateTopicCount, evaluation.candidate_count),
   };
 }
 

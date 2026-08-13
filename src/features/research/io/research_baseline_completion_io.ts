@@ -1,21 +1,22 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { ResearchBaselineCompletionReport } from '@/features/research/types/research_baseline_completion';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
-export class FileResearchBaselineCompletionRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbResearchBaselineCompletionRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   writeReport(report: ResearchBaselineCompletionReport): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/research/latest_baseline_completion.json'), report);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/research/history/${report.baseline_plan_id}.json`), report);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/research/latest_baseline_completion.md'), renderMarkdown(report));
+    writeGenericArtifact('research/latest_baseline_completion.json', report);
+    writeGenericArtifact(`research/history/${report.baseline_plan_id}.json`, report);
+    writeGenericTextArtifact('research/latest_baseline_completion.md', renderMarkdown(report));
   }
 
   readLatestReport(): ResearchBaselineCompletionReport | null {
-    const path = resolve(this.repoRoot, 'outputs/research/latest_baseline_completion.json');
+    const path = 'research/latest_baseline_completion.json';
     if (!existsSync(path)) return null;
-    try { return JSON.parse(readFileSync(path, 'utf8')) as ResearchBaselineCompletionReport; } catch { return null; }
+    try { return readGenericArtifact(path)! as ResearchBaselineCompletionReport; } catch { return null; }
   }
 }
 

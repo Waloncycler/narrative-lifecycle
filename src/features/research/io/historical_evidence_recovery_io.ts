@@ -1,25 +1,26 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { HistoricalEvidenceRecoveryReport } from '@/features/research/types/historical_evidence_recovery';
 import type { TopicEvolutionTimeline } from '@/features/stages/domain/stage_evolution_reconstructor';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
-export class FileHistoricalEvidenceRecoveryRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbHistoricalEvidenceRecoveryRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readTimelines(): TopicEvolutionTimeline[] | null {
-    const path = resolve(this.repoRoot, 'outputs/evolution_timelines/all_topics_evolution.json');
+    const path = 'evolution_timelines/all_topics_evolution.json';
     if (!existsSync(path)) return null;
     try {
-      const value = JSON.parse(readFileSync(path, 'utf8')) as unknown;
+      const value = readGenericArtifact(path)! as unknown;
       return Array.isArray(value) ? value as TopicEvolutionTimeline[] : null;
     } catch { return null; }
   }
 
   writeReport(report: HistoricalEvidenceRecoveryReport): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/research/latest_historical_evidence_recovery.json'), report);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/research/history/${report.recovery_plan_id}.json`), report);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/research/latest_historical_evidence_recovery.md'), renderMarkdown(report));
+    writeGenericArtifact('research/latest_historical_evidence_recovery.json', report);
+    writeGenericArtifact(`research/history/${report.recovery_plan_id}.json`, report);
+    writeGenericTextArtifact('research/latest_historical_evidence_recovery.md', renderMarkdown(report));
   }
 }
 

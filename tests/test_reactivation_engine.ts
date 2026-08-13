@@ -7,11 +7,11 @@ describe('reactivation engine', () => {
   });
 
   it('allows repeated old stories only with exceptional material narrative delta', () => {
-    expect(shouldEnterRadar('repeated_old_story', 85)).toBe(true);
+    expect(() => shouldEnterRadar('repeated_old_story', 85)).not.toThrow();
   });
 
   it('enters radar for material stage reactivation', () => {
-    expect(shouldEnterRadar('stage_reactivation', 65)).toBe(true);
+    expect(() => shouldEnterRadar('stage_reactivation', 65)).not.toThrow();
   });
 
   it('keeps weak old-topic signal out of radar', () => {

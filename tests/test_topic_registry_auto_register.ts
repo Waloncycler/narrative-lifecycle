@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
 import type { TopicResolution } from '@/features/narrative/types/topic_resolution';
-import { FileTopicRegistryRepository } from '@/platform/io/topic_registry_io';
+import { TopicRegistryArtifactRepository } from '@/platform/io/topic_registry_io';
 
 function seedRegistry(root: string): void {
   mkdirSync(join(root, 'data/topic_registry'), { recursive: true });
@@ -14,11 +14,11 @@ function seedRegistry(root: string): void {
   writeFileSync(join(root, 'data/topic_registry/provisional_topics.yaml'), `[]\n`);
 }
 
-describe('FileTopicRegistryRepository auto-registration (autonomous mode)', () => {
+describe('TopicRegistryArtifactRepository auto-registration (autonomous mode)', () => {
   it('registers new provisional topics and branches into the registry files', () => {
     const root = mkdtempSync(join(tmpdir(), 'topic-registry-auto-'));
     seedRegistry(root);
-    const repo = new FileTopicRegistryRepository(root);
+    const repo = new TopicRegistryArtifactRepository(root);
 
     const resolutions: TopicResolution[] = [
       { candidate_id: 'candidate_fusion', status: 'new_provisional_topic', provisional_topic_id: 'provisional_fusion_energy', resolved_topic_id: null, resolved_branch_id: null, reason: 'Fusion supply chain validation.', confidence: 'medium', alternatives: [], audit_required: false },
@@ -40,7 +40,7 @@ describe('FileTopicRegistryRepository auto-registration (autonomous mode)', () =
   it('is idempotent and never duplicates registrations', () => {
     const root = mkdtempSync(join(tmpdir(), 'topic-registry-idem-'));
     seedRegistry(root);
-    const repo = new FileTopicRegistryRepository(root);
+    const repo = new TopicRegistryArtifactRepository(root);
 
     const resolutions: TopicResolution[] = [
       { candidate_id: 'candidate_fusion', status: 'new_provisional_topic', provisional_topic_id: 'provisional_fusion_energy', resolved_topic_id: null, resolved_branch_id: null, reason: 'Fusion supply chain validation.', confidence: 'medium', alternatives: [], audit_required: false },

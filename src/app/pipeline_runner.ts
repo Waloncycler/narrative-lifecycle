@@ -1,19 +1,17 @@
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync } from 'node:fs';
 import { resolve } from 'node:path';
-import Ajv2020 from 'ajv/dist/2020';
-import addFormats from 'ajv-formats';
 import type { DashboardCard } from '@/features/reporting/domain/dashboard_card_service';
 import { createEarlyRadarCandidate, type EarlyRadarCandidate } from '@/features/reporting/domain/early_radar_service';
 import { calibrateFailureCases, type FailureCaseCalibration } from '@/features/reporting/domain/evaluation_service';
 import { MemoryService } from '@/features/narrative/domain/memory_service';
 import { createReactivationRecord } from '@/features/narrative/domain/reactivation_service';
 import {
-  FileEvaluationRepository,
-  FileEvidenceRepository,
-  FileFailureCaseRepository,
-  FileGoldenCaseRepository,
-  FileMemoryRepository,
-  FileTopicRepository,
+  DbEvaluationRepository,
+  DbEvidenceRepository,
+  DbFailureCaseRepository,
+  DbGoldenCaseRepository,
+  DbMemoryRepository,
+  DbTopicRepository,
   YamlFileRepository,
 } from '@/platform/file_repository';
 import { runGoldenCases, type GoldenCaseRunResult } from '@/features/reporting/pipeline/golden_case_runner';
@@ -48,24 +46,23 @@ export interface PipelineRun {
   evaluation_calibration: FailureCaseCalibration[];
 }
 
+import { FileSchemaValidator } from '@/platform/io/app_di_container';
+import { writeGenericArtifact } from '@/platform/io/run_manifest_writer';
+
 function writeJson(path: string, value: unknown): void {
-  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+  // Strip repoRoot from path to make it a generic artifact ID if it's absolute
+  const id = path.includes('outputs/') ? path.substring(path.indexOf('outputs/') + 8) : path;
+  writeGenericArtifact(id, value);
 }
 
 function validateSchema(repoRoot: string, schemaFile: string, value: unknown): void {
-  const ajv = new Ajv2020({ allErrors: true, strict: false });
-  addFormats(ajv);
-  const schema = JSON.parse(readFileSync(resolve(repoRoot, 'schemas', schemaFile), 'utf8'));
-  const validate = ajv.compile(schema);
-  if (!validate(value)) {
-    throw new Error(`${schemaFile} validation failed: ${JSON.stringify(validate.errors)}`);
-  }
+  new FileSchemaValidator().validate(schemaFile, value);
 }
 
 function buildEarlyRadarCandidates(goldenResults: GoldenCaseRunResult[], repoRoot: string): EarlyRadarCandidate[] {
-  const files = new YamlFileRepository(repoRoot);
+  const files = new YamlFileRepository();
   const memoryService = new MemoryService(
-    new FileMemoryRepository(new FileTopicRepository(files)).listSeedMemories(),
+    new DbMemoryRepository(new DbTopicRepository(files)).listSeedMemories(),
   );
 
   return goldenResults.flatMap((result) => {
@@ -109,11 +106,11 @@ function buildEarlyRadarCandidates(goldenResults: GoldenCaseRunResult[], repoRoo
 }
 
 export function runPipeline(repoRoot: string, generatedAt = new Date().toISOString()): PipelineRun {
-  const files = new YamlFileRepository(repoRoot);
-  const goldenCases = new FileGoldenCaseRepository(files).listGoldenCases();
-  const evidence = new FileEvidenceRepository(files).listSampleEvidence();
-  const failureCases = new FileFailureCaseRepository(files).listFailureCases();
-  const evaluations = new FileEvaluationRepository(files).listEvaluationResults();
+  const files = new YamlFileRepository();
+  const goldenCases = new DbGoldenCaseRepository(files).listGoldenCases();
+  const evidence = new DbEvidenceRepository(files).listSampleEvidence();
+  const failureCases = new DbFailureCaseRepository(files).listFailureCases();
+  const evaluations = new DbEvaluationRepository(files).listEvaluationResults();
   const goldenResults = runGoldenCases(goldenCases, evidence);
   const earlyRadarCandidates = buildEarlyRadarCandidates(goldenResults, repoRoot);
 

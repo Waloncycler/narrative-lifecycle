@@ -1,25 +1,26 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { ResearchSourceQualityReport } from '@/features/research/types/research_source_quality';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
-export class FileResearchSourceRetrievalRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbResearchSourceRetrievalRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
   writeReport(report: ResearchSourceRetrievalReport): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/research/latest_source_retrieval.json'), report);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/research/history/${report.retrieval_run_id}.json`), report);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/research/latest_source_retrieval.md'), renderResearchSourceRetrievalMarkdown(report));
+    writeGenericArtifact('research/latest_source_retrieval.json', report);
+    writeGenericArtifact(`research/history/${report.retrieval_run_id}.json`, report);
+    writeGenericTextArtifact('research/latest_source_retrieval.md', renderResearchSourceRetrievalMarkdown(report));
   }
   readLatestReport(): ResearchSourceRetrievalReport | null {
-    const path = resolve(this.repoRoot, 'outputs/research/latest_source_retrieval.json');
+    const path = 'research/latest_source_retrieval.json';
     if (!existsSync(path)) return null;
-    try { return JSON.parse(readFileSync(path, 'utf8')) as ResearchSourceRetrievalReport; } catch { return null; }
+    try { return readGenericArtifact(path)! as ResearchSourceRetrievalReport; } catch { return null; }
   }
   writeQualityReport(report: ResearchSourceQualityReport): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/research/latest_source_quality.json'), report);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/research/history/${report.retrieval_run_id}_quality.json`), report);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/research/latest_source_quality.md'), renderResearchSourceQualityMarkdown(report));
+    writeGenericArtifact('research/latest_source_quality.json', report);
+    writeGenericArtifact(`research/history/${report.retrieval_run_id}_quality.json`, report);
+    writeGenericTextArtifact('research/latest_source_quality.md', renderResearchSourceQualityMarkdown(report));
   }
 }
 

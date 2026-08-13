@@ -22,6 +22,7 @@
   },
   "type": "module",
   "scripts": {
+    "dev:api": "tsx watch src/api/server.ts",
     "evidence:validate": "tsx src/cli/run_evidence_validate.ts",
     "evidence:import": "tsx src/cli/run_evidence_import.ts",
     "pipeline": "tsx src/cli/run_pipeline.ts",
@@ -36,6 +37,7 @@
     "intake:apply": "tsx src/cli/run_intake_apply.ts",
     "intake:ai-shadow": "tsx src/cli/run_intake_ai_shadow.ts",
     "intake:ai-evaluate": "tsx src/cli/run_intake_ai_evaluate.ts",
+    "intake:from-retrieval": "tsx src/cli/run_intake_from_retrieval.ts",
     "intake:agent": "tsx src/cli/run_intake_agent.ts",
     "intake:evaluate": "tsx src/cli/run_intake_evaluate.ts",
     "intake:learn": "tsx src/cli/run_intake_learn.ts",
@@ -61,17 +63,29 @@
     "autonomy:run": "tsx src/cli/run_autonomous_research.ts",
     "policy:validate": "tsx src/cli/run_validate_autonomous_research_policy.ts",
     "timeline:rebuild": "tsx src/cli/run_evolution_timeline.ts",
+    "db:migrate": "tsx src/cli/run_db_migrate.ts",
+    "db:migrate:phase2": "tsx src/cli/run_db_migrate_phase2.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "yaml": "^2.9.0"
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^26.1.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
-    "tsx": "^4.23.0",
+    "drizzle-kit": "^0.31.10",
+    "json-schema-to-zod": "^2.8.1",
+    "tsx": "^4.23.12",
     "typescript": "^5.0.0",
     "vitest": "^2.0.0"
   }

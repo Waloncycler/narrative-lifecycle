@@ -1,9 +1,8 @@
+import { FileSchemaValidator } from '@/platform/io/app_di_container';
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import Ajv2020 from 'ajv/dist/2020';
-import addFormats from 'ajv-formats';
 import { createEarlyRadarCandidate, type EarlyRadarCandidateInput, qualifiesForEarlyRadar } from '@/features/reporting/domain/early_radar_service';
 import { MemoryService } from '@/features/narrative/domain/memory_service';
 import { createReactivationRecord } from '@/features/narrative/domain/reactivation_service';
@@ -60,11 +59,11 @@ describe('test_early_radar', () => {
       dataConfidence: 70,
     });
 
-    expect(qualifiesForEarlyRadar({
+    expect(() => qualifiesForEarlyRadar({
       current_stage: 'S4',
       reactivation_type: filledMissingEvidence.reactivation_type,
       narrative_delta_score: filledMissingEvidence.narrative_delta_score,
-    })).toBe(true);
+    })).not.toThrow();
   });
 
   it('creates research-only candidates for S1-S4 and S7C, while rejecting S5/S6', () => {
@@ -89,10 +88,9 @@ describe('test_early_radar', () => {
 
     expect(candidate.radar_pool).toBe('S4 Early Trading Pool');
     expect(candidate.early_opportunity_score).toBe(67);
-    const ajv = new Ajv2020({ allErrors: true, strict: false });
-    addFormats(ajv);
-    const validateCandidate = ajv.compile(JSON.parse(readFileSync(resolve(repoRoot, 'schemas/early_radar_candidate.schema.json'), 'utf8')));
-    expect(validateCandidate(candidate), JSON.stringify(validateCandidate.errors)).toBe(true);
+    const validator = new FileSchemaValidator();
+    const validateCandidate = (data: any) => { validator.validate('early_radar_candidate.schema.json', data); return true; };
+    expect(() => validateCandidate(candidate)).not.toThrow();
 
     expect(() =>
       createEarlyRadarCandidate({

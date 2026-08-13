@@ -1,20 +1,21 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import type { BaselineEvidenceReconciliationReport } from '@/features/research/types/baseline_evidence_reconciliation';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
 const EVIDENCE_TABLE_PATH = 'data/evidence_table/evidence_table.json';
 const ADMISSION_PATH = 'data/audit/operational_evidence_admission.jsonl';
 
-export class FileBaselineEvidenceReconciliationRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbBaselineEvidenceReconciliationRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readEvidence(): EvidenceNode[] {
     const path = resolve(this.repoRoot, EVIDENCE_TABLE_PATH);
     if (!existsSync(path)) return [];
     try {
-      const value = JSON.parse(readFileSync(path, 'utf8')) as unknown;
+      const value = readGenericArtifact(path)! as unknown;
       return Array.isArray(value) ? value as EvidenceNode[] : [];
     } catch {
       return [];
@@ -25,7 +26,7 @@ export class FileBaselineEvidenceReconciliationRepository {
     const path = resolve(this.repoRoot, ADMISSION_PATH);
     if (!existsSync(path)) return new Set();
     const ids = new Set<string>();
-    for (const line of readFileSync(path, 'utf8').split('\n')) {
+    for (const line of (readGenericTextArtifact(path) ?? "").split('\n')) {
       try {
         const record = JSON.parse(line) as { admission_type?: string; evidence_ids?: unknown };
         if (!['manual_import', 'migration_baseline', 'automated_publication'].includes(record.admission_type ?? '') || !Array.isArray(record.evidence_ids)) continue;
@@ -38,10 +39,10 @@ export class FileBaselineEvidenceReconciliationRepository {
   }
 
   write(report: BaselineEvidenceReconciliationReport): void {
-    const output = resolve(this.repoRoot, 'outputs/research');
-    writeJsonAtomically(resolve(output, 'latest_baseline_evidence_reconciliation.json'), report);
-    writeJsonAtomically(resolve(output, 'history', `${report.report_id}.json`), report);
-    writeTextAtomically(resolve(output, 'latest_baseline_evidence_reconciliation.md'), renderBaselineReconciliation(report));
+    const output = 'research';
+    writeGenericArtifact(resolve(output, 'latest_baseline_evidence_reconciliation.json'), report);
+    writeGenericArtifact(resolve(output, 'history', `${report.report_id}.json`), report);
+    writeGenericTextArtifact(resolve(output, 'latest_baseline_evidence_reconciliation.md'), renderBaselineReconciliation(report));
   }
 
   appendAdmission(input: { report: BaselineEvidenceReconciliationReport; topicId: string; reviewer: string; admittedAt: string }): string {

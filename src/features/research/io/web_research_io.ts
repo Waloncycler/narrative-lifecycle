@@ -1,21 +1,22 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { WebResearchReport } from '@/features/research/types/web_research';
-import { writeJsonAtomically, writeTextAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
-export class FileWebResearchRepository {
-  constructor(private readonly repoRoot: string) {}
+export class DbWebResearchRepository {
+  constructor(private readonly repoRoot: string = process.cwd()) {}
 
   writeReport(report: WebResearchReport): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/research/latest_web_research.json'), report);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/research/history/${report.research_id}.json`), report);
-    writeTextAtomically(resolve(this.repoRoot, 'outputs/research/latest_web_research.md'), renderWebResearchMarkdown(report));
+    writeGenericArtifact('research/latest_web_research.json', report);
+    writeGenericArtifact(`research/history/${report.research_id}.json`, report);
+    writeGenericTextArtifact('research/latest_web_research.md', renderWebResearchMarkdown(report));
   }
 
   readLatestReport(): WebResearchReport | null {
-    const path = resolve(this.repoRoot, 'outputs/research/latest_web_research.json');
+    const path = 'research/latest_web_research.json';
     if (!existsSync(path)) return null;
-    try { return JSON.parse(readFileSync(path, 'utf8')) as WebResearchReport; } catch { return null; }
+    try { return readGenericArtifact(path)! as WebResearchReport; } catch { return null; }
   }
 }
 

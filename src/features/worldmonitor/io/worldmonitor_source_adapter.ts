@@ -1,3 +1,4 @@
+import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
@@ -15,7 +16,7 @@ import type {
   WorldMonitorSourceInventory,
   WorldMonitorSyncMode,
 } from '@/features/worldmonitor/types/worldmonitor_adapter';
-import { writeJsonAtomically } from '@/platform/io/run_manifest_writer';
+import { writeGenericArtifact } from '@/platform/io/run_manifest_writer';
 
 interface OpenApiOperation {
   operationId?: string;
@@ -132,6 +133,13 @@ const DIRECT_PUBLIC_OPERATIONS: WorldMonitorOperationDescriptor[] = [
   direct('DirectInvestingStock', 'InvestingStock', 'https://cn.investing.com/rss/news_25.rss', 'financial', 'candidate', 'Investing.com Stock Market News (股票股市资讯)'),
   direct('DirectInvestingAnalysis', 'InvestingAnalysis', 'https://cn.investing.com/rss/market_overview.rss', 'research', 'candidate', 'Investing.com Market Overview Analysis (市场概况分析)'),
   direct('DirectInvestingCrypto', 'InvestingCrypto', 'https://cn.investing.com/rss/news_301.rss', 'financial', 'candidate', 'Investing.com Crypto News (虚拟货币最新消息)'),
+
+  // Category 12 (v0.9.8+): TradingView Top News Providers
+  direct('DirectBusinessWire', 'BusinessWire', 'https://feed.businesswire.com/mrss/home/?rss=G1QFDERJXkJcFVJYWQ%3D%3D', 'financial', 'candidate', 'BusinessWire global corporate press release wire (MRSS)'),
+  direct('DirectGelonghui', 'Gelonghui', 'https://www.gelonghui.com/api/channels/web_home_page/articles/v8', 'financial', 'candidate', 'Gelonghui (格隆汇) financial news API'),
+  direct('DirectPANews', 'PANews', 'https://www.panewslab.com/rss.xml', 'financial', 'candidate', 'PANews crypto & Web3 news RSS'),
+  direct('DirectFx168', 'Fx168', 'https://www.fx168news.com/info/001001', 'financial', 'candidate', 'FX168 财经网 要闻 market news list (HTML scrape)'),
+  direct('DirectGlobeNewswire', 'GlobeNewswire', 'https://www.globenewswire.com/RssFeed/category/en/ALL', 'financial', 'candidate', 'GlobeNewswire corporate press release RSS'),
 ];
 
 export interface WorldMonitorFetchResult {
@@ -142,10 +150,10 @@ export interface WorldMonitorFetchResult {
   message: string;
 }
 
-export class FileWorldMonitorSourceRepository {
-  constructor(
-    private readonly repoRoot: string,
+export class DbWorldMonitorSourceRepository {
+  constructor(private readonly repoRoot: string = process.cwd(),
     private readonly referenceRoot = resolve(repoRoot, '../worldmonitor-main'),
+    private readonly sourceDir = resolve(repoRoot, 'data/worldmonitor_exports'),
   ) {}
 
   buildInventory(input: { generatedAt: string; productionConfigured: boolean }): WorldMonitorSourceInventory {
@@ -235,42 +243,42 @@ export class FileWorldMonitorSourceRepository {
     const fileName = basename(new URL(descriptor.sandbox_fixture).pathname);
     const path = resolve(this.referenceRoot, 'public/sandbox', fileName);
     if (!existsSync(path)) throw new Error(`${descriptor.operation_id}: local sandbox fixture missing`);
-    const envelope = JSON.parse(readFileSync(path, 'utf8')) as { response?: { body?: unknown } };
+    const envelope = readGenericArtifact(path)! as { response?: { body?: unknown } };
     return envelope.response?.body ?? {};
   }
 
   writeInventory(inventory: WorldMonitorSourceInventory): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/sources/latest_source_inventory.json'), inventory);
+    writeGenericArtifact('sources/latest_source_inventory.json', inventory);
   }
 
   writeSyncReport(report: unknown): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/sources/latest_sync_report.json'), report);
+    writeGenericArtifact('sources/latest_sync_report.json', report);
     const id = (report as { sync_id?: string }).sync_id ?? 'unknown';
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/sources/history/${id}.json`), report);
+    writeGenericArtifact(`sources/history/${id}.json`, report);
   }
 
   readFactState(): WorldMonitorFactState | null {
-    const path = resolve(this.repoRoot, 'outputs/sources/latest_fact_state.json');
+    const path = 'sources/latest_fact_state.json';
     if (!existsSync(path)) return null;
     try {
-      return JSON.parse(readFileSync(path, 'utf8')) as WorldMonitorFactState;
+      return readGenericArtifact(path)! as WorldMonitorFactState;
     } catch {
       return null;
     }
   }
 
   writeFactState(state: WorldMonitorFactState): void {
-    writeJsonAtomically(resolve(this.repoRoot, 'outputs/sources/latest_fact_state.json'), state);
-    writeJsonAtomically(resolve(this.repoRoot, `outputs/sources/history/${state.state_id}.json`), state);
+    writeGenericArtifact('sources/latest_fact_state.json', state);
+    writeGenericArtifact(`sources/history/${state.state_id}.json`, state);
   }
 
   seenPayloadHashes(): Set<string> {
-    const directory = resolve(this.repoRoot, 'outputs/sources/history');
+    const directory = 'sources/history';
     if (!existsSync(directory)) return new Set();
     const hashes = new Set<string>();
     for (const file of readdirSync(directory).filter((name) => name.endsWith('.json'))) {
       try {
-        const value = JSON.parse(readFileSync(resolve(directory, file), 'utf8')) as {
+        const value = readGenericArtifact(resolve(directory, file))! as {
           records?: Array<{ payload_hash?: string | null }>;
         };
         for (const record of value.records ?? []) {

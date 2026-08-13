@@ -2,27 +2,27 @@ import { describe, expect, it } from 'vitest';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  FileEvidenceRepository,
-  FileEvaluationRepository,
-  FileFailureCaseRepository,
-  FileGoldenCaseRepository,
-  FileMemoryRepository,
-  FileTopicRepository,
+  DbEvidenceRepository,
+  DbEvaluationRepository,
+  DbFailureCaseRepository,
+  DbGoldenCaseRepository,
+  DbMemoryRepository,
+  DbTopicRepository,
   YamlFileRepository,
 } from '@/platform/file_repository';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..');
-const yamlFiles = new YamlFileRepository(repoRoot);
+const yamlFiles = new YamlFileRepository();
 
 describe('file repositories', () => {
   it('loads seed topics, golden cases, evidence, failure cases, and seed memories', () => {
-    const topics = new FileTopicRepository(yamlFiles).listTopics();
-    const goldenCases = new FileGoldenCaseRepository(yamlFiles).listGoldenCases();
-    const evidence = new FileEvidenceRepository(yamlFiles).listSampleEvidence();
-    const failureCases = new FileFailureCaseRepository(yamlFiles).listFailureCases();
-    const evaluations = new FileEvaluationRepository(yamlFiles).listEvaluationResults();
-    const memories = new FileMemoryRepository(new FileTopicRepository(yamlFiles)).listSeedMemories();
+    const topics = new DbTopicRepository(yamlFiles).listTopics();
+    const goldenCases = new DbGoldenCaseRepository(yamlFiles).listGoldenCases();
+    const evidence = new DbEvidenceRepository(yamlFiles).listSampleEvidence();
+    const failureCases = new DbFailureCaseRepository(yamlFiles).listFailureCases();
+    const evaluations = new DbEvaluationRepository(yamlFiles).listEvaluationResults();
+    const memories = new DbMemoryRepository(new DbTopicRepository(yamlFiles)).listSeedMemories();
 
     expect(topics.map((topic) => topic.topic_id)).toContain('bci');
     expect(goldenCases.map((caseItem) => caseItem.topic_id)).toEqual([

@@ -11,8 +11,8 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { reconstructAllTopicEvolutions, type TopicEvolutionTimeline } from '@/features/stages/domain/stage_evolution_reconstructor';
-import { FileAutonomousResearchRepository } from '@/features/research/io/autonomous_research_io';
-import { FileSchemaValidator } from '@/platform/io/file_system_adapters';
+import { AutonomousResearchArtifactRepository } from '@/features/research/io/autonomous_research_io';
+import { FileSchemaValidator } from '@/platform/io/app_di_container';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +23,7 @@ const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(__dirname, '..', '..
 // audited manual rows, published automated rows, and the JSON table — so the
 // timeline and the snapshot can never disagree about a topic's stage.
 function loadAllEvidence(): EvidenceNode[] {
-  return new FileAutonomousResearchRepository(repoRoot).readOperationalEvidence();
+  return new AutonomousResearchArtifactRepository().readOperationalEvidence();
 }
 
 // Load topic registry
@@ -43,7 +43,7 @@ function loadTopicRegistry(): Array<{ topic_id: string; topic_name: string }> {
   }
 
   // Fallback: extract unique topic_ids from evidence
-  const snapshotPath = resolve(repoRoot, 'outputs/operator_runs/latest_stage_snapshot.json');
+  const snapshotPath = resolve(repoRoot, '<stored in db>');
   try {
     const content = readFileSync(snapshotPath, 'utf8');
     const parsed = JSON.parse(content);
@@ -101,7 +101,7 @@ const topicRegistry = loadTopicRegistry();
 console.log(`📦 已加载 ${allEvidence.length} 条证据, ${topicRegistry.length} 个主题`);
 
 const timelines = reconstructAllTopicEvolutions(allEvidence, topicRegistry);
-new FileSchemaValidator(repoRoot).validate('stage_evolution_timeline.schema.json', timelines);
+new FileSchemaValidator().validate('stage_evolution_timeline.schema.json', timelines);
 
 // Print to console
 for (const tl of timelines) {
@@ -109,7 +109,7 @@ for (const tl of timelines) {
 }
 
 // Write structured JSON output
-const outputDir = resolve(repoRoot, 'outputs/evolution_timelines');
+const outputDir = resolve(repoRoot, '<stored in db>');
 mkdirSync(outputDir, { recursive: true });
 
 const outputPath = resolve(outputDir, 'all_topics_evolution.json');
