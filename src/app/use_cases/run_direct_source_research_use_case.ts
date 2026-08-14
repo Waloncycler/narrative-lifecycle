@@ -77,7 +77,7 @@ export class RunDirectSourceResearchUseCase {
               url: row.url,
               snippet: row.snippet,
               published_at: row.published_at,
-              evidence_eligibility: 'context_only',
+              evidence_eligibility: task.evidence_eligibility ?? 'context_only',
               next_action: 'review_source',
             });
           }
@@ -185,6 +185,7 @@ function balancedDirectTasks(
 }
 
 function directTaskPriority(task: ResearchCampaign['tasks'][number]): number {
+  if (task.deep_probe_target) return -1;
   if (task.node_kind === 'formal_topic') return 0;
   if (task.node_kind === 'universe_seed') return 1;
   if (task.node_kind === 'provisional_topic') return 2;

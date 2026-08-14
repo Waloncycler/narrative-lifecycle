@@ -23,6 +23,7 @@ export interface DeepResearchPlannedQuery {
   source_ids: string[];
   source_domains: string[];
   strict_source_domains?: string[];
+  deep_probe_target?: import('@/features/research/domain/research_strategy_mapper').DeepResearchProbeTarget;
 }
 
 export function scopeKey(topicId: string | null, branchId: string | null): string {
@@ -156,6 +157,7 @@ function followupsForLead(lead: WebResearchLead, scope: ResearchCampaignTask | n
       // Follow-up research keeps Atlas domains as a hint only. A new angle
       // may be corroborated by a different official or company primary host.
       strict_source_domains: [],
+      deep_probe_target: scope?.deep_probe_target,
     });
   };
   if (primary) push(primary);

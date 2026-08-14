@@ -2,6 +2,7 @@ import type { EvidenceCandidate } from '@/features/intake/types/intake';
 import type { TopicRegistry, TopicResolution, TopicResolutionAudit, TopicRegistryValidationReport } from '@/features/narrative/types/topic_resolution';
 import { inferTopic } from '@/features/intake/domain/intake_rules';
 import { marketNameWarning } from '@/features/narrative/domain/market_naming';
+import { DEFAULT_INDUSTRY_PACKS } from '@/features/reporting/domain/industry_packs';
 
 export function validateTopicRegistry(input: {
   registry: TopicRegistry;
@@ -94,6 +95,22 @@ export function resolveTopic(candidate: EvidenceCandidate, registry: TopicRegist
     return resolution(candidate.candidate_id, 'alias_of', alias.topic_id, branchForAlias(alias.topic_id, text, registry), null, `Matched alias "${alias.alias}" for canonical topic ${alias.topic_id}.`, 'high', true, [
       { status: 'existing_topic', topic_id: alias.topic_id, reason: alias.reason },
     ]);
+  }
+
+  const industryResolution = resolveViaIndustryDictionary(text, registry);
+  if (industryResolution) {
+    const branchExists = registry.branches.some(b => b.branch_id === industryResolution.branch_id && b.topic_id === industryResolution.topic_id);
+    return resolution(
+      candidate.candidate_id, 
+      branchExists ? 'existing_topic' : 'new_branch', 
+      industryResolution.topic_id, 
+      industryResolution.branch_id, 
+      null, 
+      industryResolution.reason, 
+      'medium', 
+      !branchExists, 
+      [{ status: 'existing_topic', topic_id: industryResolution.topic_id, reason: 'Inferred parent topic via industry dictionary mapping.' }]
+    );
   }
 
   if (evidence.topic_id === 'unknown_topic' || unresolvedLanguage(text)) {
@@ -233,4 +250,28 @@ function normalize(value: string): string {
 
 function slug(value: string): string {
   return normalize(value).replace(/\s+/g, '_').slice(0, 48) || 'unknown';
+}
+
+function resolveViaIndustryDictionary(text: string, registry: TopicRegistry): { topic_id: string; branch_id: string; reason: string } | undefined {
+  const lowerText = text.toLowerCase();
+  for (const pack of DEFAULT_INDUSTRY_PACKS) {
+    const matchedBranchHint = pack.branch_hints.find(h => lowerText.includes(h.toLowerCase()));
+    if (matchedBranchHint) {
+      // Find a canonical topic that matches this industry's topic_hints or aliases
+      const candidateTopics = registry.canonical_topics.filter(topic => {
+        const topicName = normalize(topic.topic_name);
+        const marketName = normalize(topic.market_name_zh ?? '');
+        return pack.aliases.some(a => topicName.includes(normalize(a)) || marketName.includes(normalize(a))) ||
+               pack.topic_hints.some(h => topicName.includes(normalize(h)) || marketName.includes(normalize(h)));
+      });
+      if (candidateTopics.length === 1) {
+        return {
+          topic_id: candidateTopics[0].topic_id,
+          branch_id: slug(matchedBranchHint),
+          reason: `Matched industry dictionary branch hint "${matchedBranchHint}" for parent topic ${candidateTopics[0].topic_id}.`,
+        };
+      }
+    }
+  }
+  return undefined;
 }

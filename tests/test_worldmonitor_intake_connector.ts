@@ -4,35 +4,35 @@ import type { WorldMonitorSignal } from '@/features/worldmonitor/types/worldmoni
 
 describe('WorldMonitorIntakeConnector', () => {
   it('correctly retrieves catalog configurations for known World Monitor data sources', () => {
-    const acledConfig = WorldMonitorIntakeConnector.getSourceConfig('acled');
-    expect(acledConfig.domain).toBe('geopolitics');
-    expect(acledConfig.primary_layer).toBe('friction');
-    expect(acledConfig.default_evidence_strength).toBe('E2');
+    const gdeltConfig = WorldMonitorIntakeConnector.getSourceConfig('gdelt_doc_articles');
+    expect(gdeltConfig.domain).toBe('osint');
+    expect(gdeltConfig.primary_layer).toBe('name');
+    expect(gdeltConfig.default_evidence_strength).toBe('E1');
 
-    const portwatchConfig = WorldMonitorIntakeConnector.getSourceConfig('portwatch');
-    expect(portwatchConfig.domain).toBe('energy');
-    expect(portwatchConfig.primary_layer).toBe('reality');
-    expect(portwatchConfig.default_evidence_strength).toBe('E3');
+    const comtradeConfig = WorldMonitorIntakeConnector.getSourceConfig('un_comtrade_preview');
+    expect(comtradeConfig.domain).toBe('financial');
+    expect(comtradeConfig.primary_layer).toBe('reality');
+    expect(comtradeConfig.default_evidence_strength).toBe('E3');
 
-    const quotesConfig = WorldMonitorIntakeConnector.getSourceConfig('market_quotes');
-    expect(quotesConfig.domain).toBe('financial');
-    expect(quotesConfig.primary_layer).toBe('capital');
-    expect(quotesConfig.default_evidence_strength).toBe('E2');
+    const coinbaseConfig = WorldMonitorIntakeConnector.getSourceConfig('coinbase_spot');
+    expect(coinbaseConfig.domain).toBe('financial');
+    expect(coinbaseConfig.primary_layer).toBe('capital');
+    expect(coinbaseConfig.default_evidence_strength).toBe('E2');
   });
 
   it('converts an incoming World Monitor signal into a valid EvidenceCandidate', () => {
     const signal: WorldMonitorSignal = {
-      signal_id: 'sig-portwatch-001',
-      source_id: 'portwatch',
-      domain: 'energy',
+      signal_id: 'sig-comtrade-001',
+      source_id: 'un_comtrade_preview',
+      domain: 'financial',
       timestamp: '2026-07-28T10:00:00.000Z',
       event_date: '2026-07-28',
-      event_title: 'Suez Canal Daily Transit Volume Drop',
-      event_summary: 'Suez Canal vessel transit volume declined 18% YoY due to maritime tension.',
-      event_type: 'PORT_DISRUPTION_ALERT',
-      source_name: 'IMF PortWatch Chokepoint Tracker',
-      source_url: 'https://portwatch.imf.org',
-      metrics: { transit_count: 32, yoy_change_pct: -18 },
+      event_title: 'Rare Earth Concentrate Export Flow Surge',
+      event_summary: 'Customs recorded a 23% MoM jump in rare earth concentrate export volume.',
+      event_type: 'TRADE_FLOW_RECORDED',
+      source_name: 'UN Comtrade Public Preview API',
+      source_url: 'https://comtradeapi.un.org',
+      metrics: { export_volume_kg: 520000, mom_change_pct: 23 },
       confidence_score: 0.95,
     };
 
@@ -42,8 +42,8 @@ describe('WorldMonitorIntakeConnector', () => {
       'branch_suez_corridor'
     );
 
-    expect(converted.signal.signal_id).toBe('sig-portwatch-001');
-    expect(converted.candidate.candidate_id).toBe('cand-wm-sig-portwatch-001');
+    expect(converted.signal.signal_id).toBe('sig-comtrade-001');
+    expect(converted.candidate.candidate_id).toBe('cand-wm-sig-comtrade-001');
     expect(converted.candidate.suggested_evidence.topic_id).toBe('topic_energy_security');
     expect(converted.candidate.suggested_evidence.branch_id).toBe('branch_suez_corridor');
     expect(converted.candidate.suggested_evidence.scope).toBe('branch');
@@ -56,27 +56,27 @@ describe('WorldMonitorIntakeConnector', () => {
   it('processes a batch of World Monitor signals and generates batch results', () => {
     const signals: WorldMonitorSignal[] = [
       {
-        signal_id: 'sig-eia-101',
-        source_id: 'eia_petroleum',
-        domain: 'energy',
+        signal_id: 'sig-gdelt-101',
+        source_id: 'gdelt_doc_articles',
+        domain: 'osint',
         timestamp: '2026-07-28T10:05:00.000Z',
         event_date: '2026-07-28',
-        event_title: 'US Crude Inventory Drawdown 4.2M Barrels',
-        event_summary: 'Commercial crude stocks fell by 4.2 million barrels last week.',
-        event_type: 'EIA_INVENTORY_DRAWDOWN',
-        source_name: 'US EIA Weekly Petroleum Data',
+        event_title: 'Global Semiconductor Supply Chain Realignment',
+        event_summary: 'Major chipmakers announced capacity shifts amid export control changes.',
+        event_type: 'GLOBAL_NEWS_EVENT',
+        source_name: 'GDELT DOC 2.0 Global News Articles',
         confidence_score: 0.9,
       },
       {
-        signal_id: 'sig-cot-202',
-        source_id: 'cftc_cot',
+        signal_id: 'sig-coinbase-202',
+        source_id: 'coinbase_spot',
         domain: 'financial',
         timestamp: '2026-07-28T10:10:00.000Z',
         event_date: '2026-07-28',
-        event_title: 'CFTC Crude Futures Net Long Positioning Jump',
-        event_summary: 'Money manager net long positions increased by 12,500 contracts.',
-        event_type: 'COT_POSITIONING_SHIFT',
-        source_name: 'CFTC COT Reports',
+        event_title: 'BTC-USD Spot Price Volatility Spike',
+        event_summary: 'BTC-USD traded up 4.1% intraday on heavy institutional volume.',
+        event_type: 'CRYPTO_SPOT_PRICE',
+        source_name: 'Coinbase Public Spot Price Quotes',
         confidence_score: 0.85,
       },
     ];

@@ -101,7 +101,7 @@ function baseItem(lead: ResearchLeadTriageItem, fetchedAt: string, detail: Omit<
     source_published_at: lead.published_at,
     fetched_at: fetchedAt,
     ...detail,
-    evidence_eligibility: 'context_only',
+    evidence_eligibility: lead.evidence_eligibility,
     next_action: lead.source_class !== 'unknown' && detail.status === 'retrieved' && detail.citation_status === 'ready'
       ? 'prepare_intake'
       : 'hold',
@@ -115,6 +115,11 @@ function baseItem(lead: ResearchLeadTriageItem, fetchedAt: string, detail: Omit<
  */
 export function extractReadableSource(raw: string, contentType: string | null, sourceUrl = ''): { title: string | null; text: string; extractor_id: ResearchSourceExtractorId } {
   const body = raw.slice(0, 1_000_000);
+  if (/markdown/i.test(contentType ?? '')) {
+    const titleMatch = /^#\s+(.+)$/m.exec(body) || /^Title:\s+(.+)$/m.exec(body);
+    const title = titleMatch ? titleMatch[1].trim() : null;
+    return { title, text: body.slice(0, 24_000), extractor_id: 'jina_reader_markdown' };
+  }
   if (isClinicalTrialsUrl(sourceUrl) && /json/i.test(contentType ?? '')) return { ...clinicalTrialsText(body), extractor_id: 'clinicaltrials_api' };
   if (/arxiv\.org/i.test(sourceUrl)) {
     const abstract = /<blockquote[^>]*class=["'][^"']*\babstract\b[^"']*["'][^>]*>([\s\S]*?)<\/blockquote>/i.exec(body)?.[1];

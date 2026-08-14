@@ -247,6 +247,7 @@ export function renderAgentDashboard(model: NarrativeMonitorModel): string {
       ${kpi('优先复核', String(leadTriage?.summary.priority_review_count ?? 0), leadTriage ? `普通复核 ${leadTriage.summary.review_count} · 背景参考 ${leadTriage.summary.reference_only_count} · 暂缓 ${leadTriage.summary.hold_count}` : '运行覆盖计划后自动分诊')}
     </section>
     <div class="dashboard-grid">
+      ${renderActiveProbes(researchCampaign, directSourceResearch)}
       <section class="panel wide-panel">
         <div class="panel-heading"><div><p class="eyebrow">循环时间线</p><h2>最近运行</h2></div><a class="text-link" href="/runs">查看正式运行</a></div>
         ${timeline.length ? timeline.map((run) => `
@@ -1368,3 +1369,30 @@ function styles(): string { return `
 .math-expression sub { bottom: -.28em; }
 .math-expression sup { top: -.5em; }
 `; }
+
+function renderActiveProbes(campaign: import('@/features/research/types/research_coverage').ResearchCampaign | null, directResearch: import('@/features/research/types/direct_source_research').DirectSourceResearchReport | null): string {
+  const probes = campaign?.tasks.filter((t) => t.deep_probe_target) ?? [];
+  if (probes.length === 0) return '';
+  return `
+    <section class="panel wide-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">主动探针 (Active Probes)</p>
+          <h2>定点挖掘执行结果</h2>
+          <p class="small">系统为了突破阶段瓶颈，自动调用的定点高优探针。这些探针专门针对官方公告或公司一次信息源进行深挖。</p>
+        </div>
+      </div>
+      ${probes.map(probe => {
+        const leads = directResearch?.leads.filter(l => l.task_id === probe.task_id) ?? [];
+        return `<div class="list-row alert" style="margin-bottom: 8px;">
+          <div>
+            <strong>针对 ${escape(probe.display_name_zh)} 的深度探针</strong>
+            <p>${escape(probe.deep_probe_target!.rationale)}</p>
+            <p class="small muted">发现 ${leads.length} 条相关深度线索 (目标源: ${probe.deep_probe_target!.suggested_source_ids.join(', ')})</p>
+          </div>
+          <span class="chip warn">Deep Mining Active</span>
+        </div>`;
+      }).join('')}
+    </section>
+  `;
+}

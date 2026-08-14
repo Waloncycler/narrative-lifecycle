@@ -108,7 +108,7 @@ export function normalizeWebResearchLeads(input: {
       published_at: normalizeDate(row.published_at),
       retrieved_at: input.retrievedAt,
       rank: result.length + 1,
-      evidence_eligibility: 'context_only',
+      evidence_eligibility: input.query.evidence_eligibility ?? 'context_only',
       next_action: input.query.purpose === 'name_validation' ? 'validate_market_name' : 'review_source',
     });
     if (result.length >= input.maxResults) break;

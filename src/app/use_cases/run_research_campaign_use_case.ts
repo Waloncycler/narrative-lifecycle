@@ -13,7 +13,7 @@ export interface RunResearchCampaignUseCaseDeps {
   readRegistry?(): TopicRegistry;
   buildCampaign(input: { maxTasks?: number }): ResearchCampaign;
   runWebResearch(input: {
-    plannedQueries: Array<{ query: string; topic_id: string | null; branch_id: string | null; candidate_node_id?: string | null; campaign_task_id: string; source_ids: string[]; source_domains: string[]; strict_source_domains?: string[] }>;
+    plannedQueries: Array<{ query: string; topic_id: string | null; branch_id: string | null; candidate_node_id?: string | null; campaign_task_id: string; source_ids: string[]; source_domains: string[]; strict_source_domains?: string[]; evidence_eligibility?: 'context_only' | 'baseline_evidence' }>;
   }): Promise<WebResearchReport>;
   runDirectSourceResearch(input: { campaign: ResearchCampaign; maxTasks: number; maxQueries: number }): Promise<DirectSourceResearchReport>;
   prepareDirectSourceIntake(report: DirectSourceResearchReport): EvidenceIntakeSession | null;
@@ -109,6 +109,7 @@ function buildPlannedQueries(campaign: ResearchCampaign, maxQueries: number, ali
         source_ids: company.disclosure_source_ids,
         source_domains: [sourceDomain],
         strict_source_domains: [sourceDomain],
+        evidence_eligibility: task.evidence_eligibility,
       }];
     });
   return [...topicQueries, ...companyQueries].slice(0, maxQueries);
@@ -123,6 +124,7 @@ export interface PlannedWebQuery {
   source_ids: string[];
   source_domains: string[];
   strict_source_domains?: string[];
+  evidence_eligibility?: 'context_only' | 'baseline_evidence';
 }
 
 /**
@@ -160,6 +162,7 @@ export function buildFinancialNewsPulseQueries(campaign: ResearchCampaign, budge
       source_ids: [source.source_id],
       source_domains: [source.domain],
       strict_source_domains: [source.domain],
+      evidence_eligibility: task.evidence_eligibility,
     });
   }
   return output;
@@ -193,6 +196,7 @@ function plannedTopicQueries(tasks: ResearchCampaign['tasks'], budget: number, a
         // discovery must not discard a valid corroborating result merely
         // because it was published on another governed domain.
         strict_source_domains: [],
+        evidence_eligibility: task.evidence_eligibility,
       });
       added = true;
     }

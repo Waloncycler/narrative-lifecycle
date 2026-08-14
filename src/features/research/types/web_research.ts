@@ -16,7 +16,9 @@ export type WebSearchProvider =
   | 'tavily'
   | 'minimax'
   | 'searxng'
-  | 'mcp_bridge';
+  | 'mcp_bridge'
+  | 'exa'
+  | 'jina_search';
 export type WebResearchStatus = 'completed' | 'unconfigured' | 'degraded';
 
 export interface WebSearchConfig {
@@ -51,6 +53,7 @@ export interface WebResearchQuery {
    * intentionally leaves this empty; company IR queries set it. */
   strict_source_domains?: string[];
   purpose: 'evidence_discovery' | 'name_validation';
+  evidence_eligibility?: 'context_only' | 'baseline_evidence';
 }
 
 export interface WebResearchLead {
@@ -71,7 +74,7 @@ export interface WebResearchLead {
   rank: number;
   /** Search results remain background leads until their source page is
    * independently reviewed and admitted through the Evidence pipeline. */
-  evidence_eligibility: 'context_only';
+  evidence_eligibility: 'context_only' | 'baseline_evidence';
   next_action: 'review_source' | 'validate_market_name';
 }
 

@@ -6,10 +6,24 @@ export const INTAKE_AGENT_PROMPT_VERSION = 'evidence-intake-agent-v0.7.0';
 
 export function mergeAgentOnlyCandidates(ruleCandidates: EvidenceCandidate[], agentCandidates: AgentEvidenceCandidate[]): EvidenceCandidate[] {
   const existing = new Set(ruleCandidates.map((candidate) => candidate.candidate_id));
-  const extras = agentCandidates
-    .filter((candidate) => candidate.validation_status !== 'failed')
-    .filter((candidate) => !existing.has(candidate.source_candidate_id))
-    .map((candidate) => ({
+  const extras: EvidenceCandidate[] = [];
+
+  for (const candidate of agentCandidates) {
+    if (candidate.validation_status === 'failed') continue;
+    if (existing.has(candidate.source_candidate_id)) continue;
+
+    const allAccepted = [...ruleCandidates, ...extras];
+    const semanticDup = allAccepted.some(c => {
+      const existingText = c.suggested_evidence.event_summary + ' ' + (c.suggested_evidence.interpretation || '');
+      const newText = candidate.suggested_evidence.event_summary + ' ' + candidate.suggested_evidence.interpretation;
+      return isSemanticDuplicate(existingText, newText);
+    });
+
+    if (semanticDup) {
+      continue;
+    }
+
+    extras.push({
       candidate_id: candidate.source_candidate_id,
       raw_document_id: candidate.raw_document_id,
       chunk_id: candidate.chunk_id,
@@ -31,7 +45,8 @@ export function mergeAgentOnlyCandidates(ruleCandidates: EvidenceCandidate[], ag
         provenance_present: Boolean(candidate.original_quote),
         human_review_required: true,
       },
-    } satisfies EvidenceCandidate));
+    });
+  }
   return [...ruleCandidates, ...extras];
 }
 
@@ -107,4 +122,21 @@ export function buildAgentVerificationReport(input: {
 
 function hasHardEvidence(text: string): boolean {
   return /国务院|批复|正式批准|收入|营收|revenue|multi-customer|多客户|重复购买|standard adoption|标准采纳|监管批准|临床数据/.test(text.toLowerCase());
+}
+
+function isSemanticDuplicate(aText: string, bText: string): boolean {
+  if (!aText || !bText) return false;
+  // Use a simple token overlap calculation (Jaccard similarity approximation)
+  const getTokens = (t: string) => new Set(t.toLowerCase().split(/[\s,。！？；;]+/).filter(x => x.length > 1));
+  const aTokens = getTokens(aText);
+  const bTokens = getTokens(bText);
+  if (aTokens.size === 0 || bTokens.size === 0) return false;
+  
+  let intersection = 0;
+  for (const t of aTokens) {
+    if (bTokens.has(t)) intersection++;
+  }
+  
+  const union = aTokens.size + bTokens.size - intersection;
+  return (intersection / union) > 0.65; // Threshold for semantic duplicate
 }

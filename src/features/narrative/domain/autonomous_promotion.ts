@@ -6,9 +6,11 @@ import type {
   AutonomousPromotionItem,
   AutonomousResearchPolicy,
 } from '@/features/research/types/autonomous_research';
+import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
 
 const confidenceRank = { low: 1, medium: 2, high: 3 } as const;
 const disallowedText = /\b(buy|sell|long|short|entry|exit|position|target price|stop loss)\b/i;
+const sensitiveFactsPattern = /\b(valuation|order amount|revenue|profit|guidance|EPS|target price|contract value|估值|订单金额|营收|利润|业绩指引|目标价|合同金额|首付款|里程碑金额|采购金额)\b/i;
 const resolvableStatuses = new Set([
   'existing_topic',
   'alias_of',
@@ -34,6 +36,7 @@ export function evaluateAutonomousPromotion(input: {
   agentAudit: IntakeAgentAudit | null;
   existingEvidence: EvidenceNode[];
   policy: AutonomousResearchPolicy;
+  registry?: TopicRegistry;
 }): AutonomousPromotionEvaluation {
   const resolutionByCandidate = new Map(input.topicAudit?.resolutions.map((item) => [item.candidate_id, item]) ?? []);
   const agentBySource = new Map(input.agentCandidates.map((item) => [item.source_candidate_id, item]));
@@ -99,6 +102,38 @@ export function evaluateAutonomousPromotion(input: {
     if (input.policy.hold_conflicting_evidence && (resolvedDraft.polarity === 'mixed' || resolvedDraft.stage_effect === 'downgrade')) reasons.push('conflicting or negative evidence requires review');
     if (disallowedText.test(JSON.stringify(resolvedDraft))) reasons.push('trading advice is prohibited');
 
+    const draftText = `${resolvedDraft.event_title} ${resolvedDraft.event_summary} ${resolvedDraft.interpretation} ${resolvedDraft.limitation}`;
+    if (sensitiveFactsPattern.test(draftText)) {
+      reasons.push('core financial facts require manual review');
+    }
+
+    // Fast-track logic for S0/S1 high-confidence signals
+    // Assuming S0/S1 are typically indicated by specific stages or just letting them pass if E3/E4 and high confidence
+    const isE3OrE4 = resolvedDraft.evidence_strength === 'E3' || resolvedDraft.evidence_strength === 'E4';
+    const isHighConfidence = resolvedDraft.confidence === 'high';
+    const hasPreciseCitation = input.session.provenance_records.some((item) => item.provenance_id === candidate.provenance_id && item.quote.trim().length > 0);
+    
+    // Check if the only reasons for holding are model validation or news corroboration, and if fast-track conditions are met, clear those specific reasons.
+    let isS0orS1 = false;
+    if (topicId && input.registry) {
+      const topicRecord = input.registry.canonical_topics.find((t) => t.topic_id === topicId);
+      if (topicRecord && (topicRecord.current_stage === 'S0' || topicRecord.current_stage === 'S1')) {
+        isS0orS1 = true;
+      }
+    }
+    
+    const meetsFastTrack = isS0orS1 && isE3OrE4 && isHighConfidence && hasPreciseCitation;
+    
+    if (meetsFastTrack) {
+      // Clear specific reasons that can be overridden by fast-track
+      const filteredReasons = reasons.filter(r => 
+        !r.includes('model validation did not pass') && 
+        !r.includes('news evidence requires corroboration')
+      );
+      reasons.length = 0;
+      reasons.push(...filteredReasons);
+    }
+    
     const decision = reasons.length ? (!topicId || resolution?.status === 'unresolved' ? 'rejected' : 'held') : 'published';
     items.push({
       candidate_id: candidate.candidate_id,

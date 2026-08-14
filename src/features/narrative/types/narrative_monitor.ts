@@ -154,6 +154,7 @@ export interface NarrativeInboxItem {
   agent_status: 'passed' | 'failed' | 'fallback' | 'not_run';
   review_status: 'pending_review' | 'reviewed' | 'auto_published';
   generated_at: string;
+  is_baseline: boolean;
 }
 
 export interface NarrativeReviewQueueItem {

@@ -15,6 +15,8 @@ import type {
 } from '@/features/research/types/research_coverage';
 import type { ResearchBaselineCompletionReport } from '@/features/research/types/research_baseline_completion';
 import type { HistoricalEvidenceRecoveryReport, HistoricalEvidenceRecoveryTask } from '@/features/research/types/historical_evidence_recovery';
+import type { StageSnapshotHistory } from '@/features/stages/types/diff';
+import { buildDeepProbeTargets } from '@/features/research/domain/research_strategy_mapper';
 
 const TIER_WEIGHT = {
   statutory: 70,
@@ -51,6 +53,7 @@ export function buildResearchCampaign(input: {
   baselineCompletion?: ResearchBaselineCompletionReport | null;
   /** Read-only timeline-gap plan. It can only prioritize existing research. */
   historicalRecovery?: HistoricalEvidenceRecoveryReport | null;
+  stageHistory?: StageSnapshotHistory | null;
 }): ResearchCampaign {
   const knownNames = new Set(input.registry.canonical_topics.flatMap((topic) => [
     normalize(marketTopicName(topic)),
@@ -87,10 +90,25 @@ export function buildResearchCampaign(input: {
       preferred_source_ids: matchedSeed?.preferred_source_ids ?? [] as string[],
       formal_status: topic.status === 'active' ? 'formal' as const : 'provisional' as const,
       historical_recovery: recovery,
+      baseline_item: baselineByTopic.get(topic.topic_id),
+      deep_probes: input.stageHistory?.topics.find((t) => t.topic_id === topic.topic_id)
+        ? buildDeepProbeTargets(
+            input.stageHistory.topics.find((t) => t.topic_id === topic.topic_id)!.why_not_higher_stage,
+            input.stageHistory.topics.find((t) => t.topic_id === topic.topic_id)!.gate_input
+          )
+        : [],
       };
     });
 
-  for (const topic of topics) tasks.push(taskForTopic(topic, input.atlas, input.companies?.companies ?? []));
+  for (const topic of topics) {
+    tasks.push(taskForTopic(topic, input.atlas, input.companies?.companies ?? []));
+    for (const probe of topic.deep_probes) {
+      tasks.push(taskForTopic({
+        ...topic,
+        deep_probe_target: probe
+      }, input.atlas, input.companies?.companies ?? []));
+    }
+  }
 
   const seeded = input.universe.nodes
     .filter((node) => ![node.display_name_zh, node.display_name_en, ...node.aliases].some((name) => knownNames.has(normalize(name))))
@@ -201,14 +219,24 @@ export function usableMarketLabel(value: string): boolean {
 }
 
 function taskForTopic(node: {
-  node_kind: 'formal_topic' | 'provisional_topic'; topic_id: string; candidate_node_id: null; display_name_zh: string; display_name_en: string | null; domain: string; priority: number; target_layers: ResearchCoverageLayer[]; preferred_source_ids: string[]; formal_status: 'formal' | 'provisional'; historical_recovery?: HistoricalEvidenceRecoveryTask;
+  node_kind: 'formal_topic' | 'provisional_topic'; topic_id: string; candidate_node_id: null; display_name_zh: string; display_name_en: string | null; domain: string; priority: number; target_layers: ResearchCoverageLayer[]; preferred_source_ids: string[]; formal_status: 'formal' | 'provisional'; historical_recovery?: HistoricalEvidenceRecoveryTask; baseline_item?: any; deep_probe_target?: import('@/features/research/domain/research_strategy_mapper').DeepResearchProbeTarget;
 }, atlas: AuthoritativeSourceAtlas, companies: CompanyResearchTarget[]): ResearchCampaignTask {
-  const task = makeTask({ ...node, branch_id: null, rationale: node.historical_recovery
+  const isProbe = !!node.deep_probe_target;
+  const task = makeTask({ ...node, branch_id: null, rationale: isProbe
+    ? node.deep_probe_target!.rationale
+    : node.historical_recovery
     ? `${node.historical_recovery.rationale} This remains research-only and must continue through source retrieval and Intake review.`
+    : node.baseline_item?.rationale
+    ? `${node.baseline_item.rationale}`
     : node.formal_status === 'formal'
     ? 'Track missing lifecycle layers and identify independently corroborable developments.'
-    : 'Collect source-grounded material before this provisional topic can be considered for activation.' }, atlas, companies);
-  return node.historical_recovery?.search_intents[0] ? { ...task, query: node.historical_recovery.search_intents[0] } : task;
+    : 'Collect source-grounded material before this provisional topic can be considered for activation.', evidence_eligibility: node.baseline_item?.evidence_eligibility }, atlas, companies);
+  
+  if (isProbe) {
+    return { ...task, deep_probe_target: node.deep_probe_target, priority: 160, source_ids: node.deep_probe_target!.suggested_source_ids };
+  }
+  
+  return node.historical_recovery?.search_intents[0] ? { ...task, query: node.historical_recovery.search_intents[0] } : node.baseline_item?.suggested_query ? { ...task, query: node.baseline_item.suggested_query } : task;
 }
 
 function taskForSeed(node: ResearchUniverseNode, atlas: AuthoritativeSourceAtlas, companies: CompanyResearchTarget[]): ResearchCampaignTask {
@@ -237,7 +265,7 @@ function taskForBranch(input: {
 }
 
 function makeTask(input: {
-  node_kind: ResearchCampaignTask['node_kind']; topic_id: string | null; branch_id: string | null; candidate_node_id: string | null; display_name_zh: string; display_name_en: string | null; domain: string; priority: number; target_layers: ResearchCoverageLayer[]; preferred_source_ids: string[]; formal_status: ResearchCampaignTask['formal_status']; rationale: string; parent_name?: string; parent_name_en?: string | null;
+  node_kind: ResearchCampaignTask['node_kind']; topic_id: string | null; branch_id: string | null; candidate_node_id: string | null; display_name_zh: string; display_name_en: string | null; domain: string; priority: number; target_layers: ResearchCoverageLayer[]; preferred_source_ids: string[]; formal_status: ResearchCampaignTask['formal_status']; rationale: string; parent_name?: string; parent_name_en?: string | null; evidence_eligibility?: 'context_only' | 'baseline_evidence';
 }, atlas: AuthoritativeSourceAtlas, companies: CompanyResearchTarget[]): ResearchCampaignTask {
   const sources = selectSources(atlas.sources, input.domain, input.target_layers, input.preferred_source_ids, input.node_kind);
   const target = input.parent_name ? `${input.parent_name} ${input.display_name_zh}` : input.display_name_zh;
@@ -261,6 +289,7 @@ function makeTask(input: {
     direct_operation_ids: [...new Set(sources.flatMap((source) => DIRECT_OPERATION_BY_SOURCE[source.source_id] ?? []))],
     rationale: input.rationale,
     formal_status: input.formal_status,
+    evidence_eligibility: input.evidence_eligibility,
   };
 }
 

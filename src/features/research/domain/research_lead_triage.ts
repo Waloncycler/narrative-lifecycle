@@ -27,6 +27,7 @@ type RawLead = {
   retrieved_at: string;
   query: string | null;
   source_id: string | null;
+  evidence_eligibility: 'context_only' | 'baseline_evidence';
 };
 
 /** Turns broad discovery output into a transparent review queue. This rule
@@ -90,7 +91,7 @@ function fromWebLead(lead: WebResearchLead, query: string | null, retrievedAt: s
     branch_id: queryMeta.branch_id ?? null, candidate_node_id: queryMeta.candidate_node_id ?? null,
     title: lead.title, url: lead.url, source_name: lead.source_name, source_domain: lead.source_domain,
     snippet: lead.snippet, published_at: normalizeDate(lead.published_at), retrieved_at: lead.retrieved_at || retrievedAt,
-    query, source_id: null,
+    query, source_id: null, evidence_eligibility: lead.evidence_eligibility,
   };
 }
 
@@ -101,6 +102,7 @@ function directLeads(report: DirectSourceResearchReport | null): RawLead[] {
     candidate_node_id: lead.candidate_node_id ?? null, title: lead.title, url: lead.url,
     source_name: lead.source_name, source_domain: domainOf(lead.url), snippet: lead.snippet,
     published_at: normalizeDate(lead.published_at), retrieved_at: report.generated_at, query: null, source_id: lead.source_id,
+    evidence_eligibility: lead.evidence_eligibility,
   }));
 }
 
@@ -150,7 +152,7 @@ function triageGroup(leads: RawLead[], input: Parameters<typeof buildResearchLea
     disposition,
     reasons,
     next_action: nextActionFor(disposition, sourceClass),
-    evidence_eligibility: 'context_only',
+    evidence_eligibility: lead.evidence_eligibility,
   };
 }
 

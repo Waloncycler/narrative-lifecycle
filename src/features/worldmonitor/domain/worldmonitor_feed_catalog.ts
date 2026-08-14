@@ -139,6 +139,7 @@ export const FEED_SOURCE_CATALOG: Record<string, WorldMonitorSourceConfig> = {
 
   // 引用数据源 (v0.9.8+): TradingView 顶级新闻供应商
   businesswire: media('businesswire', 'BusinessWire 全球新闻稿', 'financial'),
+  businesswire_tech: media('businesswire_tech', 'BusinessWire 科技与AI新闻稿', 'technology'),
   gelonghui: media('gelonghui', '格隆汇 Gelonghui', 'financial'),
   panews: media('panews', 'PANews 加密与Web3新闻', 'financial'),
   fx168: media('fx168', 'FX168 财经网', 'financial'),
@@ -176,6 +177,7 @@ export const FEED_OPERATION_TO_SOURCE_ID: Record<string, string> = {
   DirectMorganStanleyInsights: 'morgan_stanley_insights',
   DirectCninfoAnnouncements: 'cninfo_announcements',
   DirectBusinessWire: 'businesswire',
+  DirectBusinessWireTech: 'businesswire_tech',
   DirectGelonghui: 'gelonghui',
   DirectPANews: 'panews',
   DirectFx168: 'fx168',

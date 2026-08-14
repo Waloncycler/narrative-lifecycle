@@ -30,15 +30,23 @@ export class HttpResearchSourceRetriever {
     // study URL in the retrieval artifact.
     const requestUrl = studyId ? `https://clinicaltrials.gov/api/v2/studies/${studyId}` : input.url;
     assertPublicHttpUrl(requestUrl);
+    const useJina = !studyId && process.env.JINA_API_KEY && !requestUrl.includes('api.fda.gov') && !requestUrl.includes('.pdf');
+    const finalUrl = useJina ? `https://r.jina.ai/${requestUrl}` : requestUrl;
+    
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), input.timeoutMs);
     try {
-      const response = await this.fetchImpl(requestUrl, { headers: { Accept: 'text/html,application/xhtml+xml,application/xml,text/plain,application/json', 'User-Agent': 'NarrativeLifecycleResearch/0.13' }, redirect: 'follow', signal: controller.signal });
-      assertPublicHttpUrl(response.url || requestUrl);
+      const headers: Record<string, string> = { Accept: 'text/html,application/xhtml+xml,application/xml,text/plain,application/json', 'User-Agent': 'NarrativeLifecycleResearch/0.13' };
+      if (useJina) headers.Authorization = `Bearer ${process.env.JINA_API_KEY}`;
+      
+      const response = await this.fetchImpl(finalUrl, { headers, redirect: 'follow', signal: controller.signal });
+      if (!useJina) assertPublicHttpUrl(response.url || requestUrl);
       if (!response.ok) throw new Error(`http_${response.status}`);
       const contentType = response.headers.get('content-type');
       if (/(?:application\/pdf|image\/|video\/|audio\/)/i.test(contentType ?? '')) throw new Error('unsupported_binary_source_content');
-      return { httpStatus: response.status, contentType, body: (await response.text()).slice(0, 1_000_000) };
+      
+      const body = await response.text();
+      return { httpStatus: response.status, contentType: useJina ? 'text/markdown' : contentType, body: body.slice(0, 1_000_000) };
     } finally { clearTimeout(timer); }
   }
 }

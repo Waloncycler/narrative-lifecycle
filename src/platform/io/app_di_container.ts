@@ -424,6 +424,7 @@ export function createProductCoreUseCases(repoRoot: string) {
     readReplayCases: () => replayRepository.readReplayCases(),
     readLatestRun: () => replayRepository.readLatestRun(),
     writeReplayLedger: (ledger, markdown) => replayRepository.writeReplayLedger(ledger, markdown),
+    readEvidenceForTopicAsOf: (topicId, asOf) => replayRepository.readEvidenceForTopicAsOf(topicId, asOf),
     renderMarkdown: renderReplayLedgerMarkdown,
     validateLedger: (ledger) => validator.validate('replay_ledger.schema.json', ledger),
     sourceArtifacts: () => replayRepository.sourceArtifacts(),

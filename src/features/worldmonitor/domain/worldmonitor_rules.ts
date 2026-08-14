@@ -35,11 +35,6 @@ const DIRECT_GOVERNANCE: Record<string, {
     termsUrl: 'https://www.nasa.gov/nasa-brand-center/images-and-media/',
     freshnessHours: 24,
   },
-  GDACS: {
-    licenseId: 'gdacs-provider-terms',
-    termsUrl: 'https://www.gdacs.org/About/termsofuse.aspx',
-    freshnessHours: 6,
-  },
   NWSAlerts: {
     licenseId: 'us-government-public-domain',
     termsUrl: 'https://www.weather.gov/disclaimer',
@@ -322,7 +317,7 @@ export function governanceForWorldMonitorOperation(input: {
   const blocked = input.eligibility === 'unsupported';
   const observationWindow = /USGS|Eonet/i.test(input.service)
     ? 'sliding_time'
-    : /NWS|GDACS/i.test(input.service)
+    : /NWS/i.test(input.service)
       ? 'active_set'
       : /WHO/i.test(input.service)
         ? 'top_n'

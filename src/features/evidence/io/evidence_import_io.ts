@@ -4,6 +4,8 @@ import { dirname, resolve } from 'node:path';
 
 import { parse, stringify } from 'yaml';
 import { normalizeEvidenceImport } from '@/app/evidence_import_normalizer';
+import { db } from '@/db/index';
+import { evidence } from '@/db/schema';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import { validateEvidenceImportDrafts } from '@/features/evidence/domain/evidence_import_rules';
 import type {
@@ -292,6 +294,57 @@ export function writeAcceptedEvidenceImport(repoRoot: string, report: EvidenceVa
     ? readGenericArtifact(fixturePath)! as EvidenceNode[]
     : [];
   writeFileSync(fixturePath, stringify(mergeEvidenceRows(existingRows, fixtureRows)));
+
+  // Task 1.1: Phase 1 SQLite Migration - smooth dual write to DB
+  if (fixtureRows.length > 0) {
+    db.transaction((tx) => {
+      for (const row of fixtureRows) {
+        tx.insert(evidence).values({
+          evidence_id: row.evidence_id,
+          topic_id: row.topic_id,
+          branch_id: row.branch_id ?? null,
+          event_date: row.event_date,
+          available_at: row.available_at,
+          event_title: row.event_title,
+          event_summary: row.event_summary ?? null,
+          event_type: row.event_type,
+          source_name: row.source_name,
+          source_url: row.source_url ?? null,
+          source_type: row.source_type ?? null,
+          evidence_strength: row.evidence_strength,
+          stage_effect: row.stage_effect,
+          parent_or_branch: row.parent_or_branch ?? null,
+          interpretation: row.interpretation ?? null,
+          limitation: row.limitation ?? null,
+          positive_or_negative: row.positive_or_negative ?? null,
+          confidence: row.confidence ?? null,
+          affected_layer_json: JSON.stringify(row.affected_layer),
+        }).onConflictDoUpdate({
+          target: evidence.evidence_id,
+          set: {
+            topic_id: row.topic_id,
+            branch_id: row.branch_id ?? null,
+            event_date: row.event_date,
+            available_at: row.available_at,
+            event_title: row.event_title,
+            event_summary: row.event_summary ?? null,
+            event_type: row.event_type,
+            source_name: row.source_name,
+            source_url: row.source_url ?? null,
+            source_type: row.source_type ?? null,
+            evidence_strength: row.evidence_strength,
+            stage_effect: row.stage_effect,
+            parent_or_branch: row.parent_or_branch ?? null,
+            interpretation: row.interpretation ?? null,
+            limitation: row.limitation ?? null,
+            positive_or_negative: row.positive_or_negative ?? null,
+            confidence: row.confidence ?? null,
+            affected_layer_json: JSON.stringify(row.affected_layer),
+          },
+        }).run();
+      }
+    });
+  }
 
   const auditLogPath = writeEvidenceImportAudit(repoRoot, {
     import_id: importId,

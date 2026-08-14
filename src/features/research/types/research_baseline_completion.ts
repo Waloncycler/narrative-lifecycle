@@ -13,7 +13,8 @@ export interface ResearchBaselineCompletionItem {
   rationale: string;
   suggested_query: string;
   next_action: 'research_original_sources' | 'validate_market_name';
-  evidence_eligibility: 'context_only';
+  /** Determines whether generated evidence can enter the formal Intake pipeline */
+  evidence_eligibility: 'context_only' | 'baseline_evidence';
 }
 
 /** A gap-directed research plan. It is deliberately not an Evidence table,

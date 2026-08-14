@@ -31,7 +31,7 @@ export interface PrepareEvidenceIntakeUseCaseDeps {
 export class PrepareEvidenceIntakeUseCase {
   constructor(private readonly deps: PrepareEvidenceIntakeUseCaseDeps) {}
 
-  execute(input: { file?: string; text?: string }): EvidenceIntakeSession {
+  execute(input: { file?: string; text?: string; isBaseline?: boolean }): EvidenceIntakeSession {
     const generatedAt = this.deps.now();
     const rawDocument = this.deps.readRawDocument(input);
     const chunks = chunkRawDocument(rawDocument);
@@ -41,6 +41,9 @@ export class PrepareEvidenceIntakeUseCase {
       existingEvidenceIds: this.deps.existingEvidenceIds(),
       generatedAt,
     });
+    if (input.isBaseline) {
+      candidates.forEach(c => c.is_baseline = true);
+    }
     const session: EvidenceIntakeSession = {
       session_id: `intake_${generatedAt.slice(0, 10).replaceAll('-', '')}_${rawDocument.raw_document_id}`,
       generated_at: generatedAt,

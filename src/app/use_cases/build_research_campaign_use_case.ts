@@ -3,6 +3,7 @@ import type { TopicRegistry } from '@/features/narrative/types/topic_resolution'
 import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse } from '@/features/research/types/research_coverage';
 import type { ResearchBaselineCompletionReport } from '@/features/research/types/research_baseline_completion';
 import type { HistoricalEvidenceRecoveryReport } from '@/features/research/types/historical_evidence_recovery';
+import type { StageSnapshotHistory } from '@/features/stages/types/diff';
 
 export interface BuildResearchCampaignUseCaseDeps {
   now(): string;
@@ -13,6 +14,7 @@ export interface BuildResearchCampaignUseCaseDeps {
   readCompanyRegistry(): CompanyResearchRegistry;
   buildBaselineCompletion?(): ResearchBaselineCompletionReport;
   buildHistoricalRecovery?(): HistoricalEvidenceRecoveryReport;
+  readStageHistory?(): StageSnapshotHistory | null;
   writeCampaign(campaign: ResearchCampaign): void;
   validateCampaign(campaign: ResearchCampaign): void;
 }
@@ -33,6 +35,7 @@ export class BuildResearchCampaignUseCase {
       maxTasks: input.maxTasks,
       baselineCompletion,
       historicalRecovery,
+      stageHistory: this.deps.readStageHistory?.() ?? null,
     });
     this.deps.validateCampaign(campaign);
     this.deps.writeCampaign(campaign);

@@ -5,7 +5,7 @@ import type { WebSearchConfig } from '@/features/research/types/web_research';
 const KEYLESS_PROVIDERS = new Set<WebSearchConfig['provider']>(['free', 'gdelt', 'wikipedia', 'hn', 'duckduckgo', 'reddit', 'arxiv', 'openalex', 'archive', 'bing']);
 // searxng / minimax intentionally stay outside the keyless set: SearXNG needs
 // a configured baseUrl and MiniMax needs a Token Plan credential.
-const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'minimax', 'searxng', 'mcp_bridge']);
+const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'minimax', 'searxng', 'mcp_bridge', 'exa', 'jina_search']);
 
 const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = {
   gdelt: 'https://api.gdeltproject.org/api/v2/doc/doc',
@@ -18,6 +18,8 @@ const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = 
   openalex: 'https://api.openalex.org/works',
   archive: 'https://archive.org/advancedsearch.php',
   bing: 'https://www.bing.com/search',
+  exa: 'https://api.exa.ai/search',
+  jina_search: 'https://s.jina.ai/',
 };
 
 /** MiniMax Token Plan search endpoints by region. */
@@ -54,6 +56,8 @@ export function webSearchConfigsFromEnv(env: NodeJS.ProcessEnv): WebSearchConfig
   // is present turns that engine on for every pass. MINIMAX_API_KEY also
   // counts here (it may be a Code-Plan key in the China deployment).
   if (env.TAVILY_API_KEY?.trim()) add('tavily');
+  if (env.EXA_API_KEY?.trim()) add('exa');
+  if (env.JINA_API_KEY?.trim()) add('jina_search');
   if (env.BRAVE_SEARCH_API_KEY?.trim()) add('brave');
   if (env.SERPER_API_KEY?.trim()) add('mcp_bridge');
   if (env.SEARXNG_BASE_URL?.trim()) add('searxng');
@@ -82,6 +86,8 @@ function resolvePrimaryProvider(env: NodeJS.ProcessEnv): WebSearchConfig['provid
   // provider because it already serves the chat-completions layer.
   return (requested
     ?? (env.TAVILY_API_KEY ? 'tavily'
+      : env.EXA_API_KEY ? 'exa'
+      : env.JINA_API_KEY ? 'jina_search'
       : env.BRAVE_SEARCH_API_KEY ? 'brave'
       : env.SERPER_API_KEY ? 'mcp_bridge'
       : env.SEARXNG_BASE_URL?.trim() ? 'searxng'
@@ -101,6 +107,8 @@ function buildWebSearchConfig(provider: WebSearchConfig['provider'], env: NodeJS
     endpoint: env.NARRATIVE_WEB_SEARCH_ENDPOINT?.trim() || defaultEndpoint,
     api_key: env.NARRATIVE_WEB_SEARCH_API_KEY?.trim()
       || (selected === 'tavily' ? env.TAVILY_API_KEY
+        : selected === 'exa' ? env.EXA_API_KEY
+        : selected === 'jina_search' ? env.JINA_API_KEY
         : selected === 'brave' ? env.BRAVE_SEARCH_API_KEY
         : selected === 'mcp_bridge' ? env.SERPER_API_KEY
         : selected === 'minimax' ? (env.MINIMAX_CODE_PLAN_KEY?.trim() || env.MINIMAX_CODING_API_KEY?.trim() || env.MINIMAX_OAUTH_TOKEN?.trim() || env.MINIMAX_API_KEY?.trim() || null)
@@ -138,6 +146,8 @@ export class HttpWebSearchProvider {
     if (config.provider === 'tavily') return this.tavily(query, config, sourceDomains);
     if (config.provider === 'minimax') return this.minimax(query, config);
     if (config.provider === 'searxng') return this.searxng(query, config);
+    if (config.provider === 'exa') return this.exa(query, config, sourceDomains);
+    if (config.provider === 'jina_search') return this.jinaSearch(query, config);
     return this.mcpBridge(query, config, sourceDomains);
   }
 
@@ -550,6 +560,40 @@ export class HttpWebSearchProvider {
     }
     throw new Error('web_search_retry_budget_exhausted');
   }
+
+  private async exa(query: string, config: WebSearchConfig, sourceDomains?: string[]) {
+    const body = await this.request(config.endpoint as string, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-api-key': config.api_key ?? '' },
+      body: JSON.stringify({
+        query,
+        useAutoprompt: true,
+        numResults: config.max_results_per_query,
+        contents: { text: true },
+        ...(sourceDomains?.length ? { includeDomains: sourceDomains } : {})
+      }),
+    }, config.timeout_ms);
+    const value = JSON.parse(body) as { results?: Array<{ title?: string; url?: string; text?: string; publishedDate?: string }> };
+    return (value.results ?? []).map((item) => ({ title: item.title, url: item.url, snippet: item.text?.slice(0, 500), published_at: item.publishedDate ?? null }));
+  }
+
+  private async jinaSearch(query: string, config: WebSearchConfig) {
+    const url = `${config.endpoint as string}${encodeURIComponent(query)}`;
+    const body = await this.request(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        ...(config.api_key ? { Authorization: `Bearer ${config.api_key}` } : {})
+      }
+    }, config.timeout_ms);
+    const value = JSON.parse(body) as { data?: Array<{ title?: string; url?: string; description?: string; content?: string }> };
+    return (value.data ?? []).slice(0, config.max_results_per_query).map((item) => ({
+      title: item.title,
+      url: item.url,
+      snippet: (item.description || item.content)?.slice(0, 500),
+      published_at: null
+    }));
+  }
 }
 
 function boundedInt(value: string | undefined, fallback: number, min: number, max: number): number {
@@ -677,3 +721,4 @@ function rebuildAbstract(inverted: Record<string, number[]> | undefined): string
   }
   return words.sort((a, b) => a.pos - b.pos).map((w) => w.word).join(' ');
 }
+

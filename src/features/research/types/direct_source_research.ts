@@ -14,7 +14,7 @@ export interface DirectSourceResearchLead {
   url: string;
   snippet: string;
   published_at: string | null;
-  evidence_eligibility: 'context_only';
+  evidence_eligibility: 'context_only' | 'baseline_evidence';
   next_action: 'review_source';
 }
 

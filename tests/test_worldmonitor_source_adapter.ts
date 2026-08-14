@@ -31,16 +31,16 @@ describe('World Monitor source adapter', () => {
     // Counts reflect the built-in catalog (expanded in the v0.13.5 open-source
     // release, plus the v0.9.8 TradingView top-provider additions) plus the two
     // synthetic fixture services below.
-    expect(inventory.service_count).toBe(70);
-    expect(inventory.operation_count).toBe(72);
-    expect(inventory.pollable_operation_count).toBe(65);
+    expect(inventory.service_count).toBe(68);
+    expect(inventory.operation_count).toBe(70);
+    expect(inventory.pollable_operation_count).toBe(64);
     expect(inventory.sandbox_operation_count).toBe(1);
     expect(inventory.operations.find((item) => item.operation_id === 'ListEarthquakes')?.access_state).toBe('sandbox_available');
     expect(inventory.operations.find((item) => item.operation_id === 'GetCountryRisk')?.evidence_eligibility).toBe('context_only');
     expect(inventory.operations.find((item) => item.operation_id === 'GetRequired')?.access_state).toBe('requires_parameters');
     expect(inventory.operations.find((item) => item.operation_id === 'DirectCailianTelegraph')).toMatchObject({
-      access_state: 'manual_request',
-      auth_requirement: 'source_parameters',
+      access_state: 'production_ready',
+      auth_requirement: 'public_no_key',
     });
     expect(inventory.operations.find((item) => item.operation_id === 'DirectWSJChinese')).toMatchObject({
       access_state: 'manual_request',

@@ -173,12 +173,6 @@ function evaluateMateriality(
       significance: { absolute: 50 },
       tsunami_flag: { absolute: 1 },
     },
-    DirectGDACSEvents: {
-      alert_level: { absolute: 1 },
-      alert_score: { absolute: 0.5 },
-      episode_alert_score: { absolute: 0.5 },
-      severity: { absolute: 1 },
-    },
     DirectUSTreasuryDebt: {
       total_public_debt_usd: { absolute: 10_000_000_000, relative: 0.001 },
     },

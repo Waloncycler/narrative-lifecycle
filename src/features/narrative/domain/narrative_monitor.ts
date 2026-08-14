@@ -188,6 +188,7 @@ function buildInbox(runtime: NarrativeMonitorRuntimeInput): NarrativeInboxItem[]
       agent_status: agentCheck?.status ?? (verification ? (verification.fallback_count ? 'fallback' : verification.failed_count ? 'failed' : 'passed') : 'not_run'),
       review_status: publicationByCandidate.get(candidate.candidate_id) === 'published' ? 'auto_published' : 'pending_review',
       generated_at: session.generated_at,
+      is_baseline: candidate.is_baseline === true,
     };
   });
 }

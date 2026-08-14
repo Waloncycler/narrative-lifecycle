@@ -29,7 +29,7 @@ export interface ResearchLeadTriageItem {
   disposition: ResearchLeadDisposition;
   reasons: string[];
   next_action: 'review_original' | 'retrieve_primary_source' | 'validate_market_name' | 'hold';
-  evidence_eligibility: 'context_only';
+  evidence_eligibility: 'context_only' | 'baseline_evidence';
 }
 
 export interface ResearchLeadTriageReport {

@@ -67,6 +67,7 @@ export class RunAutonomousResearchUseCase {
     const publicationRequested = input.publish === true;
     const automaticPublicationEnabled = publicationRequested && policy.enabled && policy.auto_publish_evidence;
     const publicationMode = automaticPublicationEnabled ? 'policy_auto' as const : 'review_required' as const;
+    const registry = this.deps.readRegistry();
     const evaluation = session
       ? evaluateAutonomousPromotion({
           session,
@@ -75,6 +76,7 @@ export class RunAutonomousResearchUseCase {
           agentAudit: bundle?.audit ?? null,
           existingEvidence,
           policy,
+          registry,
         })
       : { items: [], drafts: [] };
 

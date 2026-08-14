@@ -55,34 +55,6 @@ describe('World Monitor source-specific normalizers', () => {
     });
   });
 
-  it('normalizes GDACS event dates, report URL, alert, and severity', () => {
-    const result = facts('DirectGDACSEvents', {
-      features: [{
-        geometry: { coordinates: [100, 30] },
-        properties: {
-          eventtype: 'FL',
-          eventid: 42,
-          name: 'Flood in Testland',
-          country: 'Testland',
-          fromdate: '2026-07-01T01:00:00',
-          todate: '2026-07-05T01:00:00',
-          datemodified: '2026-07-06T03:00:00',
-          alertlevel: 'Orange',
-          alertscore: 2,
-          episodealertscore: 1.5,
-          url: { report: 'https://www.gdacs.org/report.aspx?eventid=42' },
-          severitydata: { severity: 7, severitytext: 'Magnitude 7' },
-        },
-      }],
-    });
-    expect(result[0]).toMatchObject({
-      event_at: '2026-07-01T01:00:00.000Z',
-      available_at: '2026-07-06T03:00:00.000Z',
-      source_url: 'https://www.gdacs.org/report.aspx?eventid=42',
-      metrics: { alert_score: 2, episode_alert_score: 1.5, severity: 7 },
-    });
-  });
-
   it('ignores NWS GeoJSON metadata and normalizes only feature alerts', () => {
     const payload = sourcePayload('DirectNWSAlerts', {
       '@context': { '@version': '1.1' },

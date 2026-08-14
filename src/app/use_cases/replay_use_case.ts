@@ -24,6 +24,7 @@ export interface ReplayUseCaseDeps {
   writeReplayLedger(ledger: ReplayLedger, markdown: string): void;
   renderMarkdown(ledger: ReplayLedger): string;
   validateLedger(ledger: ReplayLedger): void;
+  readEvidenceForTopicAsOf(topicId: string, asOf: string): EvidenceNode[];
   sourceArtifacts(): string[];
   now(): string;
 }
@@ -39,7 +40,7 @@ export class ReplayUseCase {
     const latestRun = this.deps.readLatestRun();
     const generatedAt = this.deps.now();
     const runId = latestRun?.run_id ?? `run_${generatedAt.replaceAll('-', '').replaceAll(':', '').replace('.', '').slice(0, 17)}_replay`;
-    const replayCases = cases.map((replayCase) => replayCaseResult(replayCase, runId, generatedAt));
+    const replayCases = cases.map((replayCase) => replayCaseResult(this.deps, replayCase, runId, generatedAt));
     const allDiffs = replayCases.flatMap((result) => result.diffs);
     const publicCases = replayCases.map(({ diffs, ...result }) => result);
     const leadTimes = publicCases
@@ -89,11 +90,11 @@ export class ReplayUseCase {
   }
 }
 
-function replayCaseResult(replayCase: ReplayCase, runId: string, generatedAt: string): ReplayCaseResult & { diffs: StageDiff[] } {
+function replayCaseResult(deps: ReplayUseCaseDeps, replayCase: ReplayCase, runId: string, generatedAt: string): ReplayCaseResult & { diffs: StageDiff[] } {
   let previous: StageSnapshotHistory | null = null;
   const diffs: StageDiff[] = [];
   const stagePath: ReplaySliceResult[] = replayCase.slices.map((slice, index) => {
-    const available = evidenceAvailableAt(replayCase.evidence, slice.as_of);
+    const available = deps.readEvidenceForTopicAsOf(replayCase.topic_id, slice.as_of);
     if (!noFutureEvidenceUsed(available, slice.as_of)) throw new Error(`${replayCase.case_id}/${slice.slice_id}: future evidence leak`);
     const parent = parentStageForReplay({
       evidence: available,

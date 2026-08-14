@@ -92,10 +92,11 @@ export interface ResearchCampaignTask {
   /** Curated companies relevant to this task. They are source-verification
    * targets only and do not turn company material into parent Evidence. */
   company_targets?: ResearchCampaignCompanyTarget[];
-  /** Existing governed direct-source operations that can safely be polled for this task. */
   direct_operation_ids: string[];
   rationale: string;
   formal_status: 'formal' | 'provisional' | 'research_seed' | 'watch_branch';
+  evidence_eligibility?: 'context_only' | 'baseline_evidence';
+  deep_probe_target?: import('@/features/research/domain/research_strategy_mapper').DeepResearchProbeTarget;
 }
 
 export interface ResearchCampaign {

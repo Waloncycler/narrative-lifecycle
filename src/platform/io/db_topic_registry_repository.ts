@@ -1,5 +1,5 @@
 import { db } from '@/db/index';
-import { topics, branches, genericArtifacts } from '@/db/schema';
+import { topics, branches, genericArtifacts, narrativeMemories } from '@/db/schema';
 import { desc, eq, like } from 'drizzle-orm';
 import type { TopicRegistry, TopicResolution, TopicResolutionAudit } from '@/features/narrative/types/topic_resolution';
 import type { NarrativeGraphPromotionReport } from '@/features/narrative/types/narrative_graph_promotion';
@@ -17,6 +17,7 @@ export class DbTopicRegistryRepository {
     // Read from DB
     const dbTopics = db.select().from(topics).all();
     const dbBranches = db.select().from(branches).all();
+    const dbMemories = db.select().from(narrativeMemories).all();
 
     return {
       canonical_topics: dbTopics
@@ -50,7 +51,7 @@ export class DbTopicRegistryRepository {
           source_candidate_id: '',
           reason: 'Loaded from database',
         })),
-      memory_topic_ids: [],
+      memory_topic_ids: dbMemories.map((m: any) => m.topic_id),
     };
   }
 

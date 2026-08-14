@@ -40,7 +40,6 @@ interface SandboxIndex {
 const DIRECT_PUBLIC_OPERATIONS: WorldMonitorOperationDescriptor[] = [
   direct('DirectUSGSEarthquakes', 'USGSSeismology', 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson', 'climate', 'candidate', 'USGS magnitude 4.5+ weekly earthquake feed'),
   direct('DirectNASAEonetEvents', 'NASAEonet', 'https://eonet.gsfc.nasa.gov/api/v3/events?status=open&days=30&limit=100', 'climate', 'candidate', 'NASA EONET open natural events'),
-  direct('DirectGDACSEvents', 'GDACS', 'https://www.gdacs.org/gdacsapi/api/events/geteventlist/MAP', 'climate', 'candidate', 'GDACS disaster event list'),
   direct('DirectNWSAlerts', 'NWSAlerts', 'https://api.weather.gov/alerts/active?status=actual&message_type=alert', 'climate', 'candidate', 'US National Weather Service active alerts'),
   direct('DirectWHODiseaseOutbreaks', 'WHODiseaseOutbreakNews', 'https://www.who.int/api/emergencies/diseaseoutbreaknews?sf_provider=dynamicProvider372&sf_culture=en&$orderby=PublicationDateAndTime%20desc&$select=Title,ItemDefaultUrl,PublicationDateAndTime&$top=30', 'health', 'candidate', 'WHO Disease Outbreak News'),
   direct('DirectUSTreasuryDebt', 'USTreasuryFiscalData', 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?fields=record_date,tot_pub_debt_out_amt&sort=-record_date&page%5Bsize%5D=5', 'financial', 'candidate', 'US Treasury debt to the penny'),
@@ -115,23 +114,19 @@ const DIRECT_PUBLIC_OPERATIONS: WorldMonitorOperationDescriptor[] = [
   direct('DirectMorganStanleyInsights', 'MorganStanleyInsights', 'https://www.morganstanley.com/ideas', 'financial', 'candidate', 'Morgan Stanley Insights research (HTML scrape)'),
   
   // Category 9 (v0.9.5+): Elite Institutional, Financial & Macro Data Sources
-  // CLS publicly renders the telegraph, but its current data request is signed.
-  // The normalizer supports approved connector payloads including reading_num;
-  // the catalog does not pretend an unsigned request is production-ready.
-  direct('DirectCailianTelegraph', 'CailianTelegraph', 'https://www.cls.cn/telegraph', 'financial', 'candidate', 'Cailian Press (财联社) 24/7 Rolling Telegraph; requires an approved data connector', {
-    auth_requirement: 'source_parameters',
-    access_state: 'manual_request',
-  }),
+  // CLS's native telegraph API now requires a signed request, so the 24/7
+  // telegraph stream is consumed through a public RSSHub instance (RSS 2.0).
+  // The shared feed normalizer resolves the generic RSS records the same way.
+  direct('DirectCailianTelegraph', 'CailianTelegraph', 'https://rsshub.rssforever.com/cls/telegraph', 'financial', 'candidate', 'Cailian Press (财联社) 24/7 Rolling Telegraph (via RSSHub proxy RSS)'),
   direct('DirectWSJBusiness', 'WSJBusiness', 'https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml', 'financial', 'candidate', 'The Wall Street Journal - Global Business & Markets RSS'),
   direct('DirectWSJChinese', 'WSJChinese', 'https://cn.wsj.com/', 'financial', 'candidate', 'The Wall Street Journal Chinese public listings; automated requests currently require an approved retrieval connector', {
     auth_requirement: 'source_parameters',
     access_state: 'manual_request',
   }),
-  direct('DirectReutersBiz', 'ReutersBiz', 'https://www.reutersagency.com/feed/', 'geopolitics', 'candidate', 'Reuters Business & Finance Wire'),
+  // Reuters publishes no public RSS feed, so the business wire is proxied
+  // through the Google News RSS search endpoint (site:reuters.com, US edition).
+  direct('DirectReutersBiz', 'ReutersBiz', 'https://news.google.com/rss/search?q=site:reuters.com&hl=en-US&gl=US&ceid=US:en', 'geopolitics', 'candidate', 'Reuters Business & Finance Wire (via Google News RSS proxy)'),
   direct('DirectTechCrunch', 'TechCrunch', 'https://techcrunch.com/feed/', 'technology', 'candidate', 'TechCrunch Startups and VC News'),
-  direct('DirectWindMacro', 'WindMacro', 'https://api.wind.com.cn/v1/macro/news', 'financial', 'candidate', 'Wind Data (万得) Macro Market News API'),
-  direct('DirectCICCResearch', 'CICCResearch', 'https://research.cicc.com/api/reports', 'research', 'candidate', 'CICC (中金公司) Institutional Research Reports'),
-
   // Category 10 (v0.9.6+): NewTimeSpace Premium Regional Intel
   direct('DirectNtsFinance', 'NtsFinance', 'https://www.newtimespace.com/feed/rss_template.xml?id=100000&site=rss&lang=zh-cn', 'financial', 'candidate', 'NewTimeSpace Finance (新时空-财经) RSS'),
   direct('DirectNtsTechnology', 'NtsTechnology', 'https://www.newtimespace.com/feed/rss_template.xml?id=100003&site=rss&lang=zh-cn', 'technology', 'candidate', 'NewTimeSpace Technology (新时空-科技) RSS'),
@@ -145,11 +140,13 @@ const DIRECT_PUBLIC_OPERATIONS: WorldMonitorOperationDescriptor[] = [
   direct('DirectInvestingCrypto', 'InvestingCrypto', 'https://cn.investing.com/rss/news_301.rss', 'financial', 'candidate', 'Investing.com Crypto News (虚拟货币最新消息)'),
 
   // Category 12 (v0.9.8+): TradingView Top News Providers
-  direct('DirectBusinessWire', 'BusinessWire', 'https://feed.businesswire.com/mrss/home/?rss=G1QFDERJXkJcFVJYWQ%3D%3D', 'financial', 'candidate', 'BusinessWire global corporate press release wire (MRSS)'),
+  direct('DirectBusinessWire', 'BusinessWire', 'https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeGFNTXA==', 'financial', 'candidate', 'BusinessWire Banking & Finance press release RSS'),
+  direct('DirectBusinessWireTech', 'BusinessWireTech', 'https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJaF1hUWQ==', 'technology', 'candidate', 'BusinessWire Technology & Artificial Intelligence press release RSS'),
   direct('DirectGelonghui', 'Gelonghui', 'https://www.gelonghui.com/api/channels/web_home_page/articles/v8', 'financial', 'candidate', 'Gelonghui (格隆汇) financial news API'),
   direct('DirectPANews', 'PANews', 'https://www.panewslab.com/rss.xml', 'financial', 'candidate', 'PANews crypto & Web3 news RSS'),
   direct('DirectFx168', 'Fx168', 'https://www.fx168news.com/info/001001', 'financial', 'candidate', 'FX168 财经网 要闻 market news list (HTML scrape)'),
-  direct('DirectGlobeNewswire', 'GlobeNewswire', 'https://www.globenewswire.com/RssFeed/category/en/ALL', 'financial', 'candidate', 'GlobeNewswire corporate press release RSS'),
+  // GNW's generic category feed 400s; country/industry feeds are the valid form.
+  direct('DirectGlobeNewswire', 'GlobeNewswire', 'https://www.globenewswire.com/RssFeed/country/us', 'financial', 'candidate', 'GlobeNewswire US country press release RSS'),
 ];
 
 export interface WorldMonitorFetchResult {

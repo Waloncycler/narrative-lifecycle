@@ -16,7 +16,6 @@ type Normalizer = (record: RecordValue, payload: WorldMonitorPayload) => WorldMo
 const NORMALIZERS: Partial<Record<string, Normalizer>> = {
   DirectUSGSEarthquakes: normalizeUsgs,
   DirectNASAEonetEvents: normalizeEonet,
-  DirectGDACSEvents: normalizeGdacs,
   DirectNWSAlerts: normalizeNws,
   DirectWHODiseaseOutbreaks: normalizeWho,
   DirectUSTreasuryDebt: normalizeTreasury,
@@ -39,7 +38,6 @@ const NORMALIZERS: Partial<Record<string, Normalizer>> = {
 const NORMALIZER_IDS: Record<string, string> = {
   DirectUSGSEarthquakes: 'usgs_earthquake',
   DirectNASAEonetEvents: 'nasa_eonet_event',
-  DirectGDACSEvents: 'gdacs_event',
   DirectNWSAlerts: 'nws_alert',
   DirectWHODiseaseOutbreaks: 'who_disease_outbreak',
   DirectUSTreasuryDebt: 'us_treasury_debt',
@@ -76,7 +74,6 @@ export function recordsForWorldMonitorPayload(payload: WorldMonitorPayload): Rec
   if (!isObject(body) && !Array.isArray(body)) return [];
   switch (payload.descriptor.operation_id) {
     case 'DirectUSGSEarthquakes':
-    case 'DirectGDACSEvents':
     case 'DirectNWSAlerts':
       return objectArray(isObject(body) ? body.features : null);
     case 'DirectNASAEonetEvents':
@@ -226,60 +223,6 @@ function normalizeEonet(record: RecordValue, payload: WorldMonitorPayload): Worl
     },
     metrics: numericRecord({ magnitude }),
     normalizerId: 'nasa_eonet_event',
-  });
-}
-
-function normalizeGdacs(record: RecordValue, payload: WorldMonitorPayload): WorldMonitorNormalizedFact | null {
-  const properties = object(record.properties) ?? record;
-  const name = string(properties.name) ?? string(properties.description);
-  if (!name) return null;
-  const geometry = object(record.geometry);
-  const coordinates = Array.isArray(geometry?.coordinates) ? geometry.coordinates : [];
-  const urls = object(properties.url);
-  const severity = object(properties.severitydata);
-  const eventAt = iso(properties.fromdate, payload.fetched_at);
-  const availableAt = iso(properties.datemodified ?? properties.todate, eventAt);
-  const alertLevel = string(properties.alertlevel);
-  return fact({
-    record,
-    payload,
-    id: [string(properties.eventtype), string(properties.eventid)].filter(Boolean).join('-') || null,
-    eventAt,
-    availableAt,
-    title: name,
-    summary: sentence([
-      alertLevel ? `${alertLevel} GDACS alert` : 'GDACS alert',
-      string(properties.country),
-      string(properties.htmldescription),
-      string(severity?.severitytext),
-    ]),
-    eventType: `GDACS_${string(properties.eventtype) ?? 'EVENT'}`,
-    sourceUrl: string(urls?.report) ?? payload.source_url,
-    sourceQuote: JSON.stringify({
-      eventtype: properties.eventtype,
-      eventid: properties.eventid,
-      name,
-      country: properties.country,
-      fromdate: properties.fromdate,
-      todate: properties.todate,
-      datemodified: properties.datemodified,
-      alertlevel: properties.alertlevel,
-      alertscore: properties.alertscore,
-      severitydata: properties.severitydata,
-      report_url: urls?.report,
-    }),
-    location: {
-      lng: number(coordinates[0]) ?? undefined,
-      lat: number(coordinates[1]) ?? undefined,
-      country: string(properties.country) ?? undefined,
-    },
-    metrics: numericRecord({
-      alert_level: rank(string(properties.alertlevel), ['green', 'orange', 'red']),
-      alert_score: number(properties.alertscore),
-      episode_alert_score: number(properties.episodealertscore),
-      severity: number(severity?.severity),
-    }),
-    normalizerId: 'gdacs_event',
   });
 }
 

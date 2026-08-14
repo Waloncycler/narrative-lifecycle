@@ -13,6 +13,21 @@ export const topics = sqliteTable('topics', {
   aliases_json: text('aliases_json'),
 });
 
+export const narrativeMemories = sqliteTable('narrative_memories', {
+  topic_id: text('topic_id').primaryKey().references(() => topics.topic_id),
+  first_seen_date: text('first_seen_date'),
+  last_active_date: text('last_active_date'),
+  historical_stage_path_json: text('historical_stage_path_json'),
+  previous_peak_stage: text('previous_peak_stage'),
+  previous_failed_transition: text('previous_failed_transition'),
+  previous_failure_reason: text('previous_failure_reason'),
+  previous_missing_evidence_json: text('previous_missing_evidence_json'),
+  previous_friction_points_json: text('previous_friction_points_json'),
+  previous_branch_structure_json: text('previous_branch_structure_json'),
+  is_failure_case: integer('is_failure_case', { mode: 'boolean' }),
+  memory_confidence: integer('memory_confidence'),
+});
+
 export const branches = sqliteTable('branches', {
   branch_id: text('branch_id').primaryKey(),
   topic_id: text('topic_id').notNull().references(() => topics.topic_id),

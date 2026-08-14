@@ -17,6 +17,7 @@ export type ResearchSourceExtractorId =
   | 'pmc_jats_article'
   | 'structured_json_record'
   | 'company_article'
+  | 'jina_reader_markdown'
   | 'generic_html';
 
 /** A bounded original-page package. It is still context-only until an
@@ -51,7 +52,7 @@ export interface ResearchSourceRetrievalItem {
   source_text_chars?: number;
   content_hash: string | null;
   error: string | null;
-  evidence_eligibility: 'context_only';
+  evidence_eligibility: 'context_only' | 'baseline_evidence';
   next_action: 'prepare_intake' | 'hold';
   /** Present only for a bounded historic-row recovery. This records the
    * corroboration that permits the primary source package to enter the normal

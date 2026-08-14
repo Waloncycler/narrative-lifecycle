@@ -688,3 +688,67 @@ sources:
     topic_discovery_capable: true
     branch_discovery_capable: true
     languages: [en]
+  - source_id: caam
+    display_name_zh: 中国汽车工业协会
+    display_name_en: China Association of Automobile Manufacturers
+    operator: 中国汽车工业协会
+    authority_tier: company
+    domains: [technology, cross_industry]
+    coverage_layers: [reality, momentum, data_confidence]
+    access_mode: search_bridge
+    base_url: http://www.caam.org.cn/
+    terms_url: http://www.caam.org.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: ggii
+    display_name_zh: 高工锂电
+    display_name_en: Gaogong Industry Institute
+    operator: 深圳市高工咨询有限公司
+    authority_tier: news
+    domains: [energy, technology]
+    coverage_layers: [reality, momentum, pricing]
+    access_mode: search_bridge
+    base_url: https://www.gg-lb.com/
+    terms_url: https://www.gg-lb.com/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: cpia
+    display_name_zh: 中国光伏行业协会
+    display_name_en: China Photovoltaic Industry Association
+    operator: 中国光伏行业协会
+    authority_tier: company
+    domains: [energy, technology]
+    coverage_layers: [reality, momentum, data_confidence]
+    access_mode: search_bridge
+    base_url: http://www.chinapv.org.cn/
+    terms_url: http://www.chinapv.org.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: ema
+    display_name_zh: 欧洲药品管理局
+    display_name_en: European Medicines Agency
+    operator: European Union
+    authority_tier: regulator
+    domains: [health]
+    coverage_layers: [reality, friction, data_confidence]
+    access_mode: direct_api
+    base_url: https://www.ema.europa.eu/
+    terms_url: https://www.ema.europa.eu/en/about-us/legal/legal-notice
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]

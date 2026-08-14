@@ -53,6 +53,8 @@ export interface EvidenceCandidate {
   /** How far a deterministic source parser verified this candidate. */
   publication_eligibility?: 'manual_review' | 'rule_verified';
   duplicate_of_evidence_id?: string | null;
+  /** Indicates if this candidate was generated as part of a baseline backfill */
+  is_baseline?: boolean;
   guardrail_check: {
     no_trading_advice: boolean;
     provenance_present: boolean;
