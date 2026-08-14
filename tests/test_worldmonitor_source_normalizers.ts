@@ -163,6 +163,49 @@ describe('World Monitor source-specific normalizers', () => {
 });
 
 describe('World Monitor extended direct source normalizers (v0.7.9)', () => {
+  it('normalizes Sina readership for triage without raising Evidence strength', () => {
+    const payload = sourcePayload('DirectSinaFinance', {
+      result: { data: { feed: { list: [{
+        id: 42,
+        rich_text: '国务院批准一项重大产业政策，项目金额达到120亿元',
+        create_time: '2026-08-13 10:00:00',
+        docurl: 'https://finance.sina.cn/7x24/example.d.html',
+        view_num: '293.85万 阅读',
+        comment_num: 32,
+      }] } } },
+    });
+    const result = normalizedFactsFromWorldMonitorPayload(payload);
+    expect(result[0].metrics).toMatchObject({ read_count: 2938500, comment_count: 32 });
+    expect(sourceConfigForOperation({ operation_id: 'DirectSinaFinance', service: 'SinaFinance' } as WorldMonitorOperationDescriptor).default_evidence_strength).toBe('E1');
+  });
+
+  it('separates a Sina bracketed headline from the article body for topic mapping', () => {
+    const result = normalizedFactsFromWorldMonitorPayload(sourcePayload('DirectSinaFinance', {
+      result: { data: { feed: { list: [{
+        id: 43,
+        rich_text: '【伦敦股市13日下跌】英国股指收跌，正文顺带提到一家房地产公司和信息技术服务公司。',
+        create_time: '2026-08-13 10:00:00', docurl: 'https://finance.sina.cn/7x24/example-43.d.html',
+      }] } } },
+    }));
+    expect(result[0]?.title).toBe('伦敦股市13日下跌');
+    expect(result[0]?.summary).toContain('正文顺带提到一家房地产公司');
+  });
+
+  it('normalizes approved CLS connector readership payloads', () => {
+    const result = facts('DirectCailianTelegraph', {
+      data: { roll_data: [{
+        id: 7,
+        title: '政策发布',
+        content: '监管部门发布新规',
+        ctime: 1786586400,
+        reading_num: 820000,
+        comment_num: 12,
+        level: 8,
+      }] },
+    });
+    expect(result[0].metrics).toMatchObject({ read_count: 820000, comment_count: 12, editorial_priority: 8 });
+  });
+
   it('normalizes GDELT articles to name-layer facts', () => {
     const result = facts('DirectGdeltDocArticles', {
       articles: [{
@@ -504,6 +547,15 @@ describe('World Monitor feed-style sources (RSS/Atom, HTML, JSON lists)', () => 
     });
     expect(cninfo[0].source_url).toContain('static.cninfo.com.cn');
     expect(cninfo[0].event_at).toBe(new Date(1753000000000).toISOString());
+  });
+
+  it('marks financial media feeds as news-only discovery inputs', () => {
+    const descriptor = { operation_id: 'DirectWSJBusiness', service: 'WSJBusiness', domain: 'financial' } as WorldMonitorOperationDescriptor;
+    expect(sourceConfigForOperation(descriptor)).toMatchObject({
+      source_type: 'news',
+      default_evidence_strength: 'E1',
+      default_stage_effect: 'maintain',
+    });
   });
 
   it('normalizes SSE and SZSE exchange announcement JSON APIs', () => {

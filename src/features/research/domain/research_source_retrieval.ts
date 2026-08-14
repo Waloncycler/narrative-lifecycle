@@ -3,20 +3,50 @@ import type { ResearchLeadTriageItem, ResearchLeadTriageReport } from '@/feature
 import type { ResearchSourceExtractorId, ResearchSourceRetrievalItem, SourcePageExcerpt } from '@/features/research/types/research_source_retrieval';
 
 const RETRIEVABLE_CLASSES = new Set(['official', 'company_primary', 'academic']);
+const FINANCIAL_NEWS_DOMAINS = ['wallstreetcn.com', 'cls.cn', 'finance.sina.com.cn', 'sina.com.cn', 'cn.wsj.com', 'wsj.com'];
 
-export function selectSourceRetrievalTargets(report: ResearchLeadTriageReport | null, limit: number): ResearchLeadTriageItem[] {
-  if (!report || limit < 1) return [];
-  return report.items
+export function selectSourceRetrievalTargets(report: ResearchLeadTriageReport | null, limit: number, unknownDiscoveryLimit = 2): ResearchLeadTriageItem[] {
+  if (!report || (limit < 1 && unknownDiscoveryLimit < 1)) return [];
+  const ranked = report.items
     .filter((item) => ['priority_review', 'review'].includes(item.disposition))
-    .filter((item) => RETRIEVABLE_CLASSES.has(item.source_class))
-    // Daily discovery must spend its bounded retrieval budget on fresh
-    // material first. Archive items remain available when the queue has no
-    // fresh/recent authority records and are handled explicitly by the
-    // separate historical-provenance workflow.
+    .map(recognizeGovernmentSource)
     .sort((left, right) => freshnessWeight(right.freshness) - freshnessWeight(left.freshness)
       || priorityScore(right) - priorityScore(left)
-      || left.triage_id.localeCompare(right.triage_id))
-    .slice(0, limit);
+      || left.triage_id.localeCompare(right.triage_id));
+  // Unknown domains have a separate, small discovery budget. Fetching them
+  // may recover names, citations, and candidate primary URLs, but never gives
+  // them Evidence or corroboration eligibility.
+  const governed = ranked
+    .filter((item) => RETRIEVABLE_CLASSES.has(item.source_class) || isFinancialNewsProbe(item))
+    .slice(0, Math.max(0, limit));
+  const unknown = ranked
+    .filter(isUnknownDiscoveryProbe)
+    .slice(0, Math.max(0, unknownDiscoveryLimit));
+  return [...governed, ...unknown];
+}
+
+export function isFinancialNewsProbe(item: Pick<ResearchLeadTriageItem, 'source_class' | 'source_domain'>): boolean {
+  return item.source_class === 'secondary'
+    && FINANCIAL_NEWS_DOMAINS.some((domain) => item.source_domain === domain || item.source_domain.endsWith(`.${domain}`));
+}
+
+export function isUnknownDiscoveryProbe(item: Pick<ResearchLeadTriageItem, 'source_class'>): boolean {
+  return item.source_class === 'unknown';
+}
+
+export function isRecognizedGovernmentHost(host: string): boolean {
+  const normalized = host.toLowerCase().replace(/^https?:\/\//, '').split('/')[0]!.replace(/:\d+$/, '');
+  return /(?:^|\.)(?:gov|gov\.cn|gov\.uk|gov\.au|go\.jp|go\.kr)$/.test(normalized)
+    || normalized === 'korea.kr' || normalized.endsWith('.korea.kr');
+}
+
+function recognizeGovernmentSource(item: ResearchLeadTriageItem): ResearchLeadTriageItem {
+  if (item.source_class === 'official' || !isRecognizedGovernmentHost(item.source_domain || safeHost(item.url))) return item;
+  return { ...item, source_class: 'official' };
+}
+
+function safeHost(value: string): string {
+  try { return new URL(value).hostname.toLowerCase(); } catch { return ''; }
 }
 
 function freshnessWeight(value: ResearchLeadTriageItem['freshness']): number {
@@ -72,7 +102,9 @@ function baseItem(lead: ResearchLeadTriageItem, fetchedAt: string, detail: Omit<
     fetched_at: fetchedAt,
     ...detail,
     evidence_eligibility: 'context_only',
-    next_action: detail.status === 'retrieved' && detail.citation_status === 'ready' ? 'prepare_intake' : 'hold',
+    next_action: lead.source_class !== 'unknown' && detail.status === 'retrieved' && detail.citation_status === 'ready'
+      ? 'prepare_intake'
+      : 'hold',
   };
 }
 

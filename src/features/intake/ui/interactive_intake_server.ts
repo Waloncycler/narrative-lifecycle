@@ -20,6 +20,8 @@ import { DEFAULT_SCHEDULER_CONFIG } from '@/features/research/types/research_age
 import { createProductCoreUseCases } from '@/platform/io/app_di_container';
 import { intakeAgentConfigFromEnv } from '@/features/intake/io/intake_agent_provider';
 import { buildNarrativeMonitor } from '@/features/narrative/domain/narrative_monitor';
+import { mergeMonitorSnapshot } from '@/features/narrative/domain/narrative_monitor_snapshot';
+import { DbNarrativeMonitorRepository } from '@/platform/io/db_narrative_monitor_repository';
 import {
   renderAgentDashboard,
   renderAgentRuns,
@@ -404,16 +406,21 @@ function clampInt(value: unknown, fallback: number, min: number, max: number): n
 }
 
 function readMonitor(repoRoot: string, useCases?: ProductCoreUseCases) {
-  const snapshot = readCurrentSnapshot(repoRoot);
-  const weekly = readJsonFile<WeeklyBrief>(repoRoot, 'outputs/operator_runs/latest_weekly_brief.json')
+  const monitorRepository = new DbNarrativeMonitorRepository(repoRoot);
+  const snapshot = mergeMonitorSnapshot(monitorRepository.readLatestSnapshot(), monitorRepository.readRegisteredTopics());
+  const weekly = monitorRepository.readLatestWeeklyBrief()
+    ?? readJsonFile<WeeklyBrief>(repoRoot, 'outputs/operator_runs/latest_weekly_brief.json')
     ?? readJsonFile<WeeklyBrief>(repoRoot, 'outputs/reports/weekly_brief.json');
-  const diff = readJsonFile<StageDiff>(repoRoot, 'outputs/autonomy/latest_stage_diff.json')
+  const diff = monitorRepository.readLatestStageDiff()
+    ?? readJsonFile<StageDiff>(repoRoot, 'outputs/autonomy/latest_stage_diff.json')
     ?? readJsonFile<StageDiff>(repoRoot, 'outputs/diffs/latest_stage_diff.json');
-  const review = readJsonFile<OperatorReview>(repoRoot, 'outputs/reviews/latest_operator_review.json');
+  const review = monitorRepository.readLatestOperatorReview()
+    ?? readJsonFile<OperatorReview>(repoRoot, 'outputs/reviews/latest_operator_review.json');
   const topicAudit = readJsonFile<TopicResolutionAudit>(repoRoot, 'outputs/intake/latest_topic_resolution_audit.json');
   const learning = readJsonFile<{ profile_version?: string }>(repoRoot, 'outputs/intake/latest_learning_profile.json');
   const learningCycle = readJsonFile<import('@/features/intake/types/intake_learning_cycle').IntakeLearningCycle>(repoRoot, 'outputs/intake/latest_learning_cycle.json');
-  const latestRun = readJsonFile<RunManifest>(repoRoot, 'outputs/operator_runs/latest_run.json')
+  const latestRun = monitorRepository.readLatestRun()
+    ?? readJsonFile<RunManifest>(repoRoot, 'outputs/operator_runs/latest_run.json')
     ?? readJsonFile<RunManifest>(repoRoot, 'outputs/runs/latest_run.json');
   const intakeSession = readJsonFile<EvidenceIntakeSession>(repoRoot, 'outputs/intake/latest_session.json');
   const applyResult = readJsonFile<EvidenceIntakeApplyResult>(repoRoot, 'outputs/intake/latest_apply_result.json');
@@ -467,7 +474,7 @@ function readMonitor(repoRoot: string, useCases?: ProductCoreUseCases) {
     learningCycle,
     runtime: {
       latestRun,
-      recentRuns: readRecentRunManifests(repoRoot),
+      recentRuns: monitorRepository.listRecentRuns(),
       runMode,
       providerConfigured: providerConfig.provider !== 'disabled' && Boolean(providerConfig.endpoint && providerConfig.apiKey),
       providerName: providerConfig.provider,
@@ -499,29 +506,6 @@ function readMonitor(repoRoot: string, useCases?: ProductCoreUseCases) {
       now: new Date().toISOString(),
     },
   });
-}
-
-function readRecentRunManifests(repoRoot: string): RunManifest[] {
-  const directory = resolve(repoRoot, 'outputs/runs');
-  if (!existsSync(directory)) return [];
-  return readdirSync(directory)
-    .filter((name) => name.startsWith('run_'))
-    .flatMap((name) => {
-      const manifest = readJsonFile<RunManifest>(repoRoot, `outputs/runs/${name}/run_manifest.json`);
-      return manifest ? [manifest] : [];
-    })
-    .sort((a, b) => b.started_at.localeCompare(a.started_at))
-    .slice(0, 30);
-}
-
-function readCurrentSnapshot(repoRoot: string): StageSnapshotHistory | null {
-  const operational = readJsonFile<StageSnapshotHistory>(repoRoot, 'outputs/operator_runs/latest_stage_snapshot.json');
-  if (operational) return operational;
-  const latestRun = readJsonFile<{ run_id?: string }>(repoRoot, 'outputs/runs/latest_run.json');
-  const baseline = latestRun?.run_id
-    ? readJsonFile<StageSnapshotHistory>(repoRoot, `outputs/runs/${latestRun.run_id}/stage_snapshot.json`)
-    : null;
-  return baseline;
 }
 
 import { db } from '@/db/index';

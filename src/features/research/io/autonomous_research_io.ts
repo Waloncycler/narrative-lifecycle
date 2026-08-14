@@ -46,7 +46,11 @@ export class AutonomousResearchArtifactRepository {
     const jsonPath = resolve(this.repoRoot, 'data/evidence_table/evidence_table.json');
     if (!existsSync(jsonPath)) return [];
     try {
-      return readGenericArtifact(jsonPath)! as EvidenceNode[];
+      const stored = readGenericArtifact<unknown>(jsonPath);
+      if (Array.isArray(stored)) return stored as EvidenceNode[];
+      const text = readGenericTextArtifact(jsonPath) ?? readFileSync(jsonPath, 'utf8');
+      const parsed = JSON.parse(text) as unknown;
+      return Array.isArray(parsed) ? parsed as EvidenceNode[] : [];
     } catch {
       return [];
     }
@@ -174,8 +178,11 @@ export class AutonomousResearchArtifactRepository {
     const path = resolve(this.repoRoot, relativePath);
     if (!existsSync(path)) return [];
     try {
-      const value = readGenericArtifact(path)! as EvidenceNode[];
-      return Array.isArray(value) ? value : [];
+      const value = readGenericArtifact<unknown>(path);
+      if (Array.isArray(value)) return value as EvidenceNode[];
+      const text = readGenericTextArtifact(path) ?? readFileSync(path, 'utf8');
+      const parsed = parse(text) as unknown;
+      return Array.isArray(parsed) ? parsed as EvidenceNode[] : [];
     } catch {
       return [];
     }

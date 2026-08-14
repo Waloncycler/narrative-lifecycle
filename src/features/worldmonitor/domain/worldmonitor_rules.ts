@@ -13,6 +13,7 @@ import {
   recordsFromWorldMonitorPayload,
 } from '@/features/worldmonitor/domain/worldmonitor_normalizers';
 import { operationSourceConfig, sourceConfigForSourceId } from '@/features/worldmonitor/domain/worldmonitor_source_catalog';
+import { isMediaFeedOperation } from '@/features/worldmonitor/domain/worldmonitor_feed_parsing';
 
 export { normalizedFactsFromWorldMonitorPayload, recordsForWorldMonitorPayload, recordsFromWorldMonitorPayload };
 
@@ -408,6 +409,21 @@ export function isStaleWorldMonitorPayload(body: unknown): boolean {
 export function sourceConfigForOperation(descriptor: WorldMonitorOperationDescriptor): WorldMonitorSourceConfig {
   const explicit = operationSourceConfig(descriptor.operation_id) ?? sourceConfigForSourceId(slug(descriptor.service));
   if (explicit) return explicit;
+  if (isMediaFeedOperation(descriptor.operation_id)) {
+    return {
+      source_id: slug(descriptor.service),
+      source_name: `World Monitor / ${descriptor.service}`,
+      domain: descriptor.domain,
+      source_type: 'news',
+      primary_layer: 'name',
+      secondary_layers: ['data_confidence'],
+      default_evidence_strength: 'E1',
+      default_event_type: 'NEWS_ARTICLE_PUBLISHED',
+      default_stage_effect: 'maintain',
+      default_polarity: 'neutral',
+      default_confidence: 'low',
+    };
+  }
   const primary = descriptor.domain === 'financial'
     ? 'pricing'
     : descriptor.domain === 'geopolitics'

@@ -31,6 +31,15 @@ The following files were securely migrated to the database (`data/narrative.db`)
 - `src/cli/run_db_migrate.ts` (one-off script, deleted post-run)
 
 ## 3. Operations & Maintenance
+
+### 3.0 Current Compatibility Contract
+
+SQLite is the source of truth, but the application still maintains stable logical artifact ids for existing CLI and dashboard readers. In particular, latest and immutable run-level weekly briefs and stage snapshots are stored in `generic_artifacts` alongside their structured-table records.
+
+Do not assume that every `outputs/...` reference is a physical file. Some are compatibility ids resolved through the database. Do not remove these aliases until every interface reader has migrated to typed repositories.
+
+Stage history must be read from `stage_snapshots`; compatible legacy history in `generic_artifacts` may be considered only after full shape validation. Malformed or adjacent legacy artifacts must be ignored rather than used for Diff.
+
 ### 3.1 Viewing Data
 You can inspect the database locally using Drizzle Studio:
 ```bash

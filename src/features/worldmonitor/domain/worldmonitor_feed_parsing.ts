@@ -34,6 +34,9 @@ const FEED_OPERATION_EVENT_TYPES: Record<string, string> = {
   Direct36KrFeed: 'NEWS_ARTICLE_PUBLISHED',
   DirectEconomicTimes: 'NEWS_ARTICLE_PUBLISHED',
   DirectSinaFinance: 'NEWS_ARTICLE_PUBLISHED',
+  DirectWSJBusiness: 'NEWS_ARTICLE_PUBLISHED',
+  DirectWSJChinese: 'NEWS_ARTICLE_PUBLISHED',
+  DirectCailianTelegraph: 'NEWS_ARTICLE_PUBLISHED',
   DirectYicaiNews: 'NEWS_ARTICLE_PUBLISHED',
   DirectCrunchbaseNews: 'NEWS_ARTICLE_PUBLISHED',
   DirectHuggingFaceModels: 'OPEN_SOURCE_MODEL',
@@ -61,6 +64,9 @@ const MEDIA_OPERATIONS = new Set([
   'Direct36KrFeed',
   'DirectEconomicTimes',
   'DirectSinaFinance',
+  'DirectWSJBusiness',
+  'DirectWSJChinese',
+  'DirectCailianTelegraph',
   'DirectYicaiNews',
   'DirectCrunchbaseNews',
   'DirectBloombergTech',
@@ -72,6 +78,11 @@ const MEDIA_OPERATIONS = new Set([
 ]);
 
 export const FEED_OPERATION_IDS = Object.keys(FEED_OPERATION_EVENT_TYPES);
+
+/** Media feeds are discovery inputs, never a direct lifecycle-stage signal. */
+export function isMediaFeedOperation(operationId: string): boolean {
+  return MEDIA_OPERATIONS.has(operationId);
+}
 
 const GOV_OPERATIONS = new Set([
   'DirectGovCnPolicy',
@@ -98,7 +109,12 @@ const RESEARCH_OPERATIONS = new Set([
 const JSON_OPERATIONS: Record<string, (body: unknown) => Record<string, unknown>[]> = {
   DirectHuggingFaceModels: (body) => objectArray(body),
   DirectGithubTrending: (body) => objectArray(object(body)?.items),
-  DirectSinaFinance: (body) => objectArray(object(object(body)?.result)?.data),
+  DirectSinaFinance: (body) => {
+    const data = object(object(body)?.result)?.data;
+    const feed = object(data)?.feed;
+    return objectArray(object(feed)?.list).length ? objectArray(object(feed)?.list) : objectArray(data);
+  },
+  DirectCailianTelegraph: (body) => objectArray(object(object(body)?.data)?.roll_data),
   DirectCninfoAnnouncements: (body) => objectArray(object(body)?.announcements),
   // SSE returns pageHelp.data with UPPER_CASE column names; SZSE returns data
   // with array secCode/secName. Both are normalized to lowercase fields so the
@@ -146,7 +162,9 @@ export function feedRecordsForOperation(operationId: string, body: unknown): Rec
     return rssRecords((body as { __xml: string }).__xml);
   }
   if (typeof body === 'object' && body !== null && typeof (body as { __html?: unknown }).__html === 'string') {
-    return htmlArticleRecords((body as { __html: string }).__html);
+    return operationId === 'DirectWSJChinese'
+      ? wsjChineseRecords((body as { __html: string }).__html)
+      : htmlArticleRecords((body as { __html: string }).__html);
   }
   const jsonRecords = JSON_OPERATIONS[operationId];
   return jsonRecords ? jsonRecords(body) : [];
@@ -157,8 +175,9 @@ export function normalizeFeedSource(
   record: Record<string, unknown>,
   payload: WorldMonitorPayload,
 ): WorldMonitorNormalizedFact | null {
-  const title = firstString(record, ['title', 'name', 'full_name', 'announcementTitle', 'id']);
-  if (!title) return null;
+  const rawTitle = firstString(record, ['title', 'rich_text', 'content', 'name', 'full_name', 'announcementTitle', 'id']);
+  if (!rawTitle) return null;
+  const title = headlineFor(operationId, rawTitle);
   const eventType = FEED_OPERATION_EVENT_TYPES[operationId] ?? 'FEED_SIGNAL';
   const eventAt = iso(record.date ?? record.pubDate ?? record.updated ?? record.published ?? record.ctime ?? record.announcementTime, payload.fetched_at);
   const sourceUrl = resolveSourceUrl(operationId, record, payload.source_url);
@@ -206,6 +225,9 @@ export function normalizerIdForFeedOperation(operationId: string): string {
     Direct36KrFeed: 'news_article',
     DirectEconomicTimes: 'news_article',
     DirectSinaFinance: 'news_article',
+    DirectWSJBusiness: 'news_article',
+    DirectWSJChinese: 'news_article',
+    DirectCailianTelegraph: 'news_article',
     DirectYicaiNews: 'news_article',
     DirectCrunchbaseNews: 'news_article',
     DirectHuggingFaceModels: 'huggingface_model',
@@ -319,6 +341,20 @@ export function htmlArticleRecords(html: string): Record<string, unknown>[] {
     .map((item) => ({ href: item.href, title: item.title, date: item.date }));
 }
 
+/** Public WSJ Chinese listing metadata only; this never attempts to open or
+ * reproduce subscriber-only article bodies. */
+export function wsjChineseRecords(html: string): Record<string, unknown>[] {
+  const records = htmlArticleRecords(html);
+  const popularUrls = [...html.matchAll(/"(?:articleUrl|url)"\s*:\s*"([^"]+)"/g)]
+    .map((match) => decodeJsonString(match[1] ?? ''))
+    .filter(Boolean);
+  const popularRank = new Map(popularUrls.map((url, index) => [url, index + 1]));
+  return records.map((record) => ({
+    ...record,
+    popular_rank: popularRank.get(String(record.href ?? '')) ?? undefined,
+  }));
+}
+
 const NAV_TITLES = new Set([
   '首页', 'English', '机构概况', '政务信息', '办事服务', '新闻发布', '互动交流', '网站无障碍开关', '个人中心',
   '国务院公报', '全国人大', '全国政协', '高级搜索', '登录', '注册', '更多', 'more', 'menu', 'Home', 'Skip to content',
@@ -402,7 +438,7 @@ function buildSummary(
   eventAt: string,
   payload: WorldMonitorPayload,
 ): string {
-  const description = firstString(record, ['description', 'summary', 'intro']);
+  const description = firstString(record, ['description', 'summary', 'intro', 'content', 'rich_text']);
   if (MEDIA_OPERATIONS.has(operationId)) {
     return sentence([`新闻动态 ${eventAt.slice(0, 10)}`, description ?? null, `来源 ${payload.source_url}`]);
   }
@@ -438,7 +474,33 @@ function metricsFor(operationId: string, record: Record<string, unknown>): Recor
   if (operationId === 'DirectArxivPreprints') {
     return undefined;
   }
+  if (operationId === 'DirectSinaFinance' || operationId === 'DirectCailianTelegraph' || operationId === 'DirectWSJChinese') {
+    return numericRecord({
+      read_count: audienceCount(record.view_num ?? record.reading_num),
+      comment_count: number(record.comment_num),
+      editorial_priority: number(record.level ?? record.top_value),
+      popular_rank: number(record.popular_rank),
+    });
+  }
   return undefined;
+}
+
+function audienceCount(value: unknown): number | null {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value !== 'string') return null;
+  const match = /([\d.]+)\s*(万|亿)?/.exec(value.replace(/,/g, ''));
+  if (!match?.[1]) return null;
+  const base = Number(match[1]);
+  if (!Number.isFinite(base)) return null;
+  return base * (match[2] === '亿' ? 100_000_000 : match[2] === '万' ? 10_000 : 1);
+}
+
+function decodeJsonString(value: string): string {
+  try {
+    return JSON.parse(`"${value.replace(/"/g, '\\"')}"`) as string;
+  } catch {
+    return value.replace(/\\u002F/g, '/').replace(/\\\//g, '/');
+  }
 }
 
 function innerText(block: string, tag: string): string | null {
@@ -473,6 +535,17 @@ function stripTags(value: string | null): string {
 
 function collapseWhitespace(value: string): string {
   return value.replace(/\s+/g, ' ').trim();
+}
+
+function headlineFor(operationId: string, value: string): string {
+  const clean = collapseWhitespace(stripTags(value));
+  if (['DirectSinaFinance', 'DirectCailianTelegraph'].includes(operationId)) {
+    const bracketed = /^【([^】]{4,180})】/u.exec(clean)?.[1];
+    if (bracketed) return bracketed;
+    const firstSentence = clean.split(/[。！？；]/u, 1)[0]?.trim();
+    if (firstSentence && firstSentence.length <= 180) return firstSentence;
+  }
+  return clean;
 }
 
 function firstString(record: Record<string, unknown>, keys: string[]): string | null {

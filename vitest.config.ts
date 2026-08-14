@@ -10,5 +10,9 @@ export default defineConfig({
   },
   test: {
     include: ['tests/**/test_*.ts'],
+    // CLI/integration tests intentionally exercise the shared SQLite artifact
+    // store. Running those files concurrently can interleave pipeline run ids
+    // and manufacture a diff failure that cannot occur in one operator run.
+    fileParallelism: false,
   },
 });

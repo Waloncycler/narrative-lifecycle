@@ -45,7 +45,13 @@ function loadExistingEvidenceIds(repoRoot: string): Set<string> {
     const directory = resolve(repoRoot, relativeDirectory);
     if (!existsSync(directory)) continue;
     for (const file of readdirSync(directory).filter((item) => item.endsWith('.yaml') || item.endsWith('.yml'))) {
-      const rows = readGenericArtifact(resolve(directory, file))! as EvidenceNode[];
+      const path = resolve(directory, file);
+      const stored = readGenericArtifact<unknown>(path);
+      // During the SQLite migration, some legacy YAML paths were represented
+      // by an empty generic JSON object while the authoritative YAML remained
+      // on disk. Never treat that placeholder as an Evidence array.
+      const parsed = Array.isArray(stored) ? stored : parse(readFileSync(path, 'utf8'));
+      const rows = Array.isArray(parsed) ? parsed as EvidenceNode[] : parsed ? [parsed as EvidenceNode] : [];
       for (const row of rows) ids.add(row.evidence_id);
     }
   }
@@ -94,7 +100,9 @@ export function isIdempotentEvidenceImport(input: {
 }): boolean {
   const fixturePath = resolve(input.repoRoot, MANUAL_IMPORTED_EVIDENCE_PATH);
   if (!existsSync(fixturePath)) return false;
-  const existing = readGenericArtifact(fixturePath)! as EvidenceNode[];
+  const stored = readGenericArtifact<unknown>(fixturePath);
+  const parsed = Array.isArray(stored) ? stored : parse(readFileSync(fixturePath, 'utf8'));
+  const existing = (Array.isArray(parsed) ? parsed : parsed ? [parsed] : []) as EvidenceNode[];
   const existingById = new Map(existing.map((item) => [item.evidence_id, item]));
   const normalized = normalizeEvidenceImport({
     drafts: input.drafts,

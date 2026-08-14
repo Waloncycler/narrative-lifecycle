@@ -1,6 +1,4 @@
 import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import type { ResearchLeadTriageReport } from '@/features/research/types/research_lead_triage';
 import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
@@ -14,9 +12,7 @@ export class DbResearchLeadTriageRepository {
   }
 
   readLatestReport(): ResearchLeadTriageReport | null {
-    const path = 'research/latest_lead_triage.json';
-    if (!existsSync(path)) return null;
-    try { return readGenericArtifact(path)! as ResearchLeadTriageReport; } catch { return null; }
+    return readGenericArtifact<ResearchLeadTriageReport>('research/latest_lead_triage.json');
   }
 }
 

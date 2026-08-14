@@ -32,6 +32,37 @@ function session(text = '国务院正式批复中医药振兴发展规划，推�
   };
 }
 
+function sessionWithCandidateCount(count: number): EvidenceIntakeSession {
+  const source = session();
+  const base = source.candidates[0]!;
+  source.candidates = Array.from({ length: count }, (_, index) => ({
+    ...base,
+    candidate_id: `candidate_${index}`,
+    suggested_evidence: { ...base.suggested_evidence, evidence_id: `evidence_${index}` },
+  }));
+  return source;
+}
+
+function modelResponseForRequest(request: RequestInit): Response {
+  const payload = JSON.parse(String(request.body)) as { messages: Array<{ role: string; content: string }> };
+  const user = JSON.parse(payload.messages.find((message) => message.role === 'user')!.content) as {
+    rule_candidates: Array<{ candidate_id: string; original_quote: string; suggested_topic_id: string | null }>;
+  };
+  const candidates = user.rule_candidates.map((rule) => ({
+    source_candidate_id: rule.candidate_id,
+    quote: rule.original_quote,
+    supported_fact: `Verified fact for ${rule.candidate_id}.`,
+    inferred_interpretation: `Research interpretation for ${rule.candidate_id}.`,
+    limitation: 'Requires human review and existing import validation.',
+    core_topic: rule.suggested_topic_id,
+    scope: 'parent',
+    evidence_strength: 'E1',
+    suggested_reason: 'Source quote supports the candidate.',
+    uncertainty_notes: ['Operator confirmation required.'],
+  }));
+  return new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify({ candidates }) } }] }), { status: 200 });
+}
+
 describe('smart evidence intake agent', () => {
   afterEach(() => vi.unstubAllGlobals());
 
@@ -67,6 +98,46 @@ describe('smart evidence intake agent', () => {
     expect(result.candidates[0].fallback_used).toBe(false);
     expect(result.audit.status).toBe('passed');
     expect(JSON.stringify(result.audit)).not.toContain('sk-test-secret');
+  });
+
+  it('batches 200+ candidates and merges every verified result', async () => {
+    const source = sessionWithCandidateCount(205);
+    const fetchMock = vi.fn(async (_url: string, request: RequestInit) => modelResponseForRequest(request));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await new OpenAiCompatibleIntakeAgentAdapter({
+      provider: 'openai-compatible', endpoint: 'https://provider.invalid', apiKey: 'secret', model: 'test-model', timeoutMs: 1000, batchSize: 25,
+    }).generate(source);
+
+    expect(fetchMock).toHaveBeenCalledTimes(9);
+    expect(result.candidates).toHaveLength(205);
+    expect(result.candidates.every((candidate) => candidate.validation_status === 'passed' && !candidate.fallback_used)).toBe(true);
+    expect(result.audit).toMatchObject({ status: 'passed', error: null });
+    expect(result.audit.request_fingerprint).toHaveLength(16);
+    expect(result.audit.response_fingerprint).toHaveLength(16);
+  });
+
+  it('falls back only the failed batch and preserves successful batches', async () => {
+    const source = sessionWithCandidateCount(5);
+    const fetchMock = vi.fn(async (_url: string, request: RequestInit) => {
+      const body = String(request.body);
+      return body.includes('candidate_2')
+        ? new Response('temporary failure', { status: 503, headers: { 'retry-after': '0.001' } })
+        : modelResponseForRequest(request);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await new OpenAiCompatibleIntakeAgentAdapter({
+      provider: 'openai-compatible', endpoint: 'https://provider.invalid', apiKey: 'sk-sensitive', model: 'test-model', timeoutMs: 1000, batchSize: 2,
+    }).generate(source);
+
+    expect(fetchMock).toHaveBeenCalledTimes(5);
+    expect(result.candidates.filter((candidate) => candidate.fallback_used).map((candidate) => candidate.source_candidate_id)).toEqual(['candidate_2', 'candidate_3']);
+    expect(result.candidates.filter((candidate) => !candidate.fallback_used).map((candidate) => candidate.source_candidate_id)).toEqual(['candidate_0', 'candidate_1', 'candidate_4']);
+    expect(result.audit.status).toBe('failed');
+    expect(result.audit.error).toContain('batch_2_of_3:provider_http_503');
+    expect(JSON.stringify(result.audit)).not.toContain('sk-sensitive');
+    expect(result.candidates.every((candidate) => candidate.human_review_required)).toBe(true);
   });
 
   it('keeps agent-only independent facts instead of truncating to rule candidate count', async () => {

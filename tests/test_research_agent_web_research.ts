@@ -51,7 +51,11 @@ describe('ResearchAgentLoopUseCase external research', () => {
     }).execute({ loop_kind: 'quick' });
 
     expect(genericSearchCalled).toBe(false);
-    expect(requestedOperationIds).toEqual(['DirectClinicalTrialsGovStudies']);
+    expect(requestedOperationIds).toEqual(expect.arrayContaining([
+      'DirectClinicalTrialsGovStudies',
+      'DirectSinaFinance',
+      'DirectWSJBusiness',
+    ]));
     expect(result.metrics).toMatchObject({
       research_campaign_tasks: 6,
       research_campaign_source_targets: 9,

@@ -1,4 +1,6 @@
 import { buildFailedSourceItem, buildRetrievedSourceItem, selectSourceRetrievalTargets } from '@/features/research/domain/research_source_retrieval';
+import { isFinancialNewsProbe, isUnknownDiscoveryProbe } from '@/features/research/domain/research_source_retrieval';
+import { executeDeepMiningProbe } from '@/features/research/domain/deep_mining_probes';
 import { buildResearchSourceQualityReport } from '@/features/research/domain/research_source_quality';
 import type { ResearchLeadTriageReport } from '@/features/research/types/research_lead_triage';
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
@@ -21,15 +23,20 @@ export interface RetrieveResearchSourcesUseCaseDeps {
 export class RetrieveResearchSourcesUseCase {
   constructor(private readonly deps: RetrieveResearchSourcesUseCaseDeps) {}
 
-  async execute(input: { maxItems?: number; timeoutMs?: number } = {}): Promise<ResearchSourceRetrievalReport> {
+  async execute(input: { maxItems?: number; maxUnknownDiscoveryItems?: number; timeoutMs?: number } = {}): Promise<ResearchSourceRetrievalReport> {
     const generatedAt = this.deps.now();
     const triage = this.deps.readLeadTriage();
-    const targets = selectSourceRetrievalTargets(triage, input.maxItems ?? 6);
+    const targets = selectSourceRetrievalTargets(triage, input.maxItems ?? 6, input.maxUnknownDiscoveryItems ?? 2);
     const items: ResearchSourceRetrievalItem[] = [];
     for (const lead of targets) {
       try {
         const page = await this.deps.retrieve({ url: lead.url, timeoutMs: input.timeoutMs ?? 15_000 });
-        items.push(buildRetrievedSourceItem({ lead, fetchedAt: generatedAt, ...page }));
+        // Secondary financial media is not Evidence. A distinct deep probe
+        // only produces a bounded citation package for downstream source
+        // recovery and candidate review.
+        items.push(isFinancialNewsProbe(lead) || isUnknownDiscoveryProbe(lead)
+          ? executeDeepMiningProbe({ lead, rawBody: page.body, contentType: page.contentType, fetchedAt: generatedAt, httpStatus: page.httpStatus }).retrievalItem
+          : buildRetrievedSourceItem({ lead, fetchedAt: generatedAt, ...page }));
       } catch (error) {
         items.push(buildFailedSourceItem({ lead, fetchedAt: generatedAt, error: safeError(error) }));
       }

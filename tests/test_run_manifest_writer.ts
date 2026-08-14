@@ -1,5 +1,5 @@
 import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
-import { db } from '@/db/client';
+import { db } from '@/db/index';
 import { systemRuns } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { existsSync, mkdtempSync, readFileSync } from 'node:fs';

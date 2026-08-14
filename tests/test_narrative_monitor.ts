@@ -1,6 +1,21 @@
 import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { buildNarrativeMonitor } from '@/features/narrative/domain/narrative_monitor';
-import { renderAgentDashboard, renderQueue, renderSources, renderSystemOverview, renderTopicDetail, renderTopics } from '@/features/narrative/ui/narrative_monitor_renderer';
+import { mergeMonitorSnapshot } from '@/features/narrative/domain/narrative_monitor_snapshot';
+import {
+  renderAgentDashboard,
+  renderChanges,
+  renderEvidenceInbox,
+  renderGovernance,
+  renderMethodology,
+  renderNarrativeMonitor,
+  renderQueue,
+  renderSources,
+  renderSystemOverview,
+  renderTopicDetail,
+  renderTopics,
+} from '@/features/narrative/ui/narrative_monitor_renderer';
 import type { StageSnapshotHistory } from '@/features/stages/types/diff';
 import type { WeeklyBrief } from '@/features/reporting/types/report';
 
@@ -35,6 +50,73 @@ function candidate(candidateId: string, evidenceId: string) {
 }
 
 describe('narrative monitor', () => {
+  it('merges registered database topics into the workbench snapshot without inventing a higher stage', () => {
+    const merged = mergeMonitorSnapshot(snapshot, [{
+      topic_id: 'registered_only',
+      topic_name: '已登记但未重跑的主题',
+      current_stage: 'S5-S6',
+      updated_at: '2026-08-10T00:00:00.000Z',
+      parent_evidence_ids: [],
+      branches: [{ branch_id: 'registered_branch', branch_name: '已登记分支', evidence_ids: ['branch_evidence'] }],
+    }]);
+    const model = buildNarrativeMonitor({ snapshot: merged, weekly, diff: null, review: null, unresolvedCount: 0, learningProfileVersion: null });
+    const registered = model.topics.find((topic) => topic.topic_id === 'registered_only');
+
+    expect(registered).toMatchObject({
+      current_stage: 'S5-S6',
+      baseline_status: 'evidence_based',
+      evidence_count: 0,
+      branch_count: 1,
+    });
+    expect(registered?.branches[0]).toMatchObject({ current_stage: 'S0', evidence_ids: ['branch_evidence'] });
+    expect(registered?.why_not_higher_stage).toContain('尚无正式父主题证据表');
+  });
+
+  it('creates a conservative monitor snapshot when SQLite has topics but no stage snapshot yet', () => {
+    const databaseOnly = mergeMonitorSnapshot(null, [{
+      topic_id: 'database_only',
+      topic_name: '数据库主题',
+      current_stage: 'S4',
+      updated_at: '2026-08-10T00:00:00.000Z',
+      parent_evidence_ids: ['parent_evidence'],
+      branches: [],
+    }]);
+    const model = buildNarrativeMonitor({ snapshot: databaseOnly, weekly: null, diff: null, review: null, unresolvedCount: 0, learningProfileVersion: null });
+
+    expect(model.status).toBe('ready');
+    expect(model.topics[0]).toMatchObject({ current_stage: 'S4', evidence_count: 1, data_confidence: 'low' });
+    expect(model.topics[0]?.why_not_higher_stage).toContain('尚未生成正式阶段快照');
+  });
+
+  it('keeps the full research workbench as the default local entrypoint', () => {
+    const packageJson = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')) as {
+      scripts: Record<string, string>;
+    };
+
+    expect(packageJson.scripts['intake:workbench']).toBe('tsx src/cli/run_intake_workbench.ts');
+  });
+
+  it('keeps every operator area reachable from the shared workbench navigation', () => {
+    const model = buildNarrativeMonitor({ snapshot: null, weekly: null, diff: null, review: null, unresolvedCount: 0, learningProfileVersion: null });
+    const pages = [
+      renderNarrativeMonitor(model),
+      renderTopics(model),
+      renderChanges(model),
+      renderEvidenceInbox(model),
+      renderQueue(model),
+      renderAgentDashboard(model),
+      renderSystemOverview(model),
+      renderSources(model),
+      renderMethodology(),
+      renderGovernance(model),
+    ].join('\n');
+
+    for (const href of ['/', '/topics', '/queue', '/agent', '/system', '/intake']) {
+      expect(pages).toContain(`href=\"${href}\"`);
+    }
+    expect(pages).toContain('研究者确认模式');
+  });
+
   it('keeps parent and branch stages separate in the monitor view', () => {
     const model = buildNarrativeMonitor({ snapshot, weekly, diff: null, review: null, unresolvedCount: 2, learningProfileVersion: 'v0.6.2' });
     expect(model.status).toBe('ready');

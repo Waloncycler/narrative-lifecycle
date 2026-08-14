@@ -13,6 +13,36 @@ import type { DeepResearchSweepResult } from '@/app/use_cases/run_deep_research_
 import { purgeDecisions, agedQueueItems, staleCandidates, type AgedQueueItemInput, type StaleCandidateInput } from '@/features/research/domain/agent_purge_rules';
 import { evolveLedger } from '@/features/research/domain/agent_evolution';
 
+// These feeds are a discovery pulse, not a lifecycle signal. Keeping them in
+// the scheduler makes source health observable while the downstream Evidence
+// Gate continues to reject news-only promotion.
+const DAILY_NEWS_OPERATION_IDS = [
+  'DirectSinaFinance',
+  'DirectWSJBusiness',
+  'DirectReutersBiz',
+  'DirectYicaiNews',
+  'DirectBloombergTech',
+  'DirectBusinessWire',
+  'DirectGelonghui',
+  'Direct36KrFeed',
+  'DirectBbcTech',
+  'DirectVentureBeat',
+  'DirectEconomicTimes',
+  'DirectTechCrunch',
+  'DirectNtsFinance',
+  'DirectNtsTechnology',
+  'DirectNtsResearch',
+  'DirectInvestingMacro',
+  'DirectInvestingStock',
+  'DirectInvestingAnalysis',
+  'DirectGovCnPolicy',
+  'DirectNdrcNews',
+  'DirectCsrcNews',
+  'DirectCninfoAnnouncements',
+  'DirectSseAnnouncements',
+  'DirectSzseAnnouncements',
+] as const;
+
 /**
  * Autonomous research agent loop.
  *
@@ -31,6 +61,8 @@ export interface ResearchAgentLoopDeps {
   producerVersion(): string;
   now(): string;
   runSourceSync(input: { mode: 'live'; maxOperations: number; maxCandidates: number; operationIds?: string[]; forceRefresh?: boolean }): Promise<WorldMonitorSyncResult>;
+  mergeIntakeSessions?(sessions: EvidenceIntakeSession[]): EvidenceIntakeSession | null;
+  probePrioritizedNews?(session: EvidenceIntakeSession, input: { maxNews: number; maxSourcesPerNews: number }): Promise<{ selected_news_count: number; verified_news_count: number; session: EvidenceIntakeSession | null }>;
   runWebResearch?(input: { limit: number }): Promise<WebResearchReport>;
   runResearchCampaign?(input: { maxTasks: number; maxQueries: number; maxDirectQueries: number }): Promise<{ campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession?: EvidenceIntakeSession | null }>;
   /** Multi-round iterative deep search sweep (loop_kind === 'deep'). Round 0
@@ -201,17 +233,17 @@ export class ResearchAgentLoopUseCase {
       campaignResult = await run('research', 'source-aware topic and branch coverage campaign; results remain context-only research leads', () =>
         this.deps.runResearchCampaign!({
           maxTasks: loopKind === 'quick' ? 24 : 60,
-          maxQueries: loopKind === 'quick' ? 2 : 12,
+          maxQueries: loopKind === 'quick' ? 12 : 20,
           maxDirectQueries: loopKind === 'quick' ? 6 : 18,
         }),
       ) as { campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession?: EvidenceIntakeSession | null } | undefined;
-      metrics.web_research_queries = campaignResult?.webResearch.queries.length ?? 0;
-      metrics.web_research_leads = campaignResult?.webResearch.lead_count ?? 0;
-      metrics.direct_source_queries = campaignResult?.directSourceResearch.queries.filter((query) => query.status !== 'skipped').length ?? 0;
-      metrics.direct_source_leads = campaignResult?.directSourceResearch.lead_count ?? 0;
-      metrics.research_campaign_tasks = campaignResult?.campaign.summary.task_count ?? 0;
-      metrics.research_campaign_source_targets = campaignResult?.campaign.summary.source_target_count ?? 0;
-      metrics.research_campaign_seed_topics = campaignResult?.campaign.summary.universe_seed_count ?? 0;
+      metrics.web_research_queries = campaignResult?.webResearch?.queries?.length ?? 0;
+      metrics.web_research_leads = campaignResult?.webResearch?.lead_count ?? 0;
+      metrics.direct_source_queries = campaignResult?.directSourceResearch?.queries?.filter((query) => query.status !== 'skipped').length ?? 0;
+      metrics.direct_source_leads = campaignResult?.directSourceResearch?.lead_count ?? 0;
+      metrics.research_campaign_tasks = campaignResult?.campaign?.summary?.task_count ?? 0;
+      metrics.research_campaign_source_targets = campaignResult?.campaign?.summary?.source_target_count ?? 0;
+      metrics.research_campaign_seed_topics = campaignResult?.campaign?.summary?.universe_seed_count ?? 0;
     } else if (this.deps.runWebResearch) {
       const webResearch = await run('research', 'public-web discovery; results remain context-only research leads', () =>
         this.deps.runWebResearch!({ limit: loopKind === 'quick' ? 2 : 6 }),
@@ -221,7 +253,11 @@ export class ResearchAgentLoopUseCase {
     }
 
     const campaignOperationIds = campaignResult?.campaign.tasks?.flatMap((task) => task.direct_operation_ids ?? []) ?? [];
-    const requestedOperationIds = [...new Set([...(input.operation_ids ?? []), ...campaignOperationIds])];
+    const requestedOperationIds = [...new Set([
+      ...(input.operation_ids ?? []),
+      ...campaignOperationIds,
+      ...DAILY_NEWS_OPERATION_IDS,
+    ])];
 
     // Phase 1: research - execute only queryable direct operations already
     // associated with the coverage plan, plus explicit operator verification.
@@ -230,8 +266,10 @@ export class ResearchAgentLoopUseCase {
       ? (await run('research', 'live source sync across source-aware direct and world-monitor operations', async () =>
         this.deps.runSourceSync({
           mode: 'live',
-          maxOperations: loopKind === 'quick' ? 12 : 40,
-          maxCandidates: 40,
+          maxOperations: loopKind === 'quick' ? 24 : 80,
+          // Collection is paginated upstream; this is the bounded analysis
+          // queue after deterministic importance ranking, not a fetch limit.
+          maxCandidates: loopKind === 'quick' ? 240 : 500,
           operationIds: requestedOperationIds.length ? requestedOperationIds : undefined,
           forceRefresh: input.force_refresh,
         }),
@@ -246,19 +284,53 @@ export class ResearchAgentLoopUseCase {
       metrics.sources_failed = syncResult.report.failed_operation_count ?? 0;
     }
 
+    const combinedSourceSession = this.deps.mergeIntakeSessions?.([
+      campaignResult?.directSourceSession ?? null,
+      campaignResult?.sourceRetrievalSession ?? null,
+      syncResult?.session ?? null,
+    ].filter((session): session is EvidenceIntakeSession => Boolean(session)))
+      ?? syncResult?.session ?? campaignResult?.sourceRetrievalSession ?? campaignResult?.directSourceSession ?? null;
+
+    // Topic/Branch resolution must precede probing. The rule candidates from
+    // source sync intentionally start unresolved; this first Agent pass writes
+    // the mapped session, while Stage and publication remain untouched.
+    const preliminaryAgentBundle = combinedSourceSession && this.deps.probePrioritizedNews
+      ? await run('analyze', 'map prioritized news candidates to Topic/Branch scope before source probing', async () => {
+        const bundle = await this.deps.runIntakeAgent();
+        await this.deps.runAiShadow();
+        return bundle;
+      }) as IntakeAgentReviewBundle | undefined
+      : undefined;
+
+    const newsProbe = combinedSourceSession && this.deps.probePrioritizedNews
+      ? await run('research', 'deep-probe prioritized news and require two independent citation-ready primary sources before Intake', () =>
+        this.deps.probePrioritizedNews!(combinedSourceSession, {
+          maxNews: loopKind === 'quick' ? 24 : loopKind === 'daily' ? 100 : loopKind === 'deep' ? 160 : 60,
+          maxSourcesPerNews: 8,
+        }),
+      ) as { selected_news_count: number; verified_news_count: number; session: EvidenceIntakeSession | null } | undefined
+      : undefined;
+
     const historicalRecovery = loopKind === 'quick' || !this.deps.runHistoricalProvenanceRecovery
       ? null
       : await run('research', 'bounded historic original-source re-acquisition and two-source corroboration; only verified primary packages may join the current Intake session', () => this.deps.runHistoricalProvenanceRecovery!()) as { auto_intake_ready: number; session: EvidenceIntakeSession | null } | null;
 
     // Phase 2: analyze - draft candidates with the intake agent, then shadow-validate
-    const intakeSession = historicalRecovery?.session ?? syncResult?.session ?? campaignResult?.sourceRetrievalSession ?? campaignResult?.directSourceSession ?? null;
-    const agentBundle = intakeSession
-      ? (await run('analyze', 'intake agent drafting + AI shadow validation for source-backed candidates', async () => {
+    const intakeSession = historicalRecovery?.session ?? newsProbe?.session ?? combinedSourceSession;
+    const requiresRefreshedAgent = Boolean(historicalRecovery?.session || newsProbe?.session);
+    const agentBundle = requiresRefreshedAgent && intakeSession
+      ? (await run('analyze', 'refresh intake agent after citation-ready corroboration enriched the source package', async () => {
         const bundle = await this.deps.runIntakeAgent();
         await this.deps.runAiShadow();
         return bundle;
       })) as IntakeAgentReviewBundle | undefined
-      : undefined;
+      : preliminaryAgentBundle ?? (intakeSession
+        ? (await run('analyze', 'intake agent drafting + AI shadow validation for source-backed candidates', async () => {
+          const bundle = await this.deps.runIntakeAgent();
+          await this.deps.runAiShadow();
+          return bundle;
+        })) as IntakeAgentReviewBundle | undefined
+        : undefined);
     if (!intakeSession) stage('analyze', 'no new source facts or direct-source records; previous candidate session was not reused');
     metrics.candidate_count = agentBundle?.candidates.length ?? 0;
 
@@ -291,7 +363,7 @@ export class ResearchAgentLoopUseCase {
       'iterate',
       'rebuild learning profile and active learning cycle',
       () => this.deps.runLearningCycle(),
-      (error) => /session mismatch|no reviewed decisions|not enough history|insufficient_history|no evaluation/i.test(error instanceof Error ? error.message : String(error)),
+      (error) => /session mismatch|no reviewed decisions|not enough history|insufficient_history|no evaluation|learning cycle requires an intake learning profile/i.test(error instanceof Error ? error.message : String(error)),
     )) as IntakeLearningCycle | undefined;
     metrics.learning_cycle_id = cycle?.cycle_id ?? null;
 

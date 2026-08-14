@@ -94,6 +94,8 @@ import { RunDeepResearchSweepUseCase } from '@/app/use_cases/run_deep_research_s
 import { DbDeepResearchSweepRepository } from '@/features/research/io/deep_research_io';
 import { DbResearchPackRepository } from '@/features/research/io/research_pack_io';
 import { RunResearchPackUseCase } from '@/app/use_cases/run_research_pack_use_case';
+import { ProbePrioritizedNewsUseCase } from '@/app/use_cases/probe_prioritized_news_use_case';
+import { mergeEvidenceIntakeSessions } from '@/app/use_cases/merge_evidence_intake_sessions';
 
 export class YamlLoader {
   constructor(private readonly repoRoot: string = process.cwd()) {}
@@ -145,7 +147,12 @@ export class PipelineArtifactManager {
       target: weeklyBriefs.report_id,
       set: { report_json: JSON.stringify(report) }
     }).run();
-    new DbArtifactRepository().writeArtifact(`weekly_brief_${report.run_id}`, 'weekly_brief', report, markdown);
+    const repository = new DbArtifactRepository();
+    repository.writeArtifact(`weekly_brief_${report.run_id}`, 'weekly_brief', report, markdown);
+    // Stable aliases preserve the public artifact contract for existing CLI,
+    // operator tools, and the legacy dashboard after the SQLite migration.
+    repository.writeArtifact('reports/weekly_brief.json', 'weekly_brief', report, markdown);
+    repository.writeArtifact(`runs/${report.run_id}/weekly_brief.json`, 'weekly_brief', report, markdown);
   }
 }
 
@@ -187,6 +194,9 @@ export class DbHistoryRepository {
       target: stageSnapshots.snapshot_id,
       set: { snapshot_json: JSON.stringify(snapshot) }
     }).run();
+    const repository = new DbArtifactRepository();
+    repository.writeArtifact(`runs/${snapshot.run_id}/stage_snapshot.json`, 'stage_snapshot_history', snapshot);
+    repository.writeArtifact(`history/stage_snapshots/${snapshot.snapshot_id}.json`, 'stage_snapshot_history', snapshot);
   }
   
   writeDiff(diff: StageDiff, markdown: string): void {
@@ -280,7 +290,7 @@ export function createProductCoreUseCases(repoRoot: string) {
   const reviewRepository = new DbReviewRepository();
   const pilotRepository = new DbPilotRepository();
   const replayRepository = new DbReplayRepository();
-  const intakeRepository = new IntakeArtifactRepository();
+  const intakeRepository = new DbIntakeRepository(repoRoot);
   const topicRegistryRepository = new DbTopicRegistryRepository();
   const autonomousResearchRepository = new DbAutonomousResearchRepository();
   const intelligenceRepository = new DbIntelligenceRepository();
@@ -560,6 +570,13 @@ export function createProductCoreUseCases(repoRoot: string) {
     readFactState: () => worldMonitorSourceRepository.readFactState(),
     writeFactState: (state) => worldMonitorSourceRepository.writeFactState(state),
     writeIntakeSession: (session) => intakeRepository.writeIntakeSession(session, renderIntakeWorkbench(session)),
+    readTopicRegistry: () => topicRegistryRepository.readTopicRegistry(),
+    readResearchUniverse: () => researchCoverageRepository.readUniverse(),
+    readCompanyRegistry: () => researchCoverageRepository.readCompanyRegistry(),
+    writeNewsEvidenceFunnel: (report) => {
+      writeGenericArtifact('research/latest_news_evidence_funnel.json', report);
+      writeGenericArtifact(`research/history/news_evidence_funnel_${report.generated_at.replace(/[^0-9]/g, '').slice(0, 17)}.json`, report);
+    },
     resolveTopics: (session) => {
       // Autonomous resolution: register new provisional topics/branches into
       // the registry first, then rebuild the audit so newly registered topics
@@ -779,6 +796,23 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateReport: (report) => validator.validate('research_pack_retrieval_report.schema.json', report),
     writeReport: (report) => researchPackRepository.writeReport(report),
   });
+  const probePrioritizedNewsUseCase = new ProbePrioritizedNewsUseCase({
+    now: () => new Date().toISOString(),
+    producerVersion: () => 'v0.15.1',
+    readRegistry: () => topicRegistryRepository.readTopicRegistry(),
+    readSourceAtlas: () => researchCoverageRepository.readSourceAtlas(),
+    readCompanies: () => researchCoverageRepository.readCompanyRegistry(),
+    search: (input) => runWebResearchUseCase.execute(input),
+    retrieve: (input) => researchSourceRetriever.retrieve(input),
+    appendRetrievedSourceIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
+    writeMappedSession: (session) => intakeRepository.writeMergedSession(session),
+    writeReport: (report) => researchSourceRetrievalRepository.writeReport(report),
+    writeDiagnostics: (report) => {
+      writeGenericArtifact('research/latest_news_probe_diagnostics.json', report);
+      writeGenericArtifact(`research/history/news_probe_diagnostics_${report.generated_at.replace(/[^0-9]/g, '').slice(0, 17)}.json`, report);
+    },
+    validateReport: (report) => validator.validate('research_source_retrieval_report.schema.json', report),
+  });
   const runResearchCampaignUseCase = new RunResearchCampaignUseCase({
     buildCampaign: (input) => buildResearchCampaignUseCase.execute(input),
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
@@ -804,6 +838,12 @@ export function createProductCoreUseCases(repoRoot: string) {
     producerVersion: () => 'v0.11.0',
     now: () => new Date().toISOString(),
     runSourceSync: async (input) => syncWorldMonitorSourcesUseCase.execute(input),
+    mergeIntakeSessions: (sessions) => {
+      const merged = mergeEvidenceIntakeSessions(sessions, new Date().toISOString());
+      if (merged) intakeRepository.writeIntakeSession(merged, renderIntakeWorkbench(merged));
+      return merged;
+    },
+    probePrioritizedNews: (_session, input) => probePrioritizedNewsUseCase.execute(intakeRepository.readLatestSession(), input),
     runWebResearch: (input) => runWebResearchUseCase.execute(input),
     runResearchCampaign: (input) => runResearchCampaignUseCase.execute(input),
     runDeepResearchSweep: ({ maxRounds, queriesPerRound, ...rest }) => runDeepResearchSweepUseCase.execute({

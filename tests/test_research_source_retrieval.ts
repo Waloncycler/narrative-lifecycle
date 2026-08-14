@@ -37,6 +37,57 @@ describe('research source retrieval', () => {
     expect(selectSourceRetrievalTargets(ranked, 2).map((item) => item.triage_id)).toEqual(['fresh_medium', 'recent_high']);
   });
 
+  it('uses a separately bounded unknown-domain discovery lane', () => {
+    const report = {
+      triage_id: 'triage_unknown',
+      items: [
+        { triage_id: 'official', source_class: 'official', disposition: 'review', freshness: 'fresh', priority_score: 50 },
+        { triage_id: 'unknown_high', source_class: 'unknown', disposition: 'priority_review', freshness: 'fresh', priority_score: 90 },
+        { triage_id: 'unknown_mid', source_class: 'unknown', disposition: 'review', freshness: 'fresh', priority_score: 80 },
+        { triage_id: 'unknown_low', source_class: 'unknown', disposition: 'review', freshness: 'fresh', priority_score: 70 },
+      ],
+    } as never;
+    expect(selectSourceRetrievalTargets(report, 1, 2).map((item) => item.triage_id))
+      .toEqual(['official', 'unknown_high', 'unknown_mid']);
+    expect(selectSourceRetrievalTargets(report, 1, 0).map((item) => item.triage_id)).toEqual(['official']);
+  });
+
+  it('recognizes common overseas government domains before retrieval selection', () => {
+    const report = {
+      triage_id: 'triage_government_hosts',
+      items: ['www.gov.uk', 'health.gov.au', 'mhlw.go.jp', 'mohw.go.kr', 'www.korea.kr'].map((host, index) => ({
+        triage_id: `government_${index}`, source_class: 'secondary', disposition: 'review', freshness: 'fresh',
+        priority_score: 50, source_domain: host, url: `https://${host}/notice`,
+      })),
+    } as never;
+    const selected = selectSourceRetrievalTargets(report, 8, 0);
+    expect(selected).toHaveLength(5);
+    expect(selected.every((item) => item.source_class === 'official')).toBe(true);
+  });
+
+  it('retrieves unknown-domain text as context only and never prepares it for Intake', async () => {
+    const unknownTriage = {
+      triage_id: 'triage_unknown',
+      items: [{
+        triage_id: 'unknown_1', origin_lead_id: 'lead_unknown', topic_id: 'bci', branch_id: null,
+        candidate_node_id: null, source_class: 'unknown', disposition: 'review', freshness: 'fresh',
+        priority_score: 80, title: 'Unclassified source', url: 'https://unclassified.example/report',
+        source_domain: 'unclassified.example',
+      }],
+    } as never;
+    const report = await new RetrieveResearchSourcesUseCase({
+      now: () => generatedAt, producerVersion: () => 'v0.test', readLeadTriage: () => unknownTriage,
+      retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body: '<html><title>Unclassified report</title><body><article><p>This unclassified page contains a detailed factual statement, named institution, reported date, concrete result, and explicit limitation that can help discover a better original source.</p><p>It remains an ungoverned discovery clue and must not be used as corroboration or admitted into the Evidence Table.</p></article></body></html>' }),
+      writeReport: () => undefined, validateReport: () => undefined,
+      writeQualityReport: () => undefined, validateQualityReport: () => undefined,
+    }).execute({ maxItems: 0, maxUnknownDiscoveryItems: 1 });
+    expect(report.items).toHaveLength(1);
+    expect(report.items[0]).toMatchObject({
+      source_class: 'unknown', status: 'retrieved', citation_status: 'ready',
+      evidence_eligibility: 'context_only', next_action: 'hold',
+    });
+  });
+
   it('prioritizes an arXiv abstract and ClinicalTrials structured study fields over page chrome', () => {
     const arxiv = extractReadableSource('<html><title>arXiv paper</title><body><nav>Skip to main content Donate</nav><blockquote class="abstract mathjax">Abstract: This sufficiently detailed abstract describes a reproducible clinical neurotechnology study, its measured outcome, and limitations for independent researcher review.</blockquote></body></html>', 'text/html', 'https://arxiv.org/abs/2601.12345');
     expect(arxiv.text).toContain('reproducible clinical neurotechnology study');

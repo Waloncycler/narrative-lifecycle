@@ -22,7 +22,6 @@
   },
   "type": "module",
   "scripts": {
-    "dev:api": "tsx watch src/api/server.ts",
     "evidence:validate": "tsx src/cli/run_evidence_validate.ts",
     "evidence:import": "tsx src/cli/run_evidence_import.ts",
     "pipeline": "tsx src/cli/run_pipeline.ts",
@@ -70,16 +69,12 @@
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
-    "cors": "^2.8.6",
     "drizzle-orm": "^0.45.2",
-    "express": "^5.2.1",
     "yaml": "^2.9.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^9.6.0",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
     "@types/node": "^26.1.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",

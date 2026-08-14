@@ -1,6 +1,4 @@
 import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import type { WebResearchReport } from '@/features/research/types/web_research';
 import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
@@ -14,9 +12,7 @@ export class DbWebResearchRepository {
   }
 
   readLatestReport(): WebResearchReport | null {
-    const path = 'research/latest_web_research.json';
-    if (!existsSync(path)) return null;
-    try { return readGenericArtifact(path)! as WebResearchReport; } catch { return null; }
+    return readGenericArtifact<WebResearchReport>('research/latest_web_research.json');
   }
 }
 

@@ -1,6 +1,4 @@
 import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { ResearchSourceQualityReport } from '@/features/research/types/research_source_quality';
 import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
@@ -13,9 +11,7 @@ export class DbResearchSourceRetrievalRepository {
     writeGenericTextArtifact('research/latest_source_retrieval.md', renderResearchSourceRetrievalMarkdown(report));
   }
   readLatestReport(): ResearchSourceRetrievalReport | null {
-    const path = 'research/latest_source_retrieval.json';
-    if (!existsSync(path)) return null;
-    try { return readGenericArtifact(path)! as ResearchSourceRetrievalReport; } catch { return null; }
+    return readGenericArtifact<ResearchSourceRetrievalReport>('research/latest_source_retrieval.json');
   }
   writeQualityReport(report: ResearchSourceQualityReport): void {
     writeGenericArtifact('research/latest_source_quality.json', report);
@@ -55,7 +51,7 @@ function assertPublicHttpUrl(value: string): void {
 }
 
 function renderResearchSourceRetrievalMarkdown(report: ResearchSourceRetrievalReport): string {
-  const lines = ['# 原始页面取证包', '', `- 请求: ${report.requested_count}`, `- 已取得正文: ${report.retrieved_count}`, `- 无可读正文: ${report.skipped_count}`, `- 失败: ${report.failed_count}`, '', '## 可复核摘录', '', ...report.items.filter((item) => item.status === 'retrieved').flatMap((item) => [`- [${item.title}](${item.url}) · ${item.extractor_id ?? 'generic_html'} · 引用${item.citation_status === 'ready' ? '可进入审核' : '待补全'}`, ...item.excerpts.map((excerpt) => `  - ${excerpt.location_label}: ${excerpt.quote}`), ...(item.citation_notes?.map((note) => `  - 待补全：${note}`) ?? [])]), '', '## 边界', '', '- 仅保存有限正文摘录与内容指纹，不把网页全文或标题自动转成 Evidence。', '- 每一条摘录仍需经 Intake、Topic/Branch、去重、Evidence Gate 和人工复核。', '- 分支摘录保持独立 scope，不能升级父主题。', ''];
+  const lines = ['# 原始页面取证包', '', `- 请求: ${report.requested_count}`, `- 已取得正文: ${report.retrieved_count}`, `- 无可读正文: ${report.skipped_count}`, `- 失败: ${report.failed_count}`, '', '## 可复核摘录', '', ...report.items.filter((item) => item.status === 'retrieved').flatMap((item) => [`- [${item.title}](${item.url}) · ${item.extractor_id ?? 'generic_html'} · ${item.next_action === 'prepare_intake' ? '引用可进入审核' : '仅作发现线索'}`, ...item.excerpts.map((excerpt) => `  - ${excerpt.location_label}: ${excerpt.quote}`), ...(item.citation_notes?.map((note) => `  - 待补全：${note}`) ?? [])]), '', '## 边界', '', '- 未知来源只用于发现原始来源和事实线索，不计入双来源核验，也不进入 Evidence。', '- 仅保存有限正文摘录与内容指纹，不把网页全文或标题自动转成 Evidence。', '- 每一条摘录仍需经 Intake、Topic/Branch、去重、Evidence Gate 和人工复核。', '- 分支摘录保持独立 scope，不能升级父主题。', ''];
   return `${lines.join('\n')}\n`;
 }
 

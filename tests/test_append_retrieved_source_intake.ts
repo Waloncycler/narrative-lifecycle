@@ -122,4 +122,26 @@ describe('citation-ready queue advancement', () => {
     expect(session.candidates[0]?.suggested_evidence.topic_id).toBe('provisional_china_innovative_drugs_domestic_access');
     expect(resolverCalls).toBe(0);
   });
+
+  it('replaces a news lead with two-source primary provenance without changing branch scope', () => {
+    const pending = structuredClone(base);
+    pending.candidates[0]!.suggested_evidence.source_type = 'news';
+    pending.candidates[0]!.suggested_evidence.source_url = 'https://finance.sina.com.cn/news/1';
+    pending.candidates[0]!.publication_eligibility = 'manual_review';
+    const verified = structuredClone(report);
+    verified.items = [{
+      ...verified.items[0]!, url: 'https://www.fda.gov/drugs/approval', topic_id: 'bci', branch_id: 'bci_medical_rehab', next_action: 'prepare_intake',
+      news_corroboration: { news_candidate_id: 'candidate_direct', seed_source_url: 'https://finance.sina.com.cn/news/1', corroboration_status: 'verified', claim_similarity: 0.8, corroborating_source_urls: ['https://company.example.com/newsroom/approval'], independent_source_hosts: ['www.fda.gov', 'company.example.com'] },
+    }, { ...verified.items[0]!, retrieval_id: 'r_company', url: 'https://company.example.com/newsroom/approval', next_action: 'hold' }];
+    const useCase = new AppendRetrievedSourceIntakeUseCase({
+      now: () => '2026-08-09T01:00:00.000Z', readLatestSession: () => pending, existingEvidenceIds: () => new Set(),
+      writeIntakeSession: () => undefined, resolveTopics: () => undefined, validateSession: () => undefined, validateCandidate: () => undefined,
+    });
+    const output = useCase.execute(verified)!;
+    expect(output.candidates[0]).toMatchObject({
+      publication_eligibility: 'rule_verified',
+      suggested_evidence: { topic_id: 'bci', branch_id: 'bci_medical_rehab', scope: 'branch', stage_effect: 'split_branch', source_type: 'official', evidence_strength: 'E1' },
+    });
+    expect(output.raw_document.text).toContain('Cross-source corroboration');
+  });
 });

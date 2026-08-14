@@ -8,6 +8,7 @@ const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(here, '../..');
 const args = process.argv.slice(2);
 const kind = (valueFor(args, '--kind') ?? 'manual') as ResearchAgentLoopKind;
 const publishAuto = args.includes('--publish-auto');
+const forceRefresh = args.includes('--force-refresh');
 const deepMaxRounds = valueFor(args, '--max-rounds');
 const deepQueriesPerRound = valueFor(args, '--queries-per-round');
 const useCases = createProductCoreUseCases(repoRoot);
@@ -16,6 +17,7 @@ const manifest = await useCases.researchAgentLoopUseCase.execute({
   loop_kind: kind,
   triggered_by: 'cli',
   publish_auto: publishAuto,
+  force_refresh: forceRefresh,
   deep_max_rounds: deepMaxRounds ? Number(deepMaxRounds) : undefined,
   deep_queries_per_round: deepQueriesPerRound ? Number(deepQueriesPerRound) : undefined,
 });

@@ -1,6 +1,6 @@
 import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 import { db } from '@/db/index';
-import { genericArtifacts } from '@/db/schema';
+import { genericArtifacts, stageSnapshots } from '@/db/schema';
 import { like } from 'drizzle-orm';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -17,6 +17,26 @@ export interface DiffArtifacts {
   scores: ScoreResult[];
   early_radar_candidates: EarlyRadarCandidate[];
   system_summary: { run_id: string; generated_at: string; rule_version: string };
+}
+
+function isUsableStageSnapshot(value: unknown): value is StageSnapshotHistory {
+  if (!value || typeof value !== 'object') return false;
+  const snapshot = value as Partial<StageSnapshotHistory>;
+  const guardrails = snapshot.guardrail_check;
+  return typeof snapshot.snapshot_id === 'string'
+    && typeof snapshot.run_id === 'string'
+    && snapshot.run_id.length > 0
+    && typeof snapshot.generated_at === 'string'
+    && !Number.isNaN(Date.parse(snapshot.generated_at))
+    && Array.isArray(snapshot.topics)
+    && Array.isArray(snapshot.early_radar_candidates)
+    && Boolean(guardrails)
+    && typeof guardrails?.no_trading_advice === 'boolean'
+    && typeof guardrails?.research_only_actions === 'boolean'
+    && typeof guardrails?.parent_branch_separation_preserved === 'boolean'
+    && typeof guardrails?.evidence_ids_visible === 'boolean'
+    && typeof guardrails?.why_not_higher_present === 'boolean'
+    && typeof guardrails?.data_confidence_present === 'boolean';
 }
 
 function readJson<T>(path: string, missingMessage = RUN_PIPELINE_FIRST_FOR_DIFF): T {
@@ -45,11 +65,20 @@ export function loadDiffArtifacts(repoRoot: string): DiffArtifacts {
 }
 
 export function loadPreviousSnapshot(repoRoot: string, current?: Pick<RunContext, 'run_id' | 'started_at'>): StageSnapshotHistory | null {
-  const records = db.select().from(genericArtifacts).where(like(genericArtifacts.artifact_id, `history/stage_snapshots/%`)).all();
-  if (!records.length) return null;
-  const snapshots = records
-    .map(r => JSON.parse(r.content_json) as StageSnapshotHistory)
-    .filter((snapshot) => typeof snapshot.run_id === 'string' && snapshot.run_id.length > 0)
+  const legacyRecords = db.select().from(genericArtifacts).where(like(genericArtifacts.artifact_id, `history/stage_snapshots/%`)).all();
+  const databaseRecords = db.select().from(stageSnapshots).all();
+  const serializedSnapshots = [
+    ...legacyRecords.map((record) => record.content_json),
+    ...databaseRecords.map((record) => record.snapshot_json),
+  ];
+  if (!serializedSnapshots.length) return null;
+  const snapshots = serializedSnapshots
+    .flatMap((serialized) => {
+      try { return [JSON.parse(serialized) as unknown]; } catch { return []; }
+    })
+    // Legacy history ids may contain adjacent report artifacts. A previous
+    // snapshot is usable only when it has the public snapshot shape.
+    .filter(isUsableStageSnapshot)
     .filter((snapshot) => !current || (snapshot.run_id !== current.run_id && snapshot.generated_at < current.started_at))
     .sort((a, b) => a.generated_at.localeCompare(b.generated_at));
   return snapshots.at(-1) ?? null;

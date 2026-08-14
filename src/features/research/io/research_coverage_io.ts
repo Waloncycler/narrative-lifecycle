@@ -35,14 +35,18 @@ export class DbResearchCoverageRepository {
 
   readLatestDirectResearch(): DirectSourceResearchReport | null {
     const path = 'research/latest_direct_source_research.json';
-    if (!existsSync(path)) return null;
-    try { return readGenericArtifact(path)! as DirectSourceResearchReport; } catch { return null; }
+    return readGenericArtifact<DirectSourceResearchReport>(path);
   }
 
   private readYaml<T>(relativePath: string): T {
     const path = resolve(this.repoRoot, relativePath);
-    if (!existsSync(path)) throw new Error(`research coverage configuration missing: ${relativePath}`);
-    return readGenericArtifact(path)! as T;
+    const persisted = readGenericArtifact<T>(path);
+    if (persisted) return persisted;
+    // Static research coverage configuration is bootstrapping data, not a
+    // runtime artifact. Keep this narrow fallback so a fresh database can
+    // execute a first campaign before its configuration has been persisted.
+    if (existsSync(path)) return parse(readFileSync(path, 'utf8')) as T;
+    throw new Error(`research coverage configuration missing: ${relativePath}`);
   }
 }
 

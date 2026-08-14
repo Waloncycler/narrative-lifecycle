@@ -35,7 +35,14 @@ export class RunResearchCampaignUseCase {
   async execute(input: { maxTasks?: number; maxQueries?: number; maxDirectQueries?: number } = {}): Promise<{ campaign: ResearchCampaign; webResearch: WebResearchReport; directSourceResearch: DirectSourceResearchReport; directSourceSession: EvidenceIntakeSession | null; sourceRetrievalSession: EvidenceIntakeSession | null; leadTriage: ResearchLeadTriageReport | null; sourceRetrieval: ResearchSourceRetrievalReport | null }> {
     const campaign = this.deps.buildCampaign({ maxTasks: input.maxTasks });
     const aliases = this.deps.readRegistry?.()?.aliases ?? [];
-    const plannedQueries = buildPlannedQueries(campaign, input.maxQueries ?? 12, aliases);
+    const queryBudget = input.maxQueries ?? 12;
+    // Reserve a small, bounded lane for financial-news discovery. It never
+    // replaces primary-source research and is disabled for tiny CLI probes.
+    const newsPulseBudget = queryBudget >= 6 ? Math.min(8, Math.floor(queryBudget / 3)) : 0;
+    const plannedQueries = [
+      ...buildPlannedQueries(campaign, queryBudget - newsPulseBudget, aliases),
+      ...buildFinancialNewsPulseQueries(campaign, newsPulseBudget),
+    ];
     const [webResearch, directSourceResearch] = await Promise.all([
       this.deps.runWebResearch({ plannedQueries }),
       this.deps.runDirectSourceResearch({
@@ -107,7 +114,7 @@ function buildPlannedQueries(campaign: ResearchCampaign, maxQueries: number, ali
   return [...topicQueries, ...companyQueries].slice(0, maxQueries);
 }
 
-interface PlannedWebQuery {
+export interface PlannedWebQuery {
   query: string;
   topic_id: string | null;
   branch_id: string | null;
@@ -116,6 +123,46 @@ interface PlannedWebQuery {
   source_ids: string[];
   source_domains: string[];
   strict_source_domains?: string[];
+}
+
+/**
+ * A bounded discovery lane for licensed financial-news sources. These are
+ * deliberately site-restricted searches rather than undocumented publisher
+ * APIs: a connector can later supply an approved API/RSS endpoint without
+ * changing the Evidence Gate. Results remain secondary, context-only leads;
+ * the retrieval step uses a deep probe to obtain a citable excerpt and the
+ * normal source-recovery path must still find corroborating primary material.
+ */
+export function buildFinancialNewsPulseQueries(campaign: ResearchCampaign, budget: number): PlannedWebQuery[] {
+  if (budget < 1) return [];
+  const sources = [
+    { source_id: 'wallstreetcn', domain: 'wallstreetcn.com' },
+    { source_id: 'cls_telegraph', domain: 'cls.cn' },
+    { source_id: 'sina_finance', domain: 'finance.sina.com.cn' },
+    { source_id: 'wsj_chinese', domain: 'cn.wsj.com' },
+  ];
+  const tasks = [...campaign.tasks]
+    .filter((task) => task.node_kind !== 'universe_seed')
+    .sort((left, right) => right.priority - left.priority || left.task_id.localeCompare(right.task_id));
+  const output: PlannedWebQuery[] = [];
+  for (let index = 0; index < budget && tasks.length; index += 1) {
+    const task = tasks[index % tasks.length]!;
+    const source = sources[index % sources.length]!;
+    output.push({
+      // Distinct intent text is required: web-query de-duplication keys on
+      // query text, so reusing the ordinary Topic term would silently erase
+      // this media lane before the site-domain constraint is applied.
+      query: `${task.display_name_zh || task.display_name_en} 财经新闻`,
+      topic_id: task.topic_id,
+      branch_id: task.branch_id,
+      candidate_node_id: task.candidate_node_id,
+      campaign_task_id: `${task.task_id}__${source.source_id}_pulse`,
+      source_ids: [source.source_id],
+      source_domains: [source.domain],
+      strict_source_domains: [source.domain],
+    });
+  }
+  return output;
 }
 
 /** Round-robin topic term expansion. Each selected task contributes a queue

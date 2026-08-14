@@ -6,6 +6,10 @@ import {
   sourceConfigForOperation,
 } from '@/features/worldmonitor/domain/worldmonitor_rules';
 import { buildWorldMonitorFactState } from '@/features/worldmonitor/domain/worldmonitor_change_detection';
+import { rankNewsSignals } from '@/features/research/domain/news_importance';
+import { analyzeNewsEvidenceSignals, selectNewsEvidenceSignals, type NewsEvidenceFunnelReport } from '@/features/research/domain/news_evidence_funnel';
+import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
+import type { CompanyResearchRegistry, ResearchUniverse } from '@/features/research/types/research_coverage';
 import type { DocumentChunk, EvidenceCandidate, EvidenceIntakeSession, ProvenanceRecord, RawDocument } from '@/features/intake/types/intake';
 import type {
   WorldMonitorFetchRecord,
@@ -34,6 +38,10 @@ export interface SyncWorldMonitorSourcesUseCaseDeps {
   readFactState(): WorldMonitorFactState | null;
   writeFactState(state: WorldMonitorFactState): void;
   writeIntakeSession(session: EvidenceIntakeSession): void;
+  readTopicRegistry(): TopicRegistry;
+  readResearchUniverse(): ResearchUniverse;
+  readCompanyRegistry(): CompanyResearchRegistry;
+  writeNewsEvidenceFunnel(report: NewsEvidenceFunnelReport): void;
   resolveTopics(session: EvidenceIntakeSession): void;
   validateInventory(inventory: WorldMonitorSourceInventory): void;
   validateReport(report: WorldMonitorSyncReport): void;
@@ -81,7 +89,7 @@ export class SyncWorldMonitorSourcesUseCase {
       const duplicate = input.mode === 'live' && !input.forceRefresh && result.payload ? seenHashes.has(result.payload.payload_hash) : false;
       const recordCount = result.payload ? recordsForWorldMonitorPayload(result.payload).length : 0;
       const candidateCount = result.payload && !duplicate
-        ? uniqueSignals(signalsFromWorldMonitorPayload(result.payload).filter(signalHasNoTradingAdvice)).slice(0, 25).length
+        ? uniqueSignals(signalsFromWorldMonitorPayload(result.payload).filter(signalHasNoTradingAdvice)).length
         : 0;
       if (result.payload) payloads.push(result.payload);
       records.push({
@@ -105,9 +113,10 @@ export class SyncWorldMonitorSourcesUseCase {
       });
     }
 
-    const allSignals = payloads.flatMap((payload) =>
-      signalsFromWorldMonitorPayload(payload).filter(signalHasNoTradingAdvice),
-    );
+    const allSignals = analyzeNewsEvidenceSignals({
+      signals: rankNewsSignals(payloads.flatMap((payload) => signalsFromWorldMonitorPayload(payload).filter(signalHasNoTradingAdvice)), generatedAt),
+      registry: this.deps.readTopicRegistry(), universe: this.deps.readResearchUniverse(), companies: this.deps.readCompanyRegistry(),
+    });
     const observedOperationIds = new Set(records
       .filter((record) => record.mode === 'live' && record.http_status !== null && record.status !== 'failed')
       .map((record) => record.operation_id));
@@ -129,12 +138,9 @@ export class SyncWorldMonitorSourcesUseCase {
       })
       : null;
     const actionableKeys = new Set((changeResult?.actionableSignals ?? []).map((signal) => signal.signal_id));
-    const signalGroups = payloads.map((payload) =>
-      uniqueSignals(signalsFromWorldMonitorPayload(payload).filter(signalHasNoTradingAdvice))
-        .filter((signal) => actionableKeys.has(signal.signal_id))
-        .slice(0, 25),
-    );
-    const signals = roundRobin(signalGroups, input.maxCandidates ?? 50);
+    const actionable = uniqueSignals(allSignals.filter((signal) => actionableKeys.has(signal.signal_id)));
+    const funnel = selectNewsEvidenceSignals({ signals: actionable, limit: input.maxCandidates ?? 50, generatedAt });
+    const signals = funnel.signals;
     for (const record of records) {
       record.selected_candidate_count = signals.filter((signal) => signal.operation_id === record.operation_id).length;
     }
@@ -179,6 +185,7 @@ export class SyncWorldMonitorSourcesUseCase {
     if (changeResult) this.deps.validateFactState(changeResult.state);
     this.deps.writeInventory(inventory);
     this.deps.writeSyncReport(report);
+    this.deps.writeNewsEvidenceFunnel(funnel.report);
     if (changeResult) this.deps.writeFactState(changeResult.state);
     if (session) {
       for (const candidate of session.candidates) this.deps.validateCandidate(candidate);
@@ -229,6 +236,7 @@ function selectOperations(
     if (requested.size && !requested.has(item.operation_id)) return false;
     if (input.mode === 'sandbox') return Boolean(item.sandbox_fixture);
     if (item.evidence_eligibility === 'unsupported') return false;
+    if (item.access_state === 'manual_request' || item.access_state === 'requires_key' || item.access_state === 'requires_parameters') return false;
     if (item.governance.governance_state !== 'research_ready') return false;
     // The auto-polling surface stays GET-only and polling-allowed; explicitly
     // requested operations (e.g. the SZSE POST data API) may still be pulled
@@ -236,7 +244,6 @@ function selectOperations(
     if (!requested.has(item.operation_id)) {
       if (!item.governance.automated_polling_allowed) return false;
       if (item.method !== 'GET' || item.required_parameters.length) return false;
-      if (item.access_state === 'requires_key') return false;
       if (item.auth_requirement === 'worldmonitor_key' && item.access_state !== 'production_ready') return false;
     }
     return item.evidence_eligibility === 'candidate' || Boolean(input.includeContext);
@@ -298,6 +305,13 @@ function sessionFromSignals(
       }),
     };
     const config = sourceConfigForOperation(descriptor);
+    const ruleVerifiedPrimary = signal.source_name.startsWith('Direct public /')
+      && config.source_type !== 'news'
+      && config.source_type !== 'other'
+      && Boolean(signal.source_url)
+      && sourceQuote.trim().length >= 80
+      && signal.research_analysis?.evidence_lane === 'direct_fact'
+      && /^\d{4}-\d{2}-\d{2}/.test(signal.event_date);
     const evidenceId = `wm_${signal.signal_id}`.slice(0, 180);
     chunks.push({
       chunk_id: chunkId,
@@ -325,9 +339,9 @@ function sessionFromSignals(
       original_quote: sourceQuote,
       suggested_evidence: {
         evidence_id: evidenceId,
-        topic_id: 'unknown_topic',
-        branch_id: null,
-        scope: 'parent',
+        topic_id: signal.research_analysis?.topic_id ?? 'unknown_topic',
+        branch_id: signal.research_analysis?.branch_id ?? null,
+        scope: signal.research_analysis?.branch_id ? 'branch' : 'parent',
         event_date: signal.event_date,
         available_at: (signal.available_at ?? signal.timestamp).slice(0, 10),
         event_title: signal.event_title,
@@ -338,11 +352,13 @@ function sessionFromSignals(
         source_type: config.source_type,
         evidence_strength: 'E1',
         affected_layer: [config.primary_layer, ...config.secondary_layers],
-        stage_effect: 'maintain',
+        stage_effect: signal.research_analysis?.branch_id ? 'split_branch' : 'maintain',
         polarity: 'neutral',
-        interpretation: 'External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved.',
-        limitation: `Structured API record normalized by ${signal.normalizer_id ?? 'generic_record'} ${signal.normalizer_version ?? 'unknown'}; upstream verification and human review remain required. Payload hash: ${signal.raw_payload_hash ?? 'unavailable'}.`,
-        confidence: 'low',
+        interpretation: signal.research_analysis?.topic_id
+          ? `The signal is deterministically routed to ${signal.research_analysis.topic_id} for source recovery; this mapping does not establish a lifecycle stage.`
+          : 'External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved.',
+        limitation: `Structured lead normalized by ${signal.normalizer_id ?? 'generic_record'} ${signal.normalizer_version ?? 'unknown'}; news importance only prioritizes deep probing and never raises Evidence strength. Original-source verification, corroboration and admission checks remain required. Payload hash: ${signal.raw_payload_hash ?? 'unavailable'}.`,
+        confidence: ruleVerifiedPrimary ? 'medium' : 'low',
       },
       suggested_reason: `Conservative live-source candidate from ${signal.operation_id ?? signal.source_id}; no automatic Topic or Stage assignment.`,
       uncertainty_notes: [
@@ -353,10 +369,26 @@ function sessionFromSignals(
       field_explanations: {
         evidence_strength: 'External aggregator records start at E1 and cannot inherit strength from the source catalog.',
         affected_layer: `The ${config.primary_layer} layer is suggested from the operation domain and must be reviewed.`,
-        topic_id: 'No forced mapping is allowed; Topic Resolver and the operator must decide.',
+        topic_id: signal.research_analysis?.topic_id
+          ? `${signal.research_analysis.mapping_basis}: ${signal.research_analysis.topic_id}; Topic Resolver remains authoritative.`
+          : 'No forced mapping is allowed; Topic Resolver and the operator must decide.',
         source_normalizer: `${signal.normalizer_id ?? 'generic_record'} ${signal.normalizer_version ?? 'unknown'}`,
+        ...(signal.research_analysis ? {
+          news_event_class: signal.research_analysis.event_class,
+          evidence_potential_score: String(signal.research_analysis.evidence_potential_score),
+          evidence_lane: signal.research_analysis.evidence_lane,
+          event_cluster_id: signal.research_analysis.cluster_id,
+          verification_targets: signal.research_analysis.verification_targets.join(', '),
+        } : {}),
+        ...(signal.metrics?.news_importance_score !== undefined ? {
+          news_importance_score: String(signal.metrics.news_importance_score),
+          deep_probe_recommended: signal.research_analysis?.evidence_lane !== 'discovery_only' || signal.metrics.deep_probe_recommended === 1 ? 'yes' : 'no',
+        } : {}),
       },
-      e_strength_rationale: 'Conservative E1 baseline for a live secondary-source signal.',
+      e_strength_rationale: ruleVerifiedPrimary
+        ? 'A dated, substantive direct-public primary record is rule-verified at E1; this does not establish a Stage transition.'
+        : 'Conservative E1 baseline for a live secondary-source signal.',
+      publication_eligibility: ruleVerifiedPrimary ? 'rule_verified' : 'manual_review',
       duplicate_of_evidence_id: existingEvidenceIds.has(evidenceId) ? evidenceId : null,
       guardrail_check: {
         no_trading_advice: true,

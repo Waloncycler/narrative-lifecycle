@@ -81,6 +81,7 @@ export interface WorldMonitorSignal {
   source_quote?: string;
   normalizer_id?: string;
   normalizer_version?: string;
+  research_analysis?: import('@/features/research/domain/news_evidence_funnel').NewsResearchAnalysis;
 }
 
 export interface WorldMonitorNormalizedFact {

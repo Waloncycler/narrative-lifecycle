@@ -2,13 +2,14 @@ import { db } from '@/db/index';
 import { evidence } from '@/db/schema';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import { AutonomousResearchArtifactRepository } from '@/features/research/io/autonomous_research_io';
-import type { AutonomousResearchRun } from '@/features/research/types/autonomous_research';
+import type { AutonomousResearchPolicy, AutonomousResearchRun } from '@/features/research/types/autonomous_research';
+import { autonomousResearchPolicy } from '@/config/app_config';
 
 export class DbAutonomousResearchRepository {
   private fallbackRepo: AutonomousResearchArtifactRepository;
 
   constructor(repoRoot: string = process.cwd()) {
-    this.fallbackRepo = new AutonomousResearchArtifactRepository();
+    this.fallbackRepo = new AutonomousResearchArtifactRepository(repoRoot);
   }
 
   readOperationalEvidence(): EvidenceNode[] {
@@ -75,7 +76,7 @@ export class DbAutonomousResearchRepository {
   }
 
   readLatestSnapshot() { return this.fallbackRepo.readLatestSnapshot(); }
-  readPolicy() { return this.fallbackRepo.readPolicy(); }
+  readPolicy(): AutonomousResearchPolicy { return autonomousResearchPolicy as AutonomousResearchPolicy; }
   readPreviousOperatorRunId() { return this.fallbackRepo.readPreviousOperatorRunId(); }
   operationalArtifactPaths(runId: string) { return this.fallbackRepo.operationalArtifactPaths(runId); }
   writeNarrativeGraphPromotion(report: any) { return this.fallbackRepo.writeNarrativeGraphPromotion(report); }

@@ -65,6 +65,16 @@ export interface ResearchSourceRetrievalItem {
     corroborating_source_urls: string[];
     independent_source_hosts: string[];
   };
+  /** Independent verification for a newly observed secondary-news lead. It
+   * authorizes Intake review only; it never raises Evidence strength or Stage. */
+  news_corroboration?: {
+    news_candidate_id: string;
+    seed_source_url: string;
+    corroboration_status: 'verified' | 'unverified';
+    claim_similarity: number;
+    corroborating_source_urls: string[];
+    independent_source_hosts: string[];
+  };
 }
 
 export interface ResearchSourceRetrievalReport {

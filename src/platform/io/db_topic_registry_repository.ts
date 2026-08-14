@@ -1,6 +1,6 @@
 import { db } from '@/db/index';
-import { topics, branches } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { topics, branches, genericArtifacts } from '@/db/schema';
+import { desc, eq, like } from 'drizzle-orm';
 import type { TopicRegistry, TopicResolution, TopicResolutionAudit } from '@/features/narrative/types/topic_resolution';
 import type { NarrativeGraphPromotionReport } from '@/features/narrative/types/narrative_graph_promotion';
 import { TopicRegistryArtifactRepository } from '@/platform/io/topic_registry_io';
@@ -60,6 +60,15 @@ export class DbTopicRegistryRepository {
   }
 
   readTopicResolutionAudit(): TopicResolutionAudit | null {
+    const record = db.select({ content_json: genericArtifacts.content_json })
+      .from(genericArtifacts)
+      .where(like(genericArtifacts.artifact_id, 'audit_topic_resolution_%'))
+      .orderBy(desc(genericArtifacts.updated_at))
+      .limit(1)
+      .get();
+    if (record?.content_json) {
+      try { return JSON.parse(record.content_json) as TopicResolutionAudit; } catch { /* fall through to legacy artifact */ }
+    }
     return this.fallbackRepo.readTopicResolutionAudit();
   }
 

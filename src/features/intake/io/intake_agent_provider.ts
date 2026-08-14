@@ -19,6 +19,8 @@ export interface OpenAiCompatibleAgentConfig {
   apiKey?: string;
   model: string;
   timeoutMs: number;
+  batchSize?: number;
+  concurrency?: number;
 }
 
 export function intakeAgentConfigFromEnv(env: NodeJS.ProcessEnv): OpenAiCompatibleAgentConfig {
@@ -35,6 +37,8 @@ export function intakeAgentConfigFromEnv(env: NodeJS.ProcessEnv): OpenAiCompatib
     apiKey: env.NARRATIVE_AGENT_API_KEY ?? env.DEEPSEEK_API_KEY ?? env.MINIMAX_API_KEY,
     model: env.NARRATIVE_AGENT_MODEL ?? (deepseekConfigured ? deepseekModel : minimaxConfigured ? minimaxModel : 'intake-agent-disabled'),
     timeoutMs: Number(env.NARRATIVE_AGENT_TIMEOUT_MS ?? 600000),
+    batchSize: boundedBatchSize(env.NARRATIVE_AGENT_BATCH_SIZE),
+    concurrency: boundedConcurrency(env.NARRATIVE_AGENT_CONCURRENCY),
   };
 }
 
@@ -50,50 +54,54 @@ export class OpenAiCompatibleIntakeAgentAdapter {
     diff: StageDiff | null = null,
   ): Promise<{ candidates: AgentEvidenceCandidate[]; audit: IntakeAgentAudit }> {
     const generatedAt = new Date().toISOString();
-    const request = buildRequest(session, this.config.model, industryPacks, learningProfile, topicRegistry, evidenceNodes, diff);
-    const requestFingerprint = fingerprint(request);
-    let responseFingerprint: string | null = null;
-    let error: string | null = null;
-    let raw: AgentEvidenceCandidate[] = [];
+    const batchSize = boundedBatchSize(this.config.batchSize);
+    const batches = chunkCandidates(session.candidates, batchSize);
+    const requestFingerprints: string[] = [];
+    const responseFingerprints: string[] = [];
+    const errors: string[] = [];
+    const candidates: AgentEvidenceCandidate[] = [];
 
     if (!this.config.endpoint || !this.config.apiKey || this.config.provider === 'disabled') {
-      error = 'intake_agent_provider_not_configured';
+      errors.push('intake_agent_provider_not_configured');
+      candidates.push(...session.candidates.map((rule) => fallbackCandidate(rule, session, this.config, errors[0])));
     } else {
-      try {
-        const response = await fetchWithTimeout(this.config.endpoint, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json', authorization: `Bearer ${this.config.apiKey}` },
-          body: JSON.stringify(request),
-        }, this.config.timeoutMs);
-        const body = await response.text();
-        responseFingerprint = fingerprint(body);
-        if (!response.ok) throw new Error(`provider_http_${response.status}`);
-        raw = parseResponse(body, session, this.config);
-      } catch (caught) {
-        error = caught instanceof Error ? caught.message : String(caught);
+      const concurrency = boundedConcurrency(this.config.concurrency);
+      for (let start = 0; start < batches.length; start += concurrency) {
+        const group = batches.slice(start, start + concurrency);
+        const results = await Promise.all(group.map(async (batch, offset) => {
+          const index = start + offset;
+          const batchSession = { ...session, candidates: batch };
+          const request = buildRequest(batchSession, this.config.model, industryPacks, learningProfile, topicRegistry, evidenceNodes, diff);
+          const requestFingerprint = fingerprint(request);
+          try {
+            const response = await fetchWithProviderRetry(this.config.endpoint!, {
+              method: 'POST',
+              headers: { 'content-type': 'application/json', authorization: `Bearer ${this.config.apiKey}` },
+              body: JSON.stringify(request),
+            }, this.config.timeoutMs);
+            const body = await response.text();
+            if (!response.ok) throw new Error(`provider_http_${response.status}`);
+            const raw = parseResponse(body, batchSession, this.config);
+            return { requestFingerprint, responseFingerprint: fingerprint(body), candidates: reconcileBatch(raw, batch, session, this.config), error: null };
+          } catch (caught) {
+            const reason = caught instanceof Error ? caught.message : String(caught);
+            return { requestFingerprint, responseFingerprint: null, candidates: batch.map((rule) => fallbackCandidate(rule, session, this.config, reason)), error: `batch_${index + 1}_of_${batches.length}:${reason}` };
+          }
+        }));
+        for (const result of results) {
+          requestFingerprints.push(result.requestFingerprint);
+          if (result.responseFingerprint) responseFingerprints.push(result.responseFingerprint);
+          if (result.error) errors.push(result.error);
+          candidates.push(...result.candidates);
+        }
       }
     }
 
-    const matchedRawIds = new Set<string>();
-    const candidates = session.candidates.map((rule) => {
-      const modelCandidate = findModelCandidate(raw, rule);
-      if (modelCandidate) matchedRawIds.add(modelCandidate.agent_candidate_id);
-      if (!modelCandidate) return fallbackCandidate(rule, session, this.config, error ?? 'agent_candidate_missing');
-      const verification = verifyAgentCandidate({ candidate: modelCandidate, session, ruleCandidate: rule });
-      return verification.errors.length ? fallbackCandidate(rule, session, this.config, verification.errors.join(',')) : modelCandidate;
-    });
-    // Model candidates already consumed by a rule candidate must not be
-    // re-imported as agent-only extras.
-    const extraCandidates = raw
-      .filter((candidate) => !matchedRawIds.has(candidate.agent_candidate_id))
-      .map((candidate) => {
-        const verification = verifyAgentCandidate({ candidate, session });
-        return verification.errors.length
-          ? { ...candidate, validation_status: 'failed' as const, validation_errors: verification.errors }
-          : candidate;
-      });
-    candidates.push(...extraCandidates);
-    const fallbackCount = candidates.filter((candidate) => candidate.fallback_used).length;
+    const mergedCandidates = dedupeCandidates(candidates);
+    const fallbackCount = mergedCandidates.filter((candidate) => candidate.fallback_used).length;
+    const requestFingerprint = aggregateFingerprints(requestFingerprints);
+    const responseFingerprint = responseFingerprints.length ? aggregateFingerprints(responseFingerprints) : null;
+    const error = errors.length ? errors.join(';') : null;
     const audit: IntakeAgentAudit = {
       audit_id: `intake_agent_${generatedAt.slice(0, 10).replaceAll('-', '')}_${session.session_id}`,
       generated_at: generatedAt,
@@ -101,14 +109,101 @@ export class OpenAiCompatibleIntakeAgentAdapter {
       provider: this.config.provider,
       model_version: this.config.model,
       prompt_version: INTAKE_AGENT_PROMPT_VERSION,
-      status: fallbackCount === candidates.length ? 'fallback' : error || candidates.some((candidate) => candidate.validation_status === 'failed') ? 'failed' : 'passed',
+      status: fallbackCount === mergedCandidates.length && mergedCandidates.length > 0
+        ? 'fallback'
+        : error || mergedCandidates.some((candidate) => candidate.validation_status === 'failed') ? 'failed' : 'passed',
       request_fingerprint: requestFingerprint,
       response_fingerprint: responseFingerprint,
       error,
       secret_redaction: 'api_key_not_persisted',
     };
-    return { candidates, audit };
+    return { candidates: mergedCandidates, audit };
   }
+}
+
+const DEFAULT_BATCH_SIZE = 25;
+const MAX_BATCH_SIZE = 50;
+const DEFAULT_CONCURRENCY = 1;
+const MAX_CONCURRENCY = 4;
+
+function boundedBatchSize(value: string | number | undefined): number {
+  const parsed = typeof value === 'number' ? value : Number(value ?? DEFAULT_BATCH_SIZE);
+  if (!Number.isFinite(parsed)) return DEFAULT_BATCH_SIZE;
+  return Math.min(MAX_BATCH_SIZE, Math.max(1, Math.floor(parsed)));
+}
+
+function boundedConcurrency(value: string | number | undefined): number {
+  const parsed = typeof value === 'number' ? value : Number(value ?? DEFAULT_CONCURRENCY);
+  if (!Number.isFinite(parsed)) return DEFAULT_CONCURRENCY;
+  return Math.min(MAX_CONCURRENCY, Math.max(1, Math.floor(parsed)));
+}
+
+async function fetchWithProviderRetry(url: string, init: RequestInit, timeoutMs: number): Promise<Response> {
+  const attempts = 3;
+  let response: Response | null = null;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    response = await fetchWithTimeout(url, init, timeoutMs);
+    if (response.ok || (response.status !== 429 && response.status < 500)) return response;
+    if (attempt === attempts - 1) return response;
+    const retryAfter = Number(response.headers.get('retry-after'));
+    const delayMs = Number.isFinite(retryAfter) && retryAfter > 0
+      ? Math.min(10_000, retryAfter * 1000)
+      : Math.min(8_000, 1_000 * (2 ** attempt));
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+  return response!;
+}
+
+function chunkCandidates(candidates: EvidenceCandidate[], batchSize: number): EvidenceCandidate[][] {
+  const batches: EvidenceCandidate[][] = [];
+  for (let index = 0; index < candidates.length; index += batchSize) {
+    batches.push(candidates.slice(index, index + batchSize));
+  }
+  return batches;
+}
+
+function reconcileBatch(
+  raw: AgentEvidenceCandidate[],
+  rules: EvidenceCandidate[],
+  session: EvidenceIntakeSession,
+  config: OpenAiCompatibleAgentConfig,
+): AgentEvidenceCandidate[] {
+  const matchedRawIds = new Set<string>();
+  const candidates = rules.map((rule) => {
+    const modelCandidate = findModelCandidate(raw, rule);
+    if (modelCandidate) matchedRawIds.add(modelCandidate.agent_candidate_id);
+    if (!modelCandidate) return fallbackCandidate(rule, session, config, 'agent_candidate_missing');
+    const verification = verifyAgentCandidate({ candidate: modelCandidate, session, ruleCandidate: rule });
+    return verification.errors.length
+      ? fallbackCandidate(rule, session, config, verification.errors.join(','))
+      : modelCandidate;
+  });
+  const extras = raw
+    .filter((candidate) => !matchedRawIds.has(candidate.agent_candidate_id))
+    .map((candidate) => {
+      const verification = verifyAgentCandidate({ candidate, session });
+      return verification.errors.length
+        ? { ...candidate, validation_status: 'failed' as const, validation_errors: verification.errors }
+        : candidate;
+    });
+  return [...candidates, ...extras];
+}
+
+function dedupeCandidates(candidates: AgentEvidenceCandidate[]): AgentEvidenceCandidate[] {
+  const seen = new Set<string>();
+  return candidates.filter((candidate) => {
+    const key = candidate.source_candidate_id
+      ? `rule:${candidate.source_candidate_id}`
+      : `extra:${candidate.raw_document_id}:${candidate.quote_start_offset}:${candidate.quote_end_offset}:${candidate.original_quote}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function aggregateFingerprints(values: string[]): string {
+  if (values.length === 0) return fingerprint([]);
+  return values.length === 1 ? values[0] : fingerprint(values);
 }
 
 /** Cap on the raw document text sent to the model. Long transcripts slow

@@ -148,7 +148,8 @@ describe('narrative graph discovery', () => {
   it('emits a schema-valid, research-only discovery artifact', () => {
     const source = session({ text: 'Humanoid robotics warehouse logistics applications completed customer pilot validation.', topicId: 'humanoid_robotics' });
     const report = discoverNarrativeGraph({ session: source, registry, priorRecords: [], generatedAt: source.generated_at });
-            const validate = (data: any) => { return true; };, 'utf8')) as object);
+    const validator = new FileSchemaValidator();
+    const validate = (data: unknown) => validator.validate('narrative_discovery_report.schema.json', data);
     expect(() => validate(report)).not.toThrow();
     expect(report.guardrail_check).toMatchObject({ parent_stage_unchanged: true, branch_evidence_isolated: true, no_trading_advice: true });
   });

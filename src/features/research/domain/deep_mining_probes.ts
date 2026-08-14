@@ -34,12 +34,13 @@ export function executeDeepMiningProbe(input: DeepMiningProbeInput): DeepMiningP
   const extracted = extractReadableSource(rawBody, contentType, lead.url);
   const excerpts = deepExtractExcerpts(extracted.text);
 
-  const ceiling = lead.source_class === 'official' ? 'E4' : lead.source_class === 'academic' ? 'E3' : 'E2';
+  const isUnknown = lead.source_class === 'unknown';
+  const ceiling = isUnknown ? 'E0' : lead.source_class === 'official' ? 'E4' : lead.source_class === 'academic' ? 'E3' : 'E2';
   const primaryLayers = lead.source_class === 'official'
     ? ['reality', 'pricing', 'capital']
     : lead.source_class === 'academic'
       ? ['reality', 'name']
-      : ['capital', 'pricing'];
+      : isUnknown ? [] : ['capital', 'pricing'];
 
   const retrievalItem: ResearchSourceRetrievalItem = {
     retrieval_id: `deep_probe_${hash(`${lead.triage_id}|${lead.url}`)}`,
@@ -48,6 +49,7 @@ export function executeDeepMiningProbe(input: DeepMiningProbeInput): DeepMiningP
     topic_id: lead.topic_id,
     branch_id: lead.branch_id,
     candidate_node_id: lead.candidate_node_id,
+    source_published_at: lead.published_at,
     source_class: lead.source_class,
     disposition: lead.disposition,
     title: lead.title,
@@ -57,11 +59,19 @@ export function executeDeepMiningProbe(input: DeepMiningProbeInput): DeepMiningP
     http_status: httpStatus,
     content_type: contentType,
     page_title: extracted.title,
+    extractor_id: extracted.extractor_id,
     excerpts,
+    citation_status: excerpts.length ? 'ready' : 'insufficient',
+    citation_notes: excerpts.length
+      ? [isUnknown
+        ? 'Unknown-domain discovery excerpt only; it cannot corroborate or enter Evidence.'
+        : 'Deep probe extracted bounded, offset-aligned source text.']
+      : ['Deep probe found no sufficiently specific source text.'],
+    source_text_chars: extracted.text.length,
     content_hash: extracted.text ? hash(extracted.text) : null,
     error: excerpts.length ? null : 'deep_probe_found_no_citable_excerpts',
     evidence_eligibility: 'context_only',
-    next_action: excerpts.length ? 'prepare_intake' : 'hold',
+    next_action: excerpts.length && !isUnknown ? 'prepare_intake' : 'hold',
   };
 
   return {
@@ -87,15 +97,15 @@ function deepExtractExcerpts(text: string): SourcePageExcerpt[] {
   const ranked = sentences
     .map((quote, index) => ({ quote, index, score: probeScore(quote) }))
     .sort((a, b) => b.score - a.score)
-    .slice(0, 4)
+    .slice(0, 3)
     .sort((a, b) => a.index - b.index);
 
   return ranked.map((item, idx) => {
     const start = text.indexOf(item.quote);
     return {
-      quote: item.quote.slice(0, 800),
+      quote: item.quote.slice(0, 700),
       quote_start_offset: Math.max(0, start),
-      quote_end_offset: Math.max(0, start) + Math.min(item.quote.length, 800),
+      quote_end_offset: Math.max(0, start) + Math.min(item.quote.length, 700),
       location_label: `深度探针提取段落 ${idx + 1}`,
     };
   });

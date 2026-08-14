@@ -18,7 +18,7 @@ describe('golden case runner', () => {
 
     const validator = new FileSchemaValidator();
     const validateScore = (data: any) => { validator.validate('score.schema.json', data); return true; };
-    const validateCard = (data: any) => { return true; };, 'utf8')));
+    const validateCard = (data: unknown) => { validator.validate('dashboard_card.schema.json', data); return true; };
 
     expect(results).toHaveLength(3);
     expect(results.map((result) => result.topic_id).sort()).toEqual([

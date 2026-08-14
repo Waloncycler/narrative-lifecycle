@@ -113,7 +113,8 @@ describe('Web research discovery boundary', () => {
       writeReport: () => undefined, validateReport: () => undefined,
     });
     const report = await useCase.execute({ topicIds: ['bci'] });
-        const validate = (data: any) => { return true; };, 'schemas/web_research_report.schema.json'), 'utf8')) as object);
+    const validator = new FileSchemaValidator();
+    const validate = (data: unknown) => validator.validate('web_research_report.schema.json', data);
     expect(() => validate(report)).not.toThrow();
     expect(report.leads[0]).toMatchObject({ evidence_eligibility: 'context_only' });
   });

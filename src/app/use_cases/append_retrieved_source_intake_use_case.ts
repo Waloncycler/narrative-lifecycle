@@ -34,12 +34,15 @@ export class AppendRetrievedSourceIntakeUseCase {
     for (const [index, item] of ready.entries()) {
       const quote = item.excerpts[0]!.quote;
       const recovery = item.historical_recovery;
+      const newsRecovery = item.news_corroboration;
       const sourceDate = dateOnly(item.source_published_at);
       const verifiedCurrentSource = Boolean(sourceDate && ['official', 'company_primary', 'academic'].includes(item.source_class));
       const recoveredVerified = recovery?.corroboration_status === 'verified';
-      const corroboration = recovery?.corroboration_status === 'verified'
+      const newsVerified = newsRecovery?.corroboration_status === 'verified';
+      const corroboratingUrls = recovery?.corroborating_source_urls ?? newsRecovery?.corroborating_source_urls ?? [];
+      const corroboration = recoveredVerified || newsVerified
         ? report.items
-          .filter((candidate) => recovery.corroborating_source_urls.includes(candidate.url))
+          .filter((candidate) => corroboratingUrls.includes(candidate.url))
           .filter((candidate) => candidate.citation_status === 'ready' && candidate.excerpts.length)
           .map((candidate) => `Cross-source corroboration: ${candidate.url}\nExtracted text: ${candidate.excerpts[0]!.quote}`)
           .join('\n\n')
@@ -68,7 +71,9 @@ export class AppendRetrievedSourceIntakeUseCase {
         location_label: `${sourceName(item.url)} / ${item.url} / ${item.excerpts[0]!.location_label}`,
         extraction_reason: 'Citation-ready bounded original-page excerpt retrieved from the research queue.',
       });
-      const matched = candidatesByUrl.get(item.url);
+      const matched = newsRecovery
+        ? session.candidates.find((candidate) => candidate.candidate_id === newsRecovery.news_candidate_id)
+        : candidatesByUrl.get(item.url);
       if (matched) {
         matched.raw_document_id = raw.raw_document_id;
         matched.chunk_id = chunkId;
@@ -76,6 +81,9 @@ export class AppendRetrievedSourceIntakeUseCase {
         matched.original_quote = quote;
         matched.suggested_evidence = {
           ...matched.suggested_evidence,
+          topic_id: item.topic_id ?? matched.suggested_evidence.topic_id,
+          branch_id: item.branch_id,
+          scope: item.branch_id ? 'branch' : 'parent',
           event_date: recovery?.event_date ?? sourceDate ?? matched.suggested_evidence.event_date,
           available_at: recovery?.event_date ?? sourceDate ?? matched.suggested_evidence.available_at,
           event_title: item.page_title ?? item.title,
@@ -84,13 +92,18 @@ export class AppendRetrievedSourceIntakeUseCase {
           source_name: sourceName(item.url),
           source_url: item.url,
           source_type: sourceType(item.source_class),
-          confidence: recoveredVerified || verifiedCurrentSource ? 'medium' : matched.suggested_evidence.confidence,
-          interpretation: recoveredVerified
+          stage_effect: item.branch_id ? 'split_branch' : 'maintain',
+          confidence: recoveredVerified || newsVerified || verifiedCurrentSource ? 'medium' : matched.suggested_evidence.confidence,
+          interpretation: newsVerified
+            ? 'Two independent citation-ready sources, including a primary-source anchor, support the prioritized news claim. The package may enter normal Evidence review but does not establish a Stage.'
+            : recoveredVerified
             ? 'A historical primary source was re-acquired and independently corroborated. It is eligible for the existing governed admission policy, not a direct Stage conclusion.'
             : verifiedCurrentSource
               ? 'A dated, citation-ready original source was retrieved from a governed discovery lead. It is eligible for the existing policy evaluation, not a direct Stage conclusion.'
               : matched.suggested_evidence.interpretation,
-          limitation: recoveredVerified
+          limitation: newsVerified
+            ? `Independent primary-source hosts: ${newsRecovery!.independent_source_hosts.join(', ')}. News readership and corroboration prioritize review only; Evidence strength and Stage remain rule-bound.`
+            : recoveredVerified
             ? `Independent corroborating URLs: ${recovery!.corroborating_source_urls.join(', ')}. This E1 source record cannot by itself establish a lifecycle stage; Stage Gate and duplicate checks remain authoritative.`
             : verifiedCurrentSource
               ? 'A bounded original-page excerpt and source publication date are available. This E1 record cannot by itself establish pricing, adoption, or a Stage transition.'
@@ -104,15 +117,19 @@ export class AppendRetrievedSourceIntakeUseCase {
         matched.temporal_provenance = {
           event_date_source: recovery?.event_date || sourceDate ? 'source_metadata' : priorTemporal.event_date_source,
           available_at_source: recovery?.event_date || sourceDate ? 'source_metadata' : priorTemporal.available_at_source,
-          requires_operator_confirmation: !(recoveredVerified || verifiedCurrentSource),
+          requires_operator_confirmation: !(recoveredVerified || newsVerified || verifiedCurrentSource),
         };
-        if (recoveredVerified || verifiedCurrentSource) matched.publication_eligibility = 'rule_verified';
-        matched.suggested_reason = recoveredVerified
+        if (recoveredVerified || newsVerified || verifiedCurrentSource) matched.publication_eligibility = 'rule_verified';
+        matched.suggested_reason = newsVerified
+          ? 'Prioritized news claim was matched to two independent citation-ready sources including a primary anchor; advance into existing policy gates without raising E-strength.'
+          : recoveredVerified
           ? 'Historical source was re-acquired with two independent, citation-ready source hosts; advance into the existing Agent and policy gates.'
           : verifiedCurrentSource
             ? 'Dated citation-ready original source replaced the prior API pointer; advance into the existing Agent and policy gates.'
             : matched.suggested_reason;
-        matched.uncertainty_notes = [...new Set([...matched.uncertainty_notes, recoveredVerified
+        matched.uncertainty_notes = [...new Set([...matched.uncertainty_notes, newsVerified
+          ? 'Two-source corroboration permits governed review; it does not convert readership into evidence or promote a branch into its parent.'
+          : recoveredVerified
           ? 'A citation-ready original page and two-source corroboration replaced the prior discovery pointer; the record remains E1 and still passes the normal Evidence Gate.'
           : verifiedCurrentSource
             ? 'A citation-ready original page and source date replaced the prior discovery pointer; the record remains E1 and still passes the normal Evidence Gate.'

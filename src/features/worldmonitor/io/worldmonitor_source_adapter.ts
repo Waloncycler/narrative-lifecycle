@@ -68,7 +68,7 @@ const DIRECT_PUBLIC_OPERATIONS: WorldMonitorOperationDescriptor[] = [
   direct('DirectArxivPreprints', 'ArxivPreprints', 'https://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.CL+OR+cat:cs.LG+OR+cat:cs.CR&sortBy=submittedDate&sortOrder=descending&max_results=20', 'research', 'candidate', 'arXiv preprints (cs.AI, cs.CL, cs.LG, cs.CR)'),
   direct('DirectHuggingFaceModels', 'HuggingFaceModels', 'https://huggingface.co/api/models?sort=downloads&limit=15&full=false', 'research', 'candidate', 'Hugging Face most-downloaded models'),
   direct('DirectGithubTrending', 'GithubTrending', 'https://api.github.com/search/repositories?q=LLM+OR+AI+OR+robotics&sort=stars&order=desc&per_page=10', 'technology', 'candidate', 'GitHub starred repositories (AI/LLM/robotics)'),
-  direct('DirectSinaFinance', 'SinaFinance', 'https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2516&num=15&page=1', 'financial', 'candidate', 'Sina Finance rolling news stream'),
+  direct('DirectSinaFinance', 'SinaFinance', 'https://app.cj.sina.com.cn/api/news/pc?page=1&size=50&tag=0', 'financial', 'candidate', 'Sina Finance 7x24 rolling news with public readership metrics'),
   direct('Direct36KrFeed', '36KrFeed', 'https://36kr.com/feed', 'technology', 'candidate', '36Kr Chinese tech news feed'),
   direct('DirectBbcTech', 'BbcTech', 'https://feeds.bbci.co.uk/news/technology/rss.xml', 'technology', 'candidate', 'BBC technology news'),
   direct('DirectVentureBeat', 'VentureBeat', 'https://venturebeat.com/feed/', 'technology', 'candidate', 'VentureBeat AI/tech news'),
@@ -115,8 +115,18 @@ const DIRECT_PUBLIC_OPERATIONS: WorldMonitorOperationDescriptor[] = [
   direct('DirectMorganStanleyInsights', 'MorganStanleyInsights', 'https://www.morganstanley.com/ideas', 'financial', 'candidate', 'Morgan Stanley Insights research (HTML scrape)'),
   
   // Category 9 (v0.9.5+): Elite Institutional, Financial & Macro Data Sources
-  direct('DirectCailianTelegraph', 'CailianTelegraph', 'https://www.cls.cn/nodeapi/telegraphList', 'financial', 'candidate', 'Cailian Press (财联社) 24/7 Rolling Telegraph'),
+  // CLS publicly renders the telegraph, but its current data request is signed.
+  // The normalizer supports approved connector payloads including reading_num;
+  // the catalog does not pretend an unsigned request is production-ready.
+  direct('DirectCailianTelegraph', 'CailianTelegraph', 'https://www.cls.cn/telegraph', 'financial', 'candidate', 'Cailian Press (财联社) 24/7 Rolling Telegraph; requires an approved data connector', {
+    auth_requirement: 'source_parameters',
+    access_state: 'manual_request',
+  }),
   direct('DirectWSJBusiness', 'WSJBusiness', 'https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml', 'financial', 'candidate', 'The Wall Street Journal - Global Business & Markets RSS'),
+  direct('DirectWSJChinese', 'WSJChinese', 'https://cn.wsj.com/', 'financial', 'candidate', 'The Wall Street Journal Chinese public listings; automated requests currently require an approved retrieval connector', {
+    auth_requirement: 'source_parameters',
+    access_state: 'manual_request',
+  }),
   direct('DirectReutersBiz', 'ReutersBiz', 'https://www.reutersagency.com/feed/', 'geopolitics', 'candidate', 'Reuters Business & Finance Wire'),
   direct('DirectTechCrunch', 'TechCrunch', 'https://techcrunch.com/feed/', 'technology', 'candidate', 'TechCrunch Startups and VC News'),
   direct('DirectWindMacro', 'WindMacro', 'https://api.wind.com.cn/v1/macro/news', 'financial', 'candidate', 'Wind Data (万得) Macro Market News API'),
@@ -223,7 +233,10 @@ export class DbWorldMonitorSourceRepository {
       production_configured: input.productionConfigured,
       service_count: new Set(operations.map((item) => item.service)).size,
       operation_count: operations.length,
-      pollable_operation_count: operations.filter((item) => item.method === 'GET' && !item.required_parameters.length).length,
+      pollable_operation_count: operations.filter((item) => item.method === 'GET'
+        && !item.required_parameters.length
+        && item.access_state === 'production_ready'
+        && item.governance.automated_polling_allowed).length,
       candidate_operation_count: operations.filter((item) => item.evidence_eligibility === 'candidate').length,
       context_only_operation_count: operations.filter((item) => item.evidence_eligibility === 'context_only').length,
       unsupported_operation_count: operations.filter((item) => item.evidence_eligibility === 'unsupported').length,
@@ -342,6 +355,9 @@ export class WorldMonitorHttpClient {
       if (descriptor.auth_requirement === 'worldmonitor_key' && this.apiKey) headers['X-WorldMonitor-Key'] = this.apiKey;
       if (descriptor.content_type) headers['Content-Type'] = descriptor.content_type;
       if (descriptor.request_headers) Object.assign(headers, descriptor.request_headers);
+      if (descriptor.operation_id === 'DirectSinaFinance') {
+        return await this.fetchSinaPages(descriptor, mode, headers);
+      }
       const response = await this.fetchImpl(descriptor.production_url, {
         method: descriptor.method === 'POST' ? 'POST' : 'GET',
         headers,
@@ -395,6 +411,88 @@ export class WorldMonitorHttpClient {
     }
     return { descriptor, payload: null, status: 'failed', httpStatus: null, message: 'Source retry budget exhausted.' };
   }
+
+  private async fetchSinaPages(
+    descriptor: WorldMonitorOperationDescriptor,
+    mode: WorldMonitorSyncMode,
+    headers: Record<string, string>,
+  ): Promise<WorldMonitorFetchResult> {
+    const records: Record<string, unknown>[] = [];
+    const seen = new Set<string>();
+    const maxPages = 20;
+    let lastStatus = 200;
+    let completedPages = 0;
+    let partialError: string | null = null;
+    // The live 7x24 endpoint exposes public readership but only a latest-item
+    // window. Keep that window, then append the genuinely paginated roll feed
+    // for broader coverage. Both remain secondary-source research leads.
+    const currentController = new AbortController();
+    const currentTimeout = setTimeout(() => currentController.abort(), this.timeoutMs);
+    try {
+      const response = await this.fetchImpl(descriptor.production_url, { headers, signal: currentController.signal });
+      if (response.ok) {
+        const json = JSON.parse(await response.text()) as Record<string, unknown>;
+        const current = objectArrayForHttp(objectForHttp(objectForHttp(objectForHttp(json.result)?.data)?.feed)?.list);
+        appendUniqueRecords(records, seen, current);
+      }
+    } finally {
+      clearTimeout(currentTimeout);
+    }
+    for (let page = 1; page <= maxPages; page += 1) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
+      const url = new URL('https://feed.mix.sina.com.cn/api/roll/get');
+      url.searchParams.set('pageid', '153');
+      url.searchParams.set('lid', '2516');
+      url.searchParams.set('page', String(page));
+      url.searchParams.set('num', '50');
+      try {
+        const response = await this.fetchImpl(url.toString(), { headers, signal: controller.signal });
+        lastStatus = response.status;
+        if (!response.ok) throw new Error(`Sina Finance returned HTTP ${response.status} on page ${page}.`);
+        const json = JSON.parse(await response.text()) as Record<string, unknown>;
+        const pageRecords = objectArrayForHttp(objectForHttp(json.result)?.data);
+        if (!pageRecords.length) break;
+        appendUniqueRecords(records, seen, pageRecords);
+        completedPages += 1;
+      } catch (error) {
+        partialError = error instanceof Error ? error.message : String(error);
+        if (!records.length) throw error;
+        break;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+    const fetchedAt = new Date().toISOString();
+    return {
+      descriptor,
+      payload: payload(descriptor, fetchedAt, descriptor.production_url, mode, {
+        result: { data: { feed: { list: records } } },
+      }),
+      status: 'ok',
+      httpStatus: lastStatus,
+      message: `Live response received from current readership window plus ${completedPages}/${maxPages} historical pages (${records.length} records)${partialError ? `; partial stop: ${partialError}` : ''}; research triage and Evidence admission remain separate.`,
+    };
+  }
+}
+
+function objectForHttp(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null;
+}
+
+function objectArrayForHttp(value: unknown): Record<string, unknown>[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === 'object' && !Array.isArray(item))
+    : [];
+}
+
+function appendUniqueRecords(target: Record<string, unknown>[], seen: Set<string>, incoming: Record<string, unknown>[]): void {
+  for (const record of incoming) {
+    const key = String(record.id ?? record.oid ?? record.docid ?? record.docurl ?? record.url ?? record.rich_text ?? record.title ?? '');
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    target.push(record);
+  }
 }
 
 function direct(
@@ -404,7 +502,14 @@ function direct(
   domain: WorldMonitorOperationDescriptor['domain'],
   eligibility: WorldMonitorOperationDescriptor['evidence_eligibility'],
   summary: string,
-  options?: { method?: 'GET' | 'POST'; post_body?: string; content_type?: string; headers?: Record<string, string> },
+  options?: {
+    method?: 'GET' | 'POST';
+    post_body?: string;
+    content_type?: string;
+    headers?: Record<string, string>;
+    auth_requirement?: WorldMonitorOperationDescriptor['auth_requirement'];
+    access_state?: WorldMonitorOperationDescriptor['access_state'];
+  },
 ): WorldMonitorOperationDescriptor {
   const method = options?.method ?? 'GET';
   return {
@@ -418,8 +523,8 @@ function direct(
     optional_parameters: [],
     domain,
     evidence_eligibility: eligibility,
-    auth_requirement: 'public_no_key',
-    access_state: 'production_ready',
+    auth_requirement: options?.auth_requirement ?? 'public_no_key',
+    access_state: options?.access_state ?? 'production_ready',
     sandbox_fixture: null,
     production_url: url,
     ...(options?.post_body ? { post_body: options.post_body } : {}),
@@ -432,7 +537,7 @@ function direct(
       method,
       sourceClass: 'direct_public',
       eligibility,
-      productionConfigured: true,
+      productionConfigured: (options?.access_state ?? 'production_ready') === 'production_ready',
     }),
   };
 }

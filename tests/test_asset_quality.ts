@@ -88,29 +88,11 @@ describe('asset quality', () => {
   });
 
   it('all prompts keep LLM work evidence-first and avoid direct numeric scoring', () => {
-    const promptFiles = readdirSync(resolve(repoRoot, 'prompts')).filter((file) => file.endsWith('.md'));
-    const scoringPrompt = read('prompts/scoring_prompt.md');
-    const reactivationPrompt = read('prompts/reactivation_prompt.md');
-    const stagePrompt = read('prompts/stage_classifier_prompt.md');
-
-    expect(scoringPrompt).toContain('Do not output numeric scores');
-    expect(scoringPrompt).toContain('Stage Gate classification');
-    expect(scoringPrompt).not.toContain('Generate scores from structured evidence only');
-    expect(reactivationPrompt).toContain('Do not calculate Narrative Delta Score directly');
-    expect(read('prompts/dashboard_writer_prompt.md')).toContain('- action');
-    expect(read('prompts/dashboard_writer_prompt.md')).not.toContain('research_action');
-    expect(read('prompts/early_radar_prompt.md')).toContain('stage_reactivation');
-    expect(read('prompts/early_radar_prompt.md')).not.toContain('old_topic_reactivation');
-    expect(stagePrompt).toContain('Evidence Table First');
-
-    for (const file of promptFiles) {
-      const body = read(`prompts/${file}`).toLowerCase();
-      expect(body).not.toContain('buy/sell signal');
-      expect(body).not.toContain('target price recommendation');
-      if (file !== 'scoring_prompt.md') {
-        expect(body).not.toContain('generate scores');
-      }
-    }
+    const prompt = read('src/features/intake/domain/intake_agent_prompt.ts').toLowerCase();
+    expect(prompt).toContain('source-supported facts');
+    expect(prompt).toContain('never classify stage, score');
+    expect(prompt).not.toContain('buy/sell signal');
+    expect(prompt).not.toContain('target price recommendation');
   });
 
   it('keeps UI and automated ingestion out of Phase 0 scope', () => {

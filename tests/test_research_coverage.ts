@@ -23,10 +23,10 @@ const registry: TopicRegistry = {
 
 describe('authoritative source mesh and research coverage campaign', () => {
   it('keeps a schema-valid, diverse authority atlas and research universe', () => {
-            const validateAtlas = (data: any) => { return true; };, 'utf8')) as object);
-    const validateUniverse = (data: any) => { return true; };, 'utf8')) as object);
-    const validateCompanies = (data: any) => { return true; };, 'utf8')) as object);
-    expect(() => validateAtlas(atlas)).not.toThrow();
+    const validator = new FileSchemaValidator();
+    const validateUniverse = (data: unknown) => validator.validate('research_universe.schema.json', data);
+    const validateCompanies = (data: unknown) => validator.validate('company_research_registry.schema.json', data);
+    expect(atlas).toMatchObject({ atlas_version: expect.any(String), sources: expect.any(Array) });
     expect(() => validateUniverse(universe)).not.toThrow();
     expect(() => validateCompanies(companies)).not.toThrow();
     expect(atlas.sources.length).toBeGreaterThanOrEqual(40);
@@ -70,7 +70,8 @@ describe('authoritative source mesh and research coverage campaign', () => {
     });
     expect(historyPrioritized.tasks.find((task) => task.topic_id === 'bci')).toMatchObject({ priority: 150, query: '脑机接口 融资 披露 原始来源', target_layers: expect.arrayContaining(['capital']) });
 
-            const validate = (data: any) => { return true; };, 'utf8')) as object);
+    const validator = new FileSchemaValidator();
+    const validate = (data: unknown) => validator.validate('research_campaign.schema.json', data);
     expect(() => validate(campaign)).not.toThrow();
 
     const boundedCampaign = buildResearchCampaign({ registry, atlas, universe, companies, generatedAt: '2026-08-03T00:00:00.000Z', producerVersion: 'test', maxTasks: 24 });

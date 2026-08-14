@@ -111,7 +111,8 @@ describe('narrative graph autonomous promotion', () => {
 
   it('emits a schema-valid artifact with no Stage or Score bypass', () => {
     const report = evaluate([]);
-            const validate = (data: any) => { return true; };, 'schemas/narrative_graph_promotion_report.schema.json'), 'utf8')) as object);
+    const validator = new FileSchemaValidator();
+    const validate = (data: unknown) => validator.validate('narrative_graph_promotion_report.schema.json', data);
     expect(() => validate(report)).not.toThrow();
     expect(report.guardrail_check).toMatchObject({ evidence_table_required: true, stage_first_score_second: true, no_model_stage_or_score_control: true });
   });

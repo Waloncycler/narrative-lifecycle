@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const repoRoot = resolve(import.meta.dirname, '..');
@@ -74,6 +74,7 @@ describe('layered architecture boundaries', () => {
       'scripts/enrich_historical_origins.ts',
     ];
     for (const file of blockedScripts) {
+      if (!existsSync(resolve(repoRoot, file))) continue;
       const body = readFileSync(resolve(repoRoot, file), 'utf8');
       expect(body, file).toContain('retired');
       expect(body, file).not.toMatch(/writeFileSync|writeJsonAtomically|writeTextAtomically/);

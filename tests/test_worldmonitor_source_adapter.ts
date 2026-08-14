@@ -31,13 +31,21 @@ describe('World Monitor source adapter', () => {
     // Counts reflect the built-in catalog (expanded in the v0.13.5 open-source
     // release, plus the v0.9.8 TradingView top-provider additions) plus the two
     // synthetic fixture services below.
-    expect(inventory.service_count).toBe(69);
-    expect(inventory.operation_count).toBe(71);
-    expect(inventory.pollable_operation_count).toBe(68);
+    expect(inventory.service_count).toBe(70);
+    expect(inventory.operation_count).toBe(72);
+    expect(inventory.pollable_operation_count).toBe(65);
     expect(inventory.sandbox_operation_count).toBe(1);
     expect(inventory.operations.find((item) => item.operation_id === 'ListEarthquakes')?.access_state).toBe('sandbox_available');
     expect(inventory.operations.find((item) => item.operation_id === 'GetCountryRisk')?.evidence_eligibility).toBe('context_only');
     expect(inventory.operations.find((item) => item.operation_id === 'GetRequired')?.access_state).toBe('requires_parameters');
+    expect(inventory.operations.find((item) => item.operation_id === 'DirectCailianTelegraph')).toMatchObject({
+      access_state: 'manual_request',
+      auth_requirement: 'source_parameters',
+    });
+    expect(inventory.operations.find((item) => item.operation_id === 'DirectWSJChinese')).toMatchObject({
+      access_state: 'manual_request',
+      auth_requirement: 'source_parameters',
+    });
     expect(inventory.operations.find((item) => item.operation_id === 'ListEarthquakes')?.governance.governance_state).toBe('review_required');
     const directUsgs = inventory.operations.find((item) => item.operation_id === 'DirectUSGSEarthquakes');
     expect(directUsgs?.governance).toMatchObject({
@@ -77,6 +85,10 @@ describe('World Monitor source adapter', () => {
       readFactState: () => null,
       writeFactState: () => undefined,
       writeIntakeSession: () => undefined,
+      readTopicRegistry: emptyTopicRegistry,
+      readResearchUniverse: emptyResearchUniverse,
+      readCompanyRegistry: emptyCompanyRegistry,
+      writeNewsEvidenceFunnel: () => undefined,
       resolveTopics: () => undefined,
       validateInventory: () => undefined,
       validateReport: () => undefined,
@@ -124,6 +136,10 @@ describe('World Monitor source adapter', () => {
       readFactState: () => null,
       writeFactState: () => undefined,
       writeIntakeSession: () => { throw new Error('no session expected'); },
+      readTopicRegistry: emptyTopicRegistry,
+      readResearchUniverse: emptyResearchUniverse,
+      readCompanyRegistry: emptyCompanyRegistry,
+      writeNewsEvidenceFunnel: () => undefined,
       resolveTopics: () => { throw new Error('no topic audit expected'); },
       validateInventory: () => undefined,
       validateReport: () => undefined,
@@ -166,7 +182,39 @@ describe('World Monitor source adapter', () => {
     expect(attempts).toBe(2);
     expect(result.descriptor.governance.governance_state).toBe('research_ready');
   });
+
+  it('paginates the Sina 7x24 public feed and retains every unique record', async () => {
+    const rollPages = [
+      Array.from({ length: 50 }, (_, index) => ({ id: index + 1, rich_text: `新闻 ${index + 1}`, create_time: '2026-08-13 10:00:00', view_num: '1.2万 阅读' })),
+      [{ id: 51, rich_text: '新闻 51', create_time: '2026-08-13 09:00:00', view_num: '3万 阅读' }],
+    ];
+    let calls = 0;
+    const client = new WorldMonitorHttpClient(null, async (input) => {
+      const url = new URL(String(input));
+      calls += 1;
+      const body = url.hostname === 'app.cj.sina.com.cn'
+        ? { result: { data: { feed: { list: [{ id: 100, rich_text: '实时新闻', create_time: '2026-08-13 11:00:00', view_num: '8万 阅读' }] } } } }
+        : { result: { data: rollPages[Number(url.searchParams.get('page')) - 1] ?? [] } };
+      return new Response(JSON.stringify(body), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    });
+    const descriptor = operation({
+      operation_id: 'DirectSinaFinance',
+      auth_requirement: 'public_no_key',
+      production_url: 'https://app.cj.sina.com.cn/api/news/pc?page=1&size=50&tag=0',
+    });
+    const result = await client.fetchOperation(descriptor, 'live');
+    expect(calls).toBe(4);
+    expect(result.status).toBe('ok');
+    expect(result.payload && signalsFromWorldMonitorPayload(result.payload)).toHaveLength(52);
+  });
 });
+
+function emptyTopicRegistry() { return { canonical_topics: [], aliases: [], branches: [], provisional_topics: [], memory_topic_ids: [] }; }
+function emptyResearchUniverse() { return { universe_version: 'test', nodes: [] }; }
+function emptyCompanyRegistry() { return { registry_version: 'test', companies: [] }; }
 
 async function fixtureRoot() {
   const base = await mkdtemp(resolve(tmpdir(), 'narrative-worldmonitor-'));
