@@ -66,8 +66,16 @@ export function selectNewsEvidenceSignals(input: { signals: WorldMonitorSignal[]
     if (!current || signalScore(signal) > signalScore(current)) representatives.set(key, signal);
   }
   const uniqueNews = [...representatives.values()].sort((left, right) => signalScore(right) - signalScore(left));
+  const relevantNews = uniqueNews.filter((signal: WorldMonitorSignal) => {
+    const analysis = signal.research_analysis;
+    if (!analysis) return false;
+    if (analysis.topic_id) return true;
+    if (analysis.evidence_lane === 'direct_fact') return true;
+    if (analysis.evidence_lane === 'source_recovery' && analysis.event_class !== 'other' && analysis.event_class !== 'market_commentary') return true;
+    return false;
+  });
   const buckets = new Map<string, WorldMonitorSignal[]>();
-  for (const signal of uniqueNews) {
+  for (const signal of relevantNews) {
     const analysis = signal.research_analysis;
     const key = analysis?.topic_id ? `topic:${analysis.topic_id}` : `event:${analysis?.event_class ?? 'other'}`;
     buckets.set(key, [...(buckets.get(key) ?? []), signal]);

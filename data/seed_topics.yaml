@@ -13,3 +13,8 @@
   current_stage: S5-S6
   transition_target: S7A/S7C
   watch_status: validation_tracking
+- topic_id: solid_state_battery
+  topic_name: 全固态电池
+  current_stage: S0
+  transition_target: S1
+  watch_status: early_opportunity_pool

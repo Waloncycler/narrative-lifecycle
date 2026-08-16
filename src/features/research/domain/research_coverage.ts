@@ -1,5 +1,6 @@
 import { marketBranchName, marketTopicName } from '@/features/narrative/domain/market_naming';
 import { supportsTermQuery } from '@/features/research/domain/direct_source_research';
+import { FRONTIER_ECOSYSTEM_REGISTRY } from '@/features/narrative/domain/intelligent_topic_resolver';
 import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
 import type {
   AuthoritativeResearchSource,
@@ -85,7 +86,7 @@ export function buildResearchCampaign(input: {
       // A curated S0 topic is eligible for coverage, not an implicit Stage
       // upgrade. Established topics keep a small recurring coverage reserve;
       // the remaining curated core rotates across runs.
-      priority: recovery ? 150 : baselineByTopic.has(topic.topic_id) ? 125 : topic.status === 'active' ? (topic.current_stage === 'S0' ? 90 : 95) : 65,
+      priority: recovery ? 150 : baselineByTopic.has(topic.topic_id) ? 125 : topic.status === 'active' ? 95 : 110,
       target_layers: mergeLayers(mergeLayers(matchedSeed?.target_layers ?? ['name', 'reality', 'capital'] as ResearchCoverageLayer[], baselineByTopic.get(topic.topic_id)?.required_layers ?? []), recovery?.required_layers ?? []),
       preferred_source_ids: matchedSeed?.preferred_source_ids ?? [] as string[],
       formal_status: topic.status === 'active' ? 'formal' as const : 'provisional' as const,
@@ -243,7 +244,7 @@ function taskForSeed(node: ResearchUniverseNode, atlas: AuthoritativeSourceAtlas
   return makeTask({
     node_kind: 'universe_seed', topic_id: null, branch_id: null, candidate_node_id: node.node_id,
     display_name_zh: node.display_name_zh, display_name_en: node.display_name_en || null,
-    domain: node.domain, priority: 35 + Math.max(0, Math.min(20, node.priority * 4)),
+    domain: node.domain, priority: 65 + Math.max(0, Math.min(50, node.priority * 10)),
     target_layers: node.target_layers, preferred_source_ids: node.preferred_source_ids,
     formal_status: 'research_seed',
     rationale: 'Market-recognizable seed awaiting source-grounded discovery; it has no inherited stage or active-topic status.',
@@ -270,7 +271,13 @@ function makeTask(input: {
   const sources = selectSources(atlas.sources, input.domain, input.target_layers, input.preferred_source_ids, input.node_kind);
   const target = input.parent_name ? `${input.parent_name} ${input.display_name_zh}` : input.display_name_zh;
   const english = [input.parent_name_en, input.display_name_en].filter(Boolean).join(' ');
-  const query = `${target}${english ? ` ${english}` : ''} 官方 政策 监管 审批 验证 产能 订单 临床 试验`;
+
+  const targetKey = (input.topic_id ?? input.candidate_node_id ?? '').replace(/^provisional_/, '');
+  const matchedEcosystem = FRONTIER_ECOSYSTEM_REGISTRY.find((eco) => eco.topic_id === targetKey || eco.topic_id === `provisional_${targetKey}` || eco.display_name_zh === input.display_name_zh);
+  const entityHints = matchedEcosystem ? matchedEcosystem.key_entities.slice(0, 2).join(' ') : '';
+  const techHints = matchedEcosystem ? matchedEcosystem.core_technologies.slice(0, 2).join(' ') : '';
+
+  const query = `${target}${english ? ` ${english}` : ''} ${entityHints} ${techHints} 官方 突破 验证 订单 进展`.replace(/\s+/g, ' ').trim();
   return {
     task_id: `campaign_${input.node_kind}_${safeId(input.topic_id ?? input.candidate_node_id ?? input.branch_id ?? input.display_name_zh)}`.slice(0, 120),
     node_kind: input.node_kind,

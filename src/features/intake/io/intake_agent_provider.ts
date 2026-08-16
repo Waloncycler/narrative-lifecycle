@@ -142,14 +142,21 @@ async function fetchWithProviderRetry(url: string, init: RequestInit, timeoutMs:
   const attempts = 3;
   let response: Response | null = null;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
-    response = await fetchWithTimeout(url, init, timeoutMs);
-    if (response.ok || (response.status !== 429 && response.status < 500)) return response;
-    if (attempt === attempts - 1) return response;
-    const retryAfter = Number(response.headers.get('retry-after'));
-    const delayMs = Number.isFinite(retryAfter) && retryAfter > 0
-      ? Math.min(10_000, retryAfter * 1000)
-      : Math.min(8_000, 1_000 * (2 ** attempt));
-    await new Promise((resolve) => setTimeout(resolve, delayMs));
+    try {
+      response = await fetchWithTimeout(url, init, timeoutMs);
+      if (response.ok || (response.status !== 429 && response.status < 500)) return response;
+      if (attempt === attempts - 1) return response;
+      const retryAfter = Number(response.headers.get('retry-after'));
+      const baseDelay = response.status === 429 ? 500 : 200;
+      const delayMs = Number.isFinite(retryAfter) && retryAfter > 0
+        ? Math.min(30_000, retryAfter * 1000)
+        : Math.min(30_000, baseDelay * (2 ** attempt));
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    } catch (networkError) {
+      if (attempt === attempts - 1) throw networkError;
+      const backoffMs = Math.min(20_000, 500 * (2 ** attempt));
+      await new Promise((resolve) => setTimeout(resolve, backoffMs));
+    }
   }
   return response!;
 }

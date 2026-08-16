@@ -30,7 +30,9 @@ export class HttpResearchSourceRetriever {
     // study URL in the retrieval artifact.
     const requestUrl = studyId ? `https://clinicaltrials.gov/api/v2/studies/${studyId}` : input.url;
     assertPublicHttpUrl(requestUrl);
-    const useJina = !studyId && process.env.JINA_API_KEY && !requestUrl.includes('api.fda.gov') && !requestUrl.includes('.pdf');
+    // Route URLs to Jina Reader if a key is present, especially for PDFs.
+    const isPdf = requestUrl.toLowerCase().endsWith('.pdf');
+    const useJina = !studyId && process.env.JINA_API_KEY && !requestUrl.includes('api.fda.gov');
     const finalUrl = useJina ? `https://r.jina.ai/${requestUrl}` : requestUrl;
     
     const controller = new AbortController();
@@ -47,6 +49,27 @@ export class HttpResearchSourceRetriever {
       
       const body = await response.text();
       return { httpStatus: response.status, contentType: useJina ? 'text/markdown' : contentType, body: body.slice(0, 1_000_000) };
+    } catch (error) {
+      // Fallback to Firecrawl for hard-to-scrape JS rendered pages or CAPTCHA blocks
+      if (process.env.FIRECRAWL_API_KEY && !studyId) {
+        try {
+          const fcResponse = await this.fetchImpl('https://api.firecrawl.dev/v1/scrape', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.FIRECRAWL_API_KEY}` },
+            body: JSON.stringify({ url: requestUrl, formats: ['markdown'] }),
+            signal: controller.signal
+          });
+          if (fcResponse.ok) {
+            const fcData = await fcResponse.json() as { data?: { markdown?: string } };
+            if (fcData.data?.markdown) {
+              return { httpStatus: 200, contentType: 'text/markdown', body: fcData.data.markdown.slice(0, 1_000_000) };
+            }
+          }
+        } catch (fcError) {
+          // Ignore fallback error and throw original error
+        }
+      }
+      throw error;
     } finally { clearTimeout(timer); }
   }
 }

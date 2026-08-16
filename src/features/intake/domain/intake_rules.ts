@@ -324,13 +324,34 @@ export function inferTopic(text: string): { topic_id: string; branch_id: string 
   if (text.includes('satellite') || text.includes('rocket') || text.includes('spacecraft') || text.includes('launch') || text.includes('卫星') || text.includes('火箭') || text.includes('航天') || text.includes('低轨')) {
     return { topic_id: 'commercial_space', branch_id: null };
   }
-  if (text.includes('battery') || text.includes('solar') || text.includes('energy storage') || text.includes('固态电池') || text.includes('储能') || text.includes('新能源') || text.includes('光伏') || text.includes('氢能')) {
+  if (text.includes('solid state') || text.includes('solid-state') || text.includes('固态电池') || text.includes('全固态') || text.includes('半固态')) {
+    return { topic_id: 'solid_state_battery', branch_id: text.includes('硫化物') ? 'solid_state_sulfide' : text.includes('氧化物') ? 'solid_state_oxide' : null };
+  }
+  if (text.includes('ai agent') || text.includes('智能体') || text.includes('agentic') || text.includes('ai agents')) {
+    return { topic_id: 'provisional_ai_agents', branch_id: null };
+  }
+  if (text.includes('nuclear fusion') || text.includes('核聚变') || text.includes('先进核能') || text.includes('托卡马克') || text.includes('tokamak')) {
+    return { topic_id: 'provisional_nuclear_fusion_advanced_nuclear', branch_id: null };
+  }
+  if (text.includes('low-altitude') || text.includes('low altitude') || text.includes('低空经济') || text.includes('evtol') || text.includes('飞行汽车')) {
+    return { topic_id: 'provisional_low_altitude_economy', branch_id: null };
+  }
+  if (text.includes('synthetic biology') || text.includes('合成生物')) {
+    return { topic_id: 'provisional_synthetic_biology', branch_id: null };
+  }
+  if (text.includes('算力') || text.includes('computing infrastructure') || text.includes('智算中心') || text.includes('datacenter')) {
+    return { topic_id: 'provisional_computing_infrastructure', branch_id: null };
+  }
+  if (text.includes('智能制造') || text.includes('smart manufacturing') || text.includes('工业母机')) {
+    return { topic_id: 'provisional_smart_manufacturing', branch_id: null };
+  }
+  if (text.includes('battery') || text.includes('solar') || text.includes('energy storage') || text.includes('储能') || text.includes('新能源') || text.includes('光伏') || text.includes('氢能')) {
     return { topic_id: 'new_energy_industry', branch_id: null };
   }
-  if (text.includes('autonomous driving') || text.includes('self-driving') || text.includes('智能驾驶') || text.includes('自动驾驶')) {
-    return { topic_id: 'autonomous_driving', branch_id: null };
+  if (text.includes('autonomous driving') || text.includes('self-driving') || text.includes('智能驾驶') || text.includes('自动驾驶') || text.includes('robotaxi')) {
+    return { topic_id: 'provisional_autonomous_driving_robotaxi', branch_id: null };
   }
-  if (text.includes('quantum') || text.includes('量子')) return { topic_id: 'quantum_computing', branch_id: null };
+  if (text.includes('quantum') || text.includes('量子')) return { topic_id: 'provisional_quantum_computing', branch_id: null };
   return { topic_id: 'unknown_topic', branch_id: null };
 }
 

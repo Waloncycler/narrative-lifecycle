@@ -1,0 +1,20 @@
+- evidence_id: e_fake_001
+  topic_id: solid_state_battery
+  branch_id:
+  event_date: "2026-08-14"
+  available_at: "2026-08-14T00:00:00Z"
+  event_title: "Solid State Battery Milestone"
+  event_summary: "A major milestone."
+  event_type: milestone
+  source_name: EastMoney
+  source_url: "http://eastmoney.com/fake"
+  source_type: company_primary
+  evidence_strength: E3
+  stage_effect: supports_parent_S4
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: "Pricing adoption is clear."
+  limitation: "None."
+  positive_or_negative: positive
+  confidence: 90
+  affected_layer: [pricing, capital, reality]

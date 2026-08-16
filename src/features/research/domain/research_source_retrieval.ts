@@ -101,7 +101,7 @@ function baseItem(lead: ResearchLeadTriageItem, fetchedAt: string, detail: Omit<
     source_published_at: lead.published_at,
     fetched_at: fetchedAt,
     ...detail,
-    evidence_eligibility: lead.evidence_eligibility,
+    evidence_eligibility: lead.evidence_eligibility ?? 'context_only',
     next_action: lead.source_class !== 'unknown' && detail.status === 'retrieved' && detail.citation_status === 'ready'
       ? 'prepare_intake'
       : 'hold',

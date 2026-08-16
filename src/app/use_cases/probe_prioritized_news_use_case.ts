@@ -5,6 +5,7 @@ import type { EvidenceCandidate, EvidenceIntakeSession } from '@/features/intake
 import type { ResearchLeadSourceClass, ResearchLeadTriageItem } from '@/features/research/types/research_lead_triage';
 import type { ResearchSourceRetrievalItem, ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { WebResearchReport } from '@/features/research/types/web_research';
+import { resolveWithIntelligentEcosystem } from '@/features/narrative/domain/intelligent_topic_resolver';
 import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
 import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '@/features/research/types/research_coverage';
 
@@ -55,7 +56,7 @@ export interface NewsProbeDiagnostics {
 }
 
 const AUTHORITATIVE_SECONDARY_HOSTS = /(?:^|\.)(?:reuters\.com|apnews\.com|wsj\.com|ft\.com|bloomberg\.com|news\.cn|xinhuanet\.com|thepaper\.cn|yicai\.com|caixin\.com)$/;
-const GOVERNED_SEED_NEWS_HOSTS = /(?:^|\.)(?:reuters\.com|apnews\.com|wsj\.com|ft\.com|bloomberg\.com|news\.cn|xinhuanet\.com|thepaper\.cn|yicai\.com|caixin\.com|cls\.cn|finance\.sina\.com\.cn)$/;
+const GOVERNED_SEED_NEWS_HOSTS = /(?:^|\.)(?:reuters\.com|apnews\.com|wsj\.com|ft\.com|bloomberg\.com|news\.cn|xinhuanet\.com|thepaper\.cn|yicai\.com|caixin\.com|cls\.cn|finance\.sina\.com\.cn|stcn\.com|cs\.com\.cn|cnstock\.com)$/;
 const LOW_GOVERNANCE_HOSTS = /(?:^|\.)(?:sohu\.com|qq\.com|163\.com|toutiao\.com|baidu\.com|weibo\.com|zhihu\.com|csdn\.net)$/;
 
 /** Converts ranked secondary-news candidates into source-recovery probes.
@@ -238,6 +239,7 @@ function isProbeCandidate(candidate: EvidenceCandidate): boolean {
 function resolveRegisteredScope(candidate: EvidenceCandidate, registry: TopicRegistry, companies: CompanyResearchRegistry): EvidenceCandidate | null {
   const evidence = candidate.suggested_evidence;
   if (evidence.topic_id !== 'unknown_topic' && !evidence.topic_id.startsWith('provisional_')) return candidate;
+
   const text = normalize(`${evidence.event_title} ${evidence.event_summary}`);
   const aliasesByTopic = new Map<string, string[]>();
   for (const alias of registry.aliases) aliasesByTopic.set(alias.topic_id, [...(aliasesByTopic.get(alias.topic_id) ?? []), alias.alias]);
@@ -254,6 +256,27 @@ function resolveRegisteredScope(candidate: EvidenceCandidate, registry: TopicReg
     const coveredTopics = registry.canonical_topics.filter((item) => item.status === 'active'
       && coveredTopicIds.some((nodeId) => item.topic_id === nodeId || item.topic_id === `provisional_${nodeId}`));
     if (coveredTopics.length === 1) topic = coveredTopics[0]!;
+  }
+
+  // Try intelligent ecosystem resolver
+  if (!topic) {
+    const intelligentResolution = resolveWithIntelligentEcosystem(candidate, registry);
+    if (intelligentResolution && intelligentResolution.status !== 'unresolved') {
+      const topicId = intelligentResolution.resolved_topic_id ?? intelligentResolution.provisional_topic_id;
+      if (topicId && topicId !== 'unknown_topic') {
+        return {
+          ...candidate,
+          suggested_evidence: {
+            ...evidence,
+            topic_id: topicId,
+            branch_id: intelligentResolution.resolved_branch_id ?? null,
+            scope: intelligentResolution.resolved_branch_id ? 'branch' : 'parent',
+            stage_effect: intelligentResolution.resolved_branch_id ? 'split_branch' : 'maintain',
+            interpretation: evidence.interpretation ?? intelligentResolution.reason,
+          },
+        };
+      }
+    }
   }
   if (!topic) return candidate;
   const branchMatches = registry.branches

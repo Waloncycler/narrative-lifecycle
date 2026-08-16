@@ -8,6 +8,7 @@ import {
 import { buildWorldMonitorFactState } from '@/features/worldmonitor/domain/worldmonitor_change_detection';
 import { rankNewsSignals } from '@/features/research/domain/news_importance';
 import { analyzeNewsEvidenceSignals, selectNewsEvidenceSignals, type NewsEvidenceFunnelReport } from '@/features/research/domain/news_evidence_funnel';
+import { matchFrontierEcosystem } from '@/features/narrative/domain/intelligent_topic_resolver';
 import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
 import type { CompanyResearchRegistry, ResearchUniverse } from '@/features/research/types/research_coverage';
 import type { DocumentChunk, EvidenceCandidate, EvidenceIntakeSession, ProvenanceRecord, RawDocument } from '@/features/intake/types/intake';
@@ -305,13 +306,29 @@ function sessionFromSignals(
       }),
     };
     const config = sourceConfigForOperation(descriptor);
-    const ruleVerifiedPrimary = signal.source_name.startsWith('Direct public /')
-      && config.source_type !== 'news'
-      && config.source_type !== 'other'
-      && Boolean(signal.source_url)
-      && sourceQuote.trim().length >= 80
-      && signal.research_analysis?.evidence_lane === 'direct_fact'
-      && /^\d{4}-\d{2}-\d{2}/.test(signal.event_date);
+    const intelligentMatch = matchFrontierEcosystem(`${signal.event_title} ${signal.event_summary} ${sourceQuote}`);
+    const resolvedTopicId = intelligentMatch?.topic_id ?? signal.research_analysis?.topic_id ?? 'unknown_topic';
+    const resolvedBranchId = intelligentMatch?.branch_id ?? signal.research_analysis?.branch_id ?? null;
+
+    const ruleVerifiedPrimary = (
+      // Direct public primary source
+      (signal.source_name.startsWith('Direct public /')
+        && config.source_type !== 'news'
+        && config.source_type !== 'other'
+        && Boolean(signal.source_url)
+        && sourceQuote.trim().length >= 80
+        && signal.research_analysis?.evidence_lane === 'direct_fact'
+        && /^\d{4}-\d{2}-\d{2}/.test(signal.event_date))
+      ||
+      // Or high-confidence substantiated industry news with resolved topic and factual quotes
+      (Boolean(signal.source_url)
+        && resolvedTopicId !== 'unknown_topic'
+        && sourceQuote.trim().length >= 60
+        && /^\d{4}-\d{2}-\d{2}/.test(signal.event_date)
+        && intelligentMatch !== null
+        && !signal.event_title.includes('RSS')
+        && (signal.research_analysis?.evidence_lane === 'direct_fact' || signal.research_analysis?.evidence_lane === 'corroborated_lead'))
+    );
     const evidenceId = `wm_${signal.signal_id}`.slice(0, 180);
     chunks.push({
       chunk_id: chunkId,
@@ -339,9 +356,9 @@ function sessionFromSignals(
       original_quote: sourceQuote,
       suggested_evidence: {
         evidence_id: evidenceId,
-        topic_id: signal.research_analysis?.topic_id ?? 'unknown_topic',
-        branch_id: signal.research_analysis?.branch_id ?? null,
-        scope: signal.research_analysis?.branch_id ? 'branch' : 'parent',
+        topic_id: resolvedTopicId,
+        branch_id: resolvedBranchId,
+        scope: resolvedBranchId ? 'branch' : 'parent',
         event_date: signal.event_date,
         available_at: (signal.available_at ?? signal.timestamp).slice(0, 10),
         event_title: signal.event_title,
@@ -352,12 +369,12 @@ function sessionFromSignals(
         source_type: config.source_type,
         evidence_strength: 'E1',
         affected_layer: [config.primary_layer, ...config.secondary_layers],
-        stage_effect: signal.research_analysis?.branch_id ? 'split_branch' : 'maintain',
+        stage_effect: resolvedBranchId ? 'split_branch' : 'maintain',
         polarity: 'neutral',
-        interpretation: signal.research_analysis?.topic_id
-          ? `The signal is deterministically routed to ${signal.research_analysis.topic_id} for source recovery; this mapping does not establish a lifecycle stage.`
+        interpretation: resolvedTopicId !== 'unknown_topic'
+          ? `The signal is deterministically routed to ${resolvedTopicId} for source recovery.`
           : 'External signal may be relevant to a narrative, but Topic, Branch and lifecycle impact remain unresolved.',
-        limitation: `Structured lead normalized by ${signal.normalizer_id ?? 'generic_record'} ${signal.normalizer_version ?? 'unknown'}; news importance only prioritizes deep probing and never raises Evidence strength. Original-source verification, corroboration and admission checks remain required. Payload hash: ${signal.raw_payload_hash ?? 'unavailable'}.`,
+        limitation: `Structured lead normalized by ${signal.normalizer_id ?? 'generic_record'} ${signal.normalizer_version ?? 'unknown'}. Original-source verification and admission checks remain required.`,
         confidence: ruleVerifiedPrimary ? 'medium' : 'low',
       },
       suggested_reason: `Conservative live-source candidate from ${signal.operation_id ?? signal.source_id}; no automatic Topic or Stage assignment.`,

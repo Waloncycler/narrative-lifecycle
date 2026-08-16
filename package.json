@@ -47,6 +47,7 @@
     "sources:sync": "tsx src/cli/run_worldmonitor_sources.ts sync",
     "research:search": "tsx src/cli/run_web_research.ts",
     "research:agent": "tsx src/cli/run_research_agent.ts",
+    "research:autonomous": "tsx src/cli/run_autonomous_loop.ts",
     "research:campaign": "tsx src/cli/run_research_campaign.ts",
     "research:triage": "tsx src/cli/run_research_triage.ts",
     "research:retrieve": "tsx src/cli/run_research_retrieve.ts",

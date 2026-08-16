@@ -3,6 +3,7 @@ import type { TopicRegistry, TopicResolution, TopicResolutionAudit, TopicRegistr
 import { inferTopic } from '@/features/intake/domain/intake_rules';
 import { marketNameWarning } from '@/features/narrative/domain/market_naming';
 import { DEFAULT_INDUSTRY_PACKS } from '@/features/reporting/domain/industry_packs';
+import { resolveWithIntelligentEcosystem } from '@/features/narrative/domain/intelligent_topic_resolver';
 
 export function validateTopicRegistry(input: {
   registry: TopicRegistry;
@@ -16,8 +17,8 @@ export function validateTopicRegistry(input: {
   const branchIds = new Set<string>();
 
   for (const topic of input.registry.canonical_topics) {
-    if (topic.status === 'provisional' && topic.current_stage !== 'S0') {
-      errors.push(`${topic.topic_id}: provisional canonical topics must stay at S0`);
+    if (topic.status === 'provisional' && topic.current_stage !== 'S0' && topic.current_stage !== 'S1') {
+      errors.push(`${topic.topic_id}: provisional canonical topics must stay at S0 or S1 until formally admitted`);
     }
     const namingWarning = marketNameWarning(topic);
     if (namingWarning) warnings.push(`${topic.topic_id}: ${namingWarning}`);
@@ -111,6 +112,12 @@ export function resolveTopic(candidate: EvidenceCandidate, registry: TopicRegist
       !branchExists, 
       [{ status: 'existing_topic', topic_id: industryResolution.topic_id, reason: 'Inferred parent topic via industry dictionary mapping.' }]
     );
+  }
+
+  // Multi-tier intelligent ecosystem graph match (entities, materials, action milestones, disambiguation)
+  const intelligentResolution = resolveWithIntelligentEcosystem(candidate, registry);
+  if (intelligentResolution) {
+    return intelligentResolution;
   }
 
   if (evidence.topic_id === 'unknown_topic' || unresolvedLanguage(text)) {

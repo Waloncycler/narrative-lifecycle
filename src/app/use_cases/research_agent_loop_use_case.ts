@@ -164,7 +164,7 @@ export class ResearchAgentLoopUseCase {
     ): Promise<T | undefined> => {
       const started = this.deps.now();
       try {
-        const result = await fn();
+        console.log('Running phase:', phase); const result = await fn(); console.log('Finished phase:', phase);
         phases.push({ phase, status: 'ok', detail, started_at: started, completed_at: this.deps.now(), artifact_paths: [] });
         return result;
       } catch (error) {

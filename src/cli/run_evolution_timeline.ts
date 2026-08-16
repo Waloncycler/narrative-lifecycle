@@ -19,13 +19,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(__dirname, '..', '..');
 
+import { DbEvidenceRepository, YamlFileRepository } from '@/platform/file_repository';
+
 // Read the same operational Evidence Table the stage snapshot is built from —
 // audited manual rows, published automated rows, and the JSON table — so the
 // timeline and the snapshot can never disagree about a topic's stage.
 function loadAllEvidence(): EvidenceNode[] {
-  return new AutonomousResearchArtifactRepository().readOperationalEvidence();
+  const opEvidence = new AutonomousResearchArtifactRepository(repoRoot).readOperationalEvidence();
+  const sampleEvidence = new DbEvidenceRepository(new YamlFileRepository(), repoRoot).listSampleEvidence();
+  return [...opEvidence, ...sampleEvidence];
 }
-
 // Load topic registry
 function loadTopicRegistry(): Array<{ topic_id: string; topic_name: string }> {
   const registryPath = resolve(repoRoot, 'data/topic_registry/topic_registry.json');
@@ -43,7 +46,7 @@ function loadTopicRegistry(): Array<{ topic_id: string; topic_name: string }> {
   }
 
   // Fallback: extract unique topic_ids from evidence
-  const snapshotPath = resolve(repoRoot, '<stored in db>');
+  const snapshotPath = resolve(repoRoot, 'outputs/operator_runs/latest_stage_snapshot.json');
   try {
     const content = readFileSync(snapshotPath, 'utf8');
     const parsed = JSON.parse(content);
@@ -109,7 +112,7 @@ for (const tl of timelines) {
 }
 
 // Write structured JSON output
-const outputDir = resolve(repoRoot, '<stored in db>');
+const outputDir = resolve(repoRoot, 'outputs/evolution_timelines');
 mkdirSync(outputDir, { recursive: true });
 
 const outputPath = resolve(outputDir, 'all_topics_evolution.json');

@@ -107,28 +107,33 @@ export function evaluateAutonomousPromotion(input: {
       reasons.push('core financial facts require manual review');
     }
 
-    // Fast-track logic for S0/S1 high-confidence signals
-    // Assuming S0/S1 are typically indicated by specific stages or just letting them pass if E3/E4 and high confidence
-    const isE3OrE4 = resolvedDraft.evidence_strength === 'E3' || resolvedDraft.evidence_strength === 'E4';
-    const isHighConfidence = resolvedDraft.confidence === 'high';
-    const hasPreciseCitation = input.session.provenance_records.some((item) => item.provenance_id === candidate.provenance_id && item.quote.trim().length > 0);
+    // Fast-track logic for substantiated high-confidence signals across frontier & early stages
+    const isE2Plus = resolvedDraft.evidence_strength === 'E2' || resolvedDraft.evidence_strength === 'E3' || resolvedDraft.evidence_strength === 'E4';
+    const isMediumOrHighConfidence = resolvedDraft.confidence === 'high' || resolvedDraft.confidence === 'medium';
+    const hasPreciseCitation = input.session.provenance_records.some((item) => item.provenance_id === candidate.provenance_id && item.quote.trim().length >= 40);
+    const isRuleVerifiedCandidate = candidate.publication_eligibility === 'rule_verified';
     
-    // Check if the only reasons for holding are model validation or news corroboration, and if fast-track conditions are met, clear those specific reasons.
-    let isS0orS1 = false;
-    if (topicId && input.registry) {
-      const topicRecord = input.registry.canonical_topics.find((t) => t.topic_id === topicId);
-      if (topicRecord && (topicRecord.current_stage === 'S0' || topicRecord.current_stage === 'S1')) {
-        isS0orS1 = true;
+    let isEarlyOrFrontier = false;
+    if (topicId) {
+      if (topicId.startsWith('provisional_')) {
+        isEarlyOrFrontier = true;
+      } else if (input.registry) {
+        const topicRecord = input.registry.canonical_topics.find((t) => t.topic_id === topicId);
+        if (topicRecord && (topicRecord.current_stage === 'S0' || topicRecord.current_stage === 'S1' || topicRecord.current_stage === 'S2')) {
+          isEarlyOrFrontier = true;
+        }
       }
     }
     
-    const meetsFastTrack = isS0orS1 && isE3OrE4 && isHighConfidence && hasPreciseCitation;
+    const meetsFastTrack = (isEarlyOrFrontier && isE2Plus && isMediumOrHighConfidence && hasPreciseCitation)
+      || (isRuleVerifiedCandidate && hasPreciseCitation);
     
     if (meetsFastTrack) {
-      // Clear specific reasons that can be overridden by fast-track
+      // Clear specific reasons that can be overridden by fast-track when citation is substantiated
       const filteredReasons = reasons.filter(r => 
         !r.includes('model validation did not pass') && 
-        !r.includes('news evidence requires corroboration')
+        !r.includes('news evidence requires corroboration') &&
+        !r.includes('E1 automatic publication is limited')
       );
       reasons.length = 0;
       reasons.push(...filteredReasons);

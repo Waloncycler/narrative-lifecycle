@@ -1,4 +1,5 @@
 import { reviewTemplate } from '@/features/intake/domain/intake_rules';
+import { matchFrontierEcosystem } from '@/features/narrative/domain/intelligent_topic_resolver';
 import type { EvidenceCandidate, EvidenceIntakeSession } from '@/features/intake/types/intake';
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 
@@ -139,6 +140,9 @@ export class AppendRetrievedSourceIntakeUseCase {
       }
 
       const evidenceId = recovery?.legacy_evidence_id ?? `retrieved_${stableId(item.url)}`;
+      const intelligentMatch = matchFrontierEcosystem(`${item.page_title ?? item.title} ${quote}`);
+      const resolvedTopicId = item.topic_id ?? (item.candidate_node_id ? `provisional_${safeId(item.candidate_node_id)}` : intelligentMatch?.topic_id ?? 'unknown_topic');
+      const resolvedBranchId = recovery?.branch_id ?? item.branch_id ?? intelligentMatch?.branch_id ?? null;
       const candidate: EvidenceCandidate = {
         candidate_id: `candidate_${evidenceId}`,
         raw_document_id: raw.raw_document_id,
@@ -147,9 +151,9 @@ export class AppendRetrievedSourceIntakeUseCase {
         original_quote: quote,
         suggested_evidence: {
           evidence_id: evidenceId,
-          topic_id: item.topic_id ?? (item.candidate_node_id ? `provisional_${safeId(item.candidate_node_id)}` : 'unknown_topic'),
-          branch_id: recovery?.branch_id ?? item.branch_id,
-          scope: recovery?.scope ?? (item.branch_id ? 'branch' : 'parent'),
+          topic_id: resolvedTopicId,
+          branch_id: resolvedBranchId,
+          scope: recovery?.scope ?? (resolvedBranchId ? 'branch' : 'parent'),
           event_date: recovery?.event_date ?? sourceDate ?? generatedAt.slice(0, 10),
           available_at: recovery?.event_date ?? sourceDate ?? generatedAt.slice(0, 10),
           event_title: item.page_title ?? item.title,

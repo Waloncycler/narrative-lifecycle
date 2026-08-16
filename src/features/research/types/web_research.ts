@@ -18,7 +18,11 @@ export type WebSearchProvider =
   | 'searxng'
   | 'mcp_bridge'
   | 'exa'
-  | 'jina_search';
+  | 'jina_search'
+  | 'firecrawl'
+  | 'yahoo_finance'
+  | 'eastmoney'
+  | 'x_twitter';
 export type WebResearchStatus = 'completed' | 'unconfigured' | 'degraded';
 
 export interface WebSearchConfig {

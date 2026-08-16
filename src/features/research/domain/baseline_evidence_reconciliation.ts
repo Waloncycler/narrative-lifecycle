@@ -17,7 +17,7 @@ export function buildBaselineEvidenceReconciliation(input: {
   generatedAt: string;
   producerVersion: string;
 }): BaselineEvidenceReconciliationReport {
-  const activeTopics = input.registry.canonical_topics.filter((topic) => topic.status === 'active');
+  const activeTopics = input.registry.canonical_topics.filter((topic) => topic.status === 'active' || topic.status === 'provisional');
   const items = activeTopics.map((topic) => reconcileTopic({
     topicId: topic.topic_id,
     topicName: topic.market_name_zh || topic.topic_name,

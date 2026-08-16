@@ -1,3 +1,4 @@
+import { FRONTIER_ECOSYSTEM_REGISTRY } from '@/features/narrative/domain/intelligent_topic_resolver';
 import type { ResearchCampaign } from '@/features/research/types/research_coverage';
 import type { AliasRecord, TopicRegistry } from '@/features/narrative/types/topic_resolution';
 import type { WebResearchReport } from '@/features/research/types/web_research';
@@ -222,6 +223,11 @@ function taskSearchTerms(task: ResearchCampaign['tasks'][number], aliases: Alias
   add(task.display_name_zh);
   if (task.topic_id) {
     for (const alias of aliases.filter((item) => item.topic_id === task.topic_id)) add(alias.alias);
+    const ecosystem = FRONTIER_ECOSYSTEM_REGISTRY.find((eco) => eco.topic_id === task.topic_id || task.topic_id === `provisional_${eco.topic_id}`);
+    if (ecosystem) {
+      for (const entity of ecosystem.key_entities.slice(0, 3)) add(`${entity} ${ecosystem.display_name_zh}`);
+      for (const tech of ecosystem.core_technologies.slice(0, 3)) add(`${tech} ${ecosystem.display_name_zh}`);
+    }
   }
   return terms;
 }

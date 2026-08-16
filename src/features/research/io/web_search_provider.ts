@@ -2,10 +2,10 @@ import type { WebSearchConfig } from '@/features/research/types/web_research';
 
 /** Search providers that require no API key or configuration: usable out of
  *  the box. `free` aggregates the keyless sources below into one result set. */
-const KEYLESS_PROVIDERS = new Set<WebSearchConfig['provider']>(['free', 'gdelt', 'wikipedia', 'hn', 'duckduckgo', 'reddit', 'arxiv', 'openalex', 'archive', 'bing']);
+const KEYLESS_PROVIDERS = new Set<WebSearchConfig['provider']>(['free', 'gdelt', 'wikipedia', 'hn', 'duckduckgo', 'reddit', 'arxiv', 'openalex', 'archive', 'bing', 'yahoo_finance', 'eastmoney']);
 // searxng / minimax intentionally stay outside the keyless set: SearXNG needs
 // a configured baseUrl and MiniMax needs a Token Plan credential.
-const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'minimax', 'searxng', 'mcp_bridge', 'exa', 'jina_search']);
+const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'minimax', 'searxng', 'mcp_bridge', 'exa', 'jina_search', 'firecrawl', 'x_twitter']);
 
 const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = {
   gdelt: 'https://api.gdeltproject.org/api/v2/doc/doc',
@@ -20,6 +20,7 @@ const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = 
   bing: 'https://www.bing.com/search',
   exa: 'https://api.exa.ai/search',
   jina_search: 'https://s.jina.ai/',
+  firecrawl: 'https://api.firecrawl.dev/v1/search',
 };
 
 /** MiniMax Token Plan search endpoints by region. */
@@ -52,11 +53,10 @@ export function webSearchConfigsFromEnv(env: NodeJS.ProcessEnv): WebSearchConfig
   // configuration, so every other engine joins it instead of replacing it.
   if (!requested.has('disabled')) add('free');
 
-  // Auto-detected keyed/self-hosted engines: any credential or endpoint that
-  // is present turns that engine on for every pass. MINIMAX_API_KEY also
-  // counts here (it may be a Code-Plan key in the China deployment).
-  if (env.TAVILY_API_KEY?.trim()) add('tavily');
+  // Primary live cloud search providers
+  if (env.FIRECRAWL_API_KEY?.trim()) add('firecrawl');
   if (env.EXA_API_KEY?.trim()) add('exa');
+  if (env.TAVILY_API_KEY?.trim()) add('tavily');
   if (env.JINA_API_KEY?.trim()) add('jina_search');
   if (env.BRAVE_SEARCH_API_KEY?.trim()) add('brave');
   if (env.SERPER_API_KEY?.trim()) add('mcp_bridge');
@@ -80,13 +80,10 @@ function parseRequestedProviders(env: NodeJS.ProcessEnv): Set<string> {
 
 function resolvePrimaryProvider(env: NodeJS.ProcessEnv): WebSearchConfig['provider'] {
   const requested = parseRequestedProviders(env).values().next().value as string | undefined;
-  // Keyless providers (including DuckDuckGo) are never auto-selected. SearXNG
-  // is auto-picked only when its base URL is present, and MiniMax only when a
-  // dedicated search-plan key exists — MINIMAX_API_KEY alone never flips the
-  // provider because it already serves the chat-completions layer.
   return (requested
-    ?? (env.TAVILY_API_KEY ? 'tavily'
+    ?? (env.FIRECRAWL_API_KEY ? 'firecrawl'
       : env.EXA_API_KEY ? 'exa'
+      : env.TAVILY_API_KEY ? 'tavily'
       : env.JINA_API_KEY ? 'jina_search'
       : env.BRAVE_SEARCH_API_KEY ? 'brave'
       : env.SERPER_API_KEY ? 'mcp_bridge'
@@ -106,15 +103,16 @@ function buildWebSearchConfig(provider: WebSearchConfig['provider'], env: NodeJS
     provider: selected,
     endpoint: env.NARRATIVE_WEB_SEARCH_ENDPOINT?.trim() || defaultEndpoint,
     api_key: env.NARRATIVE_WEB_SEARCH_API_KEY?.trim()
-      || (selected === 'tavily' ? env.TAVILY_API_KEY
+      || (selected === 'firecrawl' ? env.FIRECRAWL_API_KEY
         : selected === 'exa' ? env.EXA_API_KEY
+        : selected === 'tavily' ? env.TAVILY_API_KEY
         : selected === 'jina_search' ? env.JINA_API_KEY
         : selected === 'brave' ? env.BRAVE_SEARCH_API_KEY
         : selected === 'mcp_bridge' ? env.SERPER_API_KEY
         : selected === 'minimax' ? (env.MINIMAX_CODE_PLAN_KEY?.trim() || env.MINIMAX_CODING_API_KEY?.trim() || env.MINIMAX_OAUTH_TOKEN?.trim() || env.MINIMAX_API_KEY?.trim() || null)
         : null)
       || null,
-    timeout_ms: boundedInt(env.NARRATIVE_WEB_SEARCH_TIMEOUT_MS, 15_000, 1_000, 120_000),
+    timeout_ms: boundedInt(env.NARRATIVE_WEB_SEARCH_TIMEOUT_MS, 20_000, 1_000, 120_000),
     max_results_per_query: boundedInt(env.NARRATIVE_WEB_SEARCH_MAX_RESULTS, 8, 1, 20),
     region: env.NARRATIVE_WEB_SEARCH_REGION?.trim() || null,
     safe_search: parseSafeSearch(env.NARRATIVE_WEB_SEARCH_SAFESEARCH),
@@ -148,6 +146,10 @@ export class HttpWebSearchProvider {
     if (config.provider === 'searxng') return this.searxng(query, config);
     if (config.provider === 'exa') return this.exa(query, config, sourceDomains);
     if (config.provider === 'jina_search') return this.jinaSearch(query, config);
+    if (config.provider === 'firecrawl') return this.firecrawl(query, config);
+    if (config.provider === 'yahoo_finance') return this.yahooFinance(query, config);
+    if (config.provider === 'eastmoney') return this.eastmoney(query, config);
+    if (config.provider === 'x_twitter') return this.xTwitter(query, config);
     return this.mcpBridge(query, config, sourceDomains);
   }
 
@@ -592,6 +594,131 @@ export class HttpWebSearchProvider {
       url: item.url,
       snippet: (item.description || item.content)?.slice(0, 500),
       published_at: null
+    }));
+  }
+
+  private async firecrawl(query: string, config: WebSearchConfig): Promise<SearchRow[]> {
+    if (!config.api_key) return [];
+    const endpoint = config.endpoint || 'https://api.firecrawl.dev/v1/search';
+    const body = await this.request(endpoint, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${config.api_key}`,
+      },
+      body: JSON.stringify({
+        query,
+        limit: config.max_results_per_query,
+      }),
+    }, config.timeout_ms);
+    const value = JSON.parse(body) as { success?: boolean; data?: Array<{ title?: string; url?: string; description?: string; markdown?: string }> };
+    if (!value.success || !Array.isArray(value.data)) return [];
+    return value.data.map((item) => {
+      let domain = 'web';
+      try { if (item.url) domain = new URL(item.url).hostname; } catch {}
+      return {
+        title: item.title?.trim() || domain,
+        url: item.url,
+        snippet: (item.description?.trim() || item.markdown?.slice(0, 1000)?.trim() || '').slice(0, 1000),
+        source_name: domain,
+        published_at: null,
+      };
+    }).filter((item) => Boolean(item.url));
+  }
+
+  private async yahooFinance(query: string, config: WebSearchConfig) {
+    // 1. Search for ticker
+    const searchUrl = `https://query2.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=1&newsCount=0`;
+    const searchBody = await this.request(searchUrl, { method: 'GET', headers: { 'User-Agent': 'NarrativeLifecycleResearch/0.13' } }, config.timeout_ms);
+    const searchData = JSON.parse(searchBody) as { quotes?: Array<{ symbol?: string; shortname?: string; longname?: string; exchDisp?: string }> };
+    const ticker = searchData.quotes?.[0]?.symbol;
+    
+    if (!ticker) return [];
+    
+    // 2. Fetch quote data
+    const quoteUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(ticker)}`;
+    const quoteBody = await this.request(quoteUrl, { method: 'GET', headers: { 'User-Agent': 'NarrativeLifecycleResearch/0.13' } }, config.timeout_ms);
+    const quoteData = JSON.parse(quoteBody) as { quoteResponse?: { result?: Array<Record<string, any>> } };
+    const result = quoteData.quoteResponse?.result?.[0];
+    
+    if (!result) return [];
+    
+    const name = result.longName || result.shortName || ticker;
+    const price = result.regularMarketPrice;
+    const change = result.regularMarketChangePercent;
+    const marketCap = result.marketCap;
+    
+    const snippet = `Yahoo Finance Data for ${name} (${ticker} - ${result.fullExchangeName}): Price: ${price} ${result.currency} (${change > 0 ? '+' : ''}${change?.toFixed(2)}%), Market Cap: ${marketCap}, 52W Range: ${result.fiftyTwoWeekRange}, Volume: ${result.regularMarketVolume}.`;
+    
+    return [{
+      title: `${name} (${ticker}) Financial Quote`,
+      url: `https://finance.yahoo.com/quote/${ticker}`,
+      snippet,
+      published_at: null
+    }];
+  }
+
+  private async eastmoney(query: string, config: WebSearchConfig) {
+    // EastMoney A-shares quote data
+    // Query should contain a 6-digit stock code
+    const codeMatch = /[0-9]{6}/.exec(query);
+    if (!codeMatch) return [];
+    
+    const code = codeMatch[0];
+    const isSH = code.startsWith('6');
+    const marketId = isSH ? '1' : '0';
+    
+    // Using EastMoney push2 API for basic quote data
+    const url = `http://push2.eastmoney.com/api/qt/stock/get?secid=${marketId}.${code}&fields=f43,f44,f45,f46,f47,f48,f50,f57,f58,f59,f60,f162,f170`;
+    
+    const body = await this.request(url, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    }, config.timeout_ms);
+    
+    const response = JSON.parse(body) as { data?: any; rc?: number };
+    if (response.rc !== 0 || !response.data) return [];
+    
+    const data = response.data;
+    const name = data.f58 || 'Unknown';
+    const close = data.f43 ? (data.f43 / 100).toFixed(2) : 'N/A';
+    const prevClose = data.f60 ? (data.f60 / 100).toFixed(2) : 'N/A';
+    const pe = data.f162 ? (data.f162 / 100).toFixed(2) : 'N/A';
+    const pb = data.f170 ? (data.f170 / 100).toFixed(2) : 'N/A';
+    const turnover = data.f168 ? (data.f168 / 100).toFixed(2) : 'N/A';
+    
+    const snippet = `A-Share Data (${name} ${code}): Close: ${close}, Prev Close: ${prevClose}, PE(TTM): ${pe}, PB: ${pb}, Turnover Rate: ${turnover}%`;
+    
+    return [{
+      title: `EastMoney Data for ${name} (${code})`,
+      url: `https://quote.eastmoney.com/${isSH ? 'sh' : 'sz'}${code}.html`,
+      snippet,
+      published_at: null
+    }];
+  }
+
+  private async xTwitter(query: string, config: WebSearchConfig) {
+    // Placeholder implementation for Twitter/X Search API (e.g. via RapidAPI or official v2 API).
+    // The exact endpoint depends on the configured bridge. We assume a generic JSON response here.
+    const endpoint = config.endpoint || 'https://api.twitter.com/2/tweets/search/recent';
+    const url = new URL(endpoint);
+    url.searchParams.append('query', query);
+    url.searchParams.append('max_results', String(Math.min(config.max_results_per_query, 10)));
+    
+    const body = await this.request(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${config.api_key || ''}`,
+        'Content-Type': 'application/json'
+      }
+    }, config.timeout_ms);
+    
+    const data = JSON.parse(body) as { data?: Array<{ id: string; text: string; created_at?: string }> };
+    return (data.data || []).map(tweet => ({
+      title: `Tweet ${tweet.id}`,
+      url: `https://twitter.com/i/web/status/${tweet.id}`,
+      snippet: tweet.text,
+      published_at: tweet.created_at || null
     }));
   }
 }

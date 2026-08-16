@@ -26,7 +26,7 @@ export function buildResearchBaselineCompletion(input: {
         display_name_zh: name, required_layers: [...PARENT_BASELINE_LAYERS],
         rationale: '整体主题缺少正式父主题证据表；当前 S0 是阶段基准缺口，不是外部市场早期结论。',
         suggested_query: `${name} 官方 政策 监管 披露 验证 产能 订单 临床 试验`,
-        next_action: 'research_original_sources', evidence_eligibility: 'baseline_evidence',
+        next_action: 'research_original_sources', evidence_eligibility: 'context_only',
       });
     }
     if (topic.naming_status !== 'verified') {
