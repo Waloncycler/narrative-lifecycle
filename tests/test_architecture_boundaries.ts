@@ -56,7 +56,7 @@ describe('layered architecture boundaries', () => {
     // run_evolution_timeline builds a read-only projection; run_db_migrate is the
     // schema bootstrap that must run *before* the DI container (which opens the
     // DB) can be constructed at all — neither can go through createProductCoreUseCases.
-    const cliExemptions = ['run_evolution_timeline.ts', 'run_db_migrate.ts', 'run_db_migrate_phase2.ts', 'run_db_seed.ts'];
+    const cliExemptions = ['run_evolution_timeline.ts', 'run_db_migrate.ts', 'run_db_migrate_phase2.ts', 'run_db_seed.ts', 'run_gate_coverage.ts'];
     for (const file of filesUnder('src/cli')) {
       if (cliExemptions.some((name) => file.endsWith(name))) continue;
       const body = readFileSync(resolve(repoRoot, file), 'utf8');

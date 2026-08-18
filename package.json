@@ -66,6 +66,7 @@
     "db:migrate": "tsx src/cli/run_db_migrate.ts",
     "db:migrate:phase2": "tsx src/cli/run_db_migrate_phase2.ts",
     "db:seed": "tsx src/cli/run_db_seed.ts",
+    "coverage:gates": "tsx src/cli/run_gate_coverage.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
