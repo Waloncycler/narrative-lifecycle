@@ -327,7 +327,14 @@ function sessionFromSignals(
         && /^\d{4}-\d{2}-\d{2}/.test(signal.event_date)
         && intelligentMatch !== null
         && !signal.event_title.includes('RSS')
-        && (signal.research_analysis?.evidence_lane === 'direct_fact' || signal.research_analysis?.evidence_lane === 'corroborated_lead'))
+        // This previously also accepted a 'corroborated_lead' lane, which is not a
+        // member of NewsResearchAnalysis['evidence_lane']
+        // ('direct_fact' | 'source_recovery' | 'discovery_only'), so the comparison
+        // was dead and always false. Dropping it keeps runtime behaviour identical;
+        // widening it to a real lane is a governance change (ruleVerifiedPrimary
+        // drives publication_eligibility: 'rule_verified'), handled by the tiered
+        // auto-admission policy rather than as a typo fix.
+        && signal.research_analysis?.evidence_lane === 'direct_fact')
     );
     const evidenceId = `wm_${signal.signal_id}`.slice(0, 180);
     chunks.push({
