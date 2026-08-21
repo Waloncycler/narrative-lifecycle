@@ -132,8 +132,15 @@ export class RunAutonomousResearchUseCase {
     const heldTopicIds = prospectiveState
       ? topicsWithUnsafeStageJump(prospectiveState.snapshot, this.deps.readLatestSnapshot(), policy)
       : new Set<string>();
+    const provenanceRepairEvidenceIds = new Set(session?.candidates
+      .filter((candidate) => candidate.publication_eligibility === 'rule_verified'
+        && candidate.suggested_evidence.event_type === 'HISTORICAL_REACQUIRED_SOURCE'
+        && candidate.duplicate_of_evidence_id === candidate.suggested_evidence.evidence_id)
+      .map((candidate) => candidate.suggested_evidence.evidence_id) ?? []);
     if (!publicationFailed && heldTopicIds.size) {
-      normalized = normalized.filter((item) => !heldTopicIds.has(item.topic_id) || item.parent_or_branch === 'branch');
+      normalized = normalized.filter((item) => !heldTopicIds.has(item.topic_id)
+        || item.parent_or_branch === 'branch'
+        || provenanceRepairEvidenceIds.has(item.evidence_id));
     }
     if (!publicationFailed && normalized.length) {
       published = normalized;
@@ -142,6 +149,7 @@ export class RunAutonomousResearchUseCase {
     const items = evaluatedItems.map((item) => publicationFailed && item.decision === 'published'
       ? { ...item, decision: 'held' as const, reasons: ['Evidence schema validation failed; automatic publication was stopped.'] }
       : heldTopicIds.has(item.topic_id ?? '') && item.scope === 'parent' && item.decision === 'published'
+        && !provenanceRepairEvidenceIds.has(item.evidence_id)
         ? { ...item, decision: 'held' as const, reasons: [`Prospective parent stage exceeds policy review ceiling ${policy.hold_stage_jump_above}.`] }
       : item);
     const report: AutonomousPromotionReport = {

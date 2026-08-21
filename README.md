@@ -12,7 +12,7 @@
 [![Node.js >= 20](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)](CONTRIBUTING.md)
 
-[序言：时代之问](#一序言时代之问与历史坐标) · [哲学本体论](#二哲学本体论名实之辩与反身性涌现) · [物理与数学模型](#三状态跃迁动力学泊松过程与状态机) · [八阶生命周期](#四生命周期全景s0-到-s7-的状态跃迁演化) · [终极决策推演](#五投资决策推演从认知跃迁到资本Alpha) · [架构与工程实现](#六宏伟工程体系数据流与Feature-Sliced架构) · [快速上手](#七全流程实操指南-run-the-system)
+[序言：时代之问](#一序言时代之问与历史坐标) · [哲学本体论](#二哲学本体论名实之辩与反身性涌现) · [物理与数学模型](#三状态跃迁动力学泊松过程与状态机) · [八阶生命周期](#四生命周期全景s0-到-s7-的状态跃迁演化) · [终极决策推演](#五投资决策推演从认知跃迁到资本alpha) · [架构与工程实现](#六宏伟工程体系数据流与feature-sliced架构) · [统一调度中心](#七全流程实操指南-unified-command-center--practical-guide) · [信源网与Skills矩阵](#八五大立体数据源网格与四大专业-skill-矩阵)
 
 </div>
 
@@ -176,8 +176,6 @@ $$\mathbf{F}_{\text{Friction}} = v_1 \cdot \text{Crowd}_{\text{val}} + v_2 \cdot
 #### 3. 反身反馈 $\mathbf{F}_{\text{Feedback}}$
 $$\mathbf{F}_{\text{Feedback}} = u_1 \cdot \big( \Delta \text{Price} \times \Delta \text{Attention} \big) + u_2 \cdot \big( \text{Capital}_{\text{inflow}} \times \text{Industry}_{\text{capex}} \big)$$
 - 衡量价格上涨引发的注意力回流，以及资本市场热度转化为实体产业扩产的自反性强度。
-
----
 
 ## 四、生命周期全景：S0 到 S7 的状态跃迁演化
 
@@ -346,53 +344,79 @@ npm run intake:workbench
 
 ---
 
-### 7.2 核心操作命令完整全景
+### 7.2 统一命令行中央调度台 (Unified Command Center)
+
+系统已完成**统一命令行中央调度台**的架构升级。分析师与研究员无需记忆繁杂的零碎脚本，仅需通过清晰的统一命令组即可调度全系统的核心能力：
 
 ```bash
-# ── 1. 证据录入与可视化工作台 ────────────────────────────────────
-npm run intake:workbench              # 启动本地可视化工作台 (127.0.0.1:4177)
-npm run evidence:validate             # 校验手动录入的证据草稿结构与模式
-npm run evidence:import -- --file <p> # 将审查合格的证据正式安全并入 Evidence Table
+# ── 🌟 核心工作流：一键执行全闭环流水线 ──────────────────────────
+npm run narrative run                 # ⚡ 一键执行：全网立体采集 ➔ 证据审计 ➔ 阶段重算 ➔ 双轨情报战报生成
 
-# ── 2. 状态机推演与周期简报 ────────────────────────────────────
-npm run pipeline                      # 运行全市场主题的 S0-S7 状态判定与打分计算
-npm run diff                          # 比对历史快照，输出状态跃迁与证据增量 Diff
-npm run report                        # 生成面向高级研究员的周度叙事洞察简报
-npm run weekly                        # 一键执行标准化全流程：pipeline -> diff -> report
+# ── 📡 1. 全网立体数据采集 (5大权威数据网) ──────────────────────
+npm run narrative sync                # 实时采集中国政府网政策 + 东方财富研报 + 巨潮A股披露 + VIP领袖 + 全球快讯
 
-# ── 3. 全球权威情报源同步网格 ─────────────────────────────────
-npm run sources:inventory             # 审查已注册的 43 个全球顶级数据源配置清单
-npm run sources:sync -- --mode sandbox# 沙盒模式安全同步测试（不污染生产数据库）
-npm run sources:sync -- --mode live   # 生产模式实时抓取最新动态
+# ── 🛡️ 2. 证据防伪审计与累积门槛核验 (Skills 矩阵) ───────────────
+npm run narrative audit               # 扫描全量历史与实时线索，通过 4 大防伪红线与累积证据链入库 SQLite (727+条硬核证据)
 
-# ── 4. 自主巡航与深度线索分诊 ─────────────────────────────────
-npm run research:campaign             # 发起全天候多主题跨域研究巡航任务
-npm run research:triage               # 对海量外部线索按权威度与时效进行自动分诊
-npm run research:retrieve -- --max 6  # 对高优先级线索抓取原文可复核真实摘录
-npm run policy:validate                # 校验自动发布策略并生成治理审计，不发布证据
-npm run research:baseline             # 针对 S0 潜伏期核心主题生成阶段基准核验单
-npm run agent:run                     # 运行研究循环；默认只生成待审核候选和研究产物
-npm run autonomy:run                  # 复核候选发布条件并刷新运营报告，不写入正式证据
-npm run autonomy:run -- --publish-auto # 显式受控发布；仍需在策略文件中启用 auto_publish_evidence
+# ── ⚡ 3. 44 赛道 S0~S7 演化生命周期重算 ─────────────────────────
+npm run narrative stage               # 执行确定性状态机阶段重算，输出最新全景分布 (S0~S7)
+npm run narrative stage diff          # 比对上一轮与本轮阶段差异，精准定位跃迁与降级题材
 
-# ── 5. 影子 AI 与治理型主动学习 ─────────────────────────────────
-npm run intake:ai-shadow              # 启动 AI 影子比对候选（仅作提示，不自动入库）
-npm run intake:ai-evaluate            # 针对 50 篇标准测试集评估 AI 候选抽取精确度
-npm run intake:learning-cycle         # 沉淀人类修正偏好，更新自适应建议画像
+# ── 📄 4. 生成机构级双轨情报战报 (Daily Intelligence) ────────────
+npm run narrative report              # 生成《每日全球产业叙事与情报态势内参》（宏观作战室 ➕ 产业链深度解构）
 
-# ── 6. 历史叙事回放与回测验证 ─────────────────────────────────
-npm run replay                        # 运行基于时间切片的历史叙事回放回测
-npm run pilot:init                    # 初始化实盘跟踪观察账本
-npm run pilot:review                  # 生成实盘试点课题追踪与校验评估报告
+# ── 🖥️ 5. 可视化交互大盘 (Interactive Workbench UI) ─────────────
+npm run narrative workbench           # 启动现代化本地交互大盘 (127.0.0.1:4177)
 
-# ── 7. 代码工程与质量守卫 ───────────────────────────────────────
-npm run typecheck                     # TypeScript 严苛模式全量类型检查
-npm test                              # 运行 Vitest 自动化测试体系（当前 402 项测试全部通过）
+# ── 🧪 6. 自动化测试与质量守卫 (Quality Assurance) ───────────────
+npm run narrative test                # 运行全量测试套件（102 个测试文件、444 项测试全部通过）
 ```
 
 ---
 
-## 八、理论著作与核心文献 (Documentation)
+## 八、五大立体数据源网格与四大专业 Skill 矩阵
+
+### 8.1 五大立体权威数据信源网络 (Five-Dimensional Intelligence Grid)
+
+系统构建了多层次、穿透式的真实信息监控网络，彻底杜绝自媒体炒作与二手虚假信息：
+
+| 级别 | 数据网络通道 | 覆盖广度与深度 | 核心价值与应用场景 |
+| :--- | :--- | :--- | :--- |
+| **T0 级** | **国家部委与国务院政策库** | 中国政府网 (Gov.cn)、发改委、工信部、国家药监局 CDE、民航局 CAAC | 顶层规划红头文件、产业揭榜挂帅、创新药 IND/NDA 批件、适航审定 |
+| **T1 级** | **头部券商行业深度研报库** | 东方财富研报中心（13.9 万篇研报库，中金/中信/华泰等） | 产业链 BOM 拆解、单机价值量、单位经济学替代临界点、行业盈亏平衡模型 |
+| **T1 级** | **A股重大法定披露网络** | 巨潮资讯网 (Cninfo Statutory Filings) | 上市公司重大订单、中试线定增募投、设备采购合同、毛利率与真实产能 |
+| **T1 级** | **全球关键领袖专线 (VIP Speakers)** | 黄仁勋 (NVIDIA)、马斯克 (Tesla)、曾毓群 (CATL)、任正非、雷军等 | 权威领袖官方演讲与财报电话会，捕获最前沿技术范式转移与工程良率突破 |
+| **T2 级** | **全球主流财经与科技快讯** | 财联社 7x24、新浪财经、华尔街日报、56 个全球主流外媒与行业网站 | 突发地缘政治动态、宏观流动性事件、海外前沿科技首发报道 |
+
+---
+
+### 8.2 四大机构级专业 Skill 审计矩阵 (Institutional Specialized Skills)
+
+系统配备了 4 套符合头部对冲基金与顶级投研机构标准的专业 Skill 专家规范：
+
+1. 🔬 **[`unit-economics-deep-dive`](.agents/skills/unit-economics-deep-dive/SKILL.md) (产业链瓶颈与单位经济学解构专家)**：
+   - 强制调取 13.9 万篇券商研报与巨潮募投明细，绘制详细 BOM 物料清单；
+   - 测算单机/单度电规模降本曲线（Learning Curve）与替代传统方案的临界点；
+   - 定位全行业放量的**最窄单一卡脖子瓶颈**（如精密磨床交期、高温烧结良率）；
+   - 挖掘毛利率达 55%~65% 的上游隐形暴利冠军。
+
+2. 🛡️ **[`stage-gate-falsification-audit`](.agents/skills/stage-gate-falsification-audit/SKILL.md) (阶段防伪与累积证据链裁决专家)**：
+   - 执行 4 大防伪红线审查（非商业自吹、非框架协议 MOU、非单一公司孤证、非实验室样机）；
+   - 引入**累积证据链聚合评估机制**（量变引发质变），历史 20+ 条证据叠加最新监管批文实现阶段跃迁；
+   - 给出不可辩驳的 `Why-Not-Higher` 阶段否决与晋升判词。
+
+3. 🚀 **[`emerging-narrative-incubator`](.agents/skills/emerging-narrative-incubator/SKILL.md) (新题材涌现与概念孵化专家)**：
+   - 持续扫描未归类的新技术名词与产业概念；
+   - 执行营销换皮真伪鉴别（剔除概念包装炒作，保留真实物理与材料范式突破）；
+   - 在 >= 3 个独立权威信源印证后，自动赋予 `provisional_[name]` 并以 S0 建档上雷达。
+
+4. 📜 **[`historical-milestone-reconstruction`](.agents/skills/historical-milestone-reconstruction/SKILL.md) (历史里程碑证据链回溯专家)**：
+   - 固化 5 大权威法定锚点探针（监管资质、首笔商业大单、顶层规划、物理参数拐点、中试线投资）；
+   - 精准定向回溯过去 3-5 年 10~15 个决定性历史拐点，确保每一条历史证据具备法律与事实厚度。
+
+---
+
+## 九、理论著作与核心文献 (Documentation)
 
 | 领域 | 核心文献路径 | 核心要义说明 |
 |---|---|---|
@@ -404,7 +428,7 @@ npm test                              # 运行 Vitest 自动化测试体系（�
 
 ---
 
-## 九、金标准真实案例 (Golden Cases)
+## 十、金标准真实案例 (Golden Cases)
 
 代码库中内置了 3 个经过严密历史复盘与人工标注的金标准叙事全周期演化样本：
 
@@ -414,7 +438,7 @@ npm test                              # 运行 Vitest 自动化测试体系（�
 
 ---
 
-## 十、开源共建与路线图 (Contributing & Roadmap)
+## 十一、开源共建与路线图 (Contributing & Roadmap)
 
 我们坚信，未来的投资研究范式必将从“凭感觉的故事讲述”演进为“基于证据状态机的科学探索”。
 

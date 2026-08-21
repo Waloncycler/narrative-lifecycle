@@ -7,7 +7,7 @@ import type { ResearchSourceRetrievalItem, ResearchSourceRetrievalReport } from 
 import type { WebResearchReport } from '@/features/research/types/web_research';
 import { resolveWithIntelligentEcosystem } from '@/features/narrative/domain/intelligent_topic_resolver';
 import type { TopicRegistry } from '@/features/narrative/types/topic_resolution';
-import type { AuthoritativeSourceAtlas, CompanyResearchRegistry } from '@/features/research/types/research_coverage';
+import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, SourceGovernancePolicy } from '@/features/research/types/research_coverage';
 
 export interface ProbePrioritizedNewsUseCaseDeps {
   now(): string;
@@ -15,6 +15,7 @@ export interface ProbePrioritizedNewsUseCaseDeps {
   readRegistry(): TopicRegistry;
   readSourceAtlas(): AuthoritativeSourceAtlas;
   readCompanies(): CompanyResearchRegistry;
+  readGovernancePolicy(): SourceGovernancePolicy;
   search(input: { plannedQueries: Array<{ query: string; topic_id: string | null; branch_id: string | null; campaign_task_id: string; source_ids: string[]; source_domains: string[]; strict_source_domains?: string[] }> }): Promise<WebResearchReport>;
   retrieve(input: { url: string; timeoutMs: number }): Promise<{ httpStatus: number; contentType: string | null; body: string }>;
   appendRetrievedSourceIntake(report: ResearchSourceRetrievalReport): EvidenceIntakeSession | null;
@@ -55,9 +56,14 @@ export interface NewsProbeDiagnostics {
   holds: Array<{ candidate_id: string; title: string; topic_id: string | null; lead_count: number; reason: string }>;
 }
 
-const AUTHORITATIVE_SECONDARY_HOSTS = /(?:^|\.)(?:reuters\.com|apnews\.com|wsj\.com|ft\.com|bloomberg\.com|news\.cn|xinhuanet\.com|thepaper\.cn|yicai\.com|caixin\.com)$/;
-const GOVERNED_SEED_NEWS_HOSTS = /(?:^|\.)(?:reuters\.com|apnews\.com|wsj\.com|ft\.com|bloomberg\.com|news\.cn|xinhuanet\.com|thepaper\.cn|yicai\.com|caixin\.com|cls\.cn|finance\.sina\.com\.cn|stcn\.com|cs\.com\.cn|cnstock\.com)$/;
-const LOW_GOVERNANCE_HOSTS = /(?:^|\.)(?:sohu\.com|qq\.com|163\.com|toutiao\.com|baidu\.com|weibo\.com|zhihu\.com|csdn\.net)$/;
+const AUTHORITATIVE_SECONDARY_HOSTS = /(?:^|\.)(?:reuters\.com|apnews\.com|wsj\.com|ft\.com|bloomberg\.com|news\.cn|xinhuanet\.com|thepaper\.cn|yicai\.com|caixin\.com|36kr\.com|techcrunch\.com|theverge\.com|fiercebiotech\.com|fiercepharma\.com|endpts\.com|statnews\.com|electrek\.co|gelonghui\.com|jiemian\.com|huxiu\.com|geekpark\.net)$/;
+const GOVERNED_SEED_NEWS_HOSTS = /(?:^|\.)(?:reuters\.com|apnews\.com|wsj\.com|ft\.com|bloomberg\.com|news\.cn|xinhuanet\.com|thepaper\.cn|yicai\.com|caixin\.com|cls\.cn|finance\.sina\.com\.cn|stcn\.com|cs\.com\.cn|cnstock\.com|36kr\.com|techcrunch\.com|theverge\.com|fiercebiotech\.com|fiercepharma\.com|endpts\.com|statnews\.com|electrek\.co|gelonghui\.com|jiemian\.com|huxiu\.com|geekpark\.net)$/;
+const LOW_GOVERNANCE_HOSTS = /(?:^|\.)(?:sohu\.com|163\.com|toutiao\.com|baidu\.com|weibo\.com|zhihu\.com|csdn\.net|baijiahao\.baidu\.com)$/;
+
+function buildRegexFromPolicy(hosts: string[]): RegExp {
+  const pattern = hosts.map((h) => h.replace(/\./g, '\\.')).join('|');
+  return new RegExp(`(?:^|\\.)(?:${pattern})$`);
+}
 
 /** Converts ranked secondary-news candidates into source-recovery probes.
  * Search snippets are never evidence. Two independent citation-ready primary
@@ -67,6 +73,10 @@ export class ProbePrioritizedNewsUseCase {
 
   async execute(session: EvidenceIntakeSession, input: { maxNews?: number; maxSourcesPerNews?: number; maxUnknownSourcesPerNews?: number } = {}): Promise<PrioritizedNewsProbeResult> {
     const generatedAt = this.deps.now();
+    const policy = this.deps.readGovernancePolicy();
+    const authoritativeSecondaryHostsRegex = buildRegexFromPolicy(policy.authoritative_secondary_hosts);
+    const governedSeedNewsHostsRegex = buildRegexFromPolicy(policy.governed_seed_news_hosts);
+    const lowGovernanceHostsRegex = buildRegexFromPolicy(policy.low_governance_hosts);
     const registry = this.deps.readRegistry();
     const atlas = this.deps.readSourceAtlas();
     const companies = this.deps.readCompanies();
@@ -100,7 +110,7 @@ export class ProbePrioritizedNewsUseCase {
       const candidateLeads = (web?.leads ?? []).filter((lead) => queryIds.has(lead.query_id));
       const classified = candidateLeads.flatMap((lead) => {
         if (safeHost(lead.url) === safeHost(candidate.suggested_evidence.source_url)) { diagnostics.seed_host_rejected_count += 1; return []; }
-        const classifiedSource = sourceClass(lead.url, atlas, companies);
+        const classifiedSource = sourceClass(lead.url, atlas, companies, policy);
         if (classifiedSource === 'unknown') diagnostics.ungoverned_source_rejected_count += 1;
         return [{ lead, sourceClass: classifiedSource }];
       });
@@ -138,7 +148,7 @@ export class ProbePrioritizedNewsUseCase {
       const independent = probed
         .filter((item) => item.source_class !== 'unknown' && item.citation_status === 'ready' && item.excerpts.length)
         .filter(distinctItemHost());
-      const seedReady = isCitationReadySeed(candidate);
+      const seedReady = isCitationReadySeed(candidate, policy);
       if (seedReady) diagnostics.seed_citation_ready_count += 1;
       // Dual-source means two independent attributable sources, not the seed
       // article plus two additional sources. A substantive report from a
@@ -406,14 +416,14 @@ function triageLead(candidate: EvidenceCandidate, lead: WebResearchReport['leads
   };
 }
 
-function sourceClass(url: string, atlas: AuthoritativeSourceAtlas, companies: CompanyResearchRegistry): ResearchLeadSourceClass {
+function sourceClass(url: string, atlas: AuthoritativeSourceAtlas, companies: CompanyResearchRegistry, policy: SourceGovernancePolicy): ResearchLeadSourceClass {
   const host = safeHost(url) ?? '';
-  if (!host || LOW_GOVERNANCE_HOSTS.test(host)) return 'unknown';
+  if (!host || policy.low_governance_hosts.some((h) => host === h || host.endsWith(`.${h}`))) return 'unknown';
   const governedCompany = companies.companies.find((company) => governedHostMatches(host, safeHost(company.official_source_url)));
   if (governedCompany) return 'company_primary';
   const governedSource = atlas.sources.find((source) => governedHostMatches(host, safeHost(source.base_url)));
   if (governedSource) return governedSource.authority_tier === 'academic' ? 'academic' : governedSource.authority_tier === 'news' ? 'secondary' : governedSource.authority_tier === 'company' ? 'company_primary' : 'official';
-  if (AUTHORITATIVE_SECONDARY_HOSTS.test(host)) return 'secondary';
+  if (policy.authoritative_secondary_hosts.some((h) => host === h || host.endsWith(`.${h}`))) return 'secondary';
   if (isRecognizedGovernmentHost(host) || /(?:sec\.gov|fda\.gov|gov\.cn|sse\.com\.cn|szse\.cn|bse\.cn|bankofengland\.co\.uk|ecb\.europa\.eu|europa\.eu)$/.test(host)) return 'official';
   if (/(?:arxiv\.org|pubmed\.ncbi\.nlm\.nih\.gov|pmc\.ncbi\.nlm\.nih\.gov|nature\.com|science\.org|\.edu)$/.test(host)) return 'academic';
   return 'unknown';
@@ -421,9 +431,9 @@ function sourceClass(url: string, atlas: AuthoritativeSourceAtlas, companies: Co
 
 function isPrimary(value: ResearchLeadSourceClass): boolean { return ['official', 'company_primary', 'academic'].includes(value); }
 
-function isCitationReadySeed(candidate: EvidenceCandidate): boolean {
+function isCitationReadySeed(candidate: EvidenceCandidate, policy: SourceGovernancePolicy): boolean {
   const host = safeHost(candidate.suggested_evidence.source_url);
-  if (!host || !GOVERNED_SEED_NEWS_HOSTS.test(host)) return false;
+  if (!host || !policy.governed_seed_news_hosts.some((h) => host === h || host.endsWith(`.${h}`))) return false;
   const quote = candidate.original_quote.trim();
   if (quote.length < 80) return false;
   const expected = tokens(`${candidate.suggested_evidence.event_title} ${candidate.suggested_evidence.event_summary}`);

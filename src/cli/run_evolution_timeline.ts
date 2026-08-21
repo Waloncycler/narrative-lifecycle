@@ -7,61 +7,16 @@
  *
  * Usage: npx tsx src/cli/run_evolution_timeline.ts
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { reconstructAllTopicEvolutions, type TopicEvolutionTimeline } from '@/features/stages/domain/stage_evolution_reconstructor';
-import { AutonomousResearchArtifactRepository } from '@/features/research/io/autonomous_research_io';
+import type { TopicEvolutionTimeline } from '@/features/stages/domain/stage_evolution_reconstructor';
 import { FileSchemaValidator } from '@/platform/io/app_di_container';
-import type { EvidenceNode } from '@/features/evidence/domain/evidence';
+import { DbEvolutionTimelineRepository } from '@/platform/io/db_evolution_timeline_repository';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const repoRoot = process.env.NARRATIVE_REPO_ROOT ?? resolve(__dirname, '..', '..');
-
-import { DbEvidenceRepository, YamlFileRepository } from '@/platform/file_repository';
-
-// Read the same operational Evidence Table the stage snapshot is built from —
-// audited manual rows, published automated rows, and the JSON table — so the
-// timeline and the snapshot can never disagree about a topic's stage.
-function loadAllEvidence(): EvidenceNode[] {
-  const opEvidence = new AutonomousResearchArtifactRepository(repoRoot).readOperationalEvidence();
-  const sampleEvidence = new DbEvidenceRepository(new YamlFileRepository(), repoRoot).listSampleEvidence();
-  return [...opEvidence, ...sampleEvidence];
-}
-// Load topic registry
-function loadTopicRegistry(): Array<{ topic_id: string; topic_name: string }> {
-  const registryPath = resolve(repoRoot, 'data/topic_registry/topic_registry.json');
-  try {
-    const content = readFileSync(registryPath, 'utf8');
-    const parsed = JSON.parse(content);
-    if (parsed.topics && Array.isArray(parsed.topics)) {
-      return parsed.topics.map((t: { topic_id: string; topic_name: string }) => ({
-        topic_id: t.topic_id,
-        topic_name: t.topic_name,
-      }));
-    }
-  } catch {
-    // Fallback: extract from snapshot
-  }
-
-  // Fallback: extract unique topic_ids from evidence
-  const snapshotPath = resolve(repoRoot, 'outputs/operator_runs/latest_stage_snapshot.json');
-  try {
-    const content = readFileSync(snapshotPath, 'utf8');
-    const parsed = JSON.parse(content);
-    if (parsed.topics && Array.isArray(parsed.topics)) {
-      return parsed.topics.map((t: { topic_id: string; topic_name: string }) => ({
-        topic_id: t.topic_id,
-        topic_name: t.topic_name,
-      }));
-    }
-  } catch {
-    // empty
-  }
-
-  return [];
-}
 
 function printTimeline(timeline: TopicEvolutionTimeline): void {
   console.log(`\n${'═'.repeat(80)}`);
@@ -98,12 +53,8 @@ function printTimeline(timeline: TopicEvolutionTimeline): void {
 }
 
 // Main
-const allEvidence = loadAllEvidence();
-const topicRegistry = loadTopicRegistry();
-
-console.log(`📦 已加载 ${allEvidence.length} 条证据, ${topicRegistry.length} 个主题`);
-
-const timelines = reconstructAllTopicEvolutions(allEvidence, topicRegistry);
+const timelines = new DbEvolutionTimelineRepository().readAll();
+console.log(`已从数据库重建 ${timelines.length} 个主题的演化时间线`);
 new FileSchemaValidator().validate('stage_evolution_timeline.schema.json', timelines);
 
 // Print to console

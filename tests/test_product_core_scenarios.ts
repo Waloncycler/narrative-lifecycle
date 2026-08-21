@@ -28,7 +28,7 @@ function evidence(overrides: Partial<EvidenceNode>): EvidenceNode {
   available_at: '2026-07-01',
     event_title: 'Evidence',
     event_type: 'research',
-    source_name: 'fixture',
+    source_name: `fixture-${overrides.evidence_id ?? 'ev'}`,
     evidence_strength: 'E3',
     affected_layer: ['perception'],
     stage_effect: 'supports_S4',

@@ -331,8 +331,11 @@ export class BuildIntakeLearningProfileUseCase {
   constructor(private readonly deps: BuildIntakeLearningProfileUseCaseDeps) {}
 
   execute(input: { decisionsFile?: string }): IntakeLearningProfile {
-    const session = this.deps.readLatestSession();
-    const evaluation = this.deps.readLatestEvaluation();
+    const session = this.deps.readLatestSession() as EvidenceIntakeSession | null | undefined;
+    const evaluation = this.deps.readLatestEvaluation() as IntakeEvaluationReport | null | undefined;
+    if (!session || !evaluation) {
+      throw new Error('Cannot build learning profile: missing session or evaluation');
+    }
     assertSameSession('intake evaluation', session.session_id, evaluation.session_id);
     const profile = buildIntakeLearningProfile({
       session,

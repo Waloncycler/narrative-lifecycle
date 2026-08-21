@@ -63,10 +63,11 @@ export async function recoverHistoricalProvenance(input: {
   search(query: string): Promise<SearchRow[]>;
   retrieve(url: string): Promise<RetrievedPage>;
   maxSourcesPerTarget: number;
+  sourceUrlsByEvidenceId?: Record<string, string[]>;
 }): Promise<HistoricalProvenanceRecoveryReport> {
   const items: HistoricalProvenanceRecoveryItem[] = [];
   for (const target of input.targets) {
-    const urls = await discoverUrls(target, input.search, input.maxSourcesPerTarget);
+    const urls = await discoverUrls(target, input.search, input.maxSourcesPerTarget, input.sourceUrlsByEvidenceId?.[target.legacy_evidence_id] ?? []);
     const retrieved: ResearchSourceRetrievalItem[] = [];
     for (const url of urls) {
       const lead = leadFor(target, url);
@@ -99,10 +100,10 @@ export async function recoverHistoricalProvenance(input: {
 
 function corroborate(target: HistoricalProvenanceRecoveryTarget, sources: ResearchSourceRetrievalItem[]): HistoricalProvenanceRecoveryItem {
   const ready = sources.filter((source) => source.status === 'retrieved' && source.citation_status === 'ready' && source.excerpts.length)
-    .filter((source) => titleSimilarity(target.event_title, source.page_title ?? source.title) >= 0.45);
-  const independent = distinctByHost(ready);
-  const verified = independent.length >= 2;
-  const primary = independent[0];
+    .filter((source) => eventTitleMatches(target.event_title, source.page_title ?? source.title));
+  const primary = ready.find((source) => ['official', 'company_primary', 'academic'].includes(source.source_class));
+  const independent = distinctByHost(primary ? [primary, ...ready.filter((source) => source.retrieval_id !== primary.retrieval_id)] : ready);
+  const verified = Boolean(primary) && independent.length >= 2;
   const marked = sources.map((source) => {
     if (!primary || source.retrieval_id !== primary.retrieval_id) {
       return source.status === 'retrieved' && source.citation_status === 'ready'
@@ -130,13 +131,13 @@ function corroborate(target: HistoricalProvenanceRecoveryTarget, sources: Resear
   return { recovery_id: `history_recovery_${shortHash(target.legacy_evidence_id)}`, target, retrieved_sources: marked, independent_source_hosts: independent.map((item) => safeHost(item.url)).filter((value): value is string => Boolean(value)), corroboration_status: status, reason };
 }
 
-async function discoverUrls(target: HistoricalProvenanceRecoveryTarget, search: (query: string) => Promise<SearchRow[]>, max: number): Promise<string[]> {
+async function discoverUrls(target: HistoricalProvenanceRecoveryTarget, search: (query: string) => Promise<SearchRow[]>, max: number, seededUrls: string[]): Promise<string[]> {
   const discovered = await Promise.all(target.search_queries.map(async (query) => {
     try { return await search(query); } catch { return []; }
   }));
   const rows = discovered.flat();
-  const candidates = [target.known_source_url, ...rows
-    .filter((row) => titleSimilarity(target.event_title, row.title ?? '') >= 0.45)
+  const candidates = [target.known_source_url, ...seededUrls, ...rows
+    .filter((row) => eventTitleMatches(target.event_title, row.title ?? ''))
     .map((row) => row.url ?? null)];
   return unique(candidates.filter((url): url is string => validHttpUrl(url) && sourceClassForTarget(target, url) !== 'unknown')).slice(0, Math.max(1, max));
 }
@@ -178,6 +179,8 @@ function sourceClassForUrl(value: string): ResearchLeadSourceClass {
   if (host === 'doi.org' || host.endsWith('.doi.org')) return 'unknown';
   if (/(arxiv\.org|pubmed\.ncbi\.nlm\.nih\.gov|pmc\.ncbi\.nlm\.nih\.gov|openalex\.org|osti\.gov|link\.springer\.com|sciencedirect\.com|nature\.com|onlinelibrary\.wiley\.com|journals\.aps\.org|ieeexplore\.ieee\.org|\.edu$)/.test(host)) return 'academic';
   if (/(sec\.gov|edgar|exchange|disclosure)/.test(host)) return 'official';
+  if (/(apnews\.com|reuters\.com|prnewswire\.com|businesswire\.com|axios\.com|time\.com|cnbc\.com|bloomberg\.com|yicai\.com|stcn\.com|cnstock\.com|cs\.com\.cn|21jingji\.com)/.test(host)) return 'secondary';
+  if (/(kyodonewsprwire\.jp|spartanweeklyonline\.com)/.test(host)) return 'secondary';
   return 'unknown';
 }
 
@@ -187,6 +190,7 @@ function sourceClassForTarget(target: HistoricalProvenanceRecoveryTarget, url: s
   const inferred = sourceClassForUrl(url);
   if (inferred !== 'unknown') return inferred;
   const expectedCompany = target.known_source_type === 'company' || target.known_source_type === 'company_primary';
+  if (expectedCompany && /(prnewswire\.com|businesswire\.com)/.test(safeHost(url) ?? '')) return 'company_primary';
   if (expectedCompany && safeHost(url) && safeHost(url) === safeHost(target.known_source_url)) return 'company_primary';
   return 'unknown';
 }
@@ -207,6 +211,18 @@ function titleSimilarity(left: string, right: string): number {
   if (!a.size || !b.size) return 0;
   let intersection = 0; for (const token of a) if (b.has(token)) intersection += 1;
   return intersection / Math.max(1, Math.min(a.size, b.size));
+}
+
+function eventTitleMatches(left: string, right: string): boolean {
+  if (titleSimilarity(left, right) >= 0.45) return true;
+  const anchors = (value: string) => new Set(
+    value.toLowerCase().match(/[a-z][a-z0-9.-]{1,}|\d+(?:\.\d+)?/g) ?? [],
+  );
+  const a = anchors(left);
+  const b = anchors(right);
+  let shared = 0;
+  for (const token of a) if (b.has(token)) shared += 1;
+  return shared >= 2;
 }
 
 function titleSupportsTopic(title: string, terms: string[]): boolean {

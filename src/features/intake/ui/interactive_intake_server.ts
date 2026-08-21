@@ -22,6 +22,10 @@ import { intakeAgentConfigFromEnv } from '@/features/intake/io/intake_agent_prov
 import { buildNarrativeMonitor } from '@/features/narrative/domain/narrative_monitor';
 import { mergeMonitorSnapshot } from '@/features/narrative/domain/narrative_monitor_snapshot';
 import { DbNarrativeMonitorRepository } from '@/platform/io/db_narrative_monitor_repository';
+import { DbEvolutionTimelineRepository } from '@/platform/io/db_evolution_timeline_repository';
+import { db } from '@/db/index';
+import { rawSnapshots, canonicalEvents, genericArtifacts } from '@/db/schema';
+import { desc, eq } from 'drizzle-orm';
 import {
   renderAgentDashboard,
   renderAgentRuns,
@@ -35,6 +39,8 @@ import {
   renderSystemOverview,
   renderTopicDetail,
   renderTopics,
+  renderWorldMonitorLake,
+  renderCanonicalEvents,
 } from '@/features/narrative/ui/narrative_monitor_renderer';
 
 const interactiveDecisionPath = 'outputs/intake/interactive_review_decisions.yaml';
@@ -51,6 +57,14 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
         return response.end();
       }
       if (request.method === 'GET' && pathname === '/') return html(response, renderNarrativeMonitor(readMonitor(repoRoot, useCases)));
+      if (request.method === 'GET' && pathname === '/worldmonitor') {
+        const snaps = db.select().from(rawSnapshots).orderBy(desc(rawSnapshots.created_at)).limit(50).all();
+        return html(response, renderWorldMonitorLake(snaps));
+      }
+      if (request.method === 'GET' && pathname === '/canonical-events') {
+        const events = db.select().from(canonicalEvents).orderBy(desc(canonicalEvents.created_at)).limit(50).all();
+        return html(response, renderCanonicalEvents(events));
+      }
       if (request.method === 'GET' && pathname === '/intake') return html(response, renderInteractiveWorkbench());
       if (request.method === 'GET' && pathname === '/changes') return html(response, renderChanges(readMonitor(repoRoot, useCases)));
       if (request.method === 'GET' && pathname === '/topics') return html(response, renderTopics(readMonitor(repoRoot, useCases)));
@@ -65,12 +79,7 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
       if (request.method === 'GET' && pathname.startsWith('/topics/')) return html(response, renderTopicDetail(readMonitor(repoRoot, useCases), decodeURIComponent(pathname.slice('/topics/'.length))));
       if (request.method === 'GET' && pathname === '/api/state') return json(response, readState(repoRoot));
       if (request.method === 'GET' && pathname === '/api/evolution-timeline') {
-        try {
-          const content = readFileSync(resolve(repoRoot, 'outputs/evolution_timelines/all_topics_evolution.json'), 'utf8');
-          return json(response, JSON.parse(content));
-        } catch (e) {
-          return json(response, []);
-        }
+        return json(response, new DbEvolutionTimelineRepository().readAll());
       }
       if (request.method === 'GET' && pathname === '/api/monitor') return json(response, readMonitor(repoRoot, useCases));
       if (request.method === 'GET' && pathname === '/api/agent/state') return json(response, readAgentState(repoRoot, useCases));
@@ -507,10 +516,6 @@ function readMonitor(repoRoot: string, useCases?: ProductCoreUseCases) {
     },
   });
 }
-
-import { db } from '@/db/index';
-import { genericArtifacts } from '@/db/schema';
-import { eq } from 'drizzle-orm';
 
 function readJsonFile<T = unknown>(repoRoot: string, relativePath: string): T | null {
   const artifactId = relativePath.replace(/^outputs\//, '');

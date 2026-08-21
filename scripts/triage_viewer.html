@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triage Viewer Dashboard</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --primary: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .stats {
+            display: flex;
+            gap: 1rem;
+        }
+        .stat-card {
+            background: var(--surface);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            min-width: 100px;
+        }
+        .stat-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            transition: transform 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge.priority_review { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
+        .badge.review { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .badge.reference_only { background: rgba(148, 163, 184, 0.2); color: var(--text-muted); }
+        .badge.hold { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        
+        .badge.official { border: 1px solid var(--primary); color: var(--primary); }
+        .badge.academic { border: 1px solid var(--success); color: var(--success); }
+        .badge.company_primary { border: 1px solid var(--warning); color: var(--warning); }
+        .badge.secondary { border: 1px solid var(--text-muted); color: var(--text-muted); }
+        
+        .title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text);
+            text-decoration: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .title:hover {
+            color: var(--primary);
+        }
+        .meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .snippet {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.2);
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            margin-top: auto;
+            border-left: 2px solid var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>Triage Viewer</h1>
+            <div id="meta-info" class="meta" style="margin-top: 0.5rem">Loading...</div>
+        </div>
+        <div class="stats" id="stats-container"></div>
+    </div>
+    
+    <div class="grid" id="grid"></div>
+
+    <script>
+        async function loadReport() {
+            try {
+                const response = await fetch('/api/report');
+                const report = await response.json();
+                
+                if (!report) {
+                    document.getElementById('grid').innerHTML = '<p>No report found.</p>';
+                    return;
+                }
+
+                document.getElementById('meta-info').innerText = `Generated at: ${new Date(report.generated_at).toLocaleString()} | ID: ${report.triage_id}`;
+                
+                const stats = report.summary;
+                document.getElementById('stats-container').innerHTML = `
+                    <div class="stat-card">
+                        <div class="value">${report.triaged_lead_count}</div>
+                        <div class="label">Total Leads</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">${stats.priority_review_count}</div>
+                        <div class="label">Priority</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">${stats.official_or_academic_count}</div>
+                        <div class="label">Official/Acad</div>
+                    </div>
+                `;
+
+                const grid = document.getElementById('grid');
+                grid.innerHTML = report.items.map(item => `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="badge ${item.disposition}">${item.disposition.replace('_', ' ')}</span>
+                            <span class="badge ${item.source_class}">${item.source_class.replace('_', ' ')}</span>
+                        </div>
+                        <a href="${item.url}" target="_blank" class="title" title="${item.title}">${item.title}</a>
+                        <div class="meta">
+                            <span>${item.source_name || item.source_domain}</span> &bull; 
+                            <span>${item.published_at || 'Unknown Date'}</span> &bull;
+                            <span>Score: ${item.priority_score}</span>
+                        </div>
+                        <div class="snippet">${item.snippet}</div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+                document.getElementById('grid').innerHTML = `<p style="color: var(--danger)">Failed to load report. Ensure you have run a campaign recently.</p>`;
+            }
+        }
+        
+        loadReport();
+    </script>
+</body>
+</html>

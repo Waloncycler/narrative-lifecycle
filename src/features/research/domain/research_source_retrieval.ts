@@ -1,11 +1,12 @@
 import { createHash } from 'node:crypto';
 import type { ResearchLeadTriageItem, ResearchLeadTriageReport } from '@/features/research/types/research_lead_triage';
 import type { ResearchSourceExtractorId, ResearchSourceRetrievalItem, SourcePageExcerpt } from '@/features/research/types/research_source_retrieval';
+import type { SourceGovernancePolicy } from '@/features/research/types/research_coverage';
 
 const RETRIEVABLE_CLASSES = new Set(['official', 'company_primary', 'academic']);
-const FINANCIAL_NEWS_DOMAINS = ['wallstreetcn.com', 'cls.cn', 'finance.sina.com.cn', 'sina.com.cn', 'cn.wsj.com', 'wsj.com'];
+const MARKET_NAMING_DOMAINS = ['data.eastmoney.com', 'eastmoney.com', '10jqka.com.cn'];
 
-export function selectSourceRetrievalTargets(report: ResearchLeadTriageReport | null, limit: number, unknownDiscoveryLimit = 2): ResearchLeadTriageItem[] {
+export function selectSourceRetrievalTargets(report: ResearchLeadTriageReport | null, limit: number, unknownDiscoveryLimit: number, policy: SourceGovernancePolicy): ResearchLeadTriageItem[] {
   if (!report || (limit < 1 && unknownDiscoveryLimit < 1)) return [];
   const ranked = report.items
     .filter((item) => ['priority_review', 'review'].includes(item.disposition))
@@ -17,7 +18,7 @@ export function selectSourceRetrievalTargets(report: ResearchLeadTriageReport | 
   // may recover names, citations, and candidate primary URLs, but never gives
   // them Evidence or corroboration eligibility.
   const governed = ranked
-    .filter((item) => RETRIEVABLE_CLASSES.has(item.source_class) || isFinancialNewsProbe(item))
+    .filter((item) => RETRIEVABLE_CLASSES.has(item.source_class) || isFinancialNewsProbe(item, policy) || isMarketNamingProbe(item))
     .slice(0, Math.max(0, limit));
   const unknown = ranked
     .filter(isUnknownDiscoveryProbe)
@@ -25,9 +26,15 @@ export function selectSourceRetrievalTargets(report: ResearchLeadTriageReport | 
   return [...governed, ...unknown];
 }
 
-export function isFinancialNewsProbe(item: Pick<ResearchLeadTriageItem, 'source_class' | 'source_domain'>): boolean {
+export function isMarketNamingProbe(item: Pick<ResearchLeadTriageItem, 'source_domain' | 'next_action'>): boolean {
+  const sourceDomain = item.source_domain ?? '';
+  return item.next_action === 'validate_market_name'
+    || MARKET_NAMING_DOMAINS.some((domain) => sourceDomain === domain || sourceDomain.endsWith(`.${domain}`));
+}
+
+export function isFinancialNewsProbe(item: Pick<ResearchLeadTriageItem, 'source_class' | 'source_domain'>, policy: SourceGovernancePolicy): boolean {
   return item.source_class === 'secondary'
-    && FINANCIAL_NEWS_DOMAINS.some((domain) => item.source_domain === domain || item.source_domain.endsWith(`.${domain}`));
+    && policy.financial_news_domains.some((domain) => item.source_domain === domain || item.source_domain.endsWith(`.${domain}`));
 }
 
 export function isUnknownDiscoveryProbe(item: Pick<ResearchLeadTriageItem, 'source_class'>): boolean {
@@ -118,7 +125,8 @@ export function extractReadableSource(raw: string, contentType: string | null, s
   if (/markdown/i.test(contentType ?? '')) {
     const titleMatch = /^#\s+(.+)$/m.exec(body) || /^Title:\s+(.+)$/m.exec(body);
     const title = titleMatch ? titleMatch[1].trim() : null;
-    return { title, text: body.slice(0, 24_000), extractor_id: 'jina_reader_markdown' };
+    const extractor_id = /readability=true/i.test(contentType ?? '') ? 'mozilla_readability' : 'jina_reader_markdown';
+    return { title, text: body.slice(0, 24_000), extractor_id: extractor_id as ResearchSourceExtractorId };
   }
   if (isClinicalTrialsUrl(sourceUrl) && /json/i.test(contentType ?? '')) return { ...clinicalTrialsText(body), extractor_id: 'clinicaltrials_api' };
   if (/arxiv\.org/i.test(sourceUrl)) {

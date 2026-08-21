@@ -90,7 +90,7 @@ export class DbTopicRegistryRepository {
             domain: 'unknown',
             created_at: now,
             updated_at: now,
-          }).run();
+          }).onConflictDoNothing().run();
           canonicalIds.add(res.provisional_topic_id);
         }
 
@@ -103,7 +103,7 @@ export class DbTopicRegistryRepository {
             market_name_zh: bName,
             naming_status: 'unresolved',
             created_at: now,
-          }).run();
+          }).onConflictDoNothing().run();
           branchIds.add(res.resolved_branch_id);
         }
       }

@@ -16,7 +16,6 @@ export const autonomousResearchPolicy = {
   "allow_rule_verified_publication": true,
   "minimum_evidence_strength": "E1",
   "minimum_confidence": "medium",
-  "maximum_source_age_days": 180,
   "permitted_source_types": ["official", "filing", "research", "academic", "company"],
   "allow_news_auto_publish": false,
   "require_source_url": true,
@@ -56,4 +55,3 @@ export const researchAgentSchedulerConfig = {
   }
 }
 ;
-

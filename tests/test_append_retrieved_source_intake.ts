@@ -23,6 +23,18 @@ const report = {
 } as unknown as ResearchSourceRetrievalReport;
 
 describe('citation-ready queue advancement', () => {
+  it('can isolate an acquisition batch from a large historical intake queue', () => {
+    const useCase = new AppendRetrievedSourceIntakeUseCase({
+      now: () => '2026-08-09T01:00:00.000Z', readLatestSession: () => base, existingEvidenceIds: () => new Set(),
+      writeIntakeSession: () => undefined, resolveTopics: () => undefined,
+      validateSession: () => undefined, validateCandidate: () => undefined,
+    });
+    const session = useCase.execute(report, { freshSession: true })!;
+    expect(session.session_id).not.toBe(base.session_id);
+    expect(session.candidates.some((candidate) => candidate.candidate_id === 'candidate_direct')).toBe(false);
+    expect(session.candidates).toHaveLength(2);
+  });
+
   it('enriches a matching direct candidate and appends a separately governed new source', () => {
     let written: EvidenceIntakeSession | null = null;
     const useCase = new AppendRetrievedSourceIntakeUseCase({
@@ -86,6 +98,24 @@ describe('citation-ready queue advancement', () => {
       publication_eligibility: 'rule_verified',
       temporal_provenance: { event_date_source: 'source_metadata', requires_operator_confirmation: false },
       suggested_evidence: { event_date: '2024-11-14', available_at: '2024-11-14', evidence_strength: 'E1', confidence: 'medium' },
+    });
+  });
+
+  it('maps a dated governed market taxonomy page to perception-only E1 evidence', () => {
+    const naming = structuredClone(report);
+    naming.items = [{
+      ...naming.items[1]!, topic_id: 'solid_state_battery', source_class: 'secondary',
+      url: 'https://data.eastmoney.com/bkzj/BK0968.html', source_published_at: '2026-08-14', next_action: 'prepare_intake',
+    }];
+    const useCase = new AppendRetrievedSourceIntakeUseCase({
+      now: () => '2026-08-19T01:00:00.000Z', readLatestSession: () => null, existingEvidenceIds: () => new Set(),
+      writeIntakeSession: () => undefined, resolveTopics: () => undefined, validateSession: () => undefined, validateCandidate: () => undefined,
+    });
+    const session = useCase.execute(naming, { freshSession: true })!;
+    expect(session.candidates[0]).toMatchObject({
+      publication_eligibility: 'rule_verified',
+      temporal_provenance: { requires_operator_confirmation: false },
+      suggested_evidence: { topic_id: 'solid_state_battery', evidence_strength: 'E1', affected_layer: ['name'], confidence: 'medium' },
     });
   });
 

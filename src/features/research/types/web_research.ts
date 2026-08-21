@@ -22,7 +22,8 @@ export type WebSearchProvider =
   | 'firecrawl'
   | 'yahoo_finance'
   | 'eastmoney'
-  | 'x_twitter';
+  | 'x_twitter'
+  | 'tabbit';
 export type WebResearchStatus = 'completed' | 'unconfigured' | 'degraded';
 
 export interface WebSearchConfig {

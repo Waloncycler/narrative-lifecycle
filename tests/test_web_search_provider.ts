@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { HttpWebSearchProvider, webSearchConfigFromEnv, webSearchConfigsFromEnv } from '@/features/research/io/web_search_provider';
+import { HttpWebSearchProvider } from '@/features/research/io/web_search_provider';
+import { webSearchConfigFromEnv, webSearchConfigsFromEnv } from "@/features/research/io/web_search_provider";
 
 describe('web search provider config selection', () => {
   it('defaults to the keyless free aggregate when no search key is configured', () => {
@@ -59,7 +60,7 @@ describe('web search provider config selection', () => {
 
 describe('webSearchConfigsFromEnv multi-engine sweep', () => {
   it('always includes the keyless free aggregate when nothing else is configured', () => {
-    expect(webSearchConfigsFromEnv({}).map((config) => config.provider)).toEqual(['free']);
+    expect(webSearchConfigsFromEnv({}).map((config: any) => config.provider)).toEqual(['free']);
   });
 
   it('runs every configured engine together instead of replacing free', () => {
@@ -68,30 +69,30 @@ describe('webSearchConfigsFromEnv multi-engine sweep', () => {
       BRAVE_SEARCH_API_KEY: 'b',
       SEARXNG_BASE_URL: 'http://127.0.0.1:8888',
       MINIMAX_API_KEY: 'sk-cp-test',
-    }).map((config) => config.provider);
+    }).map((config: any) => config.provider);
     expect(providers).toEqual(['free', 'tavily', 'brave', 'searxng', 'minimax']);
   });
 
   it('treats MINIMAX_API_KEY as a usable search key in the sweep set', () => {
     const configs = webSearchConfigsFromEnv({ MINIMAX_API_KEY: 'sk-cp-test' });
-    const minimax = configs.find((config) => config.provider === 'minimax');
+    const minimax = configs.find((config: any) => config.provider === 'minimax');
     expect(minimax).toMatchObject({ provider: 'minimax', api_key: 'sk-cp-test', endpoint: 'https://api.minimaxi.com/v1/coding_plan/search' });
   });
 
   it('adds explicitly requested keyless engines as standalone passes', () => {
-    const providers = webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDERS: 'duckduckgo,bing' }).map((config) => config.provider);
+    const providers = webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDERS: 'duckduckgo,bing' }).map((config: any) => config.provider);
     expect(providers).toEqual(['free', 'duckduckgo', 'bing']);
   });
 
   it('deduplicates engines and honours the singular provider variable', () => {
-    const providers = webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'minimax', MINIMAX_CODE_PLAN_KEY: 'plan' }).map((config) => config.provider);
+    const providers = webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'minimax', MINIMAX_CODE_PLAN_KEY: 'plan' }).map((config: any) => config.provider);
     expect(providers).toEqual(['free', 'minimax']);
   });
 
   it('falls back to a disabled config only when explicitly disabled', () => {
-    expect(webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'disabled' }).map((config) => config.provider)).toEqual(['disabled']);
+    expect(webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'disabled' }).map((config: any) => config.provider)).toEqual(['disabled']);
     // An unknown explicit name still keeps the free aggregate on.
-    expect(webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'not-a-provider' }).map((config) => config.provider)).toEqual(['free']);
+    expect(webSearchConfigsFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'not-a-provider' }).map((config: any) => config.provider)).toEqual(['free']);
   });
 });
 
@@ -376,4 +377,71 @@ describe('web search provider keyless adapters', () => {
       published_at: '1995-06-01T00:00:00Z',
     });
   });
+
+  it('resolves Tabbit browser configuration from environment and auto-detects endpoint', () => {
+    expect(webSearchConfigFromEnv({ TABBIT_BASE_URL: 'http://localhost:9222', TABBIT_API_KEY: 'tabbit-key' })).toMatchObject({
+      provider: 'tabbit',
+      endpoint: 'http://localhost:9222',
+      api_key: 'tabbit-key',
+    });
+    expect(webSearchConfigFromEnv({ NARRATIVE_WEB_SEARCH_PROVIDER: 'tabbit' })).toMatchObject({
+      provider: 'tabbit',
+      endpoint: 'http://127.0.0.1:9222',
+      api_key: null,
+    });
+  });
+
+  it('runs Tabbit browser search and normalizes search results', async () => {
+    let capturedUrl = '';
+    let capturedBody = '';
+    let capturedAuth = '';
+
+    const provider = new HttpWebSearchProvider(async (input, init) => {
+      capturedUrl = String(input);
+      capturedBody = String(init?.body ?? '');
+      capturedAuth = String((init?.headers as Record<string, string>)?.Authorization ?? '');
+      return new Response(JSON.stringify({
+        results: [
+          {
+            title: 'Tabbit AI Agent Search Result',
+            url: 'https://example.com/tabbit-news',
+            snippet: 'Automated browsing discovery lead snippet',
+            source_name: 'TechDaily',
+            published_at: '2026-03-01T12:00:00Z',
+          },
+        ],
+      }), { status: 200, headers: { 'content-type': 'application/json' } });
+    });
+
+    const config = webSearchConfigFromEnv({
+      NARRATIVE_WEB_SEARCH_PROVIDER: 'tabbit',
+      TABBIT_BASE_URL: 'http://127.0.0.1:9222',
+      TABBIT_API_KEY: 'secret-tabbit-token',
+    });
+
+    const results = await provider.search({ query: '具身智能', config });
+    expect(capturedUrl).toBe('http://127.0.0.1:9222/search');
+    expect(capturedAuth).toBe('Bearer secret-tabbit-token');
+    const parsedBody = JSON.parse(capturedBody);
+    expect(parsedBody.query).toBe('具身智能');
+    expect(parsedBody.max_results).toBe(8);
+    expect(results).toHaveLength(1);
+    expect(results[0]).toMatchObject({
+      title: 'Tabbit AI Agent Search Result',
+      url: 'https://example.com/tabbit-news',
+      snippet: 'Automated browsing discovery lead snippet',
+      source_name: 'TechDaily',
+      published_at: '2026-03-01T12:00:00Z',
+    });
+  });
+
+  it('enforces SSRF protection for Tabbit HTTP endpoints', async () => {
+    const provider = new HttpWebSearchProvider();
+    const config = webSearchConfigFromEnv({
+      NARRATIVE_WEB_SEARCH_PROVIDER: 'tabbit',
+      TABBIT_BASE_URL: 'http://public-remote-domain.com:9222',
+    });
+    await expect(provider.search({ query: 'test', config })).rejects.toThrow('tabbit_http_base_url_must_be_private_or_loopback');
+  });
 });
+

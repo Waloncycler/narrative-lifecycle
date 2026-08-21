@@ -23,11 +23,14 @@ export interface AppendRetrievedSourceIntakeUseCaseDeps {
 export class AppendRetrievedSourceIntakeUseCase {
   constructor(private readonly deps: AppendRetrievedSourceIntakeUseCaseDeps) {}
 
-  execute(report: ResearchSourceRetrievalReport, options: { resolveTopics?: boolean } = {}): EvidenceIntakeSession | null {
+  execute(report: ResearchSourceRetrievalReport, options: { resolveTopics?: boolean; freshSession?: boolean } = {}): EvidenceIntakeSession | null {
     const ready = report.items.filter((item) => item.status === 'retrieved' && item.citation_status === 'ready' && item.next_action === 'prepare_intake' && item.excerpts.length);
-    if (!ready.length) return this.deps.readLatestSession();
+    if (!ready.length) return options.freshSession ? null : this.deps.readLatestSession();
     const generatedAt = this.deps.now();
-    const base = this.deps.readLatestSession() ?? emptySession(generatedAt);
+    // Acquisition batches must be isolated from a potentially very large
+    // historical review queue; otherwise every small retrieval re-runs the
+    // model over hundreds of unrelated candidates.
+    const base = options.freshSession ? emptySession(generatedAt) : this.deps.readLatestSession() ?? emptySession(generatedAt);
     const session = structuredClone(base);
     const raw = session.raw_document;
     const candidatesByUrl = new Map(session.candidates.map((candidate) => [candidate.suggested_evidence.source_url ?? '', candidate]));
@@ -38,6 +41,7 @@ export class AppendRetrievedSourceIntakeUseCase {
       const newsRecovery = item.news_corroboration;
       const sourceDate = dateOnly(item.source_published_at);
       const verifiedCurrentSource = Boolean(sourceDate && ['official', 'company_primary', 'academic'].includes(item.source_class));
+      const verifiedMarketNamingSource = Boolean(sourceDate && isGovernedMarketNamingUrl(item.url));
       const recoveredVerified = recovery?.corroboration_status === 'verified';
       const newsVerified = newsRecovery?.corroboration_status === 'verified';
       const corroboratingUrls = recovery?.corroborating_source_urls ?? newsRecovery?.corroborating_source_urls ?? [];
@@ -94,7 +98,7 @@ export class AppendRetrievedSourceIntakeUseCase {
           source_url: item.url,
           source_type: sourceType(item.source_class),
           stage_effect: item.branch_id ? 'split_branch' : 'maintain',
-          confidence: recoveredVerified || newsVerified || verifiedCurrentSource ? 'medium' : matched.suggested_evidence.confidence,
+          confidence: recoveredVerified || newsVerified || verifiedCurrentSource || verifiedMarketNamingSource ? 'medium' : matched.suggested_evidence.confidence,
           interpretation: newsVerified
             ? 'Two independent citation-ready sources, including a primary-source anchor, support the prioritized news claim. The package may enter normal Evidence review but does not establish a Stage.'
             : recoveredVerified
@@ -118,9 +122,9 @@ export class AppendRetrievedSourceIntakeUseCase {
         matched.temporal_provenance = {
           event_date_source: recovery?.event_date || sourceDate ? 'source_metadata' : priorTemporal.event_date_source,
           available_at_source: recovery?.event_date || sourceDate ? 'source_metadata' : priorTemporal.available_at_source,
-          requires_operator_confirmation: !(recoveredVerified || newsVerified || verifiedCurrentSource),
+          requires_operator_confirmation: !(recoveredVerified || newsVerified || verifiedCurrentSource || verifiedMarketNamingSource),
         };
-        if (recoveredVerified || newsVerified || verifiedCurrentSource) matched.publication_eligibility = 'rule_verified';
+        if (recoveredVerified || newsVerified || verifiedCurrentSource || verifiedMarketNamingSource) matched.publication_eligibility = 'rule_verified';
         matched.suggested_reason = newsVerified
           ? 'Prioritized news claim was matched to two independent citation-ready sources including a primary anchor; advance into existing policy gates without raising E-strength.'
           : recoveredVerified
@@ -163,25 +167,27 @@ export class AppendRetrievedSourceIntakeUseCase {
           source_url: item.url,
           source_type: sourceType(item.source_class),
           evidence_strength: 'E1',
-          affected_layer: ['reality'],
+          affected_layer: verifiedMarketNamingSource ? ['name'] : ['reality'],
           stage_effect: (recovery?.branch_id ?? item.branch_id) ? 'split_branch' : 'maintain',
           polarity: 'neutral',
           interpretation: recoveredVerified
             ? 'A historical primary source was re-acquired and independently corroborated. It is eligible for the existing governed admission policy, not a direct Stage conclusion.'
+            : verifiedMarketNamingSource
+              ? 'A dated market taxonomy page explicitly uses the canonical Topic label. It supports only the perception/stable-label gate and does not establish capital, pricing, adoption, or hard reality.'
             : verifiedCurrentSource
               ? 'A dated, citation-ready original source was retrieved from a governed discovery lead. It is eligible for the existing policy evaluation, not a direct Stage conclusion.'
             : 'A citation-ready source excerpt is available for research review; it does not itself establish a lifecycle stage.',
           limitation: recoveredVerified
             ? `Independent corroborating URLs: ${recovery!.corroborating_source_urls.join(', ')}. This E1 source record cannot by itself establish a lifecycle stage; Stage Gate and duplicate checks remain authoritative.`
             : 'The retrieval package does not independently establish the original publication date or cross-source corroboration. It remains review-only until date, Topic/Branch scope, and Evidence Gate checks pass.',
-          confidence: recoveredVerified || verifiedCurrentSource ? 'medium' : 'low',
+          confidence: recoveredVerified || verifiedCurrentSource || verifiedMarketNamingSource ? 'medium' : 'low',
         },
-        suggested_reason: recoveredVerified ? 'Historical source was re-acquired with two independent, citation-ready source hosts; advance into the existing Agent and policy gates.' : verifiedCurrentSource ? 'Dated citation-ready primary source from a governed discovery lead; advance into the existing Agent and policy gates.' : 'Automatically advanced from a citation-ready original-page package; retained as a review candidate.',
-        uncertainty_notes: [recoveredVerified ? 'The Agent receives bounded excerpts from the corroborating source for fact comparison. Cross-source corroboration is a provenance gate, not an E2/E3/E4 upgrade or a Stage conclusion.' : verifiedCurrentSource ? 'Publication date comes from the governed discovery lead; the Evidence Gate, Topic/Branch resolver and duplicate detection still apply.' : 'Retrieved source packages never bypass date confirmation, duplicate detection, Topic/Branch resolution, or the Evidence Gate.'],
+        suggested_reason: recoveredVerified ? 'Historical source was re-acquired with two independent, citation-ready source hosts; advance into the existing Agent and policy gates.' : verifiedMarketNamingSource ? 'Dated governed market-taxonomy page explicitly uses the Topic label; advance as perception-only E1 evidence.' : verifiedCurrentSource ? 'Dated citation-ready primary source from a governed discovery lead; advance into the existing Agent and policy gates.' : 'Automatically advanced from a citation-ready original-page package; retained as a review candidate.',
+        uncertainty_notes: [recoveredVerified ? 'The Agent receives bounded excerpts from the corroborating source for fact comparison. Cross-source corroboration is a provenance gate, not an E2/E3/E4 upgrade or a Stage conclusion.' : verifiedMarketNamingSource ? 'Market naming supports only the stable-label gate; it cannot establish capital, pricing, adoption, or hard reality.' : verifiedCurrentSource ? 'Publication date comes from the governed discovery lead; the Evidence Gate, Topic/Branch resolver and duplicate detection still apply.' : 'Retrieved source packages never bypass date confirmation, duplicate detection, Topic/Branch resolution, or the Evidence Gate.'],
         field_explanations: { event_date: recovery?.event_date ? 'Retains the legacy event date; original source text was re-acquired.' : sourceDate ? 'Retains the publication date supplied by the governed discovery lead.' : 'Uses retrieval date as a placeholder and requires operator confirmation.', evidence_strength: 'E1 because even two-source provenance recovery does not by itself establish a higher Evidence strength.', affected_layer: 'Reality is a review hypothesis, not a Stage conclusion.' },
         e_strength_rationale: 'The re-acquired primary source remains E1; cross-source corroboration authorizes policy evaluation, not evidence-strength inflation.',
-        temporal_provenance: { event_date_source: recovery?.event_date || sourceDate ? 'source_metadata' : 'ingested_at', available_at_source: recovery?.event_date || sourceDate ? 'source_metadata' : 'ingested_at', requires_operator_confirmation: !(recoveredVerified || verifiedCurrentSource) },
-        publication_eligibility: recoveredVerified || verifiedCurrentSource ? 'rule_verified' : 'manual_review',
+        temporal_provenance: { event_date_source: recovery?.event_date || sourceDate ? 'source_metadata' : 'ingested_at', available_at_source: recovery?.event_date || sourceDate ? 'source_metadata' : 'ingested_at', requires_operator_confirmation: !(recoveredVerified || verifiedCurrentSource || verifiedMarketNamingSource) },
+        publication_eligibility: recoveredVerified || verifiedCurrentSource || verifiedMarketNamingSource ? 'rule_verified' : 'manual_review',
         duplicate_of_evidence_id: recovery?.legacy_evidence_id ?? (this.deps.existingEvidenceIds().has(evidenceId) ? evidenceId : null),
         guardrail_check: { no_trading_advice: true, provenance_present: true, human_review_required: true },
       };
@@ -216,6 +222,12 @@ function sourceType(value: string): 'official' | 'academic' | 'company' | 'resea
   if (value === 'academic') return 'academic';
   if (value === 'company_primary') return 'company';
   return 'research';
+}
+function isGovernedMarketNamingUrl(value: string): boolean {
+  try {
+    const host = new URL(value).hostname.toLowerCase();
+    return host === 'data.eastmoney.com' || host.endsWith('.data.eastmoney.com') || host === '10jqka.com.cn' || host.endsWith('.10jqka.com.cn');
+  } catch { return false; }
 }
 function stableId(value: string): string { let hash = 5381; for (const char of value) hash = ((hash << 5) + hash) ^ char.codePointAt(0)!; return (hash >>> 0).toString(36); }
 function safeId(value: string): string { return value.toLowerCase().replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 72) || 'unresolved'; }

@@ -2,7 +2,7 @@ import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
-import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse } from '@/features/research/types/research_coverage';
+import type { AuthoritativeSourceAtlas, CompanyResearchRegistry, ResearchCampaign, ResearchUniverse, SourceGovernancePolicy } from '@/features/research/types/research_coverage';
 import type { DirectSourceResearchReport } from '@/features/research/types/direct_source_research';
 import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
 
@@ -10,11 +10,21 @@ export class DbResearchCoverageRepository {
   constructor(private readonly repoRoot: string = process.cwd()) {}
 
   readSourceAtlas(): AuthoritativeSourceAtlas {
-    return this.readYaml<AuthoritativeSourceAtlas>('data/source_atlas/authoritative_sources.yaml');
+    const relativePath = 'data/source_atlas/authoritative_sources.yaml';
+    const path = resolve(this.repoRoot, relativePath);
+    const persisted = readGenericArtifact<AuthoritativeSourceAtlas>(path);
+    const bundled = existsSync(path) ? parse(readFileSync(path, 'utf8')) as AuthoritativeSourceAtlas : null;
+    if (bundled && (!persisted || versionNumber(bundled.atlas_version) >= versionNumber(persisted.atlas_version))) return bundled;
+    if (persisted) return persisted;
+    throw new Error(`research coverage configuration missing: ${relativePath}`);
   }
 
   readUniverse(): ResearchUniverse {
     return this.readYaml<ResearchUniverse>('data/research_universe/core_topics.yaml');
+  }
+
+  readGovernancePolicy(): SourceGovernancePolicy {
+    return this.readYaml<SourceGovernancePolicy>('data/source_atlas/governance_policy.yaml');
   }
 
   readCompanyRegistry(): CompanyResearchRegistry {
@@ -48,6 +58,11 @@ export class DbResearchCoverageRepository {
     if (existsSync(path)) return parse(readFileSync(path, 'utf8')) as T;
     throw new Error(`research coverage configuration missing: ${relativePath}`);
   }
+}
+
+function versionNumber(value: string): number {
+  const parts = value.replace(/^v/, '').split('.').map((part) => Number(part) || 0);
+  return (parts[0] ?? 0) * 1_000_000 + (parts[1] ?? 0) * 1_000 + (parts[2] ?? 0);
 }
 
 export function renderResearchCampaignMarkdown(campaign: ResearchCampaign): string {

@@ -26,9 +26,15 @@ const readJson = <T>(rel: string): T => JSON.parse(readFileSync(resolve(repoRoot
 const readYaml = <T>(rel: string): T => parseYaml(readFileSync(resolve(repoRoot, rel), 'utf8')) as T;
 const now = new Date().toISOString();
 
+import { TOPIC_NAME_LOCALIZATIONS } from '@/config/topic_name_localizations';
+
 interface CanonicalTopic {
   topic_id: string; topic_name: string; market_name_en?: string;
   current_stage?: string; status?: string; domain?: string;
+}
+interface ProvisionalTopic {
+  provisional_topic_id: string; proposed_name: string; market_name_en?: string;
+  status?: string; reason?: string;
 }
 interface BranchRecord {
   branch_id: string; topic_id: string; branch_name?: string;
@@ -36,6 +42,7 @@ interface BranchRecord {
 }
 
 const canonical = readYaml<CanonicalTopic[]>('data/topic_registry/canonical_topics.yaml') ?? [];
+const provisional = readYaml<ProvisionalTopic[]>('data/topic_registry/provisional_topics.yaml') ?? [];
 const branchRows = readYaml<BranchRecord[]>('data/topic_registry/branches.yaml') ?? [];
 const evidenceRows = readJson<EvidenceNode[]>('data/evidence_table/evidence_table.json') ?? [];
 
@@ -44,9 +51,10 @@ const topicIds = new Set<string>();
 db.transaction((tx) => {
   for (const t of canonical) {
     topicIds.add(t.topic_id);
+    const chineseName = TOPIC_NAME_LOCALIZATIONS[t.topic_id] || t.topic_name;
     tx.insert(topics).values({
       topic_id: t.topic_id,
-      topic_name: t.topic_name,
+      topic_name: chineseName,
       market_name_en: t.market_name_en ?? null,
       status: t.status ?? 'active',
       current_stage: t.current_stage ?? 'S0',
@@ -55,7 +63,25 @@ db.transaction((tx) => {
       updated_at: now,
     }).onConflictDoUpdate({
       target: topics.topic_id,
-      set: { topic_name: t.topic_name, status: t.status ?? 'active', current_stage: t.current_stage ?? 'S0', updated_at: now },
+      set: { topic_name: chineseName, status: t.status ?? 'active', current_stage: t.current_stage ?? 'S0', updated_at: now },
+    }).run();
+  }
+
+  for (const p of provisional) {
+    topicIds.add(p.provisional_topic_id);
+    const chineseName = TOPIC_NAME_LOCALIZATIONS[p.provisional_topic_id] || p.proposed_name;
+    tx.insert(topics).values({
+      topic_id: p.provisional_topic_id,
+      topic_name: chineseName,
+      market_name_en: p.proposed_name ?? null,
+      status: p.status ?? 'provisional',
+      current_stage: 'S0',
+      domain: 'unknown',
+      created_at: now,
+      updated_at: now,
+    }).onConflictDoUpdate({
+      target: topics.topic_id,
+      set: { topic_name: chineseName, status: p.status ?? 'provisional', updated_at: now },
     }).run();
   }
 });

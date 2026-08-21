@@ -28,6 +28,31 @@ describe('stage gates', () => {
     expect(maxAllowedStage({ hasStableLabel: false, hasCapitalConfirmation: false, hasPricingAdoption: false, hasHardRealityEvidence: false, independentSourceCount: 0 })).toBe('S2');
   });
 
+  it('does not let E1 trending rows unlock label or capital gates', () => {
+    const rows: EvidenceNode[] = ['one', 'two', 'three'].map((id) => ({
+      evidence_id: id,
+      topic_id: 'crypto',
+      event_date: '2026-08-08',
+      available_at: '2026-08-08',
+      event_title: `${id} trending on CoinGecko`,
+      event_type: 'MARKET_TRENDING_ASSET',
+      source_name: 'Direct public / CoinGeckoTrending',
+      source_url: `https://www.coingecko.com/en/coins/${id}`,
+      evidence_strength: 'E1',
+      affected_layer: ['perception', 'capital'],
+      stage_effect: 'maintain_parent',
+      parent_or_branch: 'parent',
+    }));
+
+    const result = classifyStage({ evidence: rows, scope: 'parent' });
+    expect(result.current_stage).toBe('S2');
+    expect(result.gate_input).toMatchObject({
+      hasStableLabel: false,
+      hasCapitalConfirmation: false,
+      independentSourceCount: 1,
+    });
+  });
+
   it('does not let branch, asset, unknown, or missing-scope evidence satisfy parent gates', () => {
     const nonParentEvidence: EvidenceNode[] = [
       {

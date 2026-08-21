@@ -70,9 +70,13 @@ export function evaluateAutonomousPromotion(input: {
     if (!resolution || !resolvableStatuses.has(resolution.status)) reasons.push('Topic Resolver did not produce a publishable Topic or Branch mapping');
     if (!topicId || topicId === 'unknown_topic') reasons.push('unknown Topic cannot enter the Evidence Table');
     const duplicateOperationalEvidence = existingIds.has(resolvedDraft.evidence_id);
+    const verifiedSameIdProvenanceRepair = duplicateOperationalEvidence
+      && candidate.duplicate_of_evidence_id === resolvedDraft.evidence_id
+      && candidate.publication_eligibility === 'rule_verified'
+      && resolvedDraft.event_type === 'HISTORICAL_REACQUIRED_SOURCE';
     const duplicateDifferentEvidence = Boolean(candidate.duplicate_of_evidence_id
       && candidate.duplicate_of_evidence_id !== resolvedDraft.evidence_id);
-    if (duplicateOperationalEvidence || duplicateDifferentEvidence) {
+    if ((duplicateOperationalEvidence && !verifiedSameIdProvenanceRepair) || duplicateDifferentEvidence) {
       reasons.push('duplicate Evidence ID is already present in the operational Evidence Table');
     }
     const modelValidated = (input.agentAudit?.status === 'passed' || input.agentCandidates.length > 0)
@@ -92,8 +96,10 @@ export function evaluateAutonomousPromotion(input: {
     if (evidenceStrengthRank[resolvedDraft.evidence_strength] < evidenceStrengthRank[input.policy.minimum_evidence_strength]) reasons.push(`evidence strength ${resolvedDraft.evidence_strength} is below policy minimum ${input.policy.minimum_evidence_strength}`);
     if (resolvedDraft.evidence_strength === 'E1' && candidate.publication_eligibility !== 'rule_verified') reasons.push('E1 automatic publication is limited to rule-verified original-source candidates');
     if (confidenceRank[resolvedDraft.confidence] < confidenceRank[input.policy.minimum_confidence]) reasons.push(`confidence ${resolvedDraft.confidence} is below policy minimum ${input.policy.minimum_confidence}`);
-    if (resolvedDraft.event_type !== 'HISTORICAL_REACQUIRED_SOURCE' && sourceAgeDays(resolvedDraft.event_date, input.session.generated_at) > (input.policy.maximum_source_age_days ?? 180)) {
-      reasons.push(`source publication date exceeds the daily discovery freshness limit of ${input.policy.maximum_source_age_days ?? 180} days`);
+    if (input.policy.maximum_source_age_days !== undefined
+      && resolvedDraft.event_type !== 'HISTORICAL_REACQUIRED_SOURCE'
+      && sourceAgeDays(resolvedDraft.event_date, input.session.generated_at) > input.policy.maximum_source_age_days) {
+      reasons.push(`source publication date exceeds the configured discovery freshness limit of ${input.policy.maximum_source_age_days} days`);
     }
     if (resolvedDraft.scope === 'branch' && !resolvedDraft.branch_id) reasons.push('branch evidence requires branch_id');
     if (input.policy.hold_parent_branch_risk && resolvedDraft.scope === 'parent' && /branch-only|branch evidence cannot upgrade/i.test(`${resolvedDraft.event_title} ${resolvedDraft.event_summary} ${resolvedDraft.interpretation} ${resolvedDraft.limitation}`)) {

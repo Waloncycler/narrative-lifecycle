@@ -1,4 +1,4 @@
-atlas_version: v0.13.2
+atlas_version: v0.16.0
 sources:
   - source_id: gov_cn
     display_name_zh: 中国政府网
@@ -752,3 +752,147 @@ sources:
     topic_discovery_capable: true
     branch_discovery_capable: true
     languages: [en]
+  - source_id: szse_disclosures
+    display_name_zh: 深圳证券交易所上市公司公告
+    display_name_en: Shenzhen Stock Exchange Disclosures
+    operator: 深圳证券交易所
+    authority_tier: filing
+    domains: [financial, technology, energy, health, cross_industry]
+    coverage_layers: [capital, reality, friction]
+    access_mode: search_bridge
+    base_url: https://www.szse.cn/
+    terms_url: https://www.szse.cn/aboutus/online/tiaokuan/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: bse_disclosures
+    display_name_zh: 北京证券交易所公告
+    display_name_en: Beijing Stock Exchange Disclosures
+    operator: 北京证券交易所
+    authority_tier: filing
+    domains: [financial, technology, energy, health, cross_industry]
+    coverage_layers: [capital, reality, friction]
+    access_mode: search_bridge
+    base_url: https://www.bse.cn/
+    terms_url: https://www.bse.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: neeq_disclosures
+    display_name_zh: 全国股转系统公告
+    display_name_en: National Equities Exchange and Quotations
+    operator: 全国中小企业股份转让系统
+    authority_tier: filing
+    domains: [financial, technology, energy, health, cross_industry]
+    coverage_layers: [capital, reality, friction]
+    access_mode: search_bridge
+    base_url: https://www.neeq.com.cn/
+    terms_url: https://www.neeq.com.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: ccgp
+    display_name_zh: 中国政府采购网
+    display_name_en: China Government Procurement Network
+    operator: 中华人民共和国财政部
+    authority_tier: statutory
+    domains: [technology, energy, health, cross_industry]
+    coverage_layers: [capital, reality]
+    access_mode: search_bridge
+    base_url: http://www.ccgp.gov.cn/
+    terms_url: http://www.ccgp.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: china_customs
+    display_name_zh: 海关总署
+    display_name_en: General Administration of Customs of China
+    operator: 中华人民共和国海关总署
+    authority_tier: statutory
+    domains: [financial, energy, technology, cross_industry]
+    coverage_layers: [pricing, reality, data_confidence]
+    access_mode: search_bridge
+    base_url: http://www.customs.gov.cn/
+    terms_url: http://www.customs.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: mot_china
+    display_name_zh: 交通运输部
+    display_name_en: Ministry of Transport of China
+    operator: 中华人民共和国交通运输部
+    authority_tier: regulator
+    domains: [technology, energy, cross_industry]
+    coverage_layers: [reality, data_confidence]
+    access_mode: search_bridge
+    base_url: https://www.mot.gov.cn/
+    terms_url: https://www.mot.gov.cn/
+    automated_polling_allowed: false
+    review_required: true
+    evidence_ceiling: E3
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]
+  - source_id: uspto
+    display_name_zh: 美国专利商标局
+    display_name_en: United States Patent and Trademark Office
+    operator: United States Department of Commerce
+    authority_tier: regulator
+    domains: [technology, energy, health, cross_industry]
+    coverage_layers: [name, reality, data_confidence]
+    access_mode: search_bridge
+    base_url: https://www.uspto.gov/
+    terms_url: https://www.uspto.gov/terms-use-uspto-websites
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: oecd
+    display_name_zh: 经济合作与发展组织
+    display_name_en: Organisation for Economic Co-operation and Development
+    operator: OECD
+    authority_tier: intergovernmental
+    domains: [financial, technology, energy, health, cross_industry]
+    coverage_layers: [pricing, reality, data_confidence]
+    access_mode: search_bridge
+    base_url: https://www.oecd.org/
+    terms_url: https://www.oecd.org/termsandconditions/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [en]
+  - source_id: catl_wechat
+    display_name_zh: CATL宁德时代(官方公众号)
+    display_name_en: CATL WeChat Official Account
+    operator: 宁德时代
+    authority_tier: company
+    domains: [technology, energy]
+    coverage_layers: [reality, momentum, pricing]
+    access_mode: search_bridge
+    base_url: https://mp.weixin.qq.com/
+    terms_url: https://mp.weixin.qq.com/
+    automated_polling_allowed: true
+    review_required: true
+    evidence_ceiling: E2
+    topic_discovery_capable: true
+    branch_discovery_capable: true
+    languages: [zh]

@@ -38,7 +38,7 @@ describe('prioritized news deep probing', () => {
     const useCase = new ProbePrioritizedNewsUseCase({
       now: () => '2026-08-14T01:00:00.000Z', producerVersion: () => 'test',
       readRegistry: () => registry(),
-      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies,
+      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies, readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async () => webReport(['www.nmpa.gov.cn', 'company.example.com']),
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }),
       appendRetrievedSourceIntake: (report) => { appended = true; expect(report.items[0]).toMatchObject({ topic_id: 'innovative_drugs', branch_id: 'domestic_approval', news_corroboration: { corroboration_status: 'verified' } }); return session; },
@@ -57,7 +57,7 @@ describe('prioritized news deep probing', () => {
     const useCase = new ProbePrioritizedNewsUseCase({
       now: () => '2026-08-14T01:00:00.000Z', producerVersion: () => 'test',
       readRegistry: () => registry(),
-      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies,
+      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies, readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async () => webReport(['www.nmpa.gov.cn', 'www.cls.cn']),
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }),
       appendRetrievedSourceIntake: () => { appended = true; return session; }, writeReport: () => undefined, writeDiagnostics: () => undefined, writeMappedSession: () => undefined, validateReport: () => undefined,
@@ -72,7 +72,7 @@ describe('prioritized news deep probing', () => {
   it('writes an auditable hold row when search recovers no primary source', async () => {
     const useCase = new ProbePrioritizedNewsUseCase({
       now: () => '2026-08-14T01:00:00.000Z', producerVersion: () => 'test', readRegistry: () => registry(),
-      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies,
+      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies, readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async () => webReport(['www.cls.cn']), retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }),
       appendRetrievedSourceIntake: () => session, writeReport: () => undefined, writeDiagnostics: () => undefined, writeMappedSession: () => undefined, validateReport: () => undefined,
     });
@@ -88,7 +88,7 @@ describe('prioritized news deep probing', () => {
     let diagnostics: unknown;
     const useCase = new ProbePrioritizedNewsUseCase({
       now: () => '2026-08-14T01:00:00.000Z', producerVersion: () => 'test', readRegistry: () => registry(),
-      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies,
+      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies, readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async () => webReport(['www.nmpa.gov.cn', 'www.reuters.com']),
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }),
       appendRetrievedSourceIntake: () => session, writeReport: () => undefined,
@@ -103,7 +103,7 @@ describe('prioritized news deep probing', () => {
     let appended = false;
     const useCase = new ProbePrioritizedNewsUseCase({
       now: () => '2026-08-14T01:00:00.000Z', producerVersion: () => 'test', readRegistry: () => registry(),
-      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies,
+      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies, readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async () => webReport(['unknown-one.example', 'unknown-two.example', 'unknown-three.example']),
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }),
       appendRetrievedSourceIntake: () => { appended = true; return session; },
@@ -120,7 +120,7 @@ describe('prioritized news deep probing', () => {
   it('recognizes common UK, Australian, Japanese, and Korean government hosts as official', async () => {
     const useCase = new ProbePrioritizedNewsUseCase({
       now: () => '2026-08-14T01:00:00.000Z', producerVersion: () => 'test', readRegistry: () => registry(),
-      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies,
+      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies, readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async () => webReport(['www.gov.uk', 'health.gov.au', 'mhlw.go.jp', 'mohw.go.kr', 'www.korea.kr']),
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }),
       appendRetrievedSourceIntake: () => session,
@@ -138,7 +138,7 @@ describe('prioritized news deep probing', () => {
     let appended = false;
     const useCase = new ProbePrioritizedNewsUseCase({
       now: () => '2026-08-14T01:00:00.000Z', producerVersion: () => 'test', readRegistry: () => registry(),
-      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies,
+      readSourceAtlas: emptyAtlas, readCompanies: emptyCompanies, readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async () => webReport(['www.nmpa.gov.cn']),
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }),
       appendRetrievedSourceIntake: () => { appended = true; return fullArticleSession; },
@@ -156,7 +156,7 @@ describe('prioritized news deep probing', () => {
     const useCase = new ProbePrioritizedNewsUseCase({
       now: () => '2026-08-14T01:00:00.000Z', producerVersion: () => 'test', readRegistry: () => registry(),
       readSourceAtlas: () => ({ ...emptyAtlas(), sources: [...emptyAtlas().sources, { ...emptyAtlas().sources[0]!, source_id: 'nmpa', display_name_zh: '国家药品监督管理局', base_url: 'https://www.nmpa.gov.cn/', authority_tier: 'regulator' as const }] }),
-      readCompanies: emptyCompanies,
+      readCompanies: emptyCompanies, readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async ({ plannedQueries }) => { plans = plannedQueries; return webReport([]); },
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }), appendRetrievedSourceIntake: () => session,
       writeReport: () => undefined, writeDiagnostics: () => undefined, writeMappedSession: () => undefined, validateReport: () => undefined,
@@ -176,6 +176,7 @@ describe('prioritized news deep probing', () => {
       readRegistry: () => ({ ...registry(), canonical_topics: [...registry().canonical_topics, { topic_id: 'computing_infrastructure', topic_name: '算力基础设施', current_stage: 'S0', status: 'active' as const }] }),
       readSourceAtlas: () => ({ ...emptyAtlas(), sources: [...emptyAtlas().sources, { ...emptyAtlas().sources[0]!, source_id: 'sec_edgar', authority_tier: 'filing' as const, domains: ['sec.gov'], base_url: 'https://www.sec.gov/' }] }),
       readCompanies: () => ({ registry_version: 'test', companies: [{ company_id: 'amd', display_name_zh: '超威半导体', display_name_en: 'AMD', market: 'us', official_source_url: 'https://ir.amd.com/', disclosure_source_ids: ['sec_edgar'], coverage_node_ids: ['computing_infrastructure'], aliases: ['Advanced Micro Devices'], status: 'curated' }] }),
+      readGovernancePolicy: () => ({ policy_version: "1.0", governed_seed_news_hosts: ["cls.cn", "finance.sina.com.cn"], authoritative_secondary_hosts: ["reuters.com"], financial_news_domains: ["cls.cn"], low_governance_hosts: ["sohu.com"] }),
       search: async ({ plannedQueries }) => { plans = plannedQueries; return webReport([]); },
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body }), appendRetrievedSourceIntake: () => amdSession,
       writeReport: () => undefined, writeDiagnostics: () => undefined, writeMappedSession: (value) => { mappedSessions.push(value); }, validateReport: () => undefined,

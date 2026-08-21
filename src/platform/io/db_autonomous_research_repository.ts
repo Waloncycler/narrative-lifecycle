@@ -1,9 +1,10 @@
 import { db } from '@/db/index';
-import { evidence } from '@/db/schema';
+import { evidence, stageSnapshots, topics } from '@/db/schema';
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
 import { AutonomousResearchArtifactRepository } from '@/features/research/io/autonomous_research_io';
 import type { AutonomousResearchPolicy, AutonomousResearchRun } from '@/features/research/types/autonomous_research';
 import { autonomousResearchPolicy } from '@/config/app_config';
+import { eq } from 'drizzle-orm';
 
 export class DbAutonomousResearchRepository {
   private fallbackRepo: AutonomousResearchArtifactRepository;
@@ -39,6 +40,23 @@ export class DbAutonomousResearchRepository {
 
   writeRun(run: AutonomousResearchRun): void {
     this.fallbackRepo.writeRun(run);
+    db.transaction((tx) => {
+      tx.insert(stageSnapshots).values({
+        snapshot_id: run.snapshot.snapshot_id,
+        run_id: run.snapshot.run_id,
+        generated_at: run.snapshot.generated_at,
+        snapshot_json: JSON.stringify(run.snapshot),
+      }).onConflictDoUpdate({
+        target: stageSnapshots.snapshot_id,
+        set: { snapshot_json: JSON.stringify(run.snapshot) },
+      }).run();
+      for (const topic of run.snapshot.topics) {
+        tx.update(topics)
+          .set({ current_stage: topic.current_stage, updated_at: run.snapshot.generated_at })
+          .where(eq(topics.topic_id, topic.topic_id))
+          .run();
+      }
+    });
   }
 
   writePublishedEvidence(rows: EvidenceNode[]): void {
@@ -49,7 +67,7 @@ export class DbAutonomousResearchRepository {
     if (rows.length > 0) {
       db.transaction((tx: any) => {
         for (const e of rows) {
-          tx.insert(evidence).values({
+          const values = {
             evidence_id: e.evidence_id,
             topic_id: e.topic_id,
             branch_id: e.branch_id || null,
@@ -69,7 +87,30 @@ export class DbAutonomousResearchRepository {
             positive_or_negative: e.positive_or_negative || null,
             confidence: e.confidence || null,
             affected_layer_json: JSON.stringify(e.affected_layer || []),
-          }).onConflictDoNothing().run();
+          };
+          tx.insert(evidence).values(values).onConflictDoUpdate({
+            target: evidence.evidence_id,
+            set: {
+              topic_id: values.topic_id,
+              branch_id: values.branch_id,
+              event_date: values.event_date,
+              available_at: values.available_at,
+              event_title: values.event_title,
+              event_summary: values.event_summary,
+              event_type: values.event_type,
+              source_name: values.source_name,
+              source_url: values.source_url,
+              source_type: values.source_type,
+              evidence_strength: values.evidence_strength,
+              stage_effect: values.stage_effect,
+              parent_or_branch: values.parent_or_branch,
+              interpretation: values.interpretation,
+              limitation: values.limitation,
+              positive_or_negative: values.positive_or_negative,
+              confidence: values.confidence,
+              affected_layer_json: values.affected_layer_json,
+            },
+          }).run();
         }
       });
     }

@@ -32,6 +32,7 @@ export interface SyncWorldMonitorSourcesUseCaseDeps {
     httpStatus: number | null;
     message: string;
   }>;
+  saveFetchResults?(results: any[]): Promise<void>;
   seenPayloadHashes(): Set<string>;
   existingEvidenceIds(): Set<string>;
   writeInventory(inventory: WorldMonitorSourceInventory): void;
@@ -85,33 +86,53 @@ export class SyncWorldMonitorSourcesUseCase {
     const payloads: WorldMonitorPayload[] = [];
     const records: WorldMonitorFetchRecord[] = [];
 
-    for (const descriptor of selected) {
-      const result = await this.deps.fetchOperation(descriptor, input.mode);
-      const duplicate = input.mode === 'live' && !input.forceRefresh && result.payload ? seenHashes.has(result.payload.payload_hash) : false;
-      const recordCount = result.payload ? recordsForWorldMonitorPayload(result.payload).length : 0;
-      const candidateCount = result.payload && !duplicate
-        ? uniqueSignals(signalsFromWorldMonitorPayload(result.payload).filter(signalHasNoTradingAdvice)).length
-        : 0;
-      if (result.payload) payloads.push(result.payload);
-      records.push({
-        operation_id: descriptor.operation_id,
-        fetched_at: result.payload?.fetched_at ?? generatedAt,
-        mode: input.mode,
-        status: duplicate ? 'skipped' : result.status,
-        http_status: result.httpStatus,
-        access_state: descriptor.access_state,
-        evidence_eligibility: descriptor.evidence_eligibility,
-        source_url: result.payload?.source_url ?? descriptor.production_url,
-        payload_hash: result.payload?.payload_hash ?? null,
-        record_count: recordCount,
-        candidate_count: candidateCount,
-        selected_candidate_count: 0,
-        degraded: result.payload?.degraded ?? false,
-        stale: result.payload?.stale ?? false,
-        message: duplicate ? 'Payload hash already exists in source history; duplicate candidates suppressed.' : result.message,
-        governance_state: descriptor.governance.governance_state,
-        raw_payload_retained: false,
-      });
+    const results: Array<{ payload: WorldMonitorPayload | null; record: WorldMonitorFetchRecord }> = [];
+    const BATCH_SIZE = 10;
+    
+    for (let i = 0; i < selected.length; i += BATCH_SIZE) {
+      const batch = selected.slice(i, i + BATCH_SIZE);
+      const batchResults = await Promise.all(batch.map(async (descriptor) => {
+        const result = await this.deps.fetchOperation(descriptor, input.mode);
+        const duplicate = input.mode === 'live' && !input.forceRefresh && result.payload ? seenHashes.has(result.payload.payload_hash) : false;
+        const recordCount = result.payload ? recordsForWorldMonitorPayload(result.payload).length : 0;
+        const candidateCount = result.payload && !duplicate
+          ? uniqueSignals(signalsFromWorldMonitorPayload(result.payload).filter(signalHasNoTradingAdvice)).length
+          : 0;
+        
+        return {
+          payload: result.payload,
+          record: {
+            operation_id: descriptor.operation_id,
+            fetched_at: result.payload?.fetched_at ?? generatedAt,
+            mode: input.mode,
+            status: duplicate ? 'skipped' : result.status,
+            http_status: result.httpStatus,
+            access_state: descriptor.access_state,
+            evidence_eligibility: descriptor.evidence_eligibility,
+            source_url: result.payload?.source_url ?? descriptor.production_url,
+            payload_hash: result.payload?.payload_hash ?? null,
+            record_count: recordCount,
+            candidate_count: candidateCount,
+            selected_candidate_count: 0,
+            degraded: result.payload?.degraded ?? false,
+            stale: result.payload?.stale ?? false,
+            message: duplicate ? 'Payload hash already exists in source history; duplicate candidates suppressed.' : result.message,
+            governance_state: descriptor.governance.governance_state,
+            raw_payload_retained: false,
+          } as WorldMonitorFetchRecord,
+          fetchResult: result,
+        };
+      }));
+
+    if (this.deps.saveFetchResults) {
+      await this.deps.saveFetchResults(batchResults.map(r => r.fetchResult));
+    }
+      results.push(...batchResults);
+    }
+
+    for (const res of results) {
+      if (res.payload) payloads.push(res.payload);
+      records.push(res.record);
     }
 
     const allSignals = analyzeNewsEvidenceSignals({

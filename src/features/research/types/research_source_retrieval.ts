@@ -18,6 +18,7 @@ export type ResearchSourceExtractorId =
   | 'structured_json_record'
   | 'company_article'
   | 'jina_reader_markdown'
+  | 'mozilla_readability'
   | 'generic_html';
 
 /** A bounded original-page package. It is still context-only until an

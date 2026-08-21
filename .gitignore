@@ -77,8 +77,12 @@ data/imports/*.yaml
 !data/imports/bci_market_baseline_2026_08.yaml
 
 # Runtime SQLite database (local-only; exceeds GitHub file size limits)
-data/narrative.db
-data/narrative.db-shm
-data/narrative.db-wal
+data/narrative.db*
+data/*.db*
+*.db
+*.db-shm
+*.db-wal
+*.zip
+*.txt
 
 /generated/prisma

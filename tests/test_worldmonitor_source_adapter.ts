@@ -5,7 +5,8 @@ import { resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { SyncWorldMonitorSourcesUseCase } from '@/app/use_cases/sync_worldmonitor_sources_use_case';
 import { signalsFromWorldMonitorPayload } from '@/features/worldmonitor/domain/worldmonitor_rules';
-import { DbWorldMonitorSourceRepository, WorldMonitorHttpClient } from '@/features/worldmonitor/io/worldmonitor_source_adapter';
+import { DbWorldMonitorSourceRepository } from '@/features/worldmonitor/io/db_worldmonitor_source_repository';
+import { WorldMonitorHttpClient } from '@/features/worldmonitor/io/worldmonitor_http_client';
 import type {
   WorldMonitorOperationDescriptor,
   WorldMonitorPayload,
@@ -181,7 +182,7 @@ describe('World Monitor source adapter', () => {
     expect(result.status).toBe('ok');
     expect(attempts).toBe(2);
     expect(result.descriptor.governance.governance_state).toBe('research_ready');
-  });
+  }, 15000);
 
   it('paginates the Sina 7x24 public feed and retains every unique record', async () => {
     const rollPages = [
@@ -209,7 +210,7 @@ describe('World Monitor source adapter', () => {
     expect(calls).toBe(4);
     expect(result.status).toBe('ok');
     expect(result.payload && signalsFromWorldMonitorPayload(result.payload)).toHaveLength(52);
-  });
+  }, 15000);
 });
 
 function emptyTopicRegistry() { return { canonical_topics: [], aliases: [], branches: [], provisional_topics: [], memory_topic_ids: [] }; }

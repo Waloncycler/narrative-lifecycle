@@ -22,6 +22,7 @@
   },
   "type": "module",
   "scripts": {
+    "narrative": "tsx src/cli/narrative.ts",
     "evidence:validate": "tsx src/cli/run_evidence_validate.ts",
     "evidence:import": "tsx src/cli/run_evidence_import.ts",
     "pipeline": "tsx src/cli/run_pipeline.ts",
@@ -67,22 +68,29 @@
     "db:migrate:phase2": "tsx src/cli/run_db_migrate_phase2.ts",
     "db:seed": "tsx src/cli/run_db_seed.ts",
     "coverage:gates": "tsx src/cli/run_gate_coverage.ts",
+    "coverage:acquire": "tsx src/cli/run_gate_acquisition.ts",
+    "stage:recompute": "tsx src/cli/run_recompute_all_stages.ts",
+    "topic:names:normalize": "tsx src/cli/run_normalize_topic_names.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
     "better-sqlite3": "^13.0.3",
     "drizzle-orm": "^0.45.2",
+    "jsdom": "^27.0.1",
     "yaml": "^2.9.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^9.6.0",
+    "@types/jsdom": "^30.0.0",
     "@types/node": "^26.1.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "drizzle-kit": "^0.31.10",
     "json-schema-to-zod": "^2.8.1",
+    "playwright": "^1.62.1",
     "tsx": "^4.23.12",
     "typescript": "^5.0.0",
     "vitest": "^2.0.0"

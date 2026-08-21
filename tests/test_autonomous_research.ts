@@ -64,7 +64,7 @@ const bundle: IntakeAgentReviewBundle = {
 
 function evidence(overrides: Partial<EvidenceNode>): EvidenceNode {
   return {
-    evidence_id: 'evidence', topic_id: 'bci', branch_id: null, event_date: '2026-08-03', available_at: '2026-08-03', event_title: 'Evidence', event_summary: 'Evidence summary', event_type: 'validation', source_name: 'official', source_url: 'https://example.test', source_type: 'official', evidence_strength: 'E2', affected_layer: ['perception'], stage_effect: 'upgrade_parent', parent_or_branch: 'parent', branch_coverage_score: 0, interpretation: 'Evidence interpretation', limitation: 'Evidence limitation', positive_or_negative: 'positive', confidence: 85,
+    evidence_id: 'evidence', topic_id: 'bci', branch_id: null, event_date: '2026-08-03', available_at: '2026-08-03', event_title: 'Evidence', event_summary: 'Evidence summary', event_type: 'validation', source_name: `official-${overrides.evidence_id ?? 'evidence'}`, source_url: 'https://example.test', source_type: 'official', evidence_strength: 'E2', affected_layer: ['perception'], stage_effect: 'upgrade_parent', parent_or_branch: 'parent', branch_coverage_score: 0, interpretation: 'Evidence interpretation', limitation: 'Evidence limitation', positive_or_negative: 'positive', confidence: 85,
     ...overrides,
   };
 }
@@ -96,7 +96,7 @@ describe('autonomous research publication', () => {
     expect(result.items[0]?.reasons.join(' ')).toContain('disabled by policy');
   });
 
-  it('holds stale daily-discovery sources while leaving double-source historical recovery to its separate route', () => {
+  it('only applies a source-age cap when the policy explicitly configures one', () => {
     const staleSession: EvidenceIntakeSession = {
       ...session,
       generated_at: '2026-08-03T00:00:00.000Z',
@@ -108,6 +108,10 @@ describe('autonomous research publication', () => {
     const result = evaluateAutonomousPromotion({ session: staleSession, topicAudit: audit, agentCandidates: bundle.candidates, agentAudit: bundle.audit, existingEvidence: [], policy: { ...policy, maximum_source_age_days: 180 } });
     expect(result.items[0]).toMatchObject({ decision: 'held' });
     expect(result.items[0]?.reasons.join(' ')).toContain('freshness limit');
+
+    const uncapped = evaluateAutonomousPromotion({ session: staleSession, topicAudit: audit, agentCandidates: bundle.candidates, agentAudit: bundle.audit, existingEvidence: [], policy: { ...policy, maximum_source_age_days: undefined } });
+    expect(uncapped.items[0]).toMatchObject({ decision: 'published' });
+    expect(uncapped.items[0]?.reasons.join(' ')).not.toContain('freshness limit');
 
     const recovered = evaluateAutonomousPromotion({ session: { ...staleSession, candidates: [{ ...staleSession.candidates[0]!, suggested_evidence: { ...staleSession.candidates[0]!.suggested_evidence, event_type: 'HISTORICAL_REACQUIRED_SOURCE' } }] }, topicAudit: audit, agentCandidates: bundle.candidates, agentAudit: bundle.audit, existingEvidence: [], policy: { ...policy, maximum_source_age_days: 180 } });
     expect(recovered.items[0]).toMatchObject({ decision: 'published' });

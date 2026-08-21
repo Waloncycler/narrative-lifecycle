@@ -20,6 +20,11 @@ export type TimelineTransitionKind = 'verified_gate_transition' | 'historical_ev
 export interface TimelineEvidenceExclusion {
   evidence_id: string;
   reason: 'missing_provenance' | 'unverified_historical_backfill' | 'invalid_chronology';
+  event_title?: string;
+  event_date?: string;
+  source_name?: string;
+  source_url?: string;
+  missing_fields?: string[];
 }
 
 export interface StageTransition {
@@ -60,6 +65,15 @@ export interface TopicEvolutionTimeline {
   transitions: StageTransition[];
   evolution_path: string;
   evidence_timeline: EvidenceTimelineEntry[];
+  /** Read-only system observations. These never replace Evidence Table proof. */
+  snapshot_observations?: StageSnapshotObservation[];
+}
+
+export interface StageSnapshotObservation {
+  observed_at: string;
+  stage: string;
+  evidence_ids: string[];
+  observation_kind: 'topic_registered' | 'stage_snapshot';
 }
 
 export interface EvidenceTimelineEntry {
@@ -202,14 +216,26 @@ export function reconstructAllTopicEvolutions(
 }
 
 function explainTimelineExclusion(evidence: EvidenceNode): TimelineEvidenceExclusion[] {
+  const details = {
+    event_title: evidence.event_title,
+    event_date: evidence.event_date,
+    source_name: evidence.source_name,
+    source_url: evidence.source_url ?? '',
+  };
   if (evidence.event_type === 'historical_backfill') {
-    return [{ evidence_id: evidence.evidence_id, reason: 'unverified_historical_backfill' }];
+    return [{ evidence_id: evidence.evidence_id, reason: 'unverified_historical_backfill', ...details }];
   }
-  if (!evidence.source_url || !evidence.event_summary?.trim() || !evidence.interpretation?.trim() || !evidence.limitation?.trim()) {
-    return [{ evidence_id: evidence.evidence_id, reason: 'missing_provenance' }];
+  const missingFields = [
+    !evidence.source_url && 'source_url',
+    !evidence.event_summary?.trim() && 'event_summary',
+    !evidence.interpretation?.trim() && 'interpretation',
+    !evidence.limitation?.trim() && 'limitation',
+  ].filter((field): field is string => Boolean(field));
+  if (missingFields.length > 0) {
+    return [{ evidence_id: evidence.evidence_id, reason: 'missing_provenance', missing_fields: missingFields, ...details }];
   }
   if (!isValidTimestamp(evidence.event_date) || !isValidTimestamp(evidence.available_at)) {
-    return [{ evidence_id: evidence.evidence_id, reason: 'invalid_chronology' }];
+    return [{ evidence_id: evidence.evidence_id, reason: 'invalid_chronology', ...details }];
   }
   return [];
 }

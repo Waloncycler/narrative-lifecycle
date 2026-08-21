@@ -46,6 +46,8 @@ export interface AcquisitionTask {
   verdict: CoverageVerdict;
   net_support: number;
   independent_publishers: number;
+  existing_publishers: string[];
+  existing_source_domains: string[];
   /** Higher = more worth collecting next. */
   priority: number;
   suggested_targets: string[];
@@ -150,6 +152,13 @@ export function buildEvidenceGateCoverage(input: {
         verdict: coverage.verdict,
         net_support: coverage.net_support,
         independent_publishers: coverage.independent_publishers,
+        existing_publishers: [...new Set(parentEvidence
+          .filter((item) => item.affected_layer.includes(coverage.layer) || (coverage.layer === 'perception' && (item.affected_layer as readonly string[]).includes('name')))
+          .map((item) => item.source_name.trim()))].sort(),
+        existing_source_domains: [...new Set(parentEvidence
+          .filter((item) => item.affected_layer.includes(coverage.layer) || (coverage.layer === 'perception' && (item.affected_layer as readonly string[]).includes('name')))
+          .map((item) => sourceDomain(item.source_url))
+          .filter((item): item is string => Boolean(item)))].sort(),
         priority: priorityFor(coverage),
         suggested_targets: coverage.suggested_targets,
       });
@@ -165,4 +174,9 @@ export function buildEvidenceGateCoverage(input: {
     topics,
     acquisition_worklist: worklist,
   };
+}
+
+function sourceDomain(value: string | undefined): string | null {
+  if (!value) return null;
+  try { return new URL(value).hostname.toLowerCase().replace(/^www\./, ''); } catch { return null; }
 }

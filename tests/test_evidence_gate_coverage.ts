@@ -48,6 +48,8 @@ describe('evidence gate coverage', () => {
     const capital = report.topics[0].gates.find((g) => g.gate === 'capital');
     expect(capital?.independent_publishers).toBe(1);
     expect(capital?.verdict).toBe('single_source');
+    const task = report.acquisition_worklist.find((item) => item.gate === 'capital');
+    expect(task?.existing_publishers).toEqual(['same-desk']);
   });
 
   it('counts capital from two independent publishers as covered', () => {

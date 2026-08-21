@@ -1,5 +1,5 @@
 import type { EvidenceNode } from '@/features/evidence/domain/evidence';
-import { evidenceForScope, isHardRealityEvidence } from '@/features/evidence/domain/evidence';
+import { evidenceForScope, evidenceStrengthRank, isHardRealityEvidence } from '@/features/evidence/domain/evidence';
 import type { Stage, StageGateInput, StageSnapshot } from '@/features/stages/domain/stages';
 import { capStage } from '@/features/stages/domain/stages';
 import { maxAllowedStage, missingStageGateReasons } from '@/features/stages/rules/stage_gate_rules';
@@ -25,29 +25,41 @@ export interface StageClassification {
 }
 
 export function inferStageGateInput(evidence: EvidenceNode[]): StageGateInput {
-  // Compute independent sources by unique source_url or title
+  // Independent means independent publisher, not a different URL from the
+  // same feed. Otherwise ten CoinGecko asset pages become ten fake sources.
   const uniqueSources = new Set<string>();
   for (const item of evidence) {
-    if (item.source_url) {
-      uniqueSources.add(item.source_url);
-    } else {
-      uniqueSources.add(item.event_title);
-    }
+    uniqueSources.add(sourceIdentity(item));
   }
+
+  const gateEligible = (item: EvidenceNode) => evidenceStrengthRank[item.evidence_strength] >= evidenceStrengthRank.E2;
 
   return {
     hasStableLabel: evidence.some((item) =>
-      item.affected_layer.includes('perception') ||
-      item.stage_effect.includes('S3') ||
-      item.stage_effect.includes('S4') ||
-      item.stage_effect.includes('S5') ||
-      item.stage_effect.includes('S6'),
+      gateEligible(item) && (
+        item.affected_layer.includes('perception') ||
+        item.stage_effect.includes('S3') ||
+        item.stage_effect.includes('S4') ||
+        item.stage_effect.includes('S5') ||
+        item.stage_effect.includes('S6')
+      ),
     ),
-    hasCapitalConfirmation: evidence.some((item) => item.affected_layer.includes('capital')),
-    hasPricingAdoption: evidence.some((item) => item.affected_layer.includes('pricing')),
+    hasCapitalConfirmation: evidence.some((item) => gateEligible(item) && item.affected_layer.includes('capital')),
+    hasPricingAdoption: evidence.some((item) => gateEligible(item) && item.affected_layer.includes('pricing')),
     hasHardRealityEvidence: evidence.some(isHardRealityEvidence),
     independentSourceCount: uniqueSources.size,
   };
+}
+
+function sourceIdentity(item: EvidenceNode): string {
+  const sourceName = item.source_name.trim().toLowerCase()
+    .replace(/^direct public\s*\/\s*/, '')
+    .replace(/\s+/g, ' ');
+  if (sourceName) return sourceName;
+  if (item.source_url) {
+    try { return new URL(item.source_url).hostname.replace(/^www\./, ''); } catch { /* use title fallback */ }
+  }
+  return item.event_title.trim().toLowerCase();
 }
 
 export function classifyStage(input: StageClassificationInput): StageClassification {

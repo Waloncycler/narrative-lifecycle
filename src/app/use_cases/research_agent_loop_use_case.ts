@@ -1,5 +1,6 @@
 import type { IntakeAgentReviewBundle } from '@/features/intake/types/intake_agent';
 import type { IntakeLearningCycle } from '@/features/intake/types/intake_learning_cycle';
+import type { IntakeLearningProfile } from '@/features/intake/types/intake_learning';
 import type { RunManifest } from '@/platform/types/run_context';
 import type { WorldMonitorSyncResult } from '@/features/worldmonitor/types/worldmonitor_adapter';
 import type { AutonomousResearchRun } from '@/features/research/types/autonomous_research';
@@ -82,6 +83,7 @@ export interface ResearchAgentLoopDeps {
   runHistoricalProvenanceRecovery?(): Promise<{ auto_intake_ready: number; session: EvidenceIntakeSession | null }>;
   runIntakeAgent(): Promise<IntakeAgentReviewBundle>;
   runAiShadow(): Promise<{ report: import('@/features/intake/types/intake').AiShadowValidationReport | null }>;
+  runIntakeLearningProfile?(): IntakeLearningProfile;
   runLearningCycle(): IntakeLearningCycle;
   runValidateTopics(): unknown;
   runAutonomousResearch(bundle: IntakeAgentReviewBundle | null, publish?: boolean): AutonomousResearchRun;
@@ -118,6 +120,7 @@ export interface ResearchAgentLoopInput {
     queue_low_priority_max_age_days: number;
     evolution_history_max_entries: number;
   };
+  onPhaseProgress?: (event: { phase: string; status: 'running' | 'completed' | 'skipped' | 'failed'; detail?: string; metrics?: any }) => void;
 }
 
 export class ResearchAgentLoopUseCase {
@@ -164,8 +167,10 @@ export class ResearchAgentLoopUseCase {
     ): Promise<T | undefined> => {
       const started = this.deps.now();
       try {
-        console.log('Running phase:', phase); const result = await fn(); console.log('Finished phase:', phase);
+        if (input.onPhaseProgress) input.onPhaseProgress({ phase, status: 'running', detail, metrics });
+        const result = await fn();
         phases.push({ phase, status: 'ok', detail, started_at: started, completed_at: this.deps.now(), artifact_paths: [] });
+        if (input.onPhaseProgress) input.onPhaseProgress({ phase, status: 'completed', detail, metrics });
         return result;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -182,6 +187,7 @@ export class ResearchAgentLoopUseCase {
             completed_at: this.deps.now(),
             artifact_paths: [],
           });
+          if (input.onPhaseProgress) input.onPhaseProgress({ phase, status: 'skipped', detail: message, metrics });
           return undefined;
         }
         status = 'partial';
@@ -194,6 +200,7 @@ export class ResearchAgentLoopUseCase {
           artifact_paths: [],
         });
         metrics.drift_detected = true;
+        if (input.onPhaseProgress) input.onPhaseProgress({ phase, status: 'failed', detail: message, metrics });
         return undefined;
       }
     };
@@ -366,7 +373,17 @@ export class ResearchAgentLoopUseCase {
     const cycle = (await run(
       'iterate',
       'rebuild learning profile and active learning cycle',
-      () => this.deps.runLearningCycle(),
+      () => {
+        if (this.deps.runIntakeLearningProfile) {
+          try {
+            this.deps.runIntakeLearningProfile();
+          } catch (e: any) {
+            // Profile building might fail if session/evaluation mismatch, that's fine, let runLearningCycle catch it or throw
+            if (!/no reviewed decisions|no evaluation/i.test(e.message)) throw e;
+          }
+        }
+        return this.deps.runLearningCycle();
+      },
       (error) => /session mismatch|no reviewed decisions|not enough history|insufficient_history|no evaluation|learning cycle requires an intake learning profile/i.test(error instanceof Error ? error.message : String(error)),
     )) as IntakeLearningCycle | undefined;
     metrics.learning_cycle_id = cycle?.cycle_id ?? null;

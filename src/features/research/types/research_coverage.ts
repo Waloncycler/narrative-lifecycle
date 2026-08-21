@@ -27,6 +27,15 @@ export interface AuthoritativeSourceAtlas {
   sources: AuthoritativeResearchSource[];
 }
 
+export interface SourceGovernancePolicy {
+  policy_version: string;
+  governed_seed_news_hosts: string[];
+  authoritative_secondary_hosts: string[];
+  financial_news_domains: string[];
+  low_governance_hosts: string[];
+}
+
+
 /** Market-recognizable research seeds are deliberately not formal Topics. */
 export interface ResearchUniverseNode {
   node_id: string;

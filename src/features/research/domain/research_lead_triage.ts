@@ -178,6 +178,12 @@ function relevanceFor(lead: RawLead): ResearchLeadRelevance {
   const title = normalize(lead.title);
   const snippet = normalize(lead.snippet);
   const compactQuery = normalize(query);
+  // Planned gate queries begin with the canonical Topic name. Chinese search
+  // does not produce the Latin word tokens used below, so retain this explicit
+  // scope anchor instead of incorrectly marking exact Chinese results as
+  // unverified.
+  const topicAnchor = normalize(query.trim().split(/\s+/)[0] ?? '');
+  if (topicAnchor.length >= 2 && (title.includes(topicAnchor) || snippet.includes(topicAnchor))) return 'explicit';
   if (compactQuery.length >= 4 && title.includes(compactQuery)) return 'explicit';
   const tokens = query.toLowerCase().match(/[a-z0-9]+/g)?.filter((token) => token.length > 2) ?? [];
   const acronym = (query.toLowerCase().match(/[a-z0-9]+/g) ?? []).map((token) => token[0]).join('');

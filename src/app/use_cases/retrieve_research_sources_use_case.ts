@@ -6,11 +6,13 @@ import type { ResearchLeadTriageReport } from '@/features/research/types/researc
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { ResearchSourceRetrievalItem } from '@/features/research/types/research_source_retrieval';
 import type { ResearchSourceQualityReport } from '@/features/research/types/research_source_quality';
+import type { SourceGovernancePolicy } from '@/features/research/types/research_coverage';
 
 export interface RetrieveResearchSourcesUseCaseDeps {
   now(): string;
   producerVersion(): string;
   readLeadTriage(): ResearchLeadTriageReport | null;
+  readGovernancePolicy(): SourceGovernancePolicy;
   retrieve(input: { url: string; timeoutMs: number }): Promise<{ httpStatus: number; contentType: string | null; body: string }>;
   writeReport(report: ResearchSourceRetrievalReport): void;
   validateReport(report: ResearchSourceRetrievalReport): void;
@@ -23,10 +25,11 @@ export interface RetrieveResearchSourcesUseCaseDeps {
 export class RetrieveResearchSourcesUseCase {
   constructor(private readonly deps: RetrieveResearchSourcesUseCaseDeps) {}
 
-  async execute(input: { maxItems?: number; maxUnknownDiscoveryItems?: number; timeoutMs?: number } = {}): Promise<ResearchSourceRetrievalReport> {
+  async execute(input: { maxItems?: number; maxUnknownDiscoveryItems?: number; timeoutMs?: number; triage?: ResearchLeadTriageReport | null } = {}): Promise<ResearchSourceRetrievalReport> {
     const generatedAt = this.deps.now();
-    const triage = this.deps.readLeadTriage();
-    const targets = selectSourceRetrievalTargets(triage, input.maxItems ?? 6, input.maxUnknownDiscoveryItems ?? 2);
+    const triage = input.triage === undefined ? this.deps.readLeadTriage() : input.triage;
+    const policy = this.deps.readGovernancePolicy();
+    const targets = selectSourceRetrievalTargets(triage, input.maxItems ?? 6, input.maxUnknownDiscoveryItems ?? 2, policy);
     const items: ResearchSourceRetrievalItem[] = [];
     for (const lead of targets) {
       try {
@@ -34,7 +37,7 @@ export class RetrieveResearchSourcesUseCase {
         // Secondary financial media is not Evidence. A distinct deep probe
         // only produces a bounded citation package for downstream source
         // recovery and candidate review.
-        items.push(isFinancialNewsProbe(lead) || isUnknownDiscoveryProbe(lead)
+        items.push(isFinancialNewsProbe(lead, policy) || isUnknownDiscoveryProbe(lead)
           ? executeDeepMiningProbe({ lead, rawBody: page.body, contentType: page.contentType, fetchedAt: generatedAt, httpStatus: page.httpStatus }).retrievalItem
           : buildRetrievedSourceItem({ lead, fetchedAt: generatedAt, ...page }));
       } catch (error) {

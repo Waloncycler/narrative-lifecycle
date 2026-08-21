@@ -5,7 +5,7 @@ import type { WebSearchConfig } from '@/features/research/types/web_research';
 const KEYLESS_PROVIDERS = new Set<WebSearchConfig['provider']>(['free', 'gdelt', 'wikipedia', 'hn', 'duckduckgo', 'reddit', 'arxiv', 'openalex', 'archive', 'bing', 'yahoo_finance', 'eastmoney']);
 // searxng / minimax intentionally stay outside the keyless set: SearXNG needs
 // a configured baseUrl and MiniMax needs a Token Plan credential.
-const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'minimax', 'searxng', 'mcp_bridge', 'exa', 'jina_search', 'firecrawl', 'x_twitter']);
+const SUPPORTED_PROVIDERS = new Set<WebSearchConfig['provider']>(['disabled', ...KEYLESS_PROVIDERS, 'brave', 'tavily', 'minimax', 'searxng', 'mcp_bridge', 'exa', 'jina_search', 'firecrawl', 'x_twitter', 'tabbit']);
 
 const DEFAULT_ENDPOINTS: Partial<Record<WebSearchConfig['provider'], string>> = {
   gdelt: 'https://api.gdeltproject.org/api/v2/doc/doc',
@@ -89,6 +89,7 @@ function resolvePrimaryProvider(env: NodeJS.ProcessEnv): WebSearchConfig['provid
       : env.SERPER_API_KEY ? 'mcp_bridge'
       : env.SEARXNG_BASE_URL?.trim() ? 'searxng'
       : env.MINIMAX_CODE_PLAN_KEY?.trim() || env.MINIMAX_CODING_API_KEY?.trim() ? 'minimax'
+      : env.TABBIT_BASE_URL?.trim() ? 'tabbit'
       : 'free')) as WebSearchConfig['provider'];
 }
 
@@ -98,6 +99,7 @@ function buildWebSearchConfig(provider: WebSearchConfig['provider'], env: NodeJS
   const defaultEndpoint = selected === 'free' || selected === 'wikipedia' || selected === 'disabled' ? null
     : selected === 'searxng' ? (env.NARRATIVE_WEB_SEARCH_ENDPOINT?.trim() || env.SEARXNG_BASE_URL?.trim() || null)
     : selected === 'minimax' ? MINIMAX_SEARCH_ENDPOINTS[minimaxRegion]
+    : selected === 'tabbit' ? (env.TABBIT_BASE_URL?.trim() || 'http://127.0.0.1:9222')
     : DEFAULT_ENDPOINTS[selected] ?? null;
   return {
     provider: selected,
@@ -110,6 +112,7 @@ function buildWebSearchConfig(provider: WebSearchConfig['provider'], env: NodeJS
         : selected === 'brave' ? env.BRAVE_SEARCH_API_KEY
         : selected === 'mcp_bridge' ? env.SERPER_API_KEY
         : selected === 'minimax' ? (env.MINIMAX_CODE_PLAN_KEY?.trim() || env.MINIMAX_CODING_API_KEY?.trim() || env.MINIMAX_OAUTH_TOKEN?.trim() || env.MINIMAX_API_KEY?.trim() || null)
+        : selected === 'tabbit' ? env.TABBIT_API_KEY
         : null)
       || null,
     timeout_ms: boundedInt(env.NARRATIVE_WEB_SEARCH_TIMEOUT_MS, 20_000, 1_000, 120_000),
@@ -150,6 +153,7 @@ export class HttpWebSearchProvider {
     if (config.provider === 'yahoo_finance') return this.yahooFinance(query, config);
     if (config.provider === 'eastmoney') return this.eastmoney(query, config);
     if (config.provider === 'x_twitter') return this.xTwitter(query, config);
+    if (config.provider === 'tabbit') return this.tabbit(query, config);
     return this.mcpBridge(query, config, sourceDomains);
   }
 
@@ -528,7 +532,43 @@ export class HttpWebSearchProvider {
     return (value.results ?? []).map((item) => ({ title: item.title, url: item.url, snippet: item.content, published_at: item.published_date ?? null }));
   }
 
-  private async mcpBridge(query: string, config: WebSearchConfig, sourceDomains?: string[]) {
+  
+
+  private async tabbit(query: string, config: WebSearchConfig): Promise<SearchRow[]> {
+    if (!config.endpoint) return [];
+    
+    const url = new URL(config.endpoint);
+    if (url.protocol === 'http:') {
+      if (!isPrivateHost(url.hostname)) throw new Error('tabbit_http_base_url_must_be_private_or_loopback');
+    }
+    
+    const targetUrl = config.endpoint.replace(/\/?$/, '') + '/search';
+    
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (config.api_key) headers.Authorization = `Bearer ${config.api_key}`;
+    
+    try {
+      const res = await this.fetchImpl(targetUrl, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ query, max_results: config.max_results_per_query }),
+      });
+      if (!res.ok) return [];
+      const data = await res.json() as any;
+      if (!data || !Array.isArray(data.results)) return [];
+      
+      return data.results.map((item: any) => ({
+        title: searchString(item.title) || 'Tabbit Result',
+        url: searchString(item.url) || '',
+        snippet: searchString(item.snippet) || '',
+        source_name: searchString(item.source_name) || 'Tabbit Agent',
+        published_at: searchString(item.published_at) || null,
+      })).filter((row: any) => row.url);
+    } catch {
+      return [];
+    }
+  }
+private async mcpBridge(query: string, config: WebSearchConfig, sourceDomains?: string[]) {
     const body = await this.request(config.endpoint as string, {
       method: 'POST',
       headers: { 'content-type': 'application/json', Authorization: `Bearer ${config.api_key ?? ''}` },

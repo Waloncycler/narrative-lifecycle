@@ -9,7 +9,7 @@ const command = argv[0] === 'sync' ? 'sync' : 'inventory';
 const mode = valueFor(argv, '--mode') === 'live' ? 'live' : 'sandbox';
 const operationIds = valuesFor(argv, '--operation');
 const maxOperations = numberFor(argv, '--max');
-const { syncWorldMonitorSourcesUseCase } = createProductCoreUseCases(repoRoot);
+const { syncWorldMonitorSourcesUseCase, normalizeWorldMonitorDataUseCase } = createProductCoreUseCases(repoRoot);
 
 if (command === 'inventory') {
   const inventory = syncWorldMonitorSourcesUseCase.inventory();
@@ -24,8 +24,19 @@ if (command === 'inventory') {
     forceRefresh: argv.includes('--force'),
   });
   console.log(`World Monitor ${mode} sync: ${result.report.completed_operation_count} completed, ${result.report.candidate_count} candidates, ${result.report.failed_operation_count} failed.`);
+  
+  if (normalizeWorldMonitorDataUseCase) {
+    const normResult = await normalizeWorldMonitorDataUseCase.execute(100);
+    console.log(`World Monitor normalization: ${normResult.processed} snapshots normalized to canonical events & candidates.`);
+  }
+
   if (mode === 'live' && !result.inventory.production_configured) {
     console.log('World Monitor-hosted operations remain blocked until WORLDMONITOR_API_KEY is configured; public direct sources remain available.');
+  }
+  if (result.session) {
+    const fs = await import('node:fs/promises');
+    await fs.writeFile('worldmonitor_dump.json', JSON.stringify(result.session.candidates, null, 2), 'utf-8');
+    console.log(`Exported ${result.session.candidates.length} candidates to worldmonitor_dump.json`);
   }
 }
 

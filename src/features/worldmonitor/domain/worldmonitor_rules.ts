@@ -268,6 +268,67 @@ const DIRECT_GOVERNANCE: Record<string, {
     termsUrl: 'https://www.morganstanley.com/',
     freshnessHours: 168,
   },
+  // --- First Batch (High Value Signals) ---
+  DirectHuggingFace: { licenseId: 'huggingface-provider-terms', termsUrl: 'https://huggingface.co/terms', freshnessHours: 24 },
+  DirectGithubIssues: { licenseId: 'github-api-terms', termsUrl: 'https://docs.github.com/en/rest', freshnessHours: 24 },
+  DirectGithubTrending: { licenseId: 'github-api-terms', termsUrl: 'https://docs.github.com/en/rest', freshnessHours: 24 },
+  DirectArxivAi: { licenseId: 'arxiv-api-terms', termsUrl: 'https://info.arxiv.org/help/api/terms.html', freshnessHours: 24 },
+  DirectOpenAiNews: { licenseId: 'openai-website-terms', termsUrl: 'https://openai.com/policies/terms-of-use/', freshnessHours: 24 },
+  DirectAnthropicNews: { licenseId: 'anthropic-website-terms', termsUrl: 'https://www.anthropic.com/legal/consumer-terms', freshnessHours: 24 },
+  DirectDeepseekUpdates: { licenseId: 'deepseek-provider-terms', termsUrl: 'https://www.deepseek.com/', freshnessHours: 24 },
+  DirectXaiReleases: { licenseId: 'xai-open-license', termsUrl: 'https://x.ai/', freshnessHours: 24 },
+  DirectNdrcPolicy: { licenseId: 'china-government-public-information', termsUrl: 'https://www.ndrc.gov.cn/', freshnessHours: 24 },
+  DirectCcgpCentralTenders: { licenseId: 'china-government-public-information', termsUrl: 'http://www.ccgp.gov.cn/', freshnessHours: 24 },
+  DirectCcgpCentralAwards: { licenseId: 'china-government-public-information', termsUrl: 'http://www.ccgp.gov.cn/', freshnessHours: 24 },
+  DirectStateGridProcurement: { licenseId: 'china-government-public-information', termsUrl: 'http://ecp.sgcc.com.cn/', freshnessHours: 24 },
+  DirectNhaDiseaseOutbreaks: { licenseId: 'china-government-public-information', termsUrl: 'http://www.nhc.gov.cn/', freshnessHours: 24 },
+  DirectSamrConsumerSafety: { licenseId: 'china-government-public-information', termsUrl: 'http://www.samr.gov.cn/', freshnessHours: 24 },
+  DirectMofcomSupplyPrice: { licenseId: 'china-government-public-information', termsUrl: 'http://www.mofcom.gov.cn/', freshnessHours: 24 },
+  DirectWeiboHotsearch: { licenseId: 'weibo-provider-terms', termsUrl: 'https://s.weibo.com/', freshnessHours: 6 },
+  DirectBaiduHotsearch: { licenseId: 'baidu-provider-terms', termsUrl: 'https://top.baidu.com/', freshnessHours: 6 },
+  DirectDouyinPublicHotlist: { licenseId: 'douyin-provider-terms', termsUrl: 'https://www.douyin.com/', freshnessHours: 6 },
+  DirectToutiaoHotboard: { licenseId: 'toutiao-provider-terms', termsUrl: 'https://www.toutiao.com/', freshnessHours: 6 },
+  DirectBilibiliPopular: { licenseId: 'bilibili-provider-terms', termsUrl: 'https://www.bilibili.com/', freshnessHours: 6 },
+  DirectV2exHot: { licenseId: 'v2ex-provider-terms', termsUrl: 'https://www.v2ex.com/', freshnessHours: 6 },
+  DirectZhihuOfficialHotlist: { licenseId: 'zhihu-provider-terms', termsUrl: 'https://www.zhihu.com/', freshnessHours: 6 },
+  DirectGoogleTrendsUs: { licenseId: 'google-website-terms', termsUrl: 'https://trends.google.com/', freshnessHours: 6 },
+  DirectGoogleTrendsHk: { licenseId: 'google-website-terms', termsUrl: 'https://trends.google.com/', freshnessHours: 6 },
+  DirectGoogleTrendsTw: { licenseId: 'google-website-terms', termsUrl: 'https://trends.google.com/', freshnessHours: 6 },
+  DirectFederalRegister: { licenseId: 'us-government-public-information', termsUrl: 'https://www.federalregister.gov/', freshnessHours: 24 },
+  DirectWorldBankGdp: { licenseId: 'worldbank-api-terms', termsUrl: 'https://data.worldbank.org/', freshnessHours: 168 },
+  DirectCboeVix: { licenseId: 'cboe-provider-terms', termsUrl: 'https://www.cboe.com/', freshnessHours: 24 },
+  DirectCoinbaseMarket: { licenseId: 'coinbase-provider-terms', termsUrl: 'https://www.coinbase.com/legal/user_agreement', freshnessHours: 24 },
+
+  // --- Second Batch (Business Baselines) ---
+  Direct36kr: { licenseId: 'provider-website-terms', termsUrl: 'https://36kr.com/', freshnessHours: 6 },
+  DirectJiqizhixin: { licenseId: 'provider-website-terms', termsUrl: 'https://www.jiqizhixin.com/', freshnessHours: 6 },
+  DirectQbitai: { licenseId: 'provider-website-terms', termsUrl: 'https://www.qbitai.com/', freshnessHours: 6 },
+  DirectInfoqCn: { licenseId: 'provider-website-terms', termsUrl: 'https://www.infoq.cn/', freshnessHours: 6 },
+  DirectPeopleDailyHeadlines: { licenseId: 'provider-website-terms', termsUrl: 'http://www.people.com.cn/', freshnessHours: 24 },
+  DirectCninfoAnnouncements: { licenseId: 'cninfo-provider-terms', termsUrl: 'http://www.cninfo.com.cn/', freshnessHours: 24 },
+  DirectSseAnnouncements: { licenseId: 'provider-website-terms', termsUrl: 'http://www.sse.com.cn/', freshnessHours: 24 },
+  DirectSzseAnnouncements: { licenseId: 'provider-website-terms', termsUrl: 'http://www.szse.cn/', freshnessHours: 24 },
+  Direct1688SearchTrends: { licenseId: 'provider-website-terms', termsUrl: 'https://www.1688.com/', freshnessHours: 24 },
+  DirectCsgEnterpriseProcurement: { licenseId: 'china-government-public-information', termsUrl: 'http://www.bidding.csg.cn/', freshnessHours: 24 },
+
+  // --- Third Batch (API Keys required) ---
+  DirectAlphaVantageSpy: { licenseId: 'alphavantage-provider-terms', termsUrl: 'https://www.alphavantage.co/', freshnessHours: 24 },
+  DirectAlphaVantageQqq: { licenseId: 'alphavantage-provider-terms', termsUrl: 'https://www.alphavantage.co/', freshnessHours: 24 },
+  DirectDouyinOfficialHotsearch: { licenseId: 'douyin-provider-terms', termsUrl: 'https://developer.open-douyin.com/', freshnessHours: 6 },
+  DirectXOfficialRecentSearch: { licenseId: 'x-provider-terms', termsUrl: 'https://developer.x.com/', freshnessHours: 6 },
+  DirectDeepsearchExternalDiscovery: { licenseId: 'provider-website-terms', termsUrl: 'https://github.com/modelcontextprotocol', freshnessHours: 24 },
+
+
+  // --- Fourth Batch (Phase 4 Expansions) ---
+  DirectFedStatements: { licenseId: 'us-government-public-information', termsUrl: 'https://www.federalreserve.gov/', freshnessHours: 24 },
+  DirectPbocAnnouncements: { licenseId: 'china-government-public-information', termsUrl: 'http://www.pbc.gov.cn/', freshnessHours: 24 },
+  DirectCnipaPatents: { licenseId: 'china-government-public-information', termsUrl: 'https://www.cnipa.gov.cn/', freshnessHours: 24 },
+  DirectUsptoPatents: { licenseId: 'us-government-public-information', termsUrl: 'https://www.uspto.gov/', freshnessHours: 24 },
+  DirectCpcaAutoSales: { licenseId: 'provider-website-terms', termsUrl: 'http://www.cpcaauto.com/', freshnessHours: 24 },
+  DirectBdiIndex: { licenseId: 'balticexchange-provider-terms', termsUrl: 'https://www.balticexchange.com/', freshnessHours: 24 },
+  DirectTechGiantsCareers: { licenseId: 'provider-website-terms', termsUrl: 'https://careers.google.com/', freshnessHours: 24 },
+
+
 };
 
 export function classifyWorldMonitorOperation(input: {

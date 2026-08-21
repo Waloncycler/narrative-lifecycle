@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
 import type { SchemaValidator } from '@/app/ports/system';
@@ -54,7 +54,12 @@ import { intakeAgentConfigFromEnv, OpenAiCompatibleIntakeAgentAdapter } from '@/
 import { DbIndustryPackRepository } from '@/platform/io/industry_pack_io';
 import type { IntakeAgentReviewBundle } from '@/features/intake/types/intake_agent';
 import { SyncWorldMonitorSourcesUseCase } from '@/app/use_cases/sync_worldmonitor_sources_use_case';
-import { DbWorldMonitorSourceRepository, WorldMonitorHttpClient } from '@/features/worldmonitor/io/worldmonitor_source_adapter';
+import { WorldMonitorHttpClient } from '@/features/worldmonitor/io/worldmonitor_http_client';
+import { DbWorldMonitorSourceRepository } from '@/features/worldmonitor/io/db_worldmonitor_source_repository';
+import { DbWorldMonitorIngestionRepository } from '@/features/worldmonitor/io/db_worldmonitor_ingestion_repository';
+import { DbWorldMonitorNormalizationRepository } from '@/features/worldmonitor/io/db_worldmonitor_normalization_repository';
+import { NormalizeWorldMonitorDataUseCase } from '@/app/use_cases/normalize_worldmonitor_data_use_case';
+
 import { buildTopicResolutionAudit } from '@/features/narrative/domain/topic_resolver';
 import { ResearchAgentLoopUseCase } from '@/app/use_cases/research_agent_loop_use_case';
 import { DbIntelligenceRepository } from '@/platform/io/intelligence_io';
@@ -173,9 +178,12 @@ export class DbRunRepository {
 }
 
 import { db } from '@/db/index';
-import { systemRuns, stageSnapshots, stageDiffs, weeklyBriefs, operatorReviews } from '@/db/schema';
+import { systemRuns, stageSnapshots, stageDiffs, weeklyBriefs, operatorReviews, topics, genericArtifacts } from '@/db/schema';
 import { DbArtifactRepository } from '@/platform/io/db_artifact_repository';
-import { desc } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
+import { RunGateAcquisitionUseCase } from "@/app/use_cases/run_gate_acquisition_use_case";
+import { NormalizeTopicNamesUseCase } from "@/app/use_cases/normalize_topic_names_use_case";
+import { RecomputeAllTopicStagesUseCase } from "@/app/use_cases/recompute_all_topic_stages_use_case";
 
 export class DbHistoryRepository {
   constructor(private readonly repoRoot: string = process.cwd()) {}
@@ -282,45 +290,54 @@ function resolveTopicsAndRegister(session: EvidenceIntakeSession, topicRegistryR
 }
 
 export function createProductCoreUseCases(repoRoot: string) {
-  loadRuntimeEnv(repoRoot);
-  const validator = new FileSchemaValidator();
-  const runRepository = new DbRunRepository();
-  const historyRepository = new DbHistoryRepository();
-  const artifactRepository = new PipelineArtifactManager();
-  const reviewRepository = new DbReviewRepository();
-  const pilotRepository = new DbPilotRepository();
-  const replayRepository = new DbReplayRepository();
-  const intakeRepository = new DbIntakeRepository(repoRoot);
-  const topicRegistryRepository = new DbTopicRegistryRepository();
-  const autonomousResearchRepository = new DbAutonomousResearchRepository();
-  const intelligenceRepository = new DbIntelligenceRepository();
-  const reviewIntelligenceProposalUseCase = new ReviewIntelligenceProposalUseCase({
+    loadRuntimeEnv(repoRoot);
+    const validator = new FileSchemaValidator();
+    const runRepository = new DbRunRepository();
+    const historyRepository = new DbHistoryRepository();
+    const artifactRepository = new PipelineArtifactManager();
+    const reviewRepository = new DbReviewRepository();
+    const pilotRepository = new DbPilotRepository();
+    const replayRepository = new DbReplayRepository();
+    const intakeRepository = new DbIntakeRepository(repoRoot);
+    const topicRegistryRepository = new DbTopicRegistryRepository();
+    const autonomousResearchRepository = new DbAutonomousResearchRepository();
+    const intelligenceRepository = new DbIntelligenceRepository();
+    const reviewIntelligenceProposalUseCase = new ReviewIntelligenceProposalUseCase({
     readTopicProposals: () => intelligenceRepository.readTopicDiscoveryProposals(),
     readEvidenceChain: () => intelligenceRepository.readEvidenceChain(),
     writeTopicProposals: (proposals) => intelligenceRepository.writeTopicDiscoveryProposals(proposals),
     writeEvidenceChain: (entries) => intelligenceRepository.writeEvidenceChain(entries),
     now: () => new Date().toISOString(),
-  });
-  const shadowAiCandidateGenerator = new ShadowAiCandidateGenerator();
-  const realAiShadowAdapter = new ProviderNeutralAiShadowAdapter(aiShadowConfigFromEnv(process.env));
-  const intakeAgentAdapter = new OpenAiCompatibleIntakeAgentAdapter(intakeAgentConfigFromEnv(process.env));
-  const industryPackRepository = new DbIndustryPackRepository();
-  const worldMonitorApiKey = process.env.WORLDMONITOR_API_KEY ?? process.env.WORLDMONITOR_RELAY_KEY ?? null;
-  const worldMonitorSourceRepository = new DbWorldMonitorSourceRepository(process.env.WORLDMONITOR_REFERENCE_ROOT ?? resolve(repoRoot, '../worldmonitor-main'),
-  );
-  const worldMonitorHttpClient = new WorldMonitorHttpClient(worldMonitorApiKey);
-  const webResearchRepository = new DbWebResearchRepository();
-  const researchCoverageRepository = new DbResearchCoverageRepository();
-  const researchLeadTriageRepository = new DbResearchLeadTriageRepository();
-  const researchSourceRetrievalRepository = new DbResearchSourceRetrievalRepository();
-  const researchSourceRetriever = new HttpResearchSourceRetriever();
-  const researchPackRepository = new DbResearchPackRepository();
-  const researchBaselineCompletionRepository = new DbResearchBaselineCompletionRepository();
-  const historicalEvidenceRecoveryRepository = new DbHistoricalEvidenceRecoveryRepository();
-  const historicalProvenanceRecoveryRepository = new DbHistoricalProvenanceRecoveryRepository();
-  const webSearchProvider = new HttpWebSearchProvider();
+    });
+    const shadowAiCandidateGenerator = new ShadowAiCandidateGenerator();
+    const realAiShadowAdapter = new ProviderNeutralAiShadowAdapter(aiShadowConfigFromEnv(process.env));
+    const intakeAgentAdapter = new OpenAiCompatibleIntakeAgentAdapter(intakeAgentConfigFromEnv(process.env));
+    const industryPackRepository = new DbIndustryPackRepository();
+    const worldMonitorApiKey = process.env.WORLDMONITOR_API_KEY ?? process.env.WORLDMONITOR_RELAY_KEY ?? null;
+    const worldMonitorSourceRepository = new DbWorldMonitorSourceRepository(process.env.WORLDMONITOR_REFERENCE_ROOT ?? resolve(repoRoot, '../worldmonitor-main'),
+    );
+    const worldMonitorHttpClient = new WorldMonitorHttpClient(worldMonitorApiKey);
+    const worldMonitorIngestionRepository = new DbWorldMonitorIngestionRepository();
+    const worldMonitorNormalizationRepository = new DbWorldMonitorNormalizationRepository();
 
-  const importEvidenceUseCase = new ImportEvidenceUseCase({
+    const normalizeWorldMonitorDataUseCase = new NormalizeWorldMonitorDataUseCase({
+      normalizationRepo: worldMonitorNormalizationRepository,
+      writeIntakeSession: (session) => intakeRepository.writeIntakeSession(session, renderIntakeWorkbench(session)),
+      now: () => new Date().toISOString(),
+    });
+
+    const webResearchRepository = new DbWebResearchRepository();
+    const researchCoverageRepository = new DbResearchCoverageRepository();
+    const researchLeadTriageRepository = new DbResearchLeadTriageRepository();
+    const researchSourceRetrievalRepository = new DbResearchSourceRetrievalRepository();
+    const researchSourceRetriever = new HttpResearchSourceRetriever();
+    const researchPackRepository = new DbResearchPackRepository();
+    const researchBaselineCompletionRepository = new DbResearchBaselineCompletionRepository();
+    const historicalEvidenceRecoveryRepository = new DbHistoricalEvidenceRecoveryRepository();
+    const historicalProvenanceRecoveryRepository = new DbHistoricalProvenanceRecoveryRepository();
+    const webSearchProvider = new HttpWebSearchProvider();
+
+    const importEvidenceUseCase = new ImportEvidenceUseCase({
     loadDraft: (file) => loadEvidenceImportDraft(repoRoot, file),
     readDraftSource: (file) => readFileSync(resolve(repoRoot, file), 'utf8'),
     validate: ({ drafts, sourceFile }) => validateEvidenceImport({ repoRoot, drafts, sourceFile }),
@@ -329,13 +346,13 @@ export function createProductCoreUseCases(repoRoot: string) {
     writeValidationReport: (report) => writeEvidenceValidationReport(repoRoot, report as Parameters<typeof writeEvidenceValidationReport>[1]),
     writeAcceptedImport: (report, normalized) => writeAcceptedEvidenceImport(repoRoot, report as Parameters<typeof writeAcceptedEvidenceImport>[1], normalized as Parameters<typeof writeAcceptedEvidenceImport>[2]),
     writeRejectedImport: (report, sourceBody) => writeRejectedEvidenceImport(repoRoot, report as Parameters<typeof writeRejectedEvidenceImport>[1], sourceBody),
-  });
+    });
 
-  const runPipelineUseCase = new RunPipelineUseCase({
+    const runPipelineUseCase = new RunPipelineUseCase({
     writePipelineOutputs: (outputDir, context) => writePipelineOutputs(repoRoot, outputDir, context),
-  });
+    });
 
-  const buildDiffUseCase = new BuildDiffUseCase({
+    const buildDiffUseCase = new BuildDiffUseCase({
     build: (context) => {
       const result = buildDiff(repoRoot, validator, context);
       return { diff: result.diff, markdown: result.markdown };
@@ -345,25 +362,25 @@ export function createProductCoreUseCases(repoRoot: string) {
       historyRepository.writeSnapshot(current);
       historyRepository.writeDiff(result.diff, result.markdown);
     },
-  });
+    });
 
-  const buildWeeklyBriefUseCase = new BuildWeeklyBriefUseCase({
+    const buildWeeklyBriefUseCase = new BuildWeeklyBriefUseCase({
     build: (context) => buildWeekly(repoRoot, validator, context),
     persist: (result, context) => {
       artifactRepository.writeWeeklyBrief(result.report, result.markdown);
     },
-  });
+    });
 
-  const buildOperatorReviewUseCase = new BuildOperatorReviewUseCase({
+    const buildOperatorReviewUseCase = new BuildOperatorReviewUseCase({
     build: () => {
       const review = buildOperatorReview(loadOperatorReviewArtifacts(repoRoot));
       validator.validate('operator_review.schema.json', review);
       return { review, markdown: renderOperatorReviewMarkdown(review) };
     },
     persist: (result) => reviewRepository.writeOperatorReview(result.review, result.markdown),
-  });
+    });
 
-  const runWeeklyUseCase = new RunWeeklyUseCase({
+    const runWeeklyUseCase = new RunWeeklyUseCase({
     createRunContext,
     runPipeline: (context) => { runPipelineUseCase.execute(context); },
     runDiff: (context) => { buildDiffUseCase.execute(context); },
@@ -397,15 +414,15 @@ export function createProductCoreUseCases(repoRoot: string) {
     },
     validateManifest: (manifest) => validator.validate('run_manifest.schema.json', manifest),
     writeManifest: (manifest, updateLatest) => runRepository.writeRunManifest(manifest, updateLatest),
-  });
+    });
 
-  const pilotInitUseCase = new PilotInitUseCase({
+    const pilotInitUseCase = new PilotInitUseCase({
     readWeeklyBrief: () => pilotRepository.readWeeklyBrief(),
     writePilotSeed: (topics, observations) => pilotRepository.writePilotSeed(topics, observations),
     pilotFilesExist: () => pilotRepository.pilotFilesExist(),
-  });
+    });
 
-  const pilotReviewUseCase = new PilotReviewUseCase({
+    const pilotReviewUseCase = new PilotReviewUseCase({
     readLatestRun: () => pilotRepository.readLatestRun(),
     readWeeklyBrief: () => pilotRepository.readWeeklyBrief(),
     readStageDiff: () => pilotRepository.readStageDiff(),
@@ -418,9 +435,9 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateLedger: (ledger) => validator.validate('pilot_research_ledger.schema.json', ledger),
     validateEvaluationSummary: (summary) => validator.validate('pilot_evaluation_summary.schema.json', summary),
     sourceArtifacts: () => pilotRepository.sourceArtifacts(),
-  });
+    });
 
-  const replayUseCase = new ReplayUseCase({
+    const replayUseCase = new ReplayUseCase({
     readReplayCases: () => replayRepository.readReplayCases(),
     readLatestRun: () => replayRepository.readLatestRun(),
     writeReplayLedger: (ledger, markdown) => replayRepository.writeReplayLedger(ledger, markdown),
@@ -429,18 +446,18 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateLedger: (ledger) => validator.validate('replay_ledger.schema.json', ledger),
     sourceArtifacts: () => replayRepository.sourceArtifacts(),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const prepareEvidenceIntakeUseCase = new PrepareEvidenceIntakeUseCase({
+    const prepareEvidenceIntakeUseCase = new PrepareEvidenceIntakeUseCase({
     readRawDocument: (input) => intakeRepository.readRawDocument(input),
     existingEvidenceIds: () => intakeRepository.existingEvidenceIds(),
     writeIntakeSession: (session, workbenchHtml) => intakeRepository.writeIntakeSession(session, workbenchHtml),
     renderWorkbench: renderIntakeWorkbench,
     generateAiCandidates: (input) => shadowAiCandidateGenerator.generate(input),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const applyEvidenceIntakeReviewUseCase = new ApplyEvidenceIntakeReviewUseCase({
+    const applyEvidenceIntakeReviewUseCase = new ApplyEvidenceIntakeReviewUseCase({
     readLatestSession: () => intakeRepository.readLatestSession(),
     readTopicResolutionAudit: () => topicRegistryRepository.readTopicResolutionAudit(),
     readReviewDecisions: (file) => intakeRepository.readReviewDecisions(file),
@@ -455,18 +472,18 @@ export function createProductCoreUseCases(repoRoot: string) {
     readOperationalEvidenceIds: () => new Set(autonomousResearchRepository.readOperationalEvidence().map((item: any) => item.evidence_id)),
     readStageChangeSummary: () => intakeRepository.readStageChangeSummary(),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const retryEvidenceIntakePipelineUseCase = new RetryEvidenceIntakePipelineUseCase({
+    const retryEvidenceIntakePipelineUseCase = new RetryEvidenceIntakePipelineUseCase({
     readLatestSession: () => intakeRepository.readLatestSession(),
     readApplyResult: () => intakeRepository.readApplyResult(),
     writeApplyResult: (result) => intakeRepository.writeApplyResult(result),
     runWeekly: () => runAutonomousResearchUseCase.execute({ publish: false }).manifest,
     readStageChangeSummary: () => intakeRepository.readStageChangeSummary(),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const evaluateIntakeUseCase = new EvaluateIntakeUseCase({
+    const evaluateIntakeUseCase = new EvaluateIntakeUseCase({
     readLatestSession: () => intakeRepository.readLatestSession(),
     readReviewDecisions: (file) => intakeRepository.readReviewDecisions(file),
     readApplyResult: () => intakeRepository.readApplyResult(),
@@ -474,9 +491,9 @@ export function createProductCoreUseCases(repoRoot: string) {
     writeIntakeEvaluation: (report) => intakeRepository.writeIntakeEvaluation(report),
     validateEvaluation: (report) => validator.validate('intake_evaluation.schema.json', report),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const buildIntakeLearningProfileUseCase = new BuildIntakeLearningProfileUseCase({
+    const buildIntakeLearningProfileUseCase = new BuildIntakeLearningProfileUseCase({
     readLatestSession: () => intakeRepository.readLatestSession(),
     readReviewDecisions: (file) => intakeRepository.readReviewDecisions(file),
     readLatestEvaluation: () => intakeRepository.readLatestEvaluation(),
@@ -484,9 +501,9 @@ export function createProductCoreUseCases(repoRoot: string) {
     writeLearningProfile: (profile) => intakeRepository.writeLearningProfile(profile),
     validateProfile: (profile) => validator.validate('intake_learning_profile.schema.json', profile),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const buildIntakeLearningCycleUseCase = new BuildIntakeLearningCycleUseCase({
+    const buildIntakeLearningCycleUseCase = new BuildIntakeLearningCycleUseCase({
     readLatestSession: () => intakeRepository.readLatestSession(),
     readLatestEvaluation: () => intakeRepository.readLatestEvaluation(),
     readLearningProfile: () => intakeRepository.readLearningProfile(),
@@ -496,9 +513,9 @@ export function createProductCoreUseCases(repoRoot: string) {
     writeLearningCycle: (cycle) => intakeRepository.writeLearningCycle(cycle),
     validateCycle: (cycle) => validator.validate('intake_learning_cycle.schema.json', cycle),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const validateTopicsUseCase = new ValidateTopicsUseCase({
+    const validateTopicsUseCase = new ValidateTopicsUseCase({
     readLatestSession: () => {
       try { return intakeRepository.readLatestSession(); } catch { return null; }
     },
@@ -507,18 +524,18 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateTopicAudit: (audit) => validator.validate('topic_resolution_audit.schema.json', audit),
     validateRegistryReport: (report) => validator.validate('topic_registry_validation.schema.json', report),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const runAiShadowValidationUseCase = new RunAiShadowValidationUseCase({
+    const runAiShadowValidationUseCase = new RunAiShadowValidationUseCase({
     readLatestSession: () => intakeRepository.readLatestSession(),
     generateAiShadow: (session) => realAiShadowAdapter.generate(session),
     writeAiShadowResult: (session, audit) => intakeRepository.writeAiShadowResult(session, audit),
     writeAiShadowValidationReport: (report) => intakeRepository.writeAiShadowValidationReport(report as AiShadowValidationReport),
     validateCandidate: (candidate) => validator.validate('evidence_candidate.schema.json', candidate),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const runAiShadowCorpusEvaluationUseCase = new RunAiShadowCorpusEvaluationUseCase({
+    const runAiShadowCorpusEvaluationUseCase = new RunAiShadowCorpusEvaluationUseCase({
     listPilotDocuments: () => {
       const rows = parse(readFileSync(resolve(repoRoot, 'data/intake/pilot_documents/manifest.yaml'), 'utf8')) as Array<{ document_id: string; path: string }>;
       return rows;
@@ -527,9 +544,9 @@ export function createProductCoreUseCases(repoRoot: string) {
     runAiShadow: async () => (await runAiShadowValidationUseCase.execute()).session,
     writeCorpusReport: (report) => intakeRepository.writeAiShadowCorpusReport(report as AiShadowValidationReport),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const runIntakeAgentUseCase = new RunIntakeAgentUseCase({
+    const runIntakeAgentUseCase = new RunIntakeAgentUseCase({
     prepare: (input) => prepareEvidenceIntakeUseCase.execute(input),
     readLatest: () => intakeRepository.readLatestSession(),
     readIndustryPacks: () => industryPackRepository.readIndustryPacks(),
@@ -555,9 +572,10 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateVerification: (report) => validator.validate('intake_agent_verification.schema.json', report),
     validateNarrativeDiscovery: (report) => validator.validate('narrative_discovery_report.schema.json', report),
     now: () => new Date().toISOString(),
-  });
+    });
 
-  const syncWorldMonitorSourcesUseCase = new SyncWorldMonitorSourcesUseCase({
+    const syncWorldMonitorSourcesUseCase = new SyncWorldMonitorSourcesUseCase({
+    saveFetchResults: (results) => worldMonitorIngestionRepository.saveFetchResults(results),
     buildInventory: (input) => worldMonitorSourceRepository.buildInventory(input),
     fetchOperation: (descriptor, mode) => worldMonitorHttpClient.fetchOperation(
       descriptor,
@@ -591,10 +609,10 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateCandidate: (candidate) => validator.validate('evidence_candidate.schema.json', candidate),
     now: () => new Date().toISOString(),
     productionConfigured: () => Boolean(worldMonitorApiKey),
-  });
+    });
 
-  const baselineEvidenceReconciliationRepository = new DbBaselineEvidenceReconciliationRepository();
-  const reconcileBaselineEvidenceUseCase = new ReconcileBaselineEvidenceUseCase({
+    const baselineEvidenceReconciliationRepository = new DbBaselineEvidenceReconciliationRepository();
+    const reconcileBaselineEvidenceUseCase = new ReconcileBaselineEvidenceUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.16.0',
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
@@ -602,28 +620,28 @@ export function createProductCoreUseCases(repoRoot: string) {
     readAdmittedEvidenceIds: () => baselineEvidenceReconciliationRepository.readAdmittedEvidenceIds(),
     write: (report) => baselineEvidenceReconciliationRepository.write(report),
     validate: (report) => validator.validate('baseline_evidence_reconciliation_report.schema.json', report),
-  });
-  const admitBaselineEvidenceUseCase = new AdmitBaselineEvidenceUseCase({
+    });
+    const admitBaselineEvidenceUseCase = new AdmitBaselineEvidenceUseCase({
     reconcile: () => reconcileBaselineEvidenceUseCase.execute(),
     appendAdmission: (input) => baselineEvidenceReconciliationRepository.appendAdmission(input),
     now: () => new Date().toISOString(),
-  });
-  const buildResearchBaselineCompletionUseCase = new BuildResearchBaselineCompletionUseCase({
+    });
+    const buildResearchBaselineCompletionUseCase = new BuildResearchBaselineCompletionUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.5',
     readSnapshot: () => autonomousResearchRepository.readLatestSnapshot(),
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
     writeReport: (report) => researchBaselineCompletionRepository.writeReport(report),
     validateReport: (report) => validator.validate('research_baseline_completion_report.schema.json', report),
-  });
-  const buildHistoricalEvidenceRecoveryUseCase = new BuildHistoricalEvidenceRecoveryUseCase({
+    });
+    const buildHistoricalEvidenceRecoveryUseCase = new BuildHistoricalEvidenceRecoveryUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.5',
     readTimelines: () => historicalEvidenceRecoveryRepository.readTimelines(),
     writeReport: (report) => historicalEvidenceRecoveryRepository.writeReport(report),
     validateReport: (report) => validator.validate('historical_evidence_recovery_report.schema.json', report),
-  });
-  const runAutonomousResearchUseCase = new RunAutonomousResearchUseCase({
+    });
+    const runAutonomousResearchUseCase = new RunAutonomousResearchUseCase({
     createRunContext,
     now: () => new Date().toISOString(),
     readPolicy: () => autonomousResearchRepository.readPolicy(),
@@ -654,18 +672,18 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateSnapshot: (snapshot) => validator.validate('stage_snapshot_history.schema.json', snapshot),
     validateDiff: (diff) => validator.validate('stage_diff.schema.json', diff),
     validateWeeklyBrief: (brief) => validator.validate('weekly_brief.schema.json', brief),
-  });
-  const validateAutonomousResearchPolicyUseCase = new ValidateAutonomousResearchPolicyUseCase({
+    });
+    const validateAutonomousResearchPolicyUseCase = new ValidateAutonomousResearchPolicyUseCase({
     readPolicy: () => autonomousResearchRepository.readPolicy(),
     writeAudit: (audit) => autonomousResearchRepository.writePolicyAudit(audit),
     validateAudit: (audit) => validator.validate('autonomous_research_policy_audit.schema.json', audit),
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.15.0',
-  });
+    });
 
-  const researchAgentRepository = new DbResearchAgentRepository();
-  const directSourceProvider = new AuthoritativeDirectSourceProvider();
-  const runWebResearchUseCase = new RunWebResearchUseCase({
+    const researchAgentRepository = new DbResearchAgentRepository();
+    const directSourceProvider = new AuthoritativeDirectSourceProvider();
+    const runWebResearchUseCase = new RunWebResearchUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.5',
     configs: () => webSearchConfigsFromEnv(process.env),
@@ -673,8 +691,8 @@ export function createProductCoreUseCases(repoRoot: string) {
     search: (input) => webSearchProvider.search(input),
     writeReport: (report) => webResearchRepository.writeReport(report),
     validateReport: (report) => validator.validate('web_research_report.schema.json', report),
-  });
-  const buildResearchCampaignUseCase = new BuildResearchCampaignUseCase({
+    });
+    const buildResearchCampaignUseCase = new BuildResearchCampaignUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.2',
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
@@ -697,8 +715,8 @@ export function createProductCoreUseCases(repoRoot: string) {
     buildHistoricalRecovery: () => buildHistoricalEvidenceRecoveryUseCase.execute(),
     writeCampaign: (campaign) => researchCoverageRepository.writeCampaign(campaign),
     validateCampaign: (campaign) => validator.validate('research_campaign.schema.json', campaign),
-  });
-  const runDirectSourceResearchUseCase = new RunDirectSourceResearchUseCase({
+    });
+    const runDirectSourceResearchUseCase = new RunDirectSourceResearchUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.2',
     readSourceAtlas: () => {
@@ -710,16 +728,16 @@ export function createProductCoreUseCases(repoRoot: string) {
     search: (input) => directSourceProvider.search(input),
     writeReport: (report) => researchCoverageRepository.writeDirectResearch(report),
     validateReport: (report) => validator.validate('direct_source_research_report.schema.json', report),
-  });
-  const prepareDirectSourceIntakeUseCase = new PrepareDirectSourceIntakeUseCase({
+    });
+    const prepareDirectSourceIntakeUseCase = new PrepareDirectSourceIntakeUseCase({
     now: () => new Date().toISOString(),
     existingEvidenceIds: () => intakeRepository.existingEvidenceIds(),
     writeIntakeSession: (session) => intakeRepository.writeIntakeSession(session, renderIntakeWorkbench(session)),
     resolveTopics: (session) => resolveTopicsAndRegister(session, topicRegistryRepository),
     validateSession: (session) => validator.validate('intake_session.schema.json', session),
     validateCandidate: (candidate) => validator.validate('evidence_candidate.schema.json', candidate),
-  });
-  const appendRetrievedSourceIntakeUseCase = new AppendRetrievedSourceIntakeUseCase({
+    });
+    const appendRetrievedSourceIntakeUseCase = new AppendRetrievedSourceIntakeUseCase({
     now: () => new Date().toISOString(),
     readLatestSession: () => {
       try { return intakeRepository.readLatestSession(); } catch { return null; }
@@ -729,8 +747,8 @@ export function createProductCoreUseCases(repoRoot: string) {
     resolveTopics: (session) => resolveTopicsAndRegister(session, topicRegistryRepository),
     validateSession: (session) => validator.validate('intake_session.schema.json', session),
     validateCandidate: (candidate) => validator.validate('evidence_candidate.schema.json', candidate),
-  });
-  const recoverHistoricalProvenanceUseCase = new RecoverHistoricalProvenanceUseCase({
+    });
+    const recoverHistoricalProvenanceUseCase = new RecoverHistoricalProvenanceUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.14.0',
     readEvidence: () => historicalProvenanceRecoveryRepository.readEvidence(),
@@ -758,8 +776,8 @@ export function createProductCoreUseCases(repoRoot: string) {
     retrieve: (input) => researchSourceRetriever.retrieve(input),
     write: (report) => historicalProvenanceRecoveryRepository.write(report),
     validate: (report) => validator.validate('historical_provenance_recovery_report.schema.json', report),
-  });
-  const buildResearchLeadTriageUseCase = new BuildResearchLeadTriageUseCase({
+    });
+    const buildResearchLeadTriageUseCase = new BuildResearchLeadTriageUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.3',
     readWebResearch: () => webResearchRepository.readLatestReport(),
@@ -776,8 +794,8 @@ export function createProductCoreUseCases(repoRoot: string) {
     },
     writeReport: (report) => researchLeadTriageRepository.writeReport(report),
     validateReport: (report) => validator.validate('research_lead_triage_report.schema.json', report),
-  });
-  const retrieveResearchSourcesUseCase = new RetrieveResearchSourcesUseCase({
+    });
+    const retrieveResearchSourcesUseCase = new RetrieveResearchSourcesUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.4',
     readLeadTriage: () => researchLeadTriageRepository.readLatestReport(),
@@ -785,9 +803,10 @@ export function createProductCoreUseCases(repoRoot: string) {
     writeReport: (report) => researchSourceRetrievalRepository.writeReport(report),
     validateReport: (report) => validator.validate('research_source_retrieval_report.schema.json', report),
     writeQualityReport: (report) => researchSourceRetrievalRepository.writeQualityReport(report),
+    readGovernancePolicy: () => researchCoverageRepository.readGovernancePolicy(),
     validateQualityReport: (report) => validator.validate('research_source_quality_report.schema.json', report),
-  });
-  const runResearchPackUseCase = new RunResearchPackUseCase({
+    });
+    const runResearchPackUseCase = new RunResearchPackUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.6',
     readPack: (file) => researchPackRepository.readPack(file),
@@ -796,13 +815,14 @@ export function createProductCoreUseCases(repoRoot: string) {
     validateRetrieval: (report) => validator.validate('research_source_retrieval_report.schema.json', report),
     validateReport: (report) => validator.validate('research_pack_retrieval_report.schema.json', report),
     writeReport: (report) => researchPackRepository.writeReport(report),
-  });
-  const probePrioritizedNewsUseCase = new ProbePrioritizedNewsUseCase({
+    });
+    const probePrioritizedNewsUseCase = new ProbePrioritizedNewsUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.15.1',
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
     readSourceAtlas: () => researchCoverageRepository.readSourceAtlas(),
     readCompanies: () => researchCoverageRepository.readCompanyRegistry(),
+        readGovernancePolicy: () => researchCoverageRepository.readGovernancePolicy(),
     search: (input) => runWebResearchUseCase.execute(input),
     retrieve: (input) => researchSourceRetriever.retrieve(input),
     appendRetrievedSourceIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
@@ -813,8 +833,8 @@ export function createProductCoreUseCases(repoRoot: string) {
       writeGenericArtifact(`research/history/news_probe_diagnostics_${report.generated_at.replace(/[^0-9]/g, '').slice(0, 17)}.json`, report);
     },
     validateReport: (report) => validator.validate('research_source_retrieval_report.schema.json', report),
-  });
-  const runResearchCampaignUseCase = new RunResearchCampaignUseCase({
+    });
+    const runResearchCampaignUseCase = new RunResearchCampaignUseCase({
     buildCampaign: (input) => buildResearchCampaignUseCase.execute(input),
     readRegistry: () => topicRegistryRepository.readTopicRegistry(),
     runWebResearch: (input) => runWebResearchUseCase.execute(input),
@@ -823,9 +843,9 @@ export function createProductCoreUseCases(repoRoot: string) {
     appendRetrievedSourceIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
     buildLeadTriage: () => buildResearchLeadTriageUseCase.execute(),
     retrieveSources: () => retrieveResearchSourcesUseCase.execute({ maxItems: 6 }),
-  });
-  const deepResearchSweepRepository = new DbDeepResearchSweepRepository(repoRoot);
-  const runDeepResearchSweepUseCase = new RunDeepResearchSweepUseCase({
+    });
+    const deepResearchSweepRepository = new DbDeepResearchSweepRepository(repoRoot);
+    const runDeepResearchSweepUseCase = new RunDeepResearchSweepUseCase({
     now: () => new Date().toISOString(),
     producerVersion: () => 'v0.13.5',
     runCampaign: (input) => runResearchCampaignUseCase.execute(input),
@@ -834,8 +854,8 @@ export function createProductCoreUseCases(repoRoot: string) {
     retrieveSources: () => retrieveResearchSourcesUseCase.execute({ maxItems: 6 }),
     appendRetrievedSourceIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
     writeSweep: (sweep) => deepResearchSweepRepository.writeSweep(sweep),
-  });
-  const researchAgentLoopUseCase = new ResearchAgentLoopUseCase({
+    });
+    const researchAgentLoopUseCase = new ResearchAgentLoopUseCase({
     producerVersion: () => 'v0.11.0',
     now: () => new Date().toISOString(),
     runSourceSync: async (input) => syncWorldMonitorSourcesUseCase.execute(input),
@@ -870,72 +890,144 @@ export function createProductCoreUseCases(repoRoot: string) {
     writeEvolutionLedger: (ledger) => researchAgentRepository.writeEvolutionLedger(ledger),
     readLearningMetrics: () => researchAgentRepository.readLearningMetrics(),
     writeRunManifest: (manifest) => researchAgentRepository.writeRunManifest(manifest),
-  });
-  const verifyBaselineEvidenceUseCase = new VerifyBaselineEvidenceUseCase({
+    });
+    const verifyBaselineEvidenceUseCase = new VerifyBaselineEvidenceUseCase({
     reconcile: () => reconcileBaselineEvidenceUseCase.execute(),
     recover: (input) => recoverHistoricalProvenanceUseCase.execute(input),
     appendRetrievedSourceIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
     runIntakeAgent: () => runIntakeAgentUseCase.executeLatest(),
     runAiShadow: () => runAiShadowValidationUseCase.execute(),
     runAutonomousResearch: (bundle, publish) => runAutonomousResearchUseCase.execute({ bundle, publish }),
-  });
-  const researchAgentScheduler = new ResearchAgentScheduler({
+    });
+    const researchAgentScheduler = new ResearchAgentScheduler({
     runLoop: async (kind, trigger) => researchAgentLoopUseCase.execute({ loop_kind: kind, triggered_by: trigger }),
     readConfig: () => researchAgentRepository.readSchedulerConfig(),
     writeConfig: (config) => researchAgentRepository.writeSchedulerConfig(config),
     now: () => new Date(),
-  });
+    });
 
-  return {
-    importEvidenceUseCase,
-    runPipelineUseCase,
-    buildDiffUseCase,
-    buildWeeklyBriefUseCase,
-    buildOperatorReviewUseCase,
-    runWeeklyUseCase,
-    pilotInitUseCase,
-    pilotReviewUseCase,
-    replayUseCase,
-    prepareEvidenceIntakeUseCase,
-    applyEvidenceIntakeReviewUseCase,
-    retryEvidenceIntakePipelineUseCase,
-    evaluateIntakeUseCase,
-    buildIntakeLearningProfileUseCase,
-    buildIntakeLearningCycleUseCase,
-    reviewIntelligenceProposalUseCase,
-    validateTopicsUseCase,
-    runAiShadowValidationUseCase,
-    runAiShadowCorpusEvaluationUseCase,
-    runIntakeAgentUseCase,
-    syncWorldMonitorSourcesUseCase,
-    runWebResearchUseCase,
-    webResearchRepository,
-    buildResearchCampaignUseCase,
-    runDirectSourceResearchUseCase,
-    prepareDirectSourceIntakeUseCase,
-    appendRetrievedSourceIntakeUseCase,
-    recoverHistoricalProvenanceUseCase,
-    runResearchCampaignUseCase,
-    runDeepResearchSweepUseCase,
-    deepResearchSweepRepository,
-    buildResearchLeadTriageUseCase,
-    researchLeadTriageRepository,
-    retrieveResearchSourcesUseCase,
-    runResearchPackUseCase,
-    buildResearchBaselineCompletionUseCase,
-    reconcileBaselineEvidenceUseCase,
-    verifyBaselineEvidenceUseCase,
-    admitBaselineEvidenceUseCase,
-    researchBaselineCompletionRepository,
-    buildHistoricalEvidenceRecoveryUseCase,
-    historicalEvidenceRecoveryRepository,
-    historicalProvenanceRecoveryRepository,
-    researchSourceRetrievalRepository,
-    runAutonomousResearchUseCase,
-    validateAutonomousResearchPolicyUseCase,
-    researchAgentLoopUseCase,
-    researchAgentScheduler,
-    researchAgentRepository,
-    validator,
-  };
+      const runGateAcquisitionUseCase = new RunGateAcquisitionUseCase({
+        now: () => new Date().toISOString(),
+        readRegistry: () => topicRegistryRepository.readTopicRegistry(),
+        readOperationalEvidence: () => autonomousResearchRepository.readOperationalEvidence(),
+        readSourceAtlas: () => researchCoverageRepository.readSourceAtlas(),
+        readCompanyRegistry: () => researchCoverageRepository.readCompanyRegistry(),
+        runSearch: (input) => runWebResearchUseCase.execute(input),
+        buildTriage: (input) => buildResearchLeadTriageUseCase.execute(input),
+        retrieve: (input) => retrieveResearchSourcesUseCase.execute(input),
+    appendIntake: (report) => appendRetrievedSourceIntakeUseCase.execute(report),
+    runAgent: () => runIntakeAgentUseCase.execute({}),
+        publish: (bundle) => ({ run_id: '1', generated_at: new Date().toISOString(), trigger: 'gate', task_count: 0, strategy: 'comprehensive', parameters: {}, results: { query_count: 0, raw_result_count: 0, citation_ready_count: 0, triage_candidate_count: 0, intake_admitted_count: 0 }, runtime_ms: 0, report: null as any, graph_promotion: null as any, snapshot: null as any, diff: null as any, target_topic_ids: [], operational_evidence_count: 0, weekly_brief: null as any, manifest: null as any }),
+        writeReport: (report) => {}
+      });
+
+      const normalizeTopicNamesUseCase = new NormalizeTopicNamesUseCase({
+        now: () => new Date().toISOString(),
+        readTopics: () => [],
+        updateName: () => {},
+        mergeDuplicate: () => {},
+        writeReport: () => {}
+      });
+
+      const recomputeAllTopicStagesUseCase = new RecomputeAllTopicStagesUseCase({
+        readRegistry: () => topicRegistryRepository.readTopicRegistry(),
+        readOperationalEvidence: () => autonomousResearchRepository.readOperationalEvidence(),
+        validate: (state) => {
+          validator.validate('stage_snapshot_history.schema.json', state.snapshot);
+        },
+        persist: (state, context) => {
+          db.insert(stageSnapshots).values({
+            snapshot_id: state.snapshot.snapshot_id,
+            run_id: state.snapshot.run_id,
+            generated_at: state.snapshot.generated_at,
+            snapshot_json: JSON.stringify(state.snapshot),
+          }).onConflictDoUpdate({
+            target: stageSnapshots.snapshot_id,
+            set: { snapshot_json: JSON.stringify(state.snapshot), generated_at: state.snapshot.generated_at },
+          }).run();
+
+          db.insert(genericArtifacts).values({
+            artifact_id: `runs/${state.snapshot.run_id}/stage_snapshot.json`,
+            artifact_type: 'stage_snapshot_history',
+            updated_at: state.snapshot.generated_at,
+            content_json: JSON.stringify(state.snapshot),
+            content_md: null,
+          }).onConflictDoUpdate({
+            target: genericArtifacts.artifact_id,
+            set: { content_json: JSON.stringify(state.snapshot), updated_at: state.snapshot.generated_at },
+          }).run();
+
+          for (const topic of state.snapshot.topics) {
+            db.update(topics)
+              .set({ current_stage: topic.current_stage, updated_at: state.snapshot.generated_at })
+              .where(eq(topics.topic_id, topic.topic_id))
+              .run();
+          }
+
+          try {
+            mkdirSync(resolve(repoRoot, 'outputs/autonomy'), { recursive: true });
+            writeFileSync(resolve(repoRoot, 'outputs/autonomy/latest_stage_snapshot.json'), JSON.stringify(state.snapshot, null, 2), 'utf-8');
+            writeFileSync(resolve(repoRoot, 'outputs/autonomy/scores.json'), JSON.stringify(state.scores, null, 2), 'utf-8');
+            mkdirSync(resolve(repoRoot, `outputs/runs/${context.run_id}`), { recursive: true });
+            writeFileSync(resolve(repoRoot, `outputs/runs/${context.run_id}/stage_snapshot.json`), JSON.stringify(state.snapshot, null, 2), 'utf-8');
+          } catch {
+            // ignore non-fatal fallback write errors
+          }
+        },
+      });
+
+
+    return {
+        importEvidenceUseCase,
+        runPipelineUseCase,
+        buildDiffUseCase,
+        buildWeeklyBriefUseCase,
+        buildOperatorReviewUseCase,
+        runWeeklyUseCase,
+        pilotInitUseCase,
+        pilotReviewUseCase,
+        replayUseCase,
+        prepareEvidenceIntakeUseCase,
+        applyEvidenceIntakeReviewUseCase,
+        retryEvidenceIntakePipelineUseCase,
+        evaluateIntakeUseCase,
+        buildIntakeLearningProfileUseCase,
+        buildIntakeLearningCycleUseCase,
+        reviewIntelligenceProposalUseCase,
+        validateTopicsUseCase,
+        runAiShadowValidationUseCase,
+        runAiShadowCorpusEvaluationUseCase,
+        runIntakeAgentUseCase,
+        syncWorldMonitorSourcesUseCase,
+        normalizeWorldMonitorDataUseCase,
+        runWebResearchUseCase,
+        webResearchRepository,
+        buildResearchCampaignUseCase,
+        runDirectSourceResearchUseCase,
+        prepareDirectSourceIntakeUseCase,
+        appendRetrievedSourceIntakeUseCase,
+        recoverHistoricalProvenanceUseCase,
+        runResearchCampaignUseCase,
+        runDeepResearchSweepUseCase,
+        deepResearchSweepRepository,
+        buildResearchLeadTriageUseCase,
+        researchLeadTriageRepository,
+        retrieveResearchSourcesUseCase,
+        runResearchPackUseCase,
+        buildResearchBaselineCompletionUseCase,
+        reconcileBaselineEvidenceUseCase,
+        verifyBaselineEvidenceUseCase,
+        admitBaselineEvidenceUseCase,
+        researchBaselineCompletionRepository,
+        buildHistoricalEvidenceRecoveryUseCase,
+        historicalEvidenceRecoveryRepository,
+        historicalProvenanceRecoveryRepository,
+        researchSourceRetrievalRepository,
+        runAutonomousResearchUseCase,
+        validateAutonomousResearchPolicyUseCase,
+        researchAgentLoopUseCase,
+        researchAgentScheduler,
+        researchAgentRepository,
+        validator, runGateAcquisitionUseCase, normalizeTopicNamesUseCase, recomputeAllTopicStagesUseCase,
+        };
 }

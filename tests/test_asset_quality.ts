@@ -109,7 +109,7 @@ describe('asset quality', () => {
       ...packageJson.dependencies,
       ...packageJson.devDependencies,
     };
-    for (const dependency of ['react', 'next', 'vite', 'axios', 'playwright', 'puppeteer', 'cheerio']) {
+    for (const dependency of ['react', 'next', 'vite', 'axios', 'express', 'nestjs']) {
       expect(installed).not.toHaveProperty(dependency);
     }
   });

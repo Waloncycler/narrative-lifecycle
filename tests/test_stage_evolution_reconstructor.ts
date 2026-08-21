@@ -12,7 +12,7 @@ function evidence(overrides: Partial<EvidenceNode>): EvidenceNode {
     event_title: 'A cited topic event',
     event_summary: 'A complete source-backed event summary.',
     event_type: 'disclosure',
-    source_name: 'Official source',
+    source_name: `Official source ${overrides.evidence_id ?? 'evidence'}`,
     source_url: 'https://example.test/evidence',
     source_type: 'official',
     evidence_strength: 'E2',
@@ -71,7 +71,7 @@ describe('stage evolution reconstruction credibility', () => {
 
     expect(timeline.current_stage).toBe('S0');
     expect(timeline.history_status).toBe('insufficient');
-    expect(timeline.excluded_evidence).toEqual([{ evidence_id: 'legacy_backfill', reason: 'unverified_historical_backfill' }]);
+    expect(timeline.excluded_evidence).toEqual([expect.objectContaining({ evidence_id: 'legacy_backfill', reason: 'unverified_historical_backfill', event_title: 'A cited topic event' })]);
   });
 
   it('does not accept rows missing citation, summary, interpretation, or limitation', () => {
@@ -81,6 +81,6 @@ describe('stage evolution reconstruction credibility', () => {
 
     expect(timeline.history_status).toBe('insufficient');
     expect(timeline.eligible_parent_evidence_count).toBe(0);
-    expect(timeline.excluded_evidence).toEqual([{ evidence_id: 'incomplete', reason: 'missing_provenance' }]);
+    expect(timeline.excluded_evidence).toEqual([expect.objectContaining({ evidence_id: 'incomplete', reason: 'missing_provenance', missing_fields: ['source_url', 'event_summary', 'interpretation', 'limitation'] })]);
   });
 });

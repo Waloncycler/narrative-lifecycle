@@ -9,10 +9,11 @@ const maxTargets = readPositiveInt('--max-targets', 3);
 const maxSourcesPerTarget = readPositiveInt('--max-sources', 4);
 const publish = args.has('--publish-auto');
 const evidenceIds = readRepeatable('--evidence-id');
+const sourceUrlsByEvidenceId = readEvidenceSourceUrls('--source-url');
 const useCases = createProductCoreUseCases(repoRoot);
 
-const recovered = await useCases.recoverHistoricalProvenanceUseCase.execute({ maxTargets, maxSourcesPerTarget, evidenceIds });
-const session = useCases.appendRetrievedSourceIntakeUseCase.execute(recovered.retrieval);
+const recovered = await useCases.recoverHistoricalProvenanceUseCase.execute({ maxTargets, maxSourcesPerTarget, evidenceIds, sourceUrlsByEvidenceId });
+const session = useCases.appendRetrievedSourceIntakeUseCase.execute(recovered.retrieval, { freshSession: true });
 let autonomy: { published: number; held: number } | null = null;
 if (recovered.report.auto_intake_ready_count && session) {
   const bundle = await useCases.runIntakeAgentUseCase.executeLatest();
@@ -46,4 +47,17 @@ function readRepeatable(name: string): string[] {
     if (process.argv[index] === name && process.argv[index + 1]?.trim()) values.push(process.argv[index + 1]!.trim());
   }
   return values;
+}
+
+function readEvidenceSourceUrls(name: string): Record<string, string[]> {
+  const result: Record<string, string[]> = {};
+  for (const value of readRepeatable(name)) {
+    const separator = value.indexOf('=');
+    if (separator < 1) continue;
+    const evidenceId = value.slice(0, separator);
+    const url = value.slice(separator + 1);
+    if (!url.startsWith('http://') && !url.startsWith('https://')) continue;
+    result[evidenceId] = [...(result[evidenceId] ?? []), url];
+  }
+  return result;
 }

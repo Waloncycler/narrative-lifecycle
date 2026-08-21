@@ -27,18 +27,25 @@ export class RecoverHistoricalProvenanceUseCase {
     evidenceIds?: string[];
     includeEvidenceGrade?: boolean;
     requireTopicTitleMatch?: boolean;
+    sourceUrlsByEvidenceId?: Record<string, string[]>;
   } = {}): Promise<{ report: HistoricalProvenanceRecoveryReport; retrieval: ResearchSourceRetrievalReport }> {
     const generatedAt = this.deps.now();
+    const explicitEvidenceIds = new Set(input.evidenceIds ?? []);
+    const admittedEvidenceIds = this.deps.readAdmittedEvidenceIds();
+    // An explicit recovery request means the admitted row has failed a later
+    // provenance audit. It must be recoverable without deleting history first.
+    for (const evidenceId of explicitEvidenceIds) admittedEvidenceIds.delete(evidenceId);
     const targets = selectHistoricalProvenanceTargets({
-      evidence: this.deps.readEvidence().filter((item) => !input.evidenceIds?.length || input.evidenceIds.includes(item.evidence_id)), registry: this.deps.readRegistry(), admittedEvidenceIds: this.deps.readAdmittedEvidenceIds(), limit: input.maxTargets ?? 3,
+      evidence: this.deps.readEvidence().filter((item) => !explicitEvidenceIds.size || explicitEvidenceIds.has(item.evidence_id)), registry: this.deps.readRegistry(), admittedEvidenceIds, limit: input.maxTargets ?? 3,
       includeEvidenceGrade: input.includeEvidenceGrade,
-      requireTopicTitleMatch: input.requireTopicTitleMatch,
+      requireTopicTitleMatch: input.requireTopicTitleMatch ?? (explicitEvidenceIds.size ? false : undefined),
     });
     const report = await recoverHistoricalProvenance({
       targets, generatedAt, producerVersion: this.deps.producerVersion(), searchProvider: this.deps.searchProvider(),
       search: (query) => this.deps.search({ query }),
       retrieve: (url) => this.deps.retrieve({ url, timeoutMs: input.timeoutMs ?? 15_000 }),
       maxSourcesPerTarget: input.maxSourcesPerTarget ?? 4,
+      sourceUrlsByEvidenceId: input.sourceUrlsByEvidenceId,
     });
     this.deps.validate(report);
     this.deps.write(report);

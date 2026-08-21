@@ -2,5 +2,8 @@ export { ImportEvidenceUseCase } from '@/app/use_cases/import_evidence_use_case'
 export { RunPipelineUseCase } from '@/app/use_cases/run_pipeline_use_case';
 export { BuildDiffUseCase } from '@/app/use_cases/build_diff_use_case';
 export { BuildWeeklyBriefUseCase } from '@/app/use_cases/build_weekly_brief_use_case';
+export { RecomputeAllTopicStagesUseCase } from '@/app/use_cases/recompute_all_topic_stages_use_case';
+export { RunGateAcquisitionUseCase } from '@/app/use_cases/run_gate_acquisition_use_case';
+export { NormalizeTopicNamesUseCase } from '@/app/use_cases/normalize_topic_names_use_case';
 export { BuildOperatorReviewUseCase } from '@/app/use_cases/build_operator_review_use_case';
 export { RunWeeklyUseCase } from '@/app/use_cases/run_weekly_use_case';

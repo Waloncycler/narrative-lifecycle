@@ -2,6 +2,7 @@ import type { NarrativeMonitorModel, NarrativeMonitorTopic } from '@/features/na
 import { QUANTITATIVE_RULE_VERSION } from '@/features/scoring/domain/quantitative_framework';
 import { isUsableBranchName } from '@/features/narrative/domain/market_naming';
 import { WORLDMONITOR_SOURCE_CATALOG } from '@/features/worldmonitor/domain/worldmonitor_source_catalog';
+import { TOPIC_NAME_LOCALIZATIONS } from '@/config/topic_name_localizations';
 
 export function renderNarrativeMonitor(model: NarrativeMonitorModel): string {
   const body = model.status === 'insufficient_data'
@@ -25,7 +26,7 @@ export function renderNarrativeMonitor(model: NarrativeMonitorModel): string {
             const style = hasChange ? 'border-color: var(--accent); background: rgba(136, 192, 208, 0.05);' : '';
             return `<a class="heatmap-card" href="/topics/${encodeURIComponent(topic.topic_id)}" style="${style}">
               <span class="stage ${stageClass(topic.current_stage)}">${stageDisplay(topic.current_stage)}</span>
-              <h3>${escape(topic.topic_name)}</h3>
+              <h3>${displayName(topic.topic_name)}</h3>
               <p>${escape(topic.baseline_status === 'baseline_required' ? '需补充父主题基准证据' : friendlyReason(topic.why_not_higher_stage))}</p>
               <div class="heatmap-density">
                 ${[...Array(6)].map((_, i) => `<div class="heatmap-tick ${i < Math.min(6, Math.max(1, topic.evidence_count)) ? 'active' : ''}"></div>`).join('')}
@@ -594,7 +595,7 @@ export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string)
   const basicFacts = `
     <div class="topic-summary">
       <div><span>数据可信度</span><strong class="confidence ${topic.data_confidence}">${confidenceLabel(topic.data_confidence)}</strong></div>
-      <div><span>正式证据</span><strong>${topic.evidence_count}</strong></div>
+      <div><span>已入库证据</span><strong>${topic.evidence_count}</strong></div>
       <div><span>细分分支</span><strong>${topic.branch_count}</strong></div>
       <div><span>本周变化</span><strong>${changeLabel(change?.change_type ?? 'no_change')}</strong></div>
     </div>
@@ -698,9 +699,28 @@ export function renderTopicDetail(model: NarrativeMonitorModel, topicId: string)
                 '</div>';
               }).join('');
             } else if (topicHistory) {
-              root.innerHTML = historySummary(topicHistory) + '<p class="muted">尚无可核验的阶段变化。请补充带来源、摘要、解释和限制说明的母主题证据。</p>';
+              const observedEvidence = topicHistory.evidence_timeline || [];
+              const observations = topicHistory.snapshot_observations || [];
+              const excluded = topicHistory.excluded_evidence || [];
+              const exclusionReason = (item) => item.reason === 'unverified_historical_backfill'
+                ? '历史回填尚未完成原文核验'
+                : item.reason === 'invalid_chronology'
+                  ? '事件时间或可获得时间无效'
+                  : '缺少完整字段：' + (item.missing_fields || []).join('、');
+              const excludedHtml = excluded.length ? '<div class="pending-evidence-chain"><h3>待核验证据链</h3>' + excluded.map((item) =>
+                '<article class="pending-evidence-item"><div><span>' + escapeTimeline(item.event_date || '日期待核验') + '</span><strong>' + escapeTimeline(item.event_title || item.evidence_id) + '</strong></div>' +
+                '<p>' + escapeTimeline(item.source_name || '来源待核验') + (item.source_url ? ' · <a href="' + escapeTimeline(item.source_url) + '" target="_blank" rel="noreferrer">查看来源</a>' : '') + '</p>' +
+                '<small>' + escapeTimeline(exclusionReason(item)) + '</small></article>'
+              ).join('') + '</div>' : '';
+              const observationsHtml = observations.length ? '<div class="snapshot-observations"><h3>系统历史观测</h3>' + observations.map((item) =>
+                '<div class="snapshot-observation"><span>' + escapeTimeline(String(item.observed_at).split('T')[0]) + '</span><strong>' + escapeTimeline(item.stage) + '</strong><small>' +
+                (item.observation_kind === 'topic_registered' ? '主题进入研究库' : '系统运行快照；关联正式证据 ' + escapeTimeline((item.evidence_ids || []).length) + ' 条') + '</small></div>'
+              ).join('') + '</div>' : '';
+              root.innerHTML = historySummary(topicHistory) + excludedHtml + observationsHtml + (observedEvidence.length
+                ? '<p class="muted">已有 ' + escapeTimeline(observedEvidence.length) + ' 条可核验母主题证据，但阶段在观测期内未发生变化。</p>'
+                : '<p class="muted">尚无可用于重建阶段变化的母主题证据。以上仅为系统观测，不代替 Evidence Table；分支证据不会代替母主题历史。</p>');
             } else {
-              root.innerHTML = '<p class="muted">尚无演化历史数据。</p>';
+              root.innerHTML = '<p class="muted">时间线读取异常：当前主题未进入历史投影。请重新运行时间线重建或检查主题映射。</p>';
             }
           }
         } catch (e) {
@@ -875,13 +895,13 @@ export function renderGovernance(model: NarrativeMonitorModel): string {
     </div>`);
 }
 
-type PageKey = 'overview' | 'changes' | 'topics' | 'inbox' | 'queue' | 'agent' | 'system' | 'runs' | 'sources' | 'methodology' | 'governance';
+type PageKey = 'overview' | 'changes' | 'topics' | 'inbox' | 'queue' | 'agent' | 'system' | 'runs' | 'sources' | 'methodology' | 'governance' | 'worldmonitor' | 'canonical-events';
 
 function pageShell(active: PageKey, title: string, body: string): string {
   const activeGroup = active === 'inbox' ? 'queue'
     : active === 'changes' ? 'overview'
     : active === 'agent' ? 'agent'
-    : ['system', 'runs', 'sources', 'methodology', 'governance'].includes(active) ? 'system'
+    : ['system', 'runs', 'sources', 'methodology', 'governance', 'worldmonitor', 'canonical-events'].includes(active) ? 'system'
       : active;
   const nav = (key: string, label: string, href: string) => {
     const current = activeGroup === key;
@@ -900,13 +920,15 @@ function researchQueueNav(active: 'queue' | 'inbox'): string {
   </nav>`;
 }
 
-function systemNav(active: 'system' | 'runs' | 'sources' | 'governance' | 'methodology'): string {
+function systemNav(active: 'system' | 'runs' | 'sources' | 'governance' | 'methodology' | 'worldmonitor' | 'canonical-events'): string {
   const item = (key: typeof active, label: string, href: string) =>
     `<a class="${active === key ? 'active' : ''}" href="${href}">${label}</a>`;
   return `<nav class="section-nav" aria-label="系统导航">
     ${item('system', '系统概览', '/system')}
     ${item('runs', '运行状态', '/runs')}
     ${item('sources', '数据源', '/sources')}
+    ${item('worldmonitor', '原始数据湖', '/worldmonitor')}
+    ${item('canonical-events', '清洗事件库', '/canonical-events')}
     ${item('governance', '学习治理', '/governance')}
     ${item('methodology', '方法论', '/methodology')}
   </nav>`;
@@ -1056,6 +1078,18 @@ function evidenceStrengthLabel(value: string): string {
   return label ? `${escape(value)} · ${label}` : escape(value);
 }
 function displayNameText(value: string): string {
+  if (!value) return value;
+  
+  if (TOPIC_NAME_LOCALIZATIONS[value]) return TOPIC_NAME_LOCALIZATIONS[value];
+  
+  // Try to match the english string back to the localization key
+  const normalizedValue = value.toLowerCase().trim();
+  for (const [key, zhName] of Object.entries(TOPIC_NAME_LOCALIZATIONS)) {
+    if (zhName === value) return zhName;
+    const enName = key.replace('provisional_', '').replace(/_/g, ' ').toLowerCase();
+    if (enName === normalizedValue) return zhName;
+  }
+
   return ({
     'BCI': '脑机接口',
     bci: '脑机接口',
@@ -1346,6 +1380,20 @@ function styles(): string { return `
 .timeline-gate { font-size: 9px; text-transform: uppercase; padding: 2px 4px; border-radius: 2px; border: 1px solid #4c566a; color: var(--muted); }
 .timeline-gate.unlocked { border-color: #a3be8c; color: #a3be8c; }
 .timeline-gate.warning { border-color: #bf616a; color: #bf616a; }
+.snapshot-observations { display: grid; gap: 8px; margin: 0 0 18px -20px; }
+.snapshot-observations h3 { margin: 0 0 4px; font-size: 12px; color: var(--muted); }
+.snapshot-observation { display: grid; grid-template-columns: 82px 54px minmax(0, 1fr); gap: 8px; align-items: baseline; padding: 8px 10px; border: 1px solid var(--line); background: var(--nav); font-size: 11px; }
+.snapshot-observation span { color: var(--accent); }
+.snapshot-observation strong { color: #eceff4; }
+.snapshot-observation small { color: var(--muted); }
+.pending-evidence-chain { display: grid; gap: 8px; margin: 0 0 18px -20px; }
+.pending-evidence-chain h3 { margin: 0 0 4px; font-size: 13px; color: var(--amber); }
+.pending-evidence-item { display: grid; gap: 5px; padding: 10px 12px; border: 1px solid var(--line); border-left: 3px solid var(--amber); background: var(--nav); }
+.pending-evidence-item div { display: grid; gap: 4px; }
+.pending-evidence-item span, .pending-evidence-item small { color: var(--muted); font-size: 10px; }
+.pending-evidence-item strong { color: #eceff4; font-size: 12px; line-height: 1.45; }
+.pending-evidence-item p { margin: 0; color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+.pending-evidence-item a { color: var(--accent); }
 
 .gate-lede { margin: 0 0 12px; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .radar-wrap { width: 100%; max-width: 300px; margin: 0 auto; }
@@ -1421,4 +1469,58 @@ function renderActiveProbes(campaign: import('@/features/research/types/research
       }).join('')}
     </section>
   `;
+}
+
+export function renderWorldMonitorLake(snapshots: any[]): string {
+  return pageShell('worldmonitor', 'Data Lake (Raw)', `
+    ${systemNav('worldmonitor' as any)}
+    <section class="hero-row">
+      <div><p class="eyebrow">Raw Snapshots</p><h1>WorldMonitor Data Lake</h1><p class="lede">实时监控爬虫抓取的底层原始数据与解析状态。</p></div>
+    </section>
+    <section class="panel">
+      <div class="panel-heading"><h2>最近抓取快照</h2></div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>来源</th><th>时间</th><th>状态</th><th>正文预览</th></tr></thead>
+          <tbody>
+            ${snapshots.map(s => `
+              <tr>
+                <td><strong>${escape(s.source_id)}</strong><br><small>${escape(s.content_type)}</small></td>
+                <td>${escape(new Date(s.fetched_at).toLocaleString())}</td>
+                <td><span class="chip ${s.normalized_evidence_id === 'FAILED_PARSE' ? 'priority-high' : s.normalized_evidence_id ? 'priority-none' : 'priority-medium'}">${s.normalized_evidence_id === 'FAILED_PARSE' ? '解析失败' : s.normalized_evidence_id ? '已清洗' : '待处理'}</span></td>
+                <td><div style="max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: monospace; font-size: 0.85em;">${escape(s.raw_body ? s.raw_body.substring(0, 100) : '空')}</div></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `);
+}
+
+export function renderCanonicalEvents(events: any[]): string {
+  return pageShell('canonical-events', 'Canonical Events', `
+    ${systemNav('canonical-events' as any)}
+    <section class="hero-row">
+      <div><p class="eyebrow">The Brain Memory</p><h1>Canonical Events</h1><p class="lede">经过清洗去重后的规范化事实，供 AI 分析的干净记忆。</p></div>
+    </section>
+    <section class="panel">
+      <div class="panel-heading"><h2>最近收录事件</h2></div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>事件标题</th><th>首次观测</th><th>最后观测</th><th>哈希键</th></tr></thead>
+          <tbody>
+            ${events.map(e => `
+              <tr>
+                <td><strong>${escape(e.title)}</strong></td>
+                <td>${escape(new Date(e.first_observed_at).toLocaleString())}</td>
+                <td>${escape(new Date(e.last_observed_at).toLocaleString())}</td>
+                <td><code style="font-size: 0.8em; color: var(--text-muted);">${escape(e.event_key.substring(0,16))}...</code></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `);
 }

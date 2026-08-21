@@ -2,6 +2,8 @@ import { readGenericArtifact, readGenericTextArtifact } from '@/platform/io/run_
 import type { ResearchSourceRetrievalReport } from '@/features/research/types/research_source_retrieval';
 import type { ResearchSourceQualityReport } from '@/features/research/types/research_source_quality';
 import { writeGenericArtifact, writeGenericTextArtifact } from '@/platform/io/run_manifest_writer';
+import { JSDOM } from 'jsdom';
+import { Readability } from '@mozilla/readability';
 
 export class DbResearchSourceRetrievalRepository {
   constructor(private readonly repoRoot: string = process.cwd()) {}
@@ -47,8 +49,24 @@ export class HttpResearchSourceRetriever {
       const contentType = response.headers.get('content-type');
       if (/(?:application\/pdf|image\/|video\/|audio\/)/i.test(contentType ?? '')) throw new Error('unsupported_binary_source_content');
       
-      const body = await response.text();
-      return { httpStatus: response.status, contentType: useJina ? 'text/markdown' : contentType, body: body.slice(0, 1_000_000) };
+      let body = await response.text();
+      let finalContentType = useJina ? 'text/markdown' : contentType;
+
+      if (!useJina && contentType && /text\/html/i.test(contentType)) {
+        try {
+          const dom = new JSDOM(body, { url: requestUrl });
+          const reader = new Readability(dom.window.document);
+          const article = reader.parse();
+          if (article && article.textContent) {
+            body = `# ${article.title || 'Extracted Article'}\n\n${article.textContent}`;
+            finalContentType = 'text/markdown; readability=true';
+          }
+        } catch (e) {
+          // Ignore readability error and fall back to raw html
+        }
+      }
+
+      return { httpStatus: response.status, contentType: finalContentType, body: body.slice(0, 1_000_000) };
     } catch (error) {
       // Fallback to Firecrawl for hard-to-scrape JS rendered pages or CAPTCHA blocks
       if (process.env.FIRECRAWL_API_KEY && !studyId) {

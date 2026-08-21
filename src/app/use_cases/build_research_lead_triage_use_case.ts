@@ -20,10 +20,10 @@ export interface BuildResearchLeadTriageUseCaseDeps {
 export class BuildResearchLeadTriageUseCase {
   constructor(private readonly deps: BuildResearchLeadTriageUseCaseDeps) {}
 
-  execute(): ResearchLeadTriageReport {
+  execute(input: { webResearch?: WebResearchReport | null; directResearch?: DirectSourceResearchReport | null } = {}): ResearchLeadTriageReport {
     const report = buildResearchLeadTriage({
-      webResearch: this.deps.readWebResearch(),
-      directResearch: this.deps.readDirectResearch(),
+      webResearch: input.webResearch === undefined ? this.deps.readWebResearch() : input.webResearch,
+      directResearch: input.directResearch === undefined ? this.deps.readDirectResearch() : input.directResearch,
       sourceAtlas: this.deps.readSourceAtlas(),
       companies: this.deps.readCompanies(),
       generatedAt: this.deps.now(),

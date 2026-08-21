@@ -13,7 +13,7 @@ import {
 type RecordValue = Record<string, unknown>;
 type Normalizer = (record: RecordValue, payload: WorldMonitorPayload) => WorldMonitorNormalizedFact | null;
 
-const NORMALIZERS: Partial<Record<string, Normalizer>> = {
+export const NORMALIZERS: Partial<Record<string, Normalizer>> = {
   DirectUSGSEarthquakes: normalizeUsgs,
   DirectNASAEonetEvents: normalizeEonet,
   DirectNWSAlerts: normalizeNws,
@@ -71,7 +71,7 @@ export function normalizerIdForOperation(operationId: string): string {
 
 export function recordsForWorldMonitorPayload(payload: WorldMonitorPayload): RecordValue[] {
   const body = payload.body;
-  if (!isObject(body) && !Array.isArray(body)) return [];
+  if (!isObject(body) && !Array.isArray(body) && typeof body !== 'string') return [];
   switch (payload.descriptor.operation_id) {
     case 'DirectUSGSEarthquakes':
     case 'DirectNWSAlerts':

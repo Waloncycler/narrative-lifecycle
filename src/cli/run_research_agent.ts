@@ -13,6 +13,17 @@ const deepMaxRounds = valueFor(args, '--max-rounds');
 const deepQueriesPerRound = valueFor(args, '--queries-per-round');
 const useCases = createProductCoreUseCases(repoRoot);
 
+let currentPhaseStart = Date.now();
+const formatMetrics = (m: any) => {
+  if (!m) return '';
+  const parts = [];
+  if (m.sources_requested > 0) parts.push(`src:${m.sources_completed}/${m.sources_requested}`);
+  if (m.candidate_count > 0) parts.push(`cand:${m.candidate_count}`);
+  if (m.web_research_leads > 0) parts.push(`leads:${m.web_research_leads}`);
+  if (m.provisional_topics_activated > 0) parts.push(`topics:${m.provisional_topics_activated}`);
+  return parts.length ? ` [${parts.join(' ')}]` : '';
+};
+
 const manifest = await useCases.researchAgentLoopUseCase.execute({
   loop_kind: kind,
   triggered_by: 'cli',
@@ -20,6 +31,19 @@ const manifest = await useCases.researchAgentLoopUseCase.execute({
   force_refresh: forceRefresh,
   deep_max_rounds: deepMaxRounds ? Number(deepMaxRounds) : undefined,
   deep_queries_per_round: deepQueriesPerRound ? Number(deepQueriesPerRound) : undefined,
+  onPhaseProgress: (e) => {
+    const elapsed = Math.round((Date.now() - currentPhaseStart) / 1000);
+    const mStr = formatMetrics(e.metrics);
+    if (e.status === 'running') {
+      currentPhaseStart = Date.now();
+      process.stdout.write(`\r\x1b[K⏳ ${e.phase.padEnd(12)} | running...${mStr}`);
+    } else {
+      const icon = e.status === 'completed' ? '✅' : e.status === 'skipped' ? '⏭️ ' : '❌';
+      process.stdout.write(`\r\x1b[K${icon} ${e.phase.padEnd(12)} | ${e.status} in ${elapsed}s${mStr}\n`);
+      if (e.detail) console.log(`   └─ ${e.detail}`);
+      currentPhaseStart = Date.now();
+    }
+  }
 });
 console.log(`run_id=${manifest.run_id} status=${manifest.status} loop=${manifest.loop_kind} publication=${publishAuto ? 'requested' : 'review_only'}`);
 console.log(

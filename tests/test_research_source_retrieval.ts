@@ -17,9 +17,17 @@ const triage = {
   ],
 } as never;
 
+const policy = {
+  policy_version: '1.0',
+  governed_seed_news_hosts: ['cls.cn'],
+  authoritative_secondary_hosts: ['reuters.com'],
+  financial_news_domains: ['cls.cn'],
+  low_governance_hosts: ['sohu.com']
+};
+
 describe('research source retrieval', () => {
   it('selects only governed review leads and extracts bounded source-citable text', () => {
-    expect(selectSourceRetrievalTargets(triage, 6).map((item) => item.triage_id)).toEqual(['academic_1', 'official_1']);
+    expect(selectSourceRetrievalTargets(triage, 6, 2, policy).map((item) => item.triage_id)).toEqual(['academic_1', 'official_1']);
     const parsed = extractReadableSource('<html><head><title>Official BCI record</title><script>bad()</script></head><body><p>This original official source contains a sufficiently long factual paragraph about a recorded clinical development and its date for independent review.</p><p>A second sufficiently long paragraph provides a distinct factual statement that can be checked against the original document before evidence intake.</p></body></html>', 'text/html');
     expect(parsed.title).toBe('Official BCI record');
     expect(parsed.text).not.toContain('bad()');
@@ -34,7 +42,7 @@ describe('research source retrieval', () => {
         { triage_id: 'recent_high', origin_lead_id: 'recent', topic_id: 'bci', branch_id: null, candidate_node_id: null, source_class: 'official', disposition: 'priority_review', priority_score: 90, freshness: 'recent', title: 'Recent', url: 'https://official.example/recent' },
       ],
     } as never;
-    expect(selectSourceRetrievalTargets(ranked, 2).map((item) => item.triage_id)).toEqual(['fresh_medium', 'recent_high']);
+    expect(selectSourceRetrievalTargets(ranked, 2, 2, policy).map((item) => item.triage_id)).toEqual(['fresh_medium', 'recent_high']);
   });
 
   it('uses a separately bounded unknown-domain discovery lane', () => {
@@ -47,9 +55,9 @@ describe('research source retrieval', () => {
         { triage_id: 'unknown_low', source_class: 'unknown', disposition: 'review', freshness: 'fresh', priority_score: 70 },
       ],
     } as never;
-    expect(selectSourceRetrievalTargets(report, 1, 2).map((item) => item.triage_id))
+    expect(selectSourceRetrievalTargets(report, 1, 2, policy).map((item) => item.triage_id))
       .toEqual(['official', 'unknown_high', 'unknown_mid']);
-    expect(selectSourceRetrievalTargets(report, 1, 0).map((item) => item.triage_id)).toEqual(['official']);
+    expect(selectSourceRetrievalTargets(report, 1, 0, policy).map((item) => item.triage_id)).toEqual(['official']);
   });
 
   it('recognizes common overseas government domains before retrieval selection', () => {
@@ -60,7 +68,7 @@ describe('research source retrieval', () => {
         priority_score: 50, source_domain: host, url: `https://${host}/notice`,
       })),
     } as never;
-    const selected = selectSourceRetrievalTargets(report, 8, 0);
+    const selected = selectSourceRetrievalTargets(report, 8, 0, policy);
     expect(selected).toHaveLength(5);
     expect(selected.every((item) => item.source_class === 'official')).toBe(true);
   });
@@ -76,7 +84,7 @@ describe('research source retrieval', () => {
       }],
     } as never;
     const report = await new RetrieveResearchSourcesUseCase({
-      now: () => generatedAt, producerVersion: () => 'v0.test', readLeadTriage: () => unknownTriage,
+      now: () => generatedAt, producerVersion: () => 'v0.test', readLeadTriage: () => unknownTriage, readGovernancePolicy: () => policy,
       retrieve: async () => ({ httpStatus: 200, contentType: 'text/html', body: '<html><title>Unclassified report</title><body><article><p>This unclassified page contains a detailed factual statement, named institution, reported date, concrete result, and explicit limitation that can help discover a better original source.</p><p>It remains an ungoverned discovery clue and must not be used as corroboration or admitted into the Evidence Table.</p></article></body></html>' }),
       writeReport: () => undefined, validateReport: () => undefined,
       writeQualityReport: () => undefined, validateQualityReport: () => undefined,
@@ -163,8 +171,9 @@ describe('research source retrieval', () => {
 
   it('writes a schema-valid context-only retrieval package without importing evidence', async () => {
     let saved: unknown;
+    const deepTriage = triage;
     const report = await new RetrieveResearchSourcesUseCase({
-      now: () => generatedAt, producerVersion: () => 'v0.test', readLeadTriage: () => triage,
+      now: () => generatedAt, producerVersion: () => 'v0.test', readLeadTriage: () => deepTriage, readGovernancePolicy: () => policy,
       retrieve: async ({ url }) => ({ httpStatus: 200, contentType: 'text/html', body: `<html><title>Source page</title><body><p>This source page has a sufficiently detailed factual paragraph about ${url} and a reported official action that can be independently verified before any formal evidence decision.</p><p>The second factual paragraph describes a separate result, time, and limitation for a human researcher to inspect at the original page.</p></body></html>` }),
       writeReport: (value) => { saved = value; }, validateReport: () => undefined,
       writeQualityReport: () => undefined, validateQualityReport: () => undefined,
