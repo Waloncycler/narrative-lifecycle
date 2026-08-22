@@ -293,65 +293,66 @@ function candidateFromQuote(input: {
 }
 
 export function inferTopic(text: string): { topic_id: string; branch_id: string | null } {
-  if (text.includes('中医药') || text.includes('中西医') || text.includes('traditional chinese medicine') || text.includes('tcm')) {
+  const lower = text.toLowerCase();
+  if (text.includes('中医药') || text.includes('中西医') || lower.includes('traditional chinese medicine') || lower.includes('tcm')) {
     return { topic_id: 'traditional_chinese_medicine_revival', branch_id: null };
   }
-  if (text.includes('bci') || text.includes('brain-computer') || text.includes('脑机') || text.includes('medical rehabilitation')) {
-    return { topic_id: 'bci', branch_id: text.includes('rehab') || text.includes('medical') ? 'bci_medical_rehab' : null };
+  if (lower.includes('bci') || lower.includes('brain-computer') || text.includes('脑机') || lower.includes('medical rehabilitation')) {
+    return { topic_id: 'bci', branch_id: lower.includes('rehab') || lower.includes('medical') ? 'bci_medical_rehab' : null };
   }
-  if (text.includes('humanoid') || text.includes('robot') || text.includes('机器人') || text.includes('具身')) return { topic_id: 'humanoid_robotics', branch_id: null };
-  if (text.includes('license-out') || text.includes('license out') || text.includes('licensing deal') || text.includes('out-licensing') || text.includes('对外授权') || text.includes('授权交易')) {
-    if (text.includes('adc')) return { topic_id: 'innovative_drug_license_out', branch_id: 'adc_license_out' };
+  if (lower.includes('humanoid') || lower.includes('robot') || text.includes('机器人') || text.includes('具身')) return { topic_id: 'humanoid_robotics', branch_id: null };
+  if (lower.includes('license-out') || lower.includes('license out') || lower.includes('licensing deal') || lower.includes('out-licensing') || text.includes('对外授权') || text.includes('授权交易')) {
+    if (lower.includes('adc')) return { topic_id: 'innovative_drug_license_out', branch_id: 'adc_license_out' };
     return { topic_id: 'innovative_drug_license_out', branch_id: null };
   }
-  if (text.includes('drug approval') || text.includes('approved') || text.includes('创新药') || text.includes('新药') || text.includes('新靶点') || text.includes('新机制') || text.includes('放射性') || text.includes('核药') || text.includes('核医学') || text.includes('临床试验')) {
+  if (lower.includes('drug approval') || lower.includes('approved') || text.includes('创新药') || text.includes('新药') || text.includes('新靶点') || text.includes('新机制') || text.includes('放射性') || text.includes('核药') || text.includes('核医学') || text.includes('临床试验')) {
     if (text.includes('放射性') || text.includes('核药') || text.includes('核医学')) return { topic_id: 'innovative_drug_nuclear_medicine', branch_id: null };
     if (text.includes('临床试验')) return { topic_id: 'innovative_drug_clinical_development', branch_id: null };
     return { topic_id: 'innovative_drug_approval', branch_id: null };
   }
-  if (text.includes('ai video') || text.includes('video generation') || text.includes('视频生成') || text.includes('视频大模型') || text.includes('文生视频')) {
+  if (lower.includes('ai video') || lower.includes('video generation') || text.includes('视频生成') || text.includes('视频大模型') || text.includes('文生视频')) {
     return { topic_id: 'ai_video_generation', branch_id: null };
   }
-  if (text.includes('llm') || text.includes('large language model') || text.includes('foundation model') || text.includes('大模型') || text.includes('多模态') || text.includes('生成式 ai') || text.includes('generative ai')) {
+  if (lower.includes('llm') || lower.includes('large language model') || lower.includes('foundation model') || text.includes('大模型') || text.includes('多模态') || lower.includes('生成式 ai') || lower.includes('generative ai')) {
     return { topic_id: 'ai_foundation_models', branch_id: null };
   }
-  if (text.includes('bitcoin') || text.includes('btc') || text.includes('ethereum') || text.includes('crypto') || text.includes('web3') || text.includes('区块链') || text.includes('加密货币') || text.includes('加密资产')) {
+  if (lower.includes('bitcoin') || lower.includes('btc') || lower.includes('ethereum') || lower.includes('crypto') || lower.includes('web3') || text.includes('区块链') || text.includes('加密货币') || text.includes('加密资产')) {
     return { topic_id: 'blockchain_crypto_market', branch_id: null };
   }
-  if (text.includes('semiconductor') || text.includes('chip') || text.includes('gpu') || text.includes('foundry') || text.includes('晶圆') || text.includes('芯片') || text.includes('半导体') || text.includes('先进制程')) {
+  if (lower.includes('semiconductor') || lower.includes('chip') || lower.includes('gpu') || lower.includes('foundry') || text.includes('晶圆') || text.includes('芯片') || text.includes('半导体') || text.includes('先进制程')) {
     return { topic_id: 'semiconductor_advanced_manufacturing', branch_id: null };
   }
-  if (text.includes('satellite') || text.includes('rocket') || text.includes('spacecraft') || text.includes('launch') || text.includes('卫星') || text.includes('火箭') || text.includes('航天') || text.includes('低轨')) {
+  if (lower.includes('satellite') || lower.includes('rocket') || lower.includes('spacecraft') || lower.includes('launch') || text.includes('卫星') || text.includes('火箭') || text.includes('航天') || text.includes('低轨')) {
     return { topic_id: 'commercial_space', branch_id: null };
   }
-  if (text.includes('solid state') || text.includes('solid-state') || text.includes('固态电池') || text.includes('全固态') || text.includes('半固态')) {
+  if (lower.includes('solid state') || lower.includes('solid-state') || text.includes('固态电池') || text.includes('全固态') || text.includes('半固态')) {
     return { topic_id: 'solid_state_battery', branch_id: text.includes('硫化物') ? 'solid_state_sulfide' : text.includes('氧化物') ? 'solid_state_oxide' : null };
   }
-  if (text.includes('ai agent') || text.includes('智能体') || text.includes('agentic') || text.includes('ai agents')) {
+  if (lower.includes('ai agent') || text.includes('智能体') || lower.includes('agentic') || lower.includes('ai agents')) {
     return { topic_id: 'provisional_ai_agents', branch_id: null };
   }
-  if (text.includes('nuclear fusion') || text.includes('核聚变') || text.includes('先进核能') || text.includes('托卡马克') || text.includes('tokamak')) {
+  if (lower.includes('nuclear fusion') || text.includes('核聚变') || text.includes('先进核能') || text.includes('托卡马克') || lower.includes('tokamak')) {
     return { topic_id: 'provisional_nuclear_fusion_advanced_nuclear', branch_id: null };
   }
-  if (text.includes('low-altitude') || text.includes('low altitude') || text.includes('低空经济') || text.includes('evtol') || text.includes('飞行汽车')) {
+  if (lower.includes('low-altitude') || lower.includes('low altitude') || text.includes('低空经济') || lower.includes('evtol') || text.includes('飞行汽车')) {
     return { topic_id: 'provisional_low_altitude_economy', branch_id: null };
   }
-  if (text.includes('synthetic biology') || text.includes('合成生物')) {
+  if (lower.includes('synthetic biology') || text.includes('合成生物')) {
     return { topic_id: 'provisional_synthetic_biology', branch_id: null };
   }
-  if (text.includes('算力') || text.includes('computing infrastructure') || text.includes('智算中心') || text.includes('datacenter')) {
+  if (text.includes('算力') || lower.includes('computing infrastructure') || text.includes('智算中心') || lower.includes('datacenter')) {
     return { topic_id: 'provisional_computing_infrastructure', branch_id: null };
   }
-  if (text.includes('智能制造') || text.includes('smart manufacturing') || text.includes('工业母机')) {
+  if (text.includes('智能制造') || lower.includes('smart manufacturing') || text.includes('工业母机')) {
     return { topic_id: 'provisional_smart_manufacturing', branch_id: null };
   }
-  if (text.includes('battery') || text.includes('solar') || text.includes('energy storage') || text.includes('储能') || text.includes('新能源') || text.includes('光伏') || text.includes('氢能')) {
+  if (lower.includes('battery') || lower.includes('solar') || lower.includes('energy storage') || text.includes('储能') || text.includes('新能源') || text.includes('光伏') || text.includes('氢能')) {
     return { topic_id: 'new_energy_industry', branch_id: null };
   }
-  if (text.includes('autonomous driving') || text.includes('self-driving') || text.includes('智能驾驶') || text.includes('自动驾驶') || text.includes('robotaxi')) {
+  if (lower.includes('autonomous driving') || lower.includes('self-driving') || text.includes('智能驾驶') || text.includes('自动驾驶') || lower.includes('robotaxi')) {
     return { topic_id: 'provisional_autonomous_driving_robotaxi', branch_id: null };
   }
-  if (text.includes('quantum') || text.includes('量子')) return { topic_id: 'provisional_quantum_computing', branch_id: null };
+  if (lower.includes('quantum') || text.includes('量子')) return { topic_id: 'provisional_quantum_computing', branch_id: null };
   return { topic_id: 'unknown_topic', branch_id: null };
 }
 

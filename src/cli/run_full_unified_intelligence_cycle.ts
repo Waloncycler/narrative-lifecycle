@@ -170,12 +170,21 @@ async function fetchAllAdvancedSources(): Promise<UnifiedRawFact[]> {
   return facts;
 }
 
+import { runHeadlessDocumentIntake } from './run_headless_document_intake';
+
 async function runFullUnifiedPipeline() {
   console.log('================================================================');
   console.log('🚀 启动全维立体情报流水线 (Unified Intelligence Pipeline v2.0)');
   console.log('================================================================\n');
 
-  // 1. 采集全网五大权威源
+  // 1. 扫描本地 data/documents/ 下的所有研报/公告/政策 PDF & Docx 无感接入
+  try {
+    await runHeadlessDocumentIntake('data/documents');
+  } catch (e: any) {
+    console.log(`⚠️ 本地文档扫描跳过: ${e.message}`);
+  }
+
+  // 2. 采集全网五大权威源
   const rawFacts = await fetchAllAdvancedSources();
   console.log(`\n📦 本轮全网立体采集汇总：共抓取到 ${rawFacts.length} 条一手高价值事实！\n`);
 

@@ -68,7 +68,7 @@ async function main() {
       break;
 
     case 'intake':
-      await executeIntakeCommand(subArgs[0] || 'workbench', subArgs.slice(1));
+      await executeIntakeCommand(subArgs[0] || 'auto', subArgs.slice(1));
       break;
 
     case 'research':

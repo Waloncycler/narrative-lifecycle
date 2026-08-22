@@ -308,6 +308,15 @@ function resolvePdfToTextBinary(): string | null {
   return null;
 }
 
+function normalizePdfText(text: string): string {
+  return text
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n\s*\n+/g, '\n\n')
+    .trim();
+}
+
 function parsePdf(path: string): string {
   // Strategy 1: Poppler pdftotext CLI (high-fidelity UTF-8 extraction)
   const pdftotext = resolvePdfToTextBinary();
@@ -318,7 +327,7 @@ function parsePdf(path: string): string {
         maxBuffer: 50 * 1024 * 1024,
       });
       if (text && text.trim().length > 10) {
-        return text.replace(/\s+/g, ' ').trim();
+        return normalizePdfText(text);
       }
     } catch {
       // fallback to python engine
@@ -334,13 +343,13 @@ function parsePdf(path: string): string {
     '            if mod in ["pypdf", "pypdf2"]:',
     '                m = __import__(mod)',
     '                reader = m.PdfReader(path)',
-    '                text = " ".join([page.extract_text() or "" for page in reader.pages])',
+    '                text = "\\n\\n".join([page.extract_text() or "" for page in reader.pages])',
     '                if len(text.strip()) > 10:',
     '                    return text',
     '            elif mod in ["pymupdf", "fitz"]:',
     '                fitz = __import__("fitz")',
     '                doc = fitz.open(path)',
-    '                text = " ".join([page.get_text() for page in doc])',
+    '                text = "\\n\\n".join([page.get_text() for page in doc])',
     '                if len(text.strip()) > 10:',
     '                    return text',
     '            elif mod == "pdfminer.high_level":',
@@ -370,7 +379,7 @@ function parsePdf(path: string): string {
     '                        try: out.append(b.decode(enc)); break',
     '                        except Exception: pass',
     '                except Exception: pass',
-    '        res = " ".join(out).strip()',
+    '        res = "\\n".join(out).strip()',
     '        if len(res) > 10: return res',
     '    except Exception:',
     '        pass',
@@ -384,14 +393,14 @@ function parsePdf(path: string): string {
       maxBuffer: 50 * 1024 * 1024,
     });
     if (text && text.trim().length > 10) {
-      return text.replace(/\s+/g, ' ').trim();
+      return normalizePdfText(text);
     }
   } catch {
     // fallback
   }
 
   // Strategy 3: Raw UTF-8 string extractor
-  return readFileSync(path, 'utf8').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  return normalizePdfText(readFileSync(path, 'utf8').replace(/<[^>]+>/g, ' '));
 }
 
 function renderApplyMarkdown(result: EvidenceIntakeApplyResult): string {
