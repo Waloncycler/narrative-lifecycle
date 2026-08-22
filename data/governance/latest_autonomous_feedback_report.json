@@ -1,8 +1,8 @@
 {
   "artifact_type": "autonomous_feedback_report",
   "schema_version": "1.0.0",
-  "generated_at": "2026-08-22T08:20:16.585Z",
-  "run_id": "test_run_1787386816570",
+  "generated_at": "2026-08-22T09:34:05.950Z",
+  "run_id": "test_run_1787391245941",
   "metrics": {
     "total_candidates": 0,
     "published_evidence_count": 0,
@@ -82,7 +82,7 @@
       "topic_name": "人形机器人与具身智能",
       "domain": "robotics",
       "priority": 3,
-      "current_evidence_count": 37,
+      "current_evidence_count": 38,
       "gap_severity": "healthy",
       "recommended_queries": [
         "人形机器人与具身智能 人形机器人 最新进展 突破",
@@ -121,7 +121,7 @@
       "topic_name": "算力基础设施与智算硬件",
       "domain": "semiconductor",
       "priority": 3,
-      "current_evidence_count": 86,
+      "current_evidence_count": 127,
       "gap_severity": "healthy",
       "recommended_queries": [
         "算力基础设施与智算硬件 智算中心 最新进展 突破",
@@ -171,8 +171,8 @@
   ],
   "emerging_terms": [],
   "next_cycle_plan": {
-    "plan_id": "plan_mt43yma1",
-    "generated_at": "2026-08-22T08:20:16.585Z",
+    "plan_id": "plan_mt46ljzz",
+    "generated_at": "2026-08-22T09:34:05.950Z",
     "priority_topics": [
       {
         "topic_id": "solid_state_battery",
