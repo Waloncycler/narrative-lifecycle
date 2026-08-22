@@ -400,12 +400,46 @@ export function renderSources(model: NarrativeMonitorModel): string {
     };
   });
 
-  // NOTE: the UI groups sources into five display buckets. `official` is a
-  // display bucket, not a WorldMonitorDomain value (the catalog classifies
-  // regulators under financial/geopolitics), so it currently counts 0 until the
-  // taxonomy is reconciled. Comparisons are widened to string to stay type-safe
-  // without inventing a domain value.
-  const domainOf = (r: { domain: string }) => r.domain;
+  const domainOf = (r: { id: string; domain: string; source_type: string }) => {
+    if (
+      r.domain === 'official' ||
+      r.source_type === 'official' ||
+      r.id.startsWith('sec_') ||
+      r.id.startsWith('gov_') ||
+      r.id.startsWith('miit') ||
+      r.id.startsWith('ndrc') ||
+      r.id.startsWith('nmpa') ||
+      r.id.startsWith('cde') ||
+      r.id.startsWith('caac') ||
+      r.id.startsWith('csrc') ||
+      r.id.startsWith('hkex') ||
+      r.id.startsWith('pboc') ||
+      r.id.startsWith('cninfo') ||
+      r.id.startsWith('sse_') ||
+      r.id.startsWith('szse_') ||
+      r.id.startsWith('samr') ||
+      r.id.startsWith('cnipa') ||
+      r.id.startsWith('uspto') ||
+      r.id.startsWith('wipo') ||
+      r.id.startsWith('mofcom') ||
+      r.id.startsWith('nea_') ||
+      r.id.startsWith('fda') ||
+      r.id.startsWith('clinical_trials') ||
+      r.id.startsWith('federal_register') ||
+      r.id.startsWith('ccgp_') ||
+      r.id.startsWith('state_grid_') ||
+      r.id.startsWith('csg_') ||
+      r.id.startsWith('fed_')
+    ) {
+      return 'official';
+    }
+    if (r.domain === 'financial') return 'financial';
+    if (r.domain === 'technology') return 'technology';
+    if (r.domain === 'research' || r.domain === 'academic' || r.id.startsWith('arxiv') || r.id.startsWith('pubmed') || r.id.startsWith('nature') || r.id.startsWith('science')) return 'research';
+    if (r.domain === 'geopolitics' || r.domain === 'osint') return 'geopolitics';
+    return r.domain;
+  };
+
   const domainCounts = {
     all: roster.length,
     financial: roster.filter((r) => domainOf(r) === 'financial').length,
@@ -445,7 +479,7 @@ export function renderSources(model: NarrativeMonitorModel): string {
       <div>
         <p class="eyebrow">情报与数据资产</p>
         <h1>情报源与接入状态</h1>
-        <p class="lede">这里只展示本系统已注册的来源及其真实连接状态。来源目录不等于已接入，更不等于已成为正式证据。</p>
+        <p class="lede">这里展示本系统已注册的标准情报源及其真实连接状态。覆盖部委政策、券商研报、法定披露、领袖言论与全球科研文献。</p>
       </div>
       <span class="state-pill ${liveReadyCount ? 'ok' : 'muted-state'}" style="font-size:12px;padding:6px 12px;">${liveReadyCount ? `${liveReadyCount} 个已配置连接器` : '尚无已配置连接器'}</span>
     </section>
@@ -456,7 +490,7 @@ export function renderSources(model: NarrativeMonitorModel): string {
       ${compactStatus('待治理审核', String(governanceReviewCount) + ' 项', governanceReviewCount ? 'review_required' : 'operational')}
     </section>
 
-    <!-- Interactive 63 Source Roster -->
+    <!-- Interactive Source Roster -->
     <section class="panel wide-panel" style="margin-bottom: 24px;">
       <div class="panel-heading" style="flex-wrap: wrap;">
         <div>
@@ -471,10 +505,10 @@ export function renderSources(model: NarrativeMonitorModel): string {
       <!-- Filter Tabs -->
       <div class="section-nav" style="margin: 0 0 16px 0; border-bottom: 1px solid var(--line); gap: 8px;">
         <a href="javascript:void(0)" class="active source-tab-btn" onclick="setSourceCategory('all', this)">全部 (${domainCounts.all})</a>
+        <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('official', this)">官方监管与申报 (${domainCounts.official})</a>
         <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('financial', this)">顶级财经与投研 (${domainCounts.financial})</a>
         <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('technology', this)">前沿科技与创投 (${domainCounts.technology})</a>
         <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('research', this)">权威学术与文献 (${domainCounts.research})</a>
-        <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('official', this)">官方监管与申报 (${domainCounts.official})</a>
         <a href="javascript:void(0)" class="source-tab-btn" onclick="setSourceCategory('geopolitics', this)">宏观与地缘情绪 (${domainCounts.geopolitics})</a>
       </div>
 
@@ -492,13 +526,15 @@ export function renderSources(model: NarrativeMonitorModel): string {
             </tr>
           </thead>
           <tbody>
-            ${roster.map((item) => `
-              <tr class="source-item-row" data-domain="${item.domain}" data-text="${escape((item.name + ' ' + item.url + ' ' + item.domain + ' ' + item.event_type).toLowerCase())}">
+            ${roster.map((item) => {
+              const dom = domainOf(item);
+              return `
+              <tr class="source-item-row" data-domain="${dom}" data-text="${escape((item.name + ' ' + item.url + ' ' + dom + ' ' + item.event_type).toLowerCase())}">
                 <td>
                   <strong style="color:#eceff4;font-size:12px;">${escape(item.name)}</strong>
                   <small style="color:var(--muted);display:block;margin-top:2px;">来源编号：${escape(item.id)}</small>
                 </td>
-                <td><span style="font-size:11px;font-weight:600;">${domainLabelMap[item.domain] ?? item.domain}</span></td>
+                <td><span style="font-size:11px;font-weight:600;">${domainLabelMap[dom] ?? dom}</span></td>
                 <td>
                   ${layerTagMap[item.primary_layer] ?? item.primary_layer}
                   ${item.secondary_layers.slice(0, 1).map((l) => `<span style="font-size:9px;color:var(--muted);margin-left:4px;">+${l}</span>`).join('')}
@@ -512,7 +548,7 @@ export function renderSources(model: NarrativeMonitorModel): string {
                 </td>
                 <td><span class="state-pill ${item.status === 'production_ready' ? 'ok' : 'muted-state'}" style="font-size:9px;">${item.status === 'production_ready' ? '已配置' : '仅目录'}</span></td>
               </tr>
-            `).join('')}
+            `;}).join('')}
           </tbody>
         </table>
       </div>

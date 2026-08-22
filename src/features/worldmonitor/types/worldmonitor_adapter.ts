@@ -16,6 +16,7 @@ export type WorldMonitorDomain =
   | 'climate'
   | 'technology'
   | 'research'
+  | 'official'
   | 'osint';
 
 export type WorldMonitorEvidenceEligibility = 'candidate' | 'context_only' | 'unsupported';
