@@ -18,7 +18,7 @@ const subArgs = process.argv.slice(3);
 
 function printHelp() {
   console.log(`
-🌐 叙事生命周期智能系统 (Narrative Lifecycle Command Center) v0.13.5
+🌐 叙事生命周期智能系统 (Narrative Lifecycle Command Center) v0.16.0
 ========================================================================
 
 使用方法 (Usage):
@@ -27,7 +27,7 @@ function printHelp() {
 核心命令 (Core Command Groups):
   sync                   全网立体情报采集 (中国政府网 + 东方财富研报 + 巨潮A股 + VIP领袖 + 全球快讯)
   audit                  全量历史与增量证据审计 (Skills 防伪核验 + 累积质变判定)
-  stage [diff]           全局 44 题材生命周期阶段重算 (S0~S7 演化状态更新 / 差异比对)
+  stage [diff]           全局 51 题材生命周期阶段重算 (S0~S7 演化状态更新 / 差异比对)
   report [daily]         生成机构级双轨每日情报战报 (宏观作战室 ➕ 产业深度解构)
   run                    一键全闭环执行 (采集 ➔ 审计 ➔ 重算 ➔ 生成战报)
   workbench              启动叙事生命周期大盘交互界面 (Next.js Workbench UI)
@@ -39,7 +39,7 @@ function printHelp() {
 系统工具 (System Utilities):
   db:migrate             执行 SQLite 数据库迁移
   db:seed                重置并重新注入基础种子数据
-  test                   运行全量自动化测试套件 (Vitest 444 测试)
+  test                   运行全量自动化测试套件 (Vitest 454 测试)
   help                   显示本帮助信息
 
 示例 (Examples):

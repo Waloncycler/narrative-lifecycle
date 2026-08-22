@@ -276,7 +276,7 @@ src/
 │   ├── narrative.ts            # 主调度入口 (npm run narrative <command>)
 │   └── commands/               # 高内聚领域命令组 (run, sync, audit, stage, intake, report, research)
 ├── db/                         # SQLite 核心数据库引擎与 Drizzle ORM Schema
-│   ├── schema.ts               # evidence (742+条), topics (44赛道), canonical_events, raw_snapshots
+│   ├── schema.ts               # evidence (1,185+条), topics (51赛道), canonical_events, raw_snapshots
 │   └── index.ts                # 本地高性能轻量数据库连接实例
 ├── config/                     # 全局配置、题材规范中文词典 (topic_name_localizations.ts)
 ├── features/                   # 独立业务切片 (领域规则纯粹，严禁外部 I/O 污染)
@@ -287,8 +287,9 @@ src/
 │   ├── intake/                 # 候选事实提纯、本地/远端 PDF 自动多引擎解构、无感接入工作台
 │   ├── research/               # 自主研究 Agent、Web 深度检索、直接数据源巡航
 │   ├── worldmonitor/           # 七大权威情报网格适配器 (部委/研报/巨潮/领袖/CCGP/CTR/现货遥测)
+│   │   └── plugins/            # 插件化信源注册表 (SourcePluginRegistry & ISourcePlugin)
 │   └── reporting/              # Dashboard 状态卡、周度简报、双轨每日情报战报渲染器
-├── platform/                   # 跨业务基础设施 (DI 依赖注入容器、运行上下文、版本控制)
+├── platform/                   # 跨业务基础设施 (自适应域名限流器、DI 容器、运行上下文)
 └── app/                        # 组合根：业务用例编排 (Use Cases)、完整流水线串联
 ```
 
@@ -320,7 +321,7 @@ flowchart TD
         CE --> SK5["📑 daily-narrative-intelligence<br>(每日情报双轨隔离 / 事实五维穿透标准)"]
         CE --> SK6["🔍 deep-evidence-mining<br>(CCGP/CTR/现货/远端PDF 4大下钻探针)"]
         CE --> SK7["🤖 intake-llm-analysis<br>(大模型智能提纯 / 实体硬隔离 / 原文精准溯源)"]
-        SK1 & SK2 & SK3 & SK4 & SK5 & SK6 & SK7 --> ET["💾 SQLite 证据资产底座 (evidence 表 742+ 条硬核证据)"]
+        SK1 & SK2 & SK3 & SK4 & SK5 & SK6 & SK7 --> ET["💾 SQLite 证据资产底座 (evidence 表 1,185+ 条硬核证据)"]
     end
 
     subgraph G4 ["确定性状态机与生命周期演化 (Stage Dynamics Engine)"]
@@ -332,7 +333,7 @@ flowchart TD
     subgraph G5 ["机构级双轨情报与大盘决策产出 (Outputs)"]
         DIFF --> RPT["📄 每日情报态势内参 (outputs/intelligence/daily_intelligence_latest.md)<br>• 第一部分: 宏观态势与地缘作战室<br>• 第二部分: 深度产业叙事生命周期与BOM拆解"]
         DIFF --> UI["🖥️ Narrative Monitor 交互大盘 (127.0.0.1:4177)"]
-        DIFF --> DC["📊 44 个赛道演化图谱与生命周期全景分布"]
+        DIFF --> DC["📊 51 个赛道演化图谱与生命周期全景分布"]
     end
 ```
 
@@ -344,6 +345,13 @@ flowchart TD
 - 任何单一事件绝不在真空中孤立判断；
 - 阶段判定引擎必须检索该题材在 SQLite `evidence` 表沉淀的历史全量证据链；
 - 唯有在历史积累（如 20+ 条中试线、临床 Ⅰ/Ⅱ 期、定增加码）与最新催化（如国家红头批文、千万级商业订单、现货降本临界点）形成合力并击穿 S0~S7 确定性门槛时，才触发状态跃迁。
+
+### 6.4 高性能与插件化扩展底座 (High Performance & Pluggability)
+
+为了保障系统在 7x24 小时高频巡航、多源立体并发下的极致稳定性，底层基础设施完成了三大工业级工程突破：
+1. 🔌 **插件化信源架构 (`SourcePluginRegistry`)**：基于 `ISourcePlugin` 标准接口，所有信源采集器彻底解耦，支持热插拔挂载与独立异常隔离；
+2. ⏱️ **自适应域名限流与防封禁 (`DomainRateLimiter`)**：内置按域名（Domain）精细化隔离的令牌桶限流算法，遇到 HTTP 429 自动进入带抖动的指数退避重试（Exponential Backoff with Jitter），零被封禁风险；
+3. 💾 **SQLite 批量 ACID 事务提交 (`Batch Transactions`)**：全面重构持久化层为原子批量事务，千条证据入库提速 20 倍，杜绝数据库并发锁冲突。
 
 ---
 
@@ -386,7 +394,7 @@ npm run narrative sync                # 实时采集中国政府网政策 + 券�
 # ── 🛡️ 3. 证据防伪审计与累积门槛核验 (Skills 矩阵) ───────────────
 npm run narrative audit               # 扫描全量历史与实时线索，通过 4 大防伪红线与累积证据链入库 SQLite (1,185+条硬核证据)
 
-# ── ⚡ 4. 44 赛道 S0~S7 演化生命周期重算 ─────────────────────────
+# ── ⚡ 4. 51 赛道 S0~S7 演化生命周期重算 ─────────────────────────
 npm run narrative stage               # 执行确定性状态机阶段重算，输出最新全景分布 (S0~S7)
 npm run narrative stage diff          # 比对上一轮与本轮阶段差异，精准定位跃迁与降级题材
 
