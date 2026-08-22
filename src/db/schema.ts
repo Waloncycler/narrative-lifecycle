@@ -1,5 +1,12 @@
 import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
 
+// ===========================================================================
+// 1. 核心业务与状态机持久化表 (Core Production & Narrative State Tables)
+// ===========================================================================
+
+/**
+ * 题材赛道注册表 (Canonical Topics Registry)
+ */
 export const topics = sqliteTable('topics', {
   topic_id: text('topic_id').primaryKey(),
   topic_name: text('topic_name').notNull(),
@@ -9,25 +16,12 @@ export const topics = sqliteTable('topics', {
   domain: text('domain').notNull(),
   created_at: text('created_at').notNull(),
   updated_at: text('updated_at').notNull(),
-  // For JSON blobs if needed
   aliases_json: text('aliases_json'),
 });
 
-export const narrativeMemories = sqliteTable('narrative_memories', {
-  topic_id: text('topic_id').primaryKey().references(() => topics.topic_id),
-  first_seen_date: text('first_seen_date'),
-  last_active_date: text('last_active_date'),
-  historical_stage_path_json: text('historical_stage_path_json'),
-  previous_peak_stage: text('previous_peak_stage'),
-  previous_failed_transition: text('previous_failed_transition'),
-  previous_failure_reason: text('previous_failure_reason'),
-  previous_missing_evidence_json: text('previous_missing_evidence_json'),
-  previous_friction_points_json: text('previous_friction_points_json'),
-  previous_branch_structure_json: text('previous_branch_structure_json'),
-  is_failure_case: integer('is_failure_case', { mode: 'boolean' }),
-  memory_confidence: integer('memory_confidence'),
-});
-
+/**
+ * 细分分支表 (Topic Sub-Branches)
+ */
 export const branches = sqliteTable('branches', {
   branch_id: text('branch_id').primaryKey(),
   topic_id: text('topic_id').notNull().references(() => topics.topic_id),
@@ -37,6 +31,10 @@ export const branches = sqliteTable('branches', {
   created_at: text('created_at').notNull(),
 });
 
+/**
+ * 硬核证据资产主表 (Primary Quantitative Evidence Table)
+ * 系统核心单一真实源 (Single Source of Truth)，支持字符偏移溯源与法理判定。
+ */
 export const evidence = sqliteTable('evidence', {
   evidence_id: text('evidence_id').primaryKey(),
   topic_id: text('topic_id').notNull().references(() => topics.topic_id),
@@ -56,17 +54,15 @@ export const evidence = sqliteTable('evidence', {
   limitation: text('limitation'),
   positive_or_negative: text('positive_or_negative'),
   confidence: integer('confidence'),
-  // Storing the arrays as JSON strings
   affected_layer_json: text('affected_layer_json').notNull(),
-}, (table) => {
-  return {
-    topicIdx: index('idx_evidence_topic').on(table.topic_id),
-    branchIdx: index('idx_evidence_branch').on(table.branch_id),
-  };
-});
+}, (table) => ({
+  topicIdx: index('idx_evidence_topic').on(table.topic_id),
+  branchIdx: index('idx_evidence_branch').on(table.branch_id),
+}));
 
-// Since raw documents text can be huge, we can store it in DB, or store paths. 
-// For SQLite, TEXT fields can hold up to 1GB. We can store it here directly for unification.
+/**
+ * 原始材料全文库 (Raw Documents Storage)
+ */
 export const rawDocuments = sqliteTable('raw_documents', {
   raw_document_id: text('raw_document_id').primaryKey(),
   source_name: text('source_name').notNull(),
@@ -76,12 +72,13 @@ export const rawDocuments = sqliteTable('raw_documents', {
   character_count: integer('character_count').notNull(),
 });
 
+/**
+ * 材料摄取会话与候选切片 (Intake Sessions)
+ */
 export const intakeSessions = sqliteTable('intake_sessions', {
   session_id: text('session_id').primaryKey(),
   generated_at: text('generated_at').notNull(),
   raw_document_id: text('raw_document_id').references(() => rawDocuments.raw_document_id),
-  // Storing full complex objects as JSON strings in SQLite. 
-  // In PostgreSQL, these would be JSONB.
   chunks_json: text('chunks_json'),
   provenance_records_json: text('provenance_records_json'),
   candidates_json: text('candidates_json'),
@@ -90,6 +87,9 @@ export const intakeSessions = sqliteTable('intake_sessions', {
   review_template_json: text('review_template_json'),
 });
 
+/**
+ * 系统运行记录表 (System Runs Ledger)
+ */
 export const systemRuns = sqliteTable('system_runs', {
   run_id: text('run_id').primaryKey(),
   rule_version: text('rule_version').notNull(),
@@ -101,6 +101,9 @@ export const systemRuns = sqliteTable('system_runs', {
   manifest_json: text('manifest_json').notNull(),
 });
 
+/**
+ * 全局生命周期阶段快照 (Stage Snapshots)
+ */
 export const stageSnapshots = sqliteTable('stage_snapshots', {
   snapshot_id: text('snapshot_id').primaryKey(),
   run_id: text('run_id').notNull(),
@@ -108,6 +111,9 @@ export const stageSnapshots = sqliteTable('stage_snapshots', {
   snapshot_json: text('snapshot_json').notNull(),
 });
 
+/**
+ * 生命周期阶段差异表 (Stage Diffs)
+ */
 export const stageDiffs = sqliteTable('stage_diffs', {
   diff_id: text('diff_id').primaryKey(),
   run_id: text('run_id').notNull(),
@@ -115,6 +121,9 @@ export const stageDiffs = sqliteTable('stage_diffs', {
   diff_json: text('diff_json').notNull(),
 });
 
+/**
+ * 机构级每周/每日战报存储 (Weekly Briefs / Reports)
+ */
 export const weeklyBriefs = sqliteTable('weekly_briefs', {
   report_id: text('report_id').primaryKey(),
   run_id: text('run_id').notNull(),
@@ -122,56 +131,28 @@ export const weeklyBriefs = sqliteTable('weekly_briefs', {
   report_json: text('report_json').notNull(),
 });
 
+/**
+ * 操作员审计复核日志 (Operator Reviews)
+ */
 export const operatorReviews = sqliteTable('operator_reviews', {
   review_id: text('review_id').primaryKey(),
   generated_at: text('generated_at').notNull(),
   review_json: text('review_json').notNull(),
 });
 
-// A catch-all table for research atlases, registries, audits, and ledgers
+/**
+ * 通用快照与结构化资产表 (Generic Artifacts Store)
+ */
 export const genericArtifacts = sqliteTable('generic_artifacts', {
-  artifact_id: text('artifact_id').primaryKey(), // e.g., 'source_atlas_latest', 'pilot_ledger_latest'
-  artifact_type: text('artifact_type').notNull(), // e.g., 'source_atlas', 'company_registry', 'audit'
+  artifact_id: text('artifact_id').primaryKey(),
+  artifact_type: text('artifact_type').notNull(),
   updated_at: text('updated_at').notNull(),
   content_json: text('content_json').notNull(),
-  content_md: text('content_md'), // Optional raw markdown text
-});
-
-// ---------------------------------------------------------------------------
-// SignalRadar-ported tables: Source Governance, Collection Audit, Raw Snapshots,
-// Canonical Events, Decision Ledger, Knowledge & Feedback
-// ---------------------------------------------------------------------------
-
-/**
- * Source governance: signal/baseline role, P0/P1/P2 priority, ETag/cursor
- * persistence, license tracking, and auto-disable on consecutive failures.
- * Ported from SignalRadar `source` table.
- */
-export const sourceGovernance = sqliteTable('source_governance', {
-  source_id: text('source_id').primaryKey(),
-  source_name: text('source_name').notNull(),
-  adapter_type: text('adapter_type').notNull(),
-  role: text('role').notNull().default('signal'), // 'signal' | 'baseline'
-  url: text('url'),
-  priority: text('priority').notNull().default('P1'), // 'P0' | 'P1' | 'P2'
-  poll_interval_sec: integer('poll_interval_sec').notNull().default(3600),
-  license_status: text('license_status').notNull().default('unknown'),
-  license_note: text('license_note'),
-  enabled: integer('enabled').notNull().default(1),
-  etag: text('etag'),
-  last_modified: text('last_modified'),
-  cursor: text('cursor'),
-  pending_retry_after_sec: integer('pending_retry_after_sec').notNull().default(0),
-  last_fetched_at: text('last_fetched_at'),
-  last_status: text('last_status'),
-  consecutive_failures: integer('consecutive_failures').notNull().default(0),
-  created_at: text('created_at').notNull(),
+  content_md: text('content_md'),
 });
 
 /**
- * Per-fetch audit trail: records every HTTP request's outcome, duration,
- * cursor delta, and HTTP status for full observability.
- * Ported from SignalRadar `collection_attempt` table.
+ * 单次 HTTP 抓取审计跟踪表 (Collection Attempts Trail)
  */
 export const collectionAttempts = sqliteTable('collection_attempts', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -179,7 +160,7 @@ export const collectionAttempts = sqliteTable('collection_attempts', {
   operation_id: text('operation_id'),
   started_at: text('started_at').notNull(),
   ended_at: text('ended_at'),
-  duration_sec: text('duration_sec'), // stored as text for REAL compatibility
+  duration_sec: text('duration_sec'),
   status: text('status').notNull(),
   http_status_code: integer('http_status_code'),
   snapshots_new: integer('snapshots_new').notNull().default(0),
@@ -193,10 +174,7 @@ export const collectionAttempts = sqliteTable('collection_attempts', {
 }));
 
 /**
- * Raw HTTP response body storage for full evidence traceability.
- * Every fetched payload is stored verbatim; content_hash provides
- * idempotent deduplication via SHA-256.
- * Ported from SignalRadar `raw_snapshot` table.
+ * 原始 HTTP 响应快照库 (Raw Snapshots for Traceability)
  */
 export const rawSnapshots = sqliteTable('raw_snapshots', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -213,9 +191,7 @@ export const rawSnapshots = sqliteTable('raw_snapshots', {
 });
 
 /**
- * Canonical event: deduplicates multiple reports about the same real-world event.
- * Events are matched via URL normalization, title normalization, or keyword similarity.
- * Ported from SignalRadar `canonical_event` table.
+ * 规范化事件聚合表 (Canonical Events Deduplication)
  */
 export const canonicalEvents = sqliteTable('canonical_events', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -230,8 +206,7 @@ export const canonicalEvents = sqliteTable('canonical_events', {
 });
 
 /**
- * Maps evidence candidates to canonical events, tracking match method and similarity.
- * Ported from SignalRadar `candidate_event_membership` table.
+ * 证据与规范事件关联表 (Evidence-to-Canonical-Event Mapping)
  */
 export const evidenceEventMembership = sqliteTable('evidence_event_membership', {
   evidence_id: text('evidence_id').primaryKey(),
@@ -243,26 +218,12 @@ export const evidenceEventMembership = sqliteTable('evidence_event_membership', 
   eventIdx: index('idx_eem_event').on(table.event_id),
 }));
 
-/**
- * Sliding-window observation of event activity: mention_count and
- * distinct_source_count over 24h/72h/7d windows for resonance detection.
- * Ported from SignalRadar `event_observation` table.
- */
-export const eventObservations = sqliteTable('event_observations', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  event_id: integer('event_id').notNull(),
-  observed_at: text('observed_at').notNull(),
-  window_hours: integer('window_hours').notNull(),
-  mention_count: integer('mention_count').notNull().default(0),
-  distinct_source_count: integer('distinct_source_count').notNull().default(0),
-  latest_member_seen_at: text('latest_member_seen_at'),
-});
+// ===========================================================================
+// 2. 实验性与未来扩展表 (Experimental & Future Extension Tables)
+// ===========================================================================
 
 /**
- * Falsifiable prediction ledger: every thesis must declare a predicted observation,
- * a falsifier (kill condition), and a horizon deadline. Entries resolve as
- * confirmed/refuted/expired.
- * Ported from SignalRadar `decision_ledger` table.
+ * @experimental 假说与可证伪预测账本 (Falsifiable Prediction Ledger)
  */
 export const decisionLedger = sqliteTable('decision_ledger', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -291,33 +252,37 @@ export const decisionLedger = sqliteTable('decision_ledger', {
 }));
 
 /**
- * Pre-freeze daily top-5 batch for replay evaluation.
- * Ported from SignalRadar `top5_batch` + `top5_batch_item`.
+ * @experimental 事件共振滑动窗口观测表 (Sliding Window Event Observations)
  */
-export const top5Batches = sqliteTable('top5_batches', {
-  batch_date: text('batch_date').primaryKey(),
-  frozen_at: text('frozen_at').notNull(),
-  item_count: integer('item_count').notNull(),
-  rule_version: text('rule_version').notNull().default('first_seen_v1'),
-});
-
-export const top5BatchItems = sqliteTable('top5_batch_items', {
+export const eventObservations = sqliteTable('event_observations', {
   id: integer('id').primaryKey({ autoIncrement: true }),
-  batch_date: text('batch_date').notNull(),
-  evidence_id: text('evidence_id').notNull(),
-  rank: integer('rank').notNull(),
-  first_seen_at: text('first_seen_at').notNull(),
-  frozen_at: text('frozen_at').notNull(),
+  event_id: integer('event_id').notNull(),
+  observed_at: text('observed_at').notNull(),
+  window_hours: integer('window_hours').notNull(),
+  mention_count: integer('mention_count').notNull().default(0),
+  distinct_source_count: integer('distinct_source_count').notNull().default(0),
+  latest_member_seen_at: text('latest_member_seen_at'),
 });
 
 /**
- * Private knowledge edge: user's field notes, preferences, anomalies, and
- * hypotheses stored locally. Injected into LLM context when influence_enabled=1.
- * Ported from SignalRadar `knowledge_entry` table.
+ * @experimental 用户质量反馈流 (User Feedback Events)
+ */
+export const feedbackEvents = sqliteTable('feedback_events', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  evidence_id: text('evidence_id').notNull(),
+  feedback_type: text('feedback_type').notNull(),
+  note: text('note'),
+  created_at: text('created_at').notNull(),
+}, (table) => ({
+  evidenceIdx: index('idx_fe_evidence').on(table.evidence_id),
+}));
+
+/**
+ * @experimental 私有投研笔记与知识边 (Private Knowledge Entries)
  */
 export const knowledgeEntries = sqliteTable('knowledge_entries', {
   id: integer('id').primaryKey({ autoIncrement: true }),
-  kind: text('kind').notNull(), // 'field_note' | 'preference' | 'private_observation' | 'anomaly' | 'hypothesis' | 'document'
+  kind: text('kind').notNull(),
   content: text('content').notNull(),
   original_filename: text('original_filename'),
   media_type: text('media_type'),
@@ -326,15 +291,65 @@ export const knowledgeEntries = sqliteTable('knowledge_entries', {
 });
 
 /**
- * Append-only user feedback on evidence quality.
- * Ported from SignalRadar `feedback_event` table.
+ * @experimental 历史失败案例记忆表 (Historical Narrative Failure Memories)
  */
-export const feedbackEvents = sqliteTable('feedback_events', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  evidence_id: text('evidence_id').notNull(),
-  feedback_type: text('feedback_type').notNull(), // 'valuable' | 'already_known' | 'noise' | 'weak_evidence' | 'deep_dive' | 'acted' | 'wrong'
-  note: text('note'),
+export const narrativeMemories = sqliteTable('narrative_memories', {
+  topic_id: text('topic_id').primaryKey().references(() => topics.topic_id),
+  first_seen_date: text('first_seen_date'),
+  last_active_date: text('last_active_date'),
+  historical_stage_path_json: text('historical_stage_path_json'),
+  previous_peak_stage: text('previous_peak_stage'),
+  previous_failed_transition: text('previous_failed_transition'),
+  previous_failure_reason: text('previous_failure_reason'),
+  previous_missing_evidence_json: text('previous_missing_evidence_json'),
+  previous_friction_points_json: text('previous_friction_points_json'),
+  previous_branch_structure_json: text('previous_branch_structure_json'),
+  is_failure_case: integer('is_failure_case', { mode: 'boolean' }),
+  memory_confidence: integer('memory_confidence'),
+});
+
+/**
+ * @experimental 数据源治理与状态轮询表 (Source Governance & Scheduling)
+ */
+export const sourceGovernance = sqliteTable('source_governance', {
+  source_id: text('source_id').primaryKey(),
+  source_name: text('source_name').notNull(),
+  adapter_type: text('adapter_type').notNull(),
+  role: text('role').notNull().default('signal'),
+  url: text('url'),
+  priority: text('priority').notNull().default('P1'),
+  poll_interval_sec: integer('poll_interval_sec').notNull().default(3600),
+  license_status: text('license_status').notNull().default('unknown'),
+  license_note: text('license_note'),
+  enabled: integer('enabled').notNull().default(1),
+  etag: text('etag'),
+  last_modified: text('last_modified'),
+  cursor: text('cursor'),
+  pending_retry_after_sec: integer('pending_retry_after_sec').notNull().default(0),
+  last_fetched_at: text('last_fetched_at'),
+  last_status: text('last_status'),
+  consecutive_failures: integer('consecutive_failures').notNull().default(0),
   created_at: text('created_at').notNull(),
-}, (table) => ({
-  evidenceIdx: index('idx_fe_evidence').on(table.evidence_id),
-}));
+});
+
+/**
+ * @experimental 历史回放 Top5 冻结批次表 (Top5 Freeze Batches)
+ */
+export const top5Batches = sqliteTable('top5_batches', {
+  batch_date: text('batch_date').primaryKey(),
+  frozen_at: text('frozen_at').notNull(),
+  item_count: integer('item_count').notNull(),
+  rule_version: text('rule_version').notNull().default('first_seen_v1'),
+});
+
+/**
+ * @experimental 历史回放 Top5 项列表 (Top5 Freeze Items)
+ */
+export const top5BatchItems = sqliteTable('top5_batch_items', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  batch_date: text('batch_date').notNull(),
+  evidence_id: text('evidence_id').notNull(),
+  rank: integer('rank').notNull(),
+  first_seen_at: text('first_seen_at').notNull(),
+  frozen_at: text('frozen_at').notNull(),
+});

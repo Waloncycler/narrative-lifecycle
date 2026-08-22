@@ -52,6 +52,8 @@ function printHelp() {
 `);
 }
 
+import { executeReportCommand } from './commands/report.cmd';
+
 async function main() {
   switch (command.toLowerCase()) {
     case 'sync':
@@ -75,11 +77,9 @@ async function main() {
       await executeResearchCommand(subArgs[0] || 'search', subArgs.slice(1));
       break;
 
-    case 'report': {
-      const script = resolve(process.cwd(), 'src/cli/run_report.ts');
-      spawnSync('npx', ['tsx', script, ...subArgs], { stdio: 'inherit', env: process.env });
+    case 'report':
+      await executeReportCommand(subArgs[0] || 'daily', subArgs.slice(1));
       break;
-    }
 
     case 'run':
     case 'pipeline':
