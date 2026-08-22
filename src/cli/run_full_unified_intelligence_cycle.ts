@@ -7,8 +7,12 @@ import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import crypto from 'node:crypto';
 
+import { fetchCcgpTenders } from '@/features/worldmonitor/io/ccgp_tenders_provider';
+import { fetchChinaDrugTrials } from '@/features/worldmonitor/io/chinadrugtrials_provider';
+import { fetchCommodityPricing } from '@/features/worldmonitor/io/commodity_pricing_provider';
+
 interface UnifiedRawFact {
-  source_kind: 'MINISTRY_POLICY' | 'BROKERAGE_REPORT' | 'CNINFO_DISCLOSURE' | 'VIP_SPEECH' | 'FINANCIAL_WIRE';
+  source_kind: 'MINISTRY_POLICY' | 'BROKERAGE_REPORT' | 'CNINFO_DISCLOSURE' | 'VIP_SPEECH' | 'GOVERNMENT_TENDER' | 'CLINICAL_TRIAL' | 'COMMODITY_PRICING' | 'FINANCIAL_WIRE';
   source_name: string;
   source_url: string;
   title: string;
@@ -22,7 +26,7 @@ async function fetchAllAdvancedSources(): Promise<UnifiedRawFact[]> {
   const today = new Date().toISOString().slice(0, 10);
 
   // 1. 中国政府网 (Gov.cn) 国务院政策库
-  console.log('📡 [1/5] 正在拉取【中国政府网】国务院/部委最新红头政策文件...');
+  console.log('📡 [1/7] 正在拉取【中国政府网】国务院/部委最新红头政策文件...');
   try {
     const govUrl = 'https://sousuo.www.gov.cn/search-gov/data?t=zhengce_gw&q=&timetype=timeqb&mintime=&maxtime=&sort=pubtime&sortType=1&nocorrect=1&num=10&page=1';
     const res = await fetch(govUrl, {
@@ -58,7 +62,7 @@ async function fetchAllAdvancedSources(): Promise<UnifiedRawFact[]> {
   }
 
   // 2. 东方财富券商行业深度研报中心
-  console.log('📡 [2/5] 正在拉取【东方财富研报中心】13.9万头部券商行业深度研报...');
+  console.log('📡 [2/7] 正在拉取【东方财富研报中心】13.9万头部券商行业深度研报...');
   try {
     const rptUrl = `https://reportapi.eastmoney.com/report/list?industryCode=*&pageSize=10&industry=*&rating=&ratingChange=&beginTime=&endTime=&pageNo=1&fields=&qType=1&_=${Date.now()}`;
     const res = await fetch(rptUrl, {
@@ -88,7 +92,7 @@ async function fetchAllAdvancedSources(): Promise<UnifiedRawFact[]> {
   }
 
   // 3. 巨潮资讯网 (Cninfo) 上市公司重大法定披露
-  console.log('📡 [3/5] 正在拉取【巨潮资讯网 (Cninfo)】A股上市公司重大合同/中报/投产公告...');
+  console.log('📡 [3/7] 正在拉取【巨潮资讯网 (Cninfo)】A股上市公司重大合同/中报/投产公告...');
   try {
     const cninfoUrl = 'http://www.cninfo.com.cn/new/hisAnnouncement/query';
     const body = new URLSearchParams({
@@ -134,7 +138,7 @@ async function fetchAllAdvancedSources(): Promise<UnifiedRawFact[]> {
   }
 
   // 4. 全球关键领袖言论流 (VIP Speakers)
-  console.log('📡 [4/5] 正在拉取【全球科技与产业领袖】最新公开表态...');
+  console.log('📡 [4/7] 正在拉取【全球科技与产业领袖】最新公开表态...');
   const vipStatements: UnifiedRawFact[] = [
     {
       source_kind: 'VIP_SPEECH',
@@ -167,6 +171,60 @@ async function fetchAllAdvancedSources(): Promise<UnifiedRawFact[]> {
   facts.push(...vipStatements);
   console.log(`   ✅ 成功注入 ${vipStatements.length} 条全球领袖权威表态！`);
 
+  // 5. 中国政府采购网 (CCGP) 与公共资源招投标流
+  try {
+    const tenders = await fetchCcgpTenders();
+    tenders.forEach((t) => {
+      facts.push({
+        source_kind: 'GOVERNMENT_TENDER',
+        source_name: `中国政府采购网 (${t.purchaser})`,
+        source_url: t.source_url,
+        title: t.title,
+        summary: `项目分类：${t.category}，中标人：${t.winning_bidder}，金额：${t.amount_rmb}。${t.summary}`,
+        event_date: t.event_date,
+        raw_payload: t,
+      });
+    });
+  } catch (e: any) {
+    console.log(`   ⚠️ CCGP 政府采购流跳过: ${e.message}`);
+  }
+
+  // 6. 中国药物临床试验平台 (Chinadrugtrials / CDE)
+  try {
+    const trials = await fetchChinaDrugTrials();
+    trials.forEach((tr) => {
+      facts.push({
+        source_kind: 'CLINICAL_TRIAL',
+        source_name: `中国药物临床试验平台 (${tr.ctr_id})`,
+        source_url: tr.source_url,
+        title: `【临床进展 ${tr.trial_phase}】${tr.drug_name} (${tr.sponsor})`,
+        summary: `适应症：${tr.indication}，状态：${tr.status}，主要终点：${tr.primary_endpoints}。${tr.summary}`,
+        event_date: tr.event_date,
+        raw_payload: tr,
+      });
+    });
+  } catch (e: any) {
+    console.log(`   ⚠️ 临床试验流跳过: ${e.message}`);
+  }
+
+  // 7. 微观产业链现货价格与开工率遥测 (Commodity Pricing)
+  try {
+    const commodities = await fetchCommodityPricing();
+    commodities.forEach((c) => {
+      facts.push({
+        source_kind: 'COMMODITY_PRICING',
+        source_name: c.source_name,
+        source_url: c.source_url,
+        title: `【现货遥测】${c.item_name} ${c.spot_price}${c.unit} (周变动 ${c.wow_change_pct})`,
+        summary: `分类：${c.category}，行业开工率：${c.operating_rate_pct}，库存周转：${c.inventory_days}天。${c.summary}`,
+        event_date: c.event_date,
+        raw_payload: c,
+      });
+    });
+  } catch (e: any) {
+    console.log(`   ⚠️ 微观现货遥测流跳过: ${e.message}`);
+  }
+
   return facts;
 }
 
@@ -184,11 +242,11 @@ async function runFullUnifiedPipeline() {
     console.log(`⚠️ 本地文档扫描跳过: ${e.message}`);
   }
 
-  // 2. 采集全网五大权威源
+  // 2. 采集全网七大权威立体源
   const rawFacts = await fetchAllAdvancedSources();
   console.log(`\n📦 本轮全网立体采集汇总：共抓取到 ${rawFacts.length} 条一手高价值事实！\n`);
 
-  // 2. 写入 SQLite 原始快照表并生成规范事实
+  // 3. 写入 SQLite 原始快照表并生成规范事实
   console.log('⚙️ 正在执行【零丢失原始持久化 ➕ 指纹去重清洗】...');
   let newEvidenceCount = 0;
 
@@ -200,12 +258,43 @@ async function runFullUnifiedPipeline() {
     let topicId = 'provisional_computing_infrastructure';
     const lower = fact.title.toLowerCase();
     if (lower.includes('optimus') || lower.includes('机器人') || lower.includes('robotics')) topicId = 'humanoid_robotics';
-    else if (lower.includes('固态电池') || lower.includes('catl') || lower.includes('曾毓群')) topicId = 'provisional_solid_state_battery';
-    else if (lower.includes('blackwell') || lower.includes('黄仁勋') || lower.includes('nvidia')) topicId = 'provisional_computing_infrastructure';
-    else if (lower.includes('光纤') || lower.includes('长飞')) topicId = 'provisional_ai_optical_fiber_infrastructure';
-    else if (lower.includes('临床') || lower.includes('mrna') || lower.includes('疫苗') || lower.includes('药')) topicId = 'innovative_drug_license_out';
+    else if (lower.includes('固态电池') || lower.includes('硫化锂') || lower.includes('catl') || lower.includes('曾毓群')) topicId = 'provisional_solid_state_battery';
+    else if (lower.includes('blackwell') || lower.includes('黄仁勋') || lower.includes('nvidia') || lower.includes('算力') || lower.includes('超算')) topicId = 'provisional_computing_infrastructure';
+    else if (lower.includes('光纤') || lower.includes('长飞') || lower.includes('g.654')) topicId = 'provisional_ai_optical_fiber_infrastructure';
+    else if (lower.includes('临床') || lower.includes('adc') || lower.includes('ctr') || lower.includes('药') || lower.includes('疫苗')) topicId = 'innovative_drug_license_out';
+    else if (lower.includes('脑机') || lower.includes('bci')) topicId = 'bci';
+    else if (lower.includes('低空') || lower.includes('evtol') || lower.includes('飞行汽车')) topicId = 'provisional_low_altitude_economy';
     else if (lower.includes('公积金') || lower.includes('行政法规') || lower.includes('信用体系')) topicId = 'provisional_china_macro_policy';
-    else if (lower.includes('半导体') || lower.includes('东芯') || lower.includes('芯原')) topicId = 'provisional_semiconductor_advanced_manufacturing';
+    else if (lower.includes('半导体') || lower.includes('cowos') || lower.includes('东芯') || lower.includes('芯原')) topicId = 'provisional_semiconductor_advanced_manufacturing';
+
+    const eventType =
+      fact.source_kind === 'MINISTRY_POLICY'
+        ? 'OFFICIAL_POLICY'
+        : fact.source_kind === 'BROKERAGE_REPORT'
+        ? 'RESEARCH_REPORT'
+        : fact.source_kind === 'GOVERNMENT_TENDER'
+        ? 'OFFICIAL_POLICY'
+        : fact.source_kind === 'CLINICAL_TRIAL'
+        ? 'CLINICAL_TRIAL_UPDATE'
+        : fact.source_kind === 'COMMODITY_PRICING'
+        ? 'MARKET_FACT'
+        : 'MARKET_FACT';
+
+    const evidenceStrength =
+      fact.source_kind === 'MINISTRY_POLICY' || fact.source_kind === 'GOVERNMENT_TENDER' || fact.source_kind === 'CLINICAL_TRIAL'
+        ? 'E3'
+        : fact.source_kind === 'CNINFO_DISCLOSURE' || fact.source_kind === 'COMMODITY_PRICING'
+        ? 'E2'
+        : 'E1';
+
+    const affectedLayers =
+      fact.source_kind === 'GOVERNMENT_TENDER'
+        ? ['capital', 'reality']
+        : fact.source_kind === 'CLINICAL_TRIAL'
+        ? ['reality', 'friction']
+        : fact.source_kind === 'COMMODITY_PRICING'
+        ? ['pricing', 'reality', 'capital']
+        : ['reality', 'capital', 'pricing'];
 
     // 写入 evidence 表
     db.insert(evidence).values({
@@ -216,18 +305,18 @@ async function runFullUnifiedPipeline() {
       available_at: `${fact.event_date}T00:00:00.000Z`,
       event_title: fact.title,
       event_summary: fact.summary,
-      event_type: fact.source_kind === 'MINISTRY_POLICY' ? 'OFFICIAL_POLICY' : fact.source_kind === 'BROKERAGE_REPORT' ? 'RESEARCH_REPORT' : 'MARKET_FACT',
+      event_type: eventType,
       source_name: fact.source_name,
       source_url: fact.source_url,
       source_type: fact.source_kind.toLowerCase(),
-      evidence_strength: fact.source_kind === 'MINISTRY_POLICY' ? 'E3' : fact.source_kind === 'CNINFO_DISCLOSURE' ? 'E2' : 'E1',
+      evidence_strength: evidenceStrength,
       stage_effect: 'observation',
       parent_or_branch: 'parent',
       interpretation: `[${fact.source_kind}] 经全维情报管网自动审计准入至【${topicId}】`,
       limitation: '一手实时监控事实',
       positive_or_negative: 'positive',
-      confidence: 85,
-      affected_layer_json: JSON.stringify(['reality', 'capital', 'pricing']),
+      confidence: 88,
+      affected_layer_json: JSON.stringify(affectedLayers),
     }).onConflictDoUpdate({
       target: evidence.evidence_id,
       set: { event_title: fact.title }

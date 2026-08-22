@@ -1,8 +1,8 @@
 {
   "artifact_type": "autonomous_feedback_report",
   "schema_version": "1.0.0",
-  "generated_at": "2026-08-22T06:26:22.434Z",
-  "run_id": "test_run_1787379982414",
+  "generated_at": "2026-08-22T07:59:31.231Z",
+  "run_id": "test_run_1787385571222",
   "metrics": {
     "total_candidates": 0,
     "published_evidence_count": 0,
@@ -82,7 +82,7 @@
       "topic_name": "人形机器人与具身智能",
       "domain": "robotics",
       "priority": 3,
-      "current_evidence_count": 36,
+      "current_evidence_count": 37,
       "gap_severity": "healthy",
       "recommended_queries": [
         "人形机器人与具身智能 人形机器人 最新进展 突破",
@@ -108,7 +108,7 @@
       "topic_name": "低空经济与 eVTOL",
       "domain": "aerospace",
       "priority": 3,
-      "current_evidence_count": 15,
+      "current_evidence_count": 16,
       "gap_severity": "healthy",
       "recommended_queries": [
         "低空经济与 eVTOL 低空经济 最新进展 突破",
@@ -121,7 +121,7 @@
       "topic_name": "算力基础设施与智算硬件",
       "domain": "semiconductor",
       "priority": 3,
-      "current_evidence_count": 83,
+      "current_evidence_count": 86,
       "gap_severity": "healthy",
       "recommended_queries": [
         "算力基础设施与智算硬件 智算中心 最新进展 突破",
@@ -171,8 +171,8 @@
   ],
   "emerging_terms": [],
   "next_cycle_plan": {
-    "plan_id": "plan_mt3zw50j",
-    "generated_at": "2026-08-22T06:26:22.434Z",
+    "plan_id": "plan_mt437xcw",
+    "generated_at": "2026-08-22T07:59:31.231Z",
     "priority_topics": [
       {
         "topic_id": "solid_state_battery",
