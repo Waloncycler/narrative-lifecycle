@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.15.0] - 2026-08-22
+
+### Added
+- **7-Dimensional Unified Intelligence Pipeline (七大立体情报采集与分析流水线)**:
+  - Integrated China Government Procurement (`ccgp_tenders_provider.ts`) for million-plus RMB official contracts and tender milestones (S4/S5 validation).
+  - Integrated National Medical Products Administration CDE Clinical Registry (`chinadrugtrials_provider.ts`) for CTR registration numbers, phase I/II/III progression, and patient enrollment (S2/S3 validation).
+  - Integrated micro supply chain commodity spot pricing & operating rate telemetry (`commodity_pricing_provider.ts`) for Lithium Sulfide ($Li_2S$), CoWoS packaging spot prices, and G.654.E optical fiber indices.
+  - Integrated headless document dropzone (`data/documents/`) and multi-engine remote PDF stream decompiler/parser (`remote_pdf_downloader.ts`) with automatic text/table quote extraction into SQLite evidence.
+- **Unified 7 Institutional Specialized Skills in Chinese (七大机构级专业 Skills 规范)**:
+  - 100% unified `.agents/skills/` (daily-narrative-intelligence, stage-gate-falsification-audit, unit-economics-deep-dive, deep-evidence-mining, emerging-narrative-incubator, historical-milestone-reconstruction, intake-llm-analysis) into professional institutional-grade Chinese.
+- **Interactive Workbench UI & Source Catalog Upgrade**:
+  - Expanded catalog to 92 authoritative sources across statutory regulators, brokerage research, frontier tech, academic journals, and macro intelligence.
+  - Reconciled official regulatory categorization (40 statutory sources) and mapped all links to human-friendly official portal homepages.
+- **Test Suite & Reliability**:
+  - 104 test files and 449 unit/integration tests passing 100%.
+
 ## [Unreleased] - 2026-08-14
 
 ### Added
