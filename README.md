@@ -12,7 +12,7 @@
 [![Node.js >= 20](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)](CONTRIBUTING.md)
 
-[序言：时代之问](#一序言时代之问与历史坐标) · [哲学本体论](#二哲学本体论名实之辩与反身性涌现) · [物理与数学模型](#三状态跃迁动力学泊松过程与状态机) · [八阶生命周期](#四生命周期全景s0-到-s7-的状态跃迁演化) · [终极决策推演](#五投资决策推演从认知跃迁到资本alpha) · [架构与工程实现](#六宏伟工程体系数据流与feature-sliced架构) · [统一调度中心](#七全流程实操指南-unified-command-center--practical-guide) · [信源网与Skills矩阵](#八五大立体数据源网格与四大专业-skill-矩阵)
+[序言：时代之问](#一序言时代之问与历史坐标) · [哲学本体论](#二哲学本体论名实之辩与反身性涌现) · [物理与数学模型](#三状态跃迁动力学泊松过程与状态机) · [八阶生命周期](#四生命周期全景s0-到-s7-的状态跃迁演化) · [终极决策推演](#五投资决策推演从认知跃迁到资本alpha) · [架构与工程实现](#六宏伟工程体系数据流与feature-sliced架构) · [统一调度中心](#七全流程实操指南-unified-command-center--practical-guide) · [信源网与Skills矩阵](#八七大立体数据源管道与七大专业-skill-矩阵)
 
 </div>
 
@@ -264,9 +264,9 @@ $$\text{Alpha}_{\text{Reality}} = \text{Velocity}\big(\text{Reality Evolution}\b
 
 ---
 
-## 六、宏伟工程体系：五维情报网、Skills 矩阵与统一调度架构
+## 六、宏伟工程体系：七维情报网、七大Skills矩阵与统一调度架构
 
-为了承载如此庞大而严谨的认知演化推演，我们构建了**工业级、零污染的五维情报网 ➕ 四大专业 Skill 矩阵 ➕ 统一中央调度台 (Unified Command Center)** 工程架构：
+为了承载如此庞大而严谨的认知演化推演，我们构建了**工业级、零污染的七维情报网 ➕ 七大专业 Skill 矩阵 ➕ 统一中央调度台 (Unified Command Center)** 工程架构：
 
 ### 6.1 精简清晰的模块目录架构 (Directory Architecture)
 
@@ -274,9 +274,9 @@ $$\text{Alpha}_{\text{Reality}} = \text{Velocity}\big(\text{Reality Evolution}\b
 src/
 ├── cli/                        # 统一命令行中央调度台
 │   ├── narrative.ts            # 主调度入口 (npm run narrative <command>)
-│   └── commands/               # 高内聚领域命令组 (sync, audit, stage, intake, research)
+│   └── commands/               # 高内聚领域命令组 (run, sync, audit, stage, intake, report, research)
 ├── db/                         # SQLite 核心数据库引擎与 Drizzle ORM Schema
-│   ├── schema.ts               # evidence (727+条), topics (44赛道), canonical_events, raw_snapshots
+│   ├── schema.ts               # evidence (742+条), topics (44赛道), canonical_events, raw_snapshots
 │   └── index.ts                # 本地高性能轻量数据库连接实例
 ├── config/                     # 全局配置、题材规范中文词典 (topic_name_localizations.ts)
 ├── features/                   # 独立业务切片 (领域规则纯粹，严禁外部 I/O 污染)
@@ -284,9 +284,9 @@ src/
 │   ├── stages/                 # S0-S7 状态机、Stage Gate 门槛判定、阶段 Diff 引擎
 │   ├── scoring/                # 纯规则打分引擎、转移概率动力学计算
 │   ├── narrative/              # 叙事树图谱、Narrative Memory 记忆库、大盘渲染器
-│   ├── intake/                 # 候选事实提纯、主动学习闭环、交互式可视化工作台
+│   ├── intake/                 # 候选事实提纯、本地/远端 PDF 自动多引擎解构、无感接入工作台
 │   ├── research/               # 自主研究 Agent、Web 深度检索、直接数据源巡航
-│   ├── worldmonitor/           # 五维权威情报网格适配器 (部委/研报/巨潮/领袖/快讯)、多模态清洗
+│   ├── worldmonitor/           # 七大权威情报网格适配器 (部委/研报/巨潮/领袖/CCGP/CTR/现货遥测)
 │   └── reporting/              # Dashboard 状态卡、周度简报、双轨每日情报战报渲染器
 ├── platform/                   # 跨业务基础设施 (DI 依赖注入容器、运行上下文、版本控制)
 └── app/                        # 组合根：业务用例编排 (Use Cases)、完整流水线串联
@@ -296,26 +296,31 @@ src/
 
 ```mermaid
 flowchart TD
-    subgraph G1 ["五大立体权威数据网络 (5D Intelligence Grid)"]
+    subgraph G1 ["七大立体权威数据网络 (7D Intelligence Grid) ➕ PDF深层提纯"]
         S1["🏛️ T0 政策部委: 中国政府网 / 国家发改委 / 工信部 / 药监局 CDE / 民航局 CAAC"]
-        S2["📊 T1 券商深度研报: 东方财富研报中心 (13.9万篇券商深度研报库)"]
-        S3["📑 T1 法定上市公司披露: 巨潮资讯网 (A股上市公司重大合同 / 募投中试线公告)"]
+        S2["📊 T1 券商深度研报: 东方财富研报中心 (13.9万篇研报库) ➕ 远端PDF自动反编译"]
+        S3["📑 T1 法定上市公司披露: 巨潮资讯网 (重大合同 / 募投中试线公告) ➕ PDF附件提纯"]
         S4["🎙️ T1 全球领袖专线: VIP Speakers (黄仁勋 / 马斯克 / 曾毓群 / 任正非 / 雷军)"]
-        S5["🌐 T2 全球快讯: 财联社 7x24 / 新浪财经 / 华尔街日报 / 56 个主流外媒"]
+        S5["💼 T1 政府采购与招投标: 中国政府采购网 (CCGP) / 全国公共资源交易中心"]
+        S6["💊 T1 注册性临床试验: 中国药物临床试验登记平台 (Chinadrugtrials CTR)"]
+        S7["📈 T2 微观现货价格遥测: 百川盈孚 / 集邦 TrendForce / 东方财富大宗库"]
     end
 
     subgraph G2 ["零丢失快照与指纹去重清洗 (Ingestion & Normalization)"]
-        S1 & S2 & S3 & S4 & S5 --> RAW["raw_snapshots (零丢失原始持久化)"]
+        S1 & S2 & S3 & S4 & S5 & S6 & S7 --> RAW["raw_snapshots (零丢失原始持久化)"]
         RAW --> NORM["WorldMonitor Normalizers (多源清洗与规范化)"]
         NORM --> CE["canonical_events (SHA-256 指纹去重规范事实)"]
     end
 
-    subgraph G3 ["四大专业 Skill 审计与证据入库矩阵 (Institutional Skills Matrix)"]
+    subgraph G3 ["七大专业 Skill 审计与证据入库矩阵 (Institutional Skills Matrix)"]
         CE --> SK1["🚀 emerging-narrative-incubator<br>(新词捕捉 / 营销换皮鉴别 / 3信源S0建档)"]
-        CE --> SK2["🔬 unit-economics-deep-dive<br>(券商BOM拆解 / 规模降本临界点 / 最窄卡点)"]
+        CE --> SK2["🔬 unit-economics-deep-dive<br>(券商BOM拆解 / 现货价格遥测 / 降本临界点)"]
         CE --> SK3["🛡️ stage-gate-falsification-audit<br>(4大防伪红线 / 累积证据链聚合评估 / Why-Not-Higher)"]
         CE --> SK4["📜 historical-milestone-reconstruction<br>(5大法定锚点探针 / 3-5年历史厚度回溯)"]
-        SK1 & SK2 & SK3 & SK4 --> ET["💾 SQLite 证据资产底座 (evidence 表 727+ 条硬核证据)"]
+        CE --> SK5["📑 daily-narrative-intelligence<br>(每日情报双轨隔离 / 事实五维穿透标准)"]
+        CE --> SK6["🔍 deep-evidence-mining<br>(CCGP/CTR/现货/远端PDF 4大下钻探针)"]
+        CE --> SK7["🤖 intake-llm-analysis<br>(大模型智能提纯 / 实体硬隔离 / 原文精准溯源)"]
+        SK1 & SK2 & SK3 & SK4 & SK5 & SK6 & SK7 --> ET["💾 SQLite 证据资产底座 (evidence 表 742+ 条硬核证据)"]
     end
 
     subgraph G4 ["确定性状态机与生命周期演化 (Stage Dynamics Engine)"]
@@ -338,7 +343,7 @@ flowchart TD
 在生命周期跃迁判定中，系统严格执行**累积证据链聚合评估法则（Cumulative Momentum Rule）**：
 - 任何单一事件绝不在真空中孤立判断；
 - 阶段判定引擎必须检索该题材在 SQLite `evidence` 表沉淀的历史全量证据链；
-- 唯有在历史积累（如 20+ 条中试线、临床 Ⅰ/Ⅱ 期、定增加码）与最新催化（如国家红头批文、千万级商业订单）形成合力并击穿 S0~S7 确定性门槛时，才触发状态跃迁。
+- 唯有在历史积累（如 20+ 条中试线、临床 Ⅰ/Ⅱ 期、定增加码）与最新催化（如国家红头批文、千万级商业订单、现货降本临界点）形成合力并击穿 S0~S7 确定性门槛时，才触发状态跃迁。
 
 ---
 
@@ -369,69 +374,86 @@ npm run narrative workbench
 
 ```bash
 # ── 🌟 核心工作流：一键执行全闭环流水线 ──────────────────────────
-npm run narrative run                 # ⚡ 一键执行：全网立体采集 ➔ 证据审计 ➔ 阶段重算 ➔ 双轨情报战报生成
+npm run narrative run                 # ⚡ 一键执行：本地/远端PDF扫描 ➔ 七大源立体采集 ➔ 证据审计 ➔ 阶段重算 ➔ 双轨情报战报生成
 
-# ── 📡 1. 全网立体数据采集 (5大权威数据网) ──────────────────────
-npm run narrative sync                # 实时采集中国政府网政策 + 东方财富研报 + 巨潮A股披露 + VIP领袖 + 全球快讯
+# ── 📥 1. 无感文档与研报 PDF 摄取 (Headless Document Intake) ────
+npm run narrative intake              # 静默扫描 data/documents/ 目录下的研报/公告 PDF，多引擎解析并审计入库
+npm run narrative intake <path-to-pdf># 精准解析单份 PDF/Docx 并智能归因到对应赛道
 
-# ── 🛡️ 2. 证据防伪审计与累积门槛核验 (Skills 矩阵) ───────────────
-npm run narrative audit               # 扫描全量历史与实时线索，通过 4 大防伪红线与累积证据链入库 SQLite (727+条硬核证据)
+# ── 📡 2. 全网立体数据采集 (7大权威数据通道) ─────────────────────
+npm run narrative sync                # 实时采集中国政府网政策 + 券商研报 + 巨潮披露 + VIP领袖 + CCGP采购 + CTR临床 + 现货价格
 
-# ── ⚡ 3. 44 赛道 S0~S7 演化生命周期重算 ─────────────────────────
+# ── 🛡️ 3. 证据防伪审计与累积门槛核验 (Skills 矩阵) ───────────────
+npm run narrative audit               # 扫描全量历史与实时线索，通过 4 大防伪红线与累积证据链入库 SQLite (742+条硬核证据)
+
+# ── ⚡ 4. 44 赛道 S0~S7 演化生命周期重算 ─────────────────────────
 npm run narrative stage               # 执行确定性状态机阶段重算，输出最新全景分布 (S0~S7)
 npm run narrative stage diff          # 比对上一轮与本轮阶段差异，精准定位跃迁与降级题材
 
-# ── 📄 4. 生成机构级双轨情报战报 (Daily Intelligence) ────────────
+# ── 📄 5. 生成机构级双轨情报战报 (Daily Intelligence) ────────────
 npm run narrative report              # 生成《每日全球产业叙事与情报态势内参》（宏观作战室 ➕ 产业链深度解构）
 
-# ── 🖥️ 5. 可视化交互大盘 (Interactive Workbench UI) ─────────────
-npm run narrative workbench           # 启动现代化本地交互大盘 (127.0.0.1:4177)
+# ── 🖥️ 6. 可视化交互大盘 (Interactive Workbench UI) ─────────────
+npm run narrative workbench           # 启动现代化本地交互大盘 (127.0.0.1:4177，覆盖 92 个权威机构源)
 
-# ── 🧪 6. 自动化测试与质量守卫 (Quality Assurance) ───────────────
-npm run narrative test                # 运行全量测试套件（102 个测试文件、444 项测试全部通过）
+# ── 🧪 7. 自动化测试与质量守卫 (Quality Assurance) ───────────────
+npm run narrative test                # 运行全量测试套件（104 个测试文件、449 项测试全部通过）
 ```
 
 ---
 
-## 八、五大立体数据源网格与四大专业 Skill 矩阵
+## 八、七大立体数据源管道与七大专业 Skill 矩阵
 
-### 8.1 五大立体权威数据信源网络 (Five-Dimensional Intelligence Grid)
+### 8.1 七大立体权威数据信源网络 (Seven-Dimensional Intelligence Grid)
 
-系统构建了多层次、穿透式的真实信息监控网络，彻底杜绝自媒体炒作与二手虚假信息：
+系统构建了多层次、穿透式的真实信息监控网络，涵盖 92 个权威官方门户与实时数据接口，彻底杜绝自媒体炒作与二手虚假信息：
 
 | 级别 | 数据网络通道 | 覆盖广度与深度 | 核心价值与应用场景 |
 | :--- | :--- | :--- | :--- |
 | **T0 级** | **国家部委与国务院政策库** | 中国政府网 (Gov.cn)、发改委、工信部、国家药监局 CDE、民航局 CAAC | 顶层规划红头文件、产业揭榜挂帅、创新药 IND/NDA 批件、适航审定 |
-| **T1 级** | **头部券商行业深度研报库** | 东方财富研报中心（13.9 万篇研报库，中金/中信/华泰等） | 产业链 BOM 拆解、单机价值量、单位经济学替代临界点、行业盈亏平衡模型 |
-| **T1 级** | **A股重大法定披露网络** | 巨潮资讯网 (Cninfo Statutory Filings) | 上市公司重大订单、中试线定增募投、设备采购合同、毛利率与真实产能 |
+| **T1 级** | **头部券商行业深度研报库** | 东方财富研报中心（13.9 万篇研报库，中金/中信/华泰等） ➕ **远端 PDF 自动解构** | 产业链 BOM 拆解、单机价值量、单位经济学替代临界点、行业盈亏平衡模型 |
+| **T1 级** | **A股重大法定披露网络** | 巨潮资讯网 (Cninfo Statutory Filings) ➕ **公告 PDF 附件提纯** | 上市公司重大订单、中试线定增募投、设备采购合同、毛利率与真实产能 |
 | **T1 级** | **全球关键领袖专线 (VIP Speakers)** | 黄仁勋 (NVIDIA)、马斯克 (Tesla)、曾毓群 (CATL)、任正非、雷军等 | 权威领袖官方演讲与财报电话会，捕获最前沿技术范式转移与工程良率突破 |
-| **T2 级** | **全球主流财经与科技快讯** | 财联社 7x24、新浪财经、华尔街日报、56 个全球主流外媒与行业网站 | 突发地缘政治动态、宏观流动性事件、海外前沿科技首发报道 |
+| **T1 级** | **政府采购与公共资源招投标** | 中国政府采购网 (CCGP)、全国公共资源交易平台 | 真实中标供应商、中标金额（精确到万元）、标的交付期，验证商业化落地 (S4/S5) |
+| **T1 级** | **国家药监局 CDE 临床试验登记** | 中国药物临床试验登记平台 (Chinadrugtrials CTR) | 登记号、适应症、I/II/III 期试验阶段、入组状态与主要终点，生物医药刚性节点 |
+| **T2 级** | **微观产业链现货价格与开工率** | 百川盈孚、集邦 TrendForce、东方财富大宗现货库 | 固态电池硫化锂、CoWoS 代工均价、特种光纤现货出厂价与全行业开工率 |
 
 ---
 
-### 8.2 四大机构级专业 Skill 审计矩阵 (Institutional Specialized Skills)
+### 8.2 七大机构级专业 Skill 审计矩阵 (Institutional Specialized Skills)
 
-系统配备了 4 套符合头部对冲基金与顶级投研机构标准的专业 Skill 专家规范：
+系统配备了 7 套符合头部对冲基金与顶级投研机构标准的专业 Skill 专家规范（全量 100% 统一为专业中文体系）：
 
-1. 🔬 **[`unit-economics-deep-dive`](.agents/skills/unit-economics-deep-dive/SKILL.md) (产业链瓶颈与单位经济学解构专家)**：
-   - 强制调取 13.9 万篇券商研报与巨潮募投明细，绘制详细 BOM 物料清单；
-   - 测算单机/单度电规模降本曲线（Learning Curve）与替代传统方案的临界点；
-   - 定位全行业放量的**最窄单一卡脖子瓶颈**（如精密磨床交期、高温烧结良率）；
-   - 挖掘毛利率达 55%~65% 的上游隐形暴利冠军。
+1. 📑 **[`daily-narrative-intelligence`](.agents/skills/daily-narrative-intelligence/SKILL.md) (每日产业叙事与情报态势深度分析专家)**：
+   - 规范全球宏观事态与产业叙事解构的双轨隔离内参生成；
+   - 强制执行事实五维穿透标准，融合 CCGP 采购号、CTR 临床登记号与微观现货价格指数。
 
 2. 🛡️ **[`stage-gate-falsification-audit`](.agents/skills/stage-gate-falsification-audit/SKILL.md) (阶段防伪与累积证据链裁决专家)**：
    - 执行 4 大防伪红线审查（非商业自吹、非框架协议 MOU、非单一公司孤证、非实验室样机）；
-   - 引入**累积证据链聚合评估机制**（量变引发质变），历史 20+ 条证据叠加最新监管批文实现阶段跃迁；
+   - 引入**累积证据链聚合评估机制**（量变引发质变），核验 S2->S3 临床登记号与 S4->S5 千万级中标大单；
    - 给出不可辩驳的 `Why-Not-Higher` 阶段否决与晋升判词。
 
-3. 🚀 **[`emerging-narrative-incubator`](.agents/skills/emerging-narrative-incubator/SKILL.md) (新题材涌现与概念孵化专家)**：
+3. 🔬 **[`unit-economics-deep-dive`](.agents/skills/unit-economics-deep-dive/SKILL.md) (产业链瓶颈与单位经济学解构专家)**：
+   - 强制调取券商研报底表、CCGP 采购合同与百川/TrendForce 微观现货价，绘制详细 BOM 物料清单；
+   - 测算单机/单度电规模降本曲线（Learning Curve）与替代传统方案的临界点；
+   - 定位全行业放量的**最窄单一卡脖子瓶颈**，挖掘毛利率达 55%~65% 的上游隐形暴利冠军。
+
+4. 🔍 **[`deep-evidence-mining`](.agents/skills/deep-evidence-mining/SKILL.md) (深度证据探针挖掘专家)**：
+   - 规范 `PROBE_CCGP_TENDER`、`PROBE_CTR_CLINICAL`、`PROBE_COMMODITY_SPOT` 与 `PROBE_REMOTE_PDF_DISASSEMBLY` 4 大下钻探针；
+   - 提取具备精确字符偏移区间（`quote_start_offset`, `quote_end_offset`）的高置信度硬核证据。
+
+5. 🚀 **[`emerging-narrative-incubator`](.agents/skills/emerging-narrative-incubator/SKILL.md) (新题材涌现与概念孵化专家)**：
    - 持续扫描未归类的新技术名词与产业概念；
    - 执行营销换皮真伪鉴别（剔除概念包装炒作，保留真实物理与材料范式突破）；
    - 在 >= 3 个独立权威信源印证后，自动赋予 `provisional_[name]` 并以 S0 建档上雷达。
 
-4. 📜 **[`historical-milestone-reconstruction`](.agents/skills/historical-milestone-reconstruction/SKILL.md) (历史里程碑证据链回溯专家)**：
+6. 📜 **[`historical-milestone-reconstruction`](.agents/skills/historical-milestone-reconstruction/SKILL.md) (历史里程碑证据链回溯专家)**：
    - 固化 5 大权威法定锚点探针（监管资质、首笔商业大单、顶层规划、物理参数拐点、中试线投资）；
    - 精准定向回溯过去 3-5 年 10~15 个决定性历史拐点，确保每一条历史证据具备法律与事实厚度。
+
+7. 🤖 **[`intake-llm-analysis`](.agents/skills/intake-llm-analysis/SKILL.md) (证据智能提取与大模型审计验证专家)**：
+   - 规范大模型在证据智能提取、AI 影子审计验证及证据链提纯流程中的提示词规范与上下文契约；
+   - 强制执行母题材与细分分支的实体层级硬隔离，确保严格 JSON 输出与零幻觉。
 
 ---
 
@@ -442,7 +464,7 @@ npm run narrative test                # 运行全量测试套件（102 个测试
 | 📕 **理论巨著** | [《市场叙事生命周期理论 · 第一版》(Markdown 全文)](docs/theory/市场叙事生命周期理论_第一版.md)<br>[《市场叙事生命周期理论 · 第一版》(PDF 原版)](docs/theory/市场叙事生命周期理论_第一版.pdf) | **理论奠基之作（全本 12 章 + 附录）**<br>从名实差、泊松过程到状态机动力学的完整哲学与数学建构 |
 | 📐 **规则基石** | [01 · 名、资、实、势理论总纲](docs/01_theory_name_capital_reality_momentum.md)<br>[02 · S0 到 S7 八阶状态定义](docs/02_lifecycle_states_S0_S7.md)<br>[03 · 最低证据标准与准入门槛](docs/03_minimum_evidence_standards.md)<br>[06 · 定量评分系统 (v0.2)](docs/06_scoring_system_v0_2.md) | 状态分类机判定、E0-E4 证据链分级与定量指标 |
 | 🛡️ **质量治理** | [04 · 误分类纠错规则体系](docs/04_misclassification_correction_rules.md)<br>[08 · 失败案例库与反思](docs/08_failure_case_library.md)<br>[26 · 治理型主动学习框架](docs/26_governed_active_learning.md) | 防范概念炒作、假叙事、过拟合与认知偏差的防火墙 |
-| 🌐 **数据集成** | [07 · 数据源与证据表设计](docs/07_data_sources_and_evidence_table.md)<br>[27 · 全球权威数据源集成地图](docs/27_worldmonitor_data_sources_integration_map.md) | 涵盖监管、学术、媒体、财报的 43+ 权威情报网格 |
+| 🌐 **数据集成** | [07 · 数据源与证据表设计](docs/07_data_sources_and_evidence_table.md)<br>[27 · 全球权威数据源集成地图](docs/27_worldmonitor_data_sources_integration_map.md) | 涵盖监管、学术、媒体、财报的 92+ 权威情报网格 |
 | 💻 **实操手册** | [EVIDENCE_GUIDE (证据编写手册)](docs/EVIDENCE_GUIDE.md)<br>[OPERATOR_GUIDE (操作员指南)](docs/OPERATOR_GUIDE.md)<br>[REPLAY_GUIDE (历史回放指南)](docs/REPLAY_GUIDE.md)<br>[TROUBLESHOOTING (故障排查)](docs/TROUBLESHOOTING.md) | 面向分析师与工程师的零代码/低代码实操规范 |
 
 ---
@@ -461,19 +483,20 @@ npm run narrative test                # 运行全量测试套件（102 个测试
 
 我们坚信，未来的投资研究范式必将从“凭感觉的故事讲述”演进为“基于证据状态机的科学探索”。
 
-### 10.1 贡献方向
+### 11.1 贡献方向
 - 🔌 **数据源适配器**：在 `src/features/worldmonitor/io/` 中接入更多全球官方机构、学术文献库与交易所 API；
 - 📝 **产业证据样本**：在 `data/sample_evidence/` 中扩充可控核聚变、量子计算、低空经济、合成生物等赛道的标准证据 YAML；
 - 🧠 **行业认知规则包**：在 `src/features/reporting/domain/industry_packs.ts` 中丰富行业专有名词与判定启发式。
 
-### 10.2 发展路线图
+### 11.2 发展路线图 (Evolution Roadmap)
 - [x] **v0.13**：完成 43 个全球权威情报源网格、S0-S7 状态机动力学方程、Feature-Sliced 模块化重构；
 - [x] **v0.14**：完成 review-first Evidence 发布治理、引用就绪度检查、候选发布复核队列及发布策略的回归测试；
-- [~] **v0.15**：提升证据转化质量：已接入优先监管、披露、公司与学术来源的结构化提取、引用完整度 artifact 与发布策略审计；下一步补充审阅语料上的事实支持度与 Topic/Branch 准确率；
-- [ ] **v0.16**：在 artifact 与 Evidence 合同稳定后接入 SQLite / PostgreSQL，支持历史事件检索与可迁移存储；
-- [ ] **v0.17**：构建带认证、审计留存和批注工作流的只读多人研究界面；
-- [ ] **v0.18**：在合规授权前提下接入 Bloomberg、Wind、Refinitiv 等机构级数据适配器；
-- [ ] **v0.19**：发布 Python Research SDK，支持在 Notebook 中读取可审计叙事状态、证据与阶段迁移结果。
+- [x] **v0.15**：证据转化与深度提纯：接入本地与远端 PDF 多引擎自动化解构，支持字符级偏移溯源与法理事实提纯；
+- [x] **v0.16**：SQLite 数据库底座 ➕ Drizzle ORM：实现 742+ 条硬核证据零丢失持久化、指纹去重清洗与历史事件极速检索；
+- [x] **v0.17**：构建 7 大立体情报管道 ➕ 92 个全球权威数据源目录网格 ➕ 现代化交互大盘 (Workbench UI 127.0.0.1:4177)；
+- [x] **v0.18**：7 大机构级中文专业 Skill 矩阵闭环（阶段防伪裁决、单位经济学解构、每日情报态势、深度证据探针、新题材孵化等）；
+- [ ] **v0.19**：在合规授权前提下接入 Bloomberg、Wind、Refinitiv 等机构级商业终端数据适配器；
+- [ ] **v0.20**：发布 Python Research SDK，支持在 Jupyter Notebook 中读取可审计叙事状态、证据与阶段迁移图谱。
 
 ---
 
