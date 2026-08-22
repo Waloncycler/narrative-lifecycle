@@ -1,11 +1,13 @@
 import type { SourcePlugin, PluginExecutionContext, PluginNormalizedFact, SourcePluginCategory } from './source_plugin.interface';
-import { OfficialGovCnPlugin } from './official_gov_cn_plugin';
-import { BrokerageEastmoneyPlugin } from './brokerage_eastmoney_plugin';
-import { CninfoDisclosurePlugin } from './cninfo_disclosure_plugin';
-import { VipSpeakersPlugin } from './vip_speakers_plugin';
-import { CcgpTendersPlugin } from './ccgp_tenders_plugin';
-import { ChinaDrugTrialsPlugin } from './chinadrugtrials_plugin';
-import { CommodityPricingPlugin } from './commodity_pricing_plugin';
+import {
+  OfficialGovCnPlugin,
+  BrokerageEastmoneyPlugin,
+  CninfoDisclosurePlugin,
+  VipSpeakersPlugin,
+  CcgpTendersPlugin,
+  ChinaDrugTrialsPlugin,
+  CommodityPricingPlugin,
+} from './builtin_plugins';
 
 export interface PluginExecutionSummary {
   plugin_id: string;
@@ -75,9 +77,6 @@ export class SourcePluginRegistry {
     return this.getAllPlugins().filter((p) => p.category === category);
   }
 
-  /**
-   * Executes all registered plugins in parallel with bounded timeout and per-plugin error isolation.
-   */
   public async executeAllPlugins(ctx: PluginExecutionContext = {}): Promise<UnifiedPluginsBatchResult> {
     const startTime = Date.now();
     const plugins = this.getAllPlugins();
