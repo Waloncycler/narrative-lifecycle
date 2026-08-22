@@ -10,6 +10,7 @@ import crypto from 'node:crypto';
 import { fetchCcgpTenders } from '@/features/worldmonitor/io/ccgp_tenders_provider';
 import { fetchChinaDrugTrials } from '@/features/worldmonitor/io/chinadrugtrials_provider';
 import { fetchCommodityPricing } from '@/features/worldmonitor/io/commodity_pricing_provider';
+import { fetchAndParseRemotePdf } from '@/features/intake/io/remote_pdf_downloader';
 
 interface UnifiedRawFact {
   source_kind: 'MINISTRY_POLICY' | 'BROKERAGE_REPORT' | 'CNINFO_DISCLOSURE' | 'VIP_SPEECH' | 'GOVERNMENT_TENDER' | 'CLINICAL_TRIAL' | 'COMMODITY_PRICING' | 'FINANCIAL_WIRE';
@@ -323,6 +324,49 @@ async function runFullUnifiedPipeline() {
     }).run();
 
     newEvidenceCount++;
+
+    // 4. 自动尝试解析远端 PDF 附件全文提纯深层证据
+    if (fact.source_url && (fact.source_url.toLowerCase().includes('.pdf') || fact.raw_payload?.adjunctUrl)) {
+      const pdfUrl = fact.source_url.toLowerCase().includes('.pdf')
+        ? fact.source_url
+        : `http://static.cninfo.com.cn/${fact.raw_payload.adjunctUrl}`;
+
+      try {
+        const remoteResult = await fetchAndParseRemotePdf(pdfUrl, { timeoutMs: 5000, maxQuotes: 3 });
+        if (remoteResult && remoteResult.key_evidence_quotes.length > 0) {
+          for (let i = 0; i < remoteResult.key_evidence_quotes.length; i++) {
+            const quote = remoteResult.key_evidence_quotes[i];
+            const deepHash = crypto.createHash('sha256').update(`${pdfUrl}_${quote}`).digest('hex').slice(0, 16);
+            const deepEvId = `ev_deep_pdf_${deepHash}`;
+
+            db.insert(evidence).values({
+              evidence_id: deepEvId,
+              topic_id: topicId,
+              branch_id: null,
+              event_date: fact.event_date,
+              available_at: `${fact.event_date}T00:00:00.000Z`,
+              event_title: `【研报/公告PDF深层提纯】${fact.title}`,
+              event_summary: quote.slice(0, 300),
+              event_type: eventType,
+              source_name: `远端材料全文 (${fact.source_name})`,
+              source_url: pdfUrl,
+              source_type: 'remote_pdf_extraction',
+              evidence_strength: evidenceStrength === 'E1' ? 'E2' : evidenceStrength,
+              stage_effect: 'observation',
+              parent_or_branch: 'parent',
+              interpretation: `[远端PDF全文提纯] 经多引擎PDF解析器从官方附件自动提纯硬证据至【${topicId}】`,
+              limitation: '一手官方附件全文',
+              positive_or_negative: 'positive',
+              confidence: 90,
+              affected_layer_json: JSON.stringify(affectedLayers),
+            }).onConflictDoNothing().run();
+          }
+          console.log(`   📄 [远端PDF解析] 成功提纯【${fact.title.slice(0, 24)}...】全文 ${remoteResult.character_count} 字，提炼出 ${remoteResult.key_evidence_quotes.length} 条深层硬核证据！`);
+        }
+      } catch {
+        // Continue gracefully on remote fetch failure
+      }
+    }
   }
 
   const totalEvidenceInDb = db.select().from(evidence).all().length;

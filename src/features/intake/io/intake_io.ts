@@ -317,7 +317,7 @@ function normalizePdfText(text: string): string {
     .trim();
 }
 
-function parsePdf(path: string): string {
+export function parsePdf(path: string): string {
   // Strategy 1: Poppler pdftotext CLI (high-fidelity UTF-8 extraction)
   const pdftotext = resolvePdfToTextBinary();
   if (pdftotext) {
