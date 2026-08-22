@@ -68,8 +68,9 @@ secrets/
 *.key
 *.pem
 
-# Agent workspace files (personal, not for contributors)
-.agents/
+# Agent workspace files (unignore public skills)
+.agents/*
+!.agents/skills/
 
 # Generated large artifacts
 data/imports/*.yaml
