@@ -58,6 +58,7 @@ outputs/evolution_timelines/
 outputs/intelligence_cache/
 outputs/intelligence/
 outputs/worldmonitor/
+data/documents/remote_cache/
 outputs/research_cache/
 
 # Sensitive: API keys and credentials

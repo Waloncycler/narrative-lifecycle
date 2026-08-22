@@ -7,226 +7,30 @@ import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import crypto from 'node:crypto';
 
-import { fetchCcgpTenders } from '@/features/worldmonitor/io/ccgp_tenders_provider';
-import { fetchChinaDrugTrials } from '@/features/worldmonitor/io/chinadrugtrials_provider';
-import { fetchCommodityPricing } from '@/features/worldmonitor/io/commodity_pricing_provider';
+import { SourcePluginRegistry } from '@/features/worldmonitor/plugins/plugin_registry';
+import type { PluginNormalizedFact } from '@/features/worldmonitor/plugins/source_plugin.interface';
 import { fetchAndParseRemotePdf } from '@/features/intake/io/remote_pdf_downloader';
 
-interface UnifiedRawFact {
-  source_kind: 'MINISTRY_POLICY' | 'BROKERAGE_REPORT' | 'CNINFO_DISCLOSURE' | 'VIP_SPEECH' | 'GOVERNMENT_TENDER' | 'CLINICAL_TRIAL' | 'COMMODITY_PRICING' | 'FINANCIAL_WIRE';
-  source_name: string;
-  source_url: string;
-  title: string;
-  summary: string;
-  event_date: string;
-  raw_payload: any;
-}
+async function fetchAllAdvancedSources(): Promise<PluginNormalizedFact[]> {
+  console.log('📡 正在通过【SourcePluginRegistry 插件矩阵】并行拉取各大权威通道...');
+  const registry = SourcePluginRegistry.getInstance();
+  const result = await registry.executeAllPlugins({
+    today: new Date().toISOString().slice(0, 10),
+    timeoutMs: 6000,
+    maxItems: 10,
+  });
 
-async function fetchAllAdvancedSources(): Promise<UnifiedRawFact[]> {
-  const facts: UnifiedRawFact[] = [];
-  const today = new Date().toISOString().slice(0, 10);
-
-  // 1. 中国政府网 (Gov.cn) 国务院政策库
-  console.log('📡 [1/7] 正在拉取【中国政府网】国务院/部委最新红头政策文件...');
-  try {
-    const govUrl = 'https://sousuo.www.gov.cn/search-gov/data?t=zhengce_gw&q=&timetype=timeqb&mintime=&maxtime=&sort=pubtime&sortType=1&nocorrect=1&num=10&page=1';
-    const res = await fetch(govUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': 'https://www.gov.cn/zhengce/zuixin.htm',
-      }
-    });
-    if (res.ok) {
-      const json = await res.json();
-      const docs = json.searchVO?.catMap?.gxml || json.searchVO?.listVO || [];
-      docs.forEach((d: any) => {
-        let eventDate = today;
-        if (typeof d.pubtime === 'number') {
-          eventDate = new Date(d.pubtime).toISOString().slice(0, 10);
-        } else if (typeof d.pubtime === 'string' && d.pubtime.length >= 10) {
-          eventDate = d.pubtime.slice(0, 10);
-        }
-        facts.push({
-          source_kind: 'MINISTRY_POLICY',
-          source_name: `中国政府网 (${d.puborg || '国务院'})`,
-          source_url: d.url || 'https://www.gov.cn/zhengce/',
-          title: d.title?.replace(/<[^>]+>/g, '').trim(),
-          summary: `国务院/部委红头文件，文号：${d.docno || '公开印发'}，发布时间：${eventDate}`,
-          event_date: eventDate,
-          raw_payload: d,
-        });
-      });
-      console.log(`   ✅ 成功获取 ${docs.length} 篇部委红头文件！`);
+  result.summaries.forEach((s) => {
+    if (s.status === 'success') {
+      console.log(`   ✅ [${s.plugin_id}] ${s.plugin_name}: 成功获取 ${s.normalized_count} 条事实 (${s.duration_ms}ms)`);
+    } else if (s.status === 'empty') {
+      console.log(`   ℹ️ [${s.plugin_id}] ${s.plugin_name}: 无新增数据 (${s.duration_ms}ms)`);
+    } else {
+      console.log(`   ⚠️ [${s.plugin_id}] ${s.plugin_name}: 跳过 (${s.error_message})`);
     }
-  } catch (e: any) {
-    console.log(`   ⚠️ 中国政府网拉取跳过: ${e.message}`);
-  }
+  });
 
-  // 2. 东方财富券商行业深度研报中心
-  console.log('📡 [2/7] 正在拉取【东方财富研报中心】13.9万头部券商行业深度研报...');
-  try {
-    const rptUrl = `https://reportapi.eastmoney.com/report/list?industryCode=*&pageSize=10&industry=*&rating=&ratingChange=&beginTime=&endTime=&pageNo=1&fields=&qType=1&_=${Date.now()}`;
-    const res = await fetch(rptUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': 'https://data.eastmoney.com/report/',
-      }
-    });
-    if (res.ok) {
-      const json = await res.json();
-      const items = json.data || [];
-      items.forEach((r: any) => {
-        facts.push({
-          source_kind: 'BROKERAGE_REPORT',
-          source_name: `券商研报 (${r.orgSName || r.orgName})`,
-          source_url: `https://data.eastmoney.com/report/info/${r.infoCode}.html`,
-          title: `【${r.orgSName || '券商研报'}】${r.title}`,
-          summary: `行业分类：${r.industryName || '综合'}，作者：${r.researcher || '分析师'}，评级：${r.emRatingName || '无评级'}`,
-          event_date: (r.publishDate || today).slice(0, 10),
-          raw_payload: r,
-        });
-      });
-      console.log(`   ✅ 成功获取 ${items.length} 篇券商深度研报！`);
-    }
-  } catch (e: any) {
-    console.log(`   ⚠️ 研报拉取跳过: ${e.message}`);
-  }
-
-  // 3. 巨潮资讯网 (Cninfo) 上市公司重大法定披露
-  console.log('📡 [3/7] 正在拉取【巨潮资讯网 (Cninfo)】A股上市公司重大合同/中报/投产公告...');
-  try {
-    const cninfoUrl = 'http://www.cninfo.com.cn/new/hisAnnouncement/query';
-    const body = new URLSearchParams({
-      pageNum: '1',
-      pageSize: '10',
-      column: 'szse',
-      tabName: 'fulltext',
-      plate: '',
-      stock: '',
-      searchkey: '',
-      secid: '',
-      category: '',
-      trade: '',
-      seDate: '',
-    });
-    const res = await fetch(cninfoUrl, {
-      method: 'POST',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': 'http://www.cninfo.com.cn/',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-      body: body.toString(),
-    });
-    if (res.ok) {
-      const json = await res.json();
-      const items = json.announcements || [];
-      items.forEach((a: any) => {
-        facts.push({
-          source_kind: 'CNINFO_DISCLOSURE',
-          source_name: `巨潮法定披露 (${a.secName} ${a.secCode})`,
-          source_url: `http://www.cninfo.com.cn/${a.adjunctUrl}`,
-          title: `【${a.secName} (${a.secCode})】${a.announcementTitle?.replace(/<[^>]+>/g, '')}`,
-          summary: `上市公司法定信息披露，公告ID：${a.announcementId}，PDF大小：${a.adjunctSize}KB`,
-          event_date: a.announcementTime ? new Date(a.announcementTime).toISOString().slice(0, 10) : today,
-          raw_payload: a,
-        });
-      });
-      console.log(`   ✅ 成功获取 ${items.length} 篇巨潮法定公告！`);
-    }
-  } catch (e: any) {
-    console.log(`   ⚠️ 巨潮拉取跳过: ${e.message}`);
-  }
-
-  // 4. 全球关键领袖言论流 (VIP Speakers)
-  console.log('📡 [4/7] 正在拉取【全球科技与产业领袖】最新公开表态...');
-  const vipStatements: UnifiedRawFact[] = [
-    {
-      source_kind: 'VIP_SPEECH',
-      source_name: 'Jensen Huang Keynote / NVIDIA Official',
-      source_url: 'https://blogs.nvidia.com/blog/2026/08/blackwell-physical-ai/',
-      title: '黄仁勋：Blackwell Ultra 需求极为强劲，物理 AI (Physical AI) 与机器人计算迎来万亿级临界点',
-      summary: '英伟达CEO黄仁勋在最新产业论坛表示，下一代AI大模型正在向具备物理空间交互能力的具身智能全面演进。',
-      event_date: today,
-      raw_payload: { speaker: 'Jensen Huang', role: 'NVIDIA CEO' }
-    },
-    {
-      source_kind: 'VIP_SPEECH',
-      source_name: 'Elon Musk Public Transmission / Tesla',
-      source_url: 'https://x.com/elonmusk/status/optimus_gen3_update',
-      title: '马斯克：Optimus 第三代手部 22 个自由度量产良率突破 85%，年内开启千台工业实训部署',
-      summary: '特斯拉CEO马斯克披露人形机器人执行器与灵巧手降本最新进展，单台BOM成本进入大幅下降通道。',
-      event_date: today,
-      raw_payload: { speaker: 'Elon Musk', role: 'Tesla CEO' }
-    },
-    {
-      source_kind: 'VIP_SPEECH',
-      source_name: 'CATL Official Disclosure',
-      source_url: 'https://www.catl.com/news/solid_state_pilot_2026',
-      title: '曾毓群：宁德时代全固态电池中试产线正式贯通，能量密度达 500Wh/kg，首批进入极寒与航空验证',
-      summary: '宁德时代董事长曾毓群宣布全固态硫化物电解质中试线试车成功，解决界面阻抗与循环寿命瓶颈。',
-      event_date: today,
-      raw_payload: { speaker: 'Robin Zeng', role: 'CATL Chairman' }
-    }
-  ];
-  facts.push(...vipStatements);
-  console.log(`   ✅ 成功注入 ${vipStatements.length} 条全球领袖权威表态！`);
-
-  // 5. 中国政府采购网 (CCGP) 与公共资源招投标流
-  try {
-    const tenders = await fetchCcgpTenders();
-    tenders.forEach((t) => {
-      facts.push({
-        source_kind: 'GOVERNMENT_TENDER',
-        source_name: `中国政府采购网 (${t.purchaser})`,
-        source_url: t.source_url,
-        title: t.title,
-        summary: `项目分类：${t.category}，中标人：${t.winning_bidder}，金额：${t.amount_rmb}。${t.summary}`,
-        event_date: t.event_date,
-        raw_payload: t,
-      });
-    });
-  } catch (e: any) {
-    console.log(`   ⚠️ CCGP 政府采购流跳过: ${e.message}`);
-  }
-
-  // 6. 中国药物临床试验平台 (Chinadrugtrials / CDE)
-  try {
-    const trials = await fetchChinaDrugTrials();
-    trials.forEach((tr) => {
-      facts.push({
-        source_kind: 'CLINICAL_TRIAL',
-        source_name: `中国药物临床试验平台 (${tr.ctr_id})`,
-        source_url: tr.source_url,
-        title: `【临床进展 ${tr.trial_phase}】${tr.drug_name} (${tr.sponsor})`,
-        summary: `适应症：${tr.indication}，状态：${tr.status}，主要终点：${tr.primary_endpoints}。${tr.summary}`,
-        event_date: tr.event_date,
-        raw_payload: tr,
-      });
-    });
-  } catch (e: any) {
-    console.log(`   ⚠️ 临床试验流跳过: ${e.message}`);
-  }
-
-  // 7. 微观产业链现货价格与开工率遥测 (Commodity Pricing)
-  try {
-    const commodities = await fetchCommodityPricing();
-    commodities.forEach((c) => {
-      facts.push({
-        source_kind: 'COMMODITY_PRICING',
-        source_name: c.source_name,
-        source_url: c.source_url,
-        title: `【现货遥测】${c.item_name} ${c.spot_price}${c.unit} (周变动 ${c.wow_change_pct})`,
-        summary: `分类：${c.category}，行业开工率：${c.operating_rate_pct}，库存周转：${c.inventory_days}天。${c.summary}`,
-        event_date: c.event_date,
-        raw_payload: c,
-      });
-    });
-  } catch (e: any) {
-    console.log(`   ⚠️ 微观现货遥测流跳过: ${e.message}`);
-  }
-
-  return facts;
+  return result.facts;
 }
 
 import { runHeadlessDocumentIntake } from './run_headless_document_intake';
@@ -326,17 +130,14 @@ async function runFullUnifiedPipeline() {
     newEvidenceCount++;
 
     // 4. 自动尝试解析远端 PDF 附件全文提纯深层证据
-    if (fact.source_url && (fact.source_url.toLowerCase().includes('.pdf') || fact.raw_payload?.adjunctUrl)) {
-      const pdfUrl = fact.source_url.toLowerCase().includes('.pdf')
-        ? fact.source_url
-        : `http://static.cninfo.com.cn/${fact.raw_payload.adjunctUrl}`;
-
+    const targetPdfUrl = fact.remote_pdf_url || (fact.source_url?.toLowerCase().includes('.pdf') ? fact.source_url : null);
+    if (targetPdfUrl) {
       try {
-        const remoteResult = await fetchAndParseRemotePdf(pdfUrl, { timeoutMs: 5000, maxQuotes: 3 });
+        const remoteResult = await fetchAndParseRemotePdf(targetPdfUrl, { timeoutMs: 5000, maxQuotes: 3 });
         if (remoteResult && remoteResult.key_evidence_quotes.length > 0) {
           for (let i = 0; i < remoteResult.key_evidence_quotes.length; i++) {
             const quote = remoteResult.key_evidence_quotes[i];
-            const deepHash = crypto.createHash('sha256').update(`${pdfUrl}_${quote}`).digest('hex').slice(0, 16);
+            const deepHash = crypto.createHash('sha256').update(`${targetPdfUrl}_${quote}`).digest('hex').slice(0, 16);
             const deepEvId = `ev_deep_pdf_${deepHash}`;
 
             db.insert(evidence).values({
@@ -349,7 +150,7 @@ async function runFullUnifiedPipeline() {
               event_summary: quote.slice(0, 300),
               event_type: eventType,
               source_name: `远端材料全文 (${fact.source_name})`,
-              source_url: pdfUrl,
+              source_url: targetPdfUrl,
               source_type: 'remote_pdf_extraction',
               evidence_strength: evidenceStrength === 'E1' ? 'E2' : evidenceStrength,
               stage_effect: 'observation',
