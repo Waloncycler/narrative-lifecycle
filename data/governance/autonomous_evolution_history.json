@@ -2,6 +2,254 @@
   {
     "artifact_type": "autonomous_feedback_report",
     "schema_version": "1.0.0",
+    "generated_at": "2026-08-22T08:20:16.585Z",
+    "run_id": "test_run_1787386816570",
+    "metrics": {
+      "total_candidates": 0,
+      "published_evidence_count": 0,
+      "held_candidates_count": 0,
+      "unresolved_topic_count": 0,
+      "high_confidence_ratio": 0,
+      "average_evidence_strength": "E0"
+    },
+    "topic_gaps": [
+      {
+        "topic_id": "solid_state_battery",
+        "topic_name": "固态电池",
+        "domain": "energy",
+        "priority": 5,
+        "current_evidence_count": 0,
+        "gap_severity": "critical",
+        "recommended_queries": [
+          "固态电池 固态电池 最新进展 突破",
+          "Solid-State Battery 固态电池 breakthrough commercial validation",
+          "清陶能源 固态电池 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "sodium_ion_battery",
+        "topic_name": "钠离子电池",
+        "domain": "energy",
+        "priority": 5,
+        "current_evidence_count": 0,
+        "gap_severity": "critical",
+        "recommended_queries": [
+          "钠离子电池 钠离子电池 最新进展 突破",
+          "Sodium-Ion Battery 钠离子电池 breakthrough commercial validation",
+          "中科海钠 钠离子电池 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "provisional_antibody_drug_conjugates",
+        "topic_name": "抗体偶联药物 (ADC)",
+        "domain": "biotech",
+        "priority": 5,
+        "current_evidence_count": 0,
+        "gap_severity": "critical",
+        "recommended_queries": [
+          "抗体偶联药物 (ADC) adc 最新进展 突破",
+          "Antibody-Drug Conjugates (ADC) adc breakthrough commercial validation",
+          "科伦博泰 adc clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "provisional_radiopharmaceuticals",
+        "topic_name": "放射性核药与核医学",
+        "domain": "biotech",
+        "priority": 4,
+        "current_evidence_count": 1,
+        "gap_severity": "high",
+        "recommended_queries": [
+          "放射性核药与核医学 核药 最新进展 突破",
+          "Radiopharmaceuticals & Targeted Radionuclide Therapy 核药 breakthrough commercial validation",
+          "中国同辐 核药 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "bci",
+        "topic_name": "脑机接口",
+        "domain": "biotech",
+        "priority": 3,
+        "current_evidence_count": 24,
+        "gap_severity": "healthy",
+        "recommended_queries": [
+          "脑机接口 脑机接口 最新进展 突破",
+          "Brain-Computer Interface 脑机接口 breakthrough commercial validation",
+          "Neuralink 脑机接口 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "humanoid_robotics",
+        "topic_name": "人形机器人与具身智能",
+        "domain": "robotics",
+        "priority": 3,
+        "current_evidence_count": 37,
+        "gap_severity": "healthy",
+        "recommended_queries": [
+          "人形机器人与具身智能 人形机器人 最新进展 突破",
+          "Humanoid Robotics & Embodied AI 人形机器人 breakthrough commercial validation",
+          "智元机器人 人形机器人 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "provisional_nuclear_fusion_advanced_nuclear",
+        "topic_name": "可控核聚变与先进核能",
+        "domain": "energy",
+        "priority": 3,
+        "current_evidence_count": 9,
+        "gap_severity": "healthy",
+        "recommended_queries": [
+          "可控核聚变与先进核能 可控核聚变 最新进展 突破",
+          "Nuclear Fusion & Advanced Nuclear 可控核聚变 breakthrough commercial validation",
+          "能量奇点 可控核聚变 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "provisional_low_altitude_economy",
+        "topic_name": "低空经济与 eVTOL",
+        "domain": "aerospace",
+        "priority": 3,
+        "current_evidence_count": 16,
+        "gap_severity": "healthy",
+        "recommended_queries": [
+          "低空经济与 eVTOL 低空经济 最新进展 突破",
+          "Low-Altitude Economy & eVTOL 低空经济 breakthrough commercial validation",
+          "亿航智能 低空经济 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "provisional_computing_infrastructure",
+        "topic_name": "算力基础设施与智算硬件",
+        "domain": "semiconductor",
+        "priority": 3,
+        "current_evidence_count": 86,
+        "gap_severity": "healthy",
+        "recommended_queries": [
+          "算力基础设施与智算硬件 智算中心 最新进展 突破",
+          "Computing Infrastructure & Optical Interconnect 智算中心 breakthrough commercial validation",
+          "Nvidia 智算中心 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "provisional_ai_agents",
+        "topic_name": "AI 智能体与 Agentic 架构",
+        "domain": "ai",
+        "priority": 3,
+        "current_evidence_count": 14,
+        "gap_severity": "healthy",
+        "recommended_queries": [
+          "AI 智能体与 Agentic 架构 ai agent 最新进展 突破",
+          "AI Agents & Agentic Workflows ai agent breakthrough commercial validation",
+          "OpenAI Operator ai agent clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "provisional_quantum_computing",
+        "topic_name": "量子计算与量子科技",
+        "domain": "quantum",
+        "priority": 3,
+        "current_evidence_count": 11,
+        "gap_severity": "healthy",
+        "recommended_queries": [
+          "量子计算与量子科技 量子计算 最新进展 突破",
+          "Quantum Computing & Quantum Tech 量子计算 breakthrough commercial validation",
+          "国盾量子 量子计算 clinical trial patent regulatory"
+        ]
+      },
+      {
+        "topic_id": "provisional_advanced_packaging",
+        "topic_name": "半导体先进封装与 Chiplet",
+        "domain": "semiconductor",
+        "priority": 3,
+        "current_evidence_count": 9,
+        "gap_severity": "healthy",
+        "recommended_queries": [
+          "半导体先进封装与 Chiplet 先进封装 最新进展 突破",
+          "Advanced Packaging & Chiplet 先进封装 breakthrough commercial validation",
+          "长电科技 先进封装 clinical trial patent regulatory"
+        ]
+      }
+    ],
+    "emerging_terms": [],
+    "next_cycle_plan": {
+      "plan_id": "plan_mt43yma1",
+      "generated_at": "2026-08-22T08:20:16.585Z",
+      "priority_topics": [
+        {
+          "topic_id": "solid_state_battery",
+          "topic_name": "固态电池",
+          "target_queries": [
+            "固态电池 固态电池 最新进展 突破",
+            "Solid-State Battery 固态电池 breakthrough commercial validation",
+            "清陶能源 固态电池 clinical trial patent regulatory"
+          ],
+          "target_sources": [
+            "miit",
+            "sec_edgar",
+            "clinicaltrials",
+            "arxiv",
+            "cnipa"
+          ]
+        },
+        {
+          "topic_id": "sodium_ion_battery",
+          "topic_name": "钠离子电池",
+          "target_queries": [
+            "钠离子电池 钠离子电池 最新进展 突破",
+            "Sodium-Ion Battery 钠离子电池 breakthrough commercial validation",
+            "中科海钠 钠离子电池 clinical trial patent regulatory"
+          ],
+          "target_sources": [
+            "miit",
+            "sec_edgar",
+            "clinicaltrials",
+            "arxiv",
+            "cnipa"
+          ]
+        },
+        {
+          "topic_id": "provisional_antibody_drug_conjugates",
+          "topic_name": "抗体偶联药物 (ADC)",
+          "target_queries": [
+            "抗体偶联药物 (ADC) adc 最新进展 突破",
+            "Antibody-Drug Conjugates (ADC) adc breakthrough commercial validation",
+            "科伦博泰 adc clinical trial patent regulatory"
+          ],
+          "target_sources": [
+            "miit",
+            "sec_edgar",
+            "clinicaltrials",
+            "arxiv",
+            "cnipa"
+          ]
+        },
+        {
+          "topic_id": "provisional_radiopharmaceuticals",
+          "topic_name": "放射性核药与核医学",
+          "target_queries": [
+            "放射性核药与核医学 核药 最新进展 突破",
+            "Radiopharmaceuticals & Targeted Radionuclide Therapy 核药 breakthrough commercial validation",
+            "中国同辐 核药 clinical trial patent regulatory"
+          ],
+          "target_sources": [
+            "miit",
+            "sec_edgar",
+            "clinicaltrials",
+            "arxiv",
+            "cnipa"
+          ]
+        }
+      ],
+      "evolution_recommendations": [
+        "Prioritize multi-source deep mining for critical-gap topics: 固态电池, 钠离子电池, 抗体偶联药物 (ADC), 放射性核药与核医学.",
+        "Reinforce bilingual technical keywords for emerging terms: none.",
+        "Maintain automatic pacing and exponential backoff on all API calls."
+      ]
+    }
+  },
+  {
+    "artifact_type": "autonomous_feedback_report",
+    "schema_version": "1.0.0",
     "generated_at": "2026-08-22T07:59:31.231Z",
     "run_id": "test_run_1787385571222",
     "metrics": {
@@ -7453,327 +7701,6 @@
     "next_cycle_plan": {
       "plan_id": "plan_msuv0ihe",
       "generated_at": "2026-08-15T20:59:52.847Z",
-      "priority_topics": [
-        {
-          "topic_id": "solid_state_battery",
-          "topic_name": "固态电池",
-          "target_queries": [
-            "固态电池 固态电池 最新进展 突破",
-            "Solid-State Battery 固态电池 breakthrough commercial validation",
-            "清陶能源 固态电池 clinical trial patent regulatory"
-          ],
-          "target_sources": [
-            "miit",
-            "sec_edgar",
-            "clinicaltrials",
-            "arxiv",
-            "cnipa"
-          ]
-        },
-        {
-          "topic_id": "sodium_ion_battery",
-          "topic_name": "钠离子电池",
-          "target_queries": [
-            "钠离子电池 钠离子电池 最新进展 突破",
-            "Sodium-Ion Battery 钠离子电池 breakthrough commercial validation",
-            "中科海钠 钠离子电池 clinical trial patent regulatory"
-          ],
-          "target_sources": [
-            "miit",
-            "sec_edgar",
-            "clinicaltrials",
-            "arxiv",
-            "cnipa"
-          ]
-        },
-        {
-          "topic_id": "humanoid_robotics",
-          "topic_name": "人形机器人与具身智能",
-          "target_queries": [
-            "人形机器人与具身智能 人形机器人 最新进展 突破",
-            "Humanoid Robotics & Embodied AI 人形机器人 breakthrough commercial validation",
-            "智元机器人 人形机器人 clinical trial patent regulatory"
-          ],
-          "target_sources": [
-            "miit",
-            "sec_edgar",
-            "clinicaltrials",
-            "arxiv",
-            "cnipa"
-          ]
-        },
-        {
-          "topic_id": "provisional_nuclear_fusion_advanced_nuclear",
-          "topic_name": "可控核聚变与先进核能",
-          "target_queries": [
-            "可控核聚变与先进核能 可控核聚变 最新进展 突破",
-            "Nuclear Fusion & Advanced Nuclear 可控核聚变 breakthrough commercial validation",
-            "能量奇点 可控核聚变 clinical trial patent regulatory"
-          ],
-          "target_sources": [
-            "miit",
-            "sec_edgar",
-            "clinicaltrials",
-            "arxiv",
-            "cnipa"
-          ]
-        }
-      ],
-      "evolution_recommendations": [
-        "Prioritize multi-source deep mining for critical-gap topics: 固态电池, 钠离子电池, 人形机器人与具身智能, 可控核聚变与先进核能.",
-        "Reinforce bilingual technical keywords for emerging terms: Class, Financial, Firm.",
-        "Maintain automatic pacing and exponential backoff on all API calls."
-      ]
-    }
-  },
-  {
-    "artifact_type": "autonomous_feedback_report",
-    "schema_version": "1.0.0",
-    "generated_at": "2026-08-15T20:28:47.285Z",
-    "run_id": "agent_run_20260815200552877",
-    "metrics": {
-      "total_candidates": 489,
-      "published_evidence_count": 0,
-      "held_candidates_count": 0,
-      "unresolved_topic_count": 441,
-      "high_confidence_ratio": 0,
-      "average_evidence_strength": "E0"
-    },
-    "topic_gaps": [
-      {
-        "topic_id": "solid_state_battery",
-        "topic_name": "固态电池",
-        "domain": "energy",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "固态电池 固态电池 最新进展 突破",
-          "Solid-State Battery 固态电池 breakthrough commercial validation",
-          "清陶能源 固态电池 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "sodium_ion_battery",
-        "topic_name": "钠离子电池",
-        "domain": "energy",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "钠离子电池 钠离子电池 最新进展 突破",
-          "Sodium-Ion Battery 钠离子电池 breakthrough commercial validation",
-          "中科海钠 钠离子电池 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "humanoid_robotics",
-        "topic_name": "人形机器人与具身智能",
-        "domain": "robotics",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "人形机器人与具身智能 人形机器人 最新进展 突破",
-          "Humanoid Robotics & Embodied AI 人形机器人 breakthrough commercial validation",
-          "智元机器人 人形机器人 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "provisional_nuclear_fusion_advanced_nuclear",
-        "topic_name": "可控核聚变与先进核能",
-        "domain": "energy",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "可控核聚变与先进核能 可控核聚变 最新进展 突破",
-          "Nuclear Fusion & Advanced Nuclear 可控核聚变 breakthrough commercial validation",
-          "能量奇点 可控核聚变 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "provisional_low_altitude_economy",
-        "topic_name": "低空经济与 eVTOL",
-        "domain": "aerospace",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "低空经济与 eVTOL 低空经济 最新进展 突破",
-          "Low-Altitude Economy & eVTOL 低空经济 breakthrough commercial validation",
-          "亿航智能 低空经济 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "provisional_computing_infrastructure",
-        "topic_name": "算力基础设施与智算硬件",
-        "domain": "semiconductor",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "算力基础设施与智算硬件 智算中心 最新进展 突破",
-          "Computing Infrastructure & Optical Interconnect 智算中心 breakthrough commercial validation",
-          "Nvidia 智算中心 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "provisional_antibody_drug_conjugates",
-        "topic_name": "抗体偶联药物 (ADC)",
-        "domain": "biotech",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "抗体偶联药物 (ADC) adc 最新进展 突破",
-          "Antibody-Drug Conjugates (ADC) adc breakthrough commercial validation",
-          "科伦博泰 adc clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "provisional_quantum_computing",
-        "topic_name": "量子计算与量子科技",
-        "domain": "quantum",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "量子计算与量子科技 量子计算 最新进展 突破",
-          "Quantum Computing & Quantum Tech 量子计算 breakthrough commercial validation",
-          "国盾量子 量子计算 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "provisional_advanced_packaging",
-        "topic_name": "半导体先进封装与 Chiplet",
-        "domain": "semiconductor",
-        "priority": 5,
-        "current_evidence_count": 0,
-        "gap_severity": "critical",
-        "recommended_queries": [
-          "半导体先进封装与 Chiplet 先进封装 最新进展 突破",
-          "Advanced Packaging & Chiplet 先进封装 breakthrough commercial validation",
-          "长电科技 先进封装 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "provisional_ai_agents",
-        "topic_name": "AI 智能体与 Agentic 架构",
-        "domain": "ai",
-        "priority": 4,
-        "current_evidence_count": 1,
-        "gap_severity": "high",
-        "recommended_queries": [
-          "AI 智能体与 Agentic 架构 ai agent 最新进展 突破",
-          "AI Agents & Agentic Workflows ai agent breakthrough commercial validation",
-          "OpenAI Operator ai agent clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "provisional_radiopharmaceuticals",
-        "topic_name": "放射性核药与核医学",
-        "domain": "biotech",
-        "priority": 4,
-        "current_evidence_count": 2,
-        "gap_severity": "high",
-        "recommended_queries": [
-          "放射性核药与核医学 核药 最新进展 突破",
-          "Radiopharmaceuticals & Targeted Radionuclide Therapy 核药 breakthrough commercial validation",
-          "中国同辐 核药 clinical trial patent regulatory"
-        ]
-      },
-      {
-        "topic_id": "bci",
-        "topic_name": "脑机接口",
-        "domain": "biotech",
-        "priority": 3,
-        "current_evidence_count": 10,
-        "gap_severity": "healthy",
-        "recommended_queries": [
-          "脑机接口 脑机接口 最新进展 突破",
-          "Brain-Computer Interface 脑机接口 breakthrough commercial validation",
-          "Neuralink 脑机接口 clinical trial patent regulatory"
-        ]
-      }
-    ],
-    "emerging_terms": [
-      {
-        "term": "Class",
-        "frequency": 23,
-        "sample_quotes": [
-          "Pomerantz Law Firm Announces the Filing of a Class Action Against First Solar, Inc. and Certain Officers – FSLR",
-          "Pomerantz Law Firm Announces the Filing of a Class Action Against First Solar, Inc. and Certain Officers – FSLR"
-        ],
-        "suggested_topic_hint": null
-      },
-      {
-        "term": "Financial",
-        "frequency": 18,
-        "sample_quotes": [
-          "Upland Software Reports Second Quarter 2026 Financial Results",
-          "Upland Software Reports Second Quarter 2026 Financial Results"
-        ],
-        "suggested_topic_hint": null
-      },
-      {
-        "term": "Firm",
-        "frequency": 18,
-        "sample_quotes": [
-          "Kessler Topaz Meltzer & Check, LLP Encourages Alnylam Pharmaceuticals, Inc. (NASDAQ: ALNY) Investors to Contact the Firm",
-          "Kessler Topaz Meltzer & Check, LLP Encourages Alnylam Pharmaceuticals, Inc. (NASDAQ: ALNY) Investors to Contact the Firm"
-        ],
-        "suggested_topic_hint": null
-      },
-      {
-        "term": "Results",
-        "frequency": 16,
-        "sample_quotes": [
-          "Upland Software Reports Second Quarter 2026 Financial Results",
-          "Upland Software Reports Second Quarter 2026 Financial Results"
-        ],
-        "suggested_topic_hint": null
-      },
-      {
-        "term": "Action",
-        "frequency": 16,
-        "sample_quotes": [
-          "Pomerantz Law Firm Announces the Filing of a Class Action Against First Solar, Inc. and Certain Officers – FSLR",
-          "Pomerantz Law Firm Announces the Filing of a Class Action Against First Solar, Inc. and Certain Officers – FSLR"
-        ],
-        "suggested_topic_hint": null
-      },
-      {
-        "term": "Energy",
-        "frequency": 15,
-        "sample_quotes": [
-          "英伟达正洽谈向SB Energy投资30亿美元，作为OpenAI数据中心交易的一部分",
-          "英伟达正洽谈向SB Energy投资30亿美元，作为OpenAI数据中心交易的一部分"
-        ],
-        "suggested_topic_hint": null
-      },
-      {
-        "term": "Pomerantz",
-        "frequency": 15,
-        "sample_quotes": [
-          "Pomerantz Law Firm Announces the Filing of a Class Action Against First Solar, Inc. and Certain Officers – FSLR",
-          "Pomerantz Law Firm Announces the Filing of a Class Action Against First Solar, Inc. and Certain Officers – FSLR"
-        ],
-        "suggested_topic_hint": null
-      },
-      {
-        "term": "OpenAI",
-        "frequency": 14,
-        "sample_quotes": [
-          "英伟达正洽谈向SB Energy投资30亿美元，作为OpenAI数据中心交易的一部分",
-          "英伟达正洽谈向SB Energy投资30亿美元，作为OpenAI数据中心交易的一部分"
-        ],
-        "suggested_topic_hint": null
-      }
-    ],
-    "next_cycle_plan": {
-      "plan_id": "plan_msutwj07",
-      "generated_at": "2026-08-15T20:28:47.285Z",
       "priority_topics": [
         {
           "topic_id": "solid_state_battery",

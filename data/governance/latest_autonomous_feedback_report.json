@@ -1,8 +1,8 @@
 {
   "artifact_type": "autonomous_feedback_report",
   "schema_version": "1.0.0",
-  "generated_at": "2026-08-22T07:59:31.231Z",
-  "run_id": "test_run_1787385571222",
+  "generated_at": "2026-08-22T08:20:16.585Z",
+  "run_id": "test_run_1787386816570",
   "metrics": {
     "total_candidates": 0,
     "published_evidence_count": 0,
@@ -171,8 +171,8 @@
   ],
   "emerging_terms": [],
   "next_cycle_plan": {
-    "plan_id": "plan_mt437xcw",
-    "generated_at": "2026-08-22T07:59:31.231Z",
+    "plan_id": "plan_mt43yma1",
+    "generated_at": "2026-08-22T08:20:16.585Z",
     "priority_topics": [
       {
         "topic_id": "solid_state_battery",
