@@ -264,66 +264,85 @@ $$\text{Alpha}_{\text{Reality}} = \text{Velocity}\big(\text{Reality Evolution}\b
 
 ---
 
-## 六、宏伟工程体系：数据流与 Feature-Sliced 架构
+## 六、宏伟工程体系：五维情报网、Skills 矩阵与统一调度架构
 
-为了承载如此庞大而严谨的认知演化推演，我们构建了**工业级、零污染的 Feature-Sliced（特性切片）工程架构**：
+为了承载如此庞大而严谨的认知演化推演，我们构建了**工业级、零污染的五维情报网 ➕ 四大专业 Skill 矩阵 ➕ 统一中央调度台 (Unified Command Center)** 工程架构：
+
+### 6.1 精简清晰的模块目录架构 (Directory Architecture)
 
 ```
 src/
-├── features/               # 独立业务切片 (领域规则纯粹，严禁外部 I/O 污染)
-│   ├── evidence/           # 证据表、哈希指纹防篡改、E0-E4 证据强度规则
-│   ├── stages/             # S0-S7 状态机、Stage Gate 门槛判定、周期 Diff
-│   ├── scoring/            # 纯规则打分引擎、转移概率动力学计算
-│   ├── narrative/          # 叙事树图谱、Narrative Memory 记忆库、主题注册表
-│   ├── intake/             # 证据录入 Agent、主动学习闭环、本地可视化工作台
-│   ├── research/           # 自主研究 Agent、Web 深度检索、直接数据源巡航
-│   ├── worldmonitor/       # 43+ 权威情报网格编目、Feed 提纯、状态变化探测
-│   └── reporting/          # Dashboard 状态卡、周度简报、历史回放测试
-├── platform/               # 跨业务通用基础设施 (文件存储、运行上下文、版本控制)
-├── app/                    # 组合根：业务用例编排、完整流水线串联
-└── cli/                    # 极简 CLI 入口 (严格对齐每个 npm run 命令)
+├── cli/                        # 统一命令行中央调度台
+│   ├── narrative.ts            # 主调度入口 (npm run narrative <command>)
+│   └── commands/               # 高内聚领域命令组 (sync, audit, stage, intake, research)
+├── db/                         # SQLite 核心数据库引擎与 Drizzle ORM Schema
+│   ├── schema.ts               # evidence (727+条), topics (44赛道), canonical_events, raw_snapshots
+│   └── index.ts                # 本地高性能轻量数据库连接实例
+├── config/                     # 全局配置、题材规范中文词典 (topic_name_localizations.ts)
+├── features/                   # 独立业务切片 (领域规则纯粹，严禁外部 I/O 污染)
+│   ├── evidence/               # 证据资产库、哈希指纹防篡改、E0-E4 证据分级规则
+│   ├── stages/                 # S0-S7 状态机、Stage Gate 门槛判定、阶段 Diff 引擎
+│   ├── scoring/                # 纯规则打分引擎、转移概率动力学计算
+│   ├── narrative/              # 叙事树图谱、Narrative Memory 记忆库、大盘渲染器
+│   ├── intake/                 # 候选事实提纯、主动学习闭环、交互式可视化工作台
+│   ├── research/               # 自主研究 Agent、Web 深度检索、直接数据源巡航
+│   ├── worldmonitor/           # 五维权威情报网格适配器 (部委/研报/巨潮/领袖/快讯)、多模态清洗
+│   └── reporting/              # Dashboard 状态卡、周度简报、双轨每日情报战报渲染器
+├── platform/                   # 跨业务基础设施 (DI 依赖注入容器、运行上下文、版本控制)
+└── app/                        # 组合根：业务用例编排 (Use Cases)、完整流水线串联
 ```
+
+### 6.2 全闭环全维情报与生命周期演化数据流图 (End-to-End Flowchart)
 
 ```mermaid
 flowchart TD
-    subgraph G1 ["外部权威数据宇宙 (43+ Sources)"]
-        S1["全球宏观与金融: Investing / Reuters / WSJ / Bloomberg"]
-        S2["官方监管与法定: SEC EDGAR / Federal Register / SAMR / CAC"]
-        S3["顶级学术与科技: PubMed / ArXiv / OpenAlex / Crossref"]
-        S4["产业与公司披露: 30家核心公司IR / 交易所公告 / 招投标"]
+    subgraph G1 ["五大立体权威数据网络 (5D Intelligence Grid)"]
+        S1["🏛️ T0 政策部委: 中国政府网 / 国家发改委 / 工信部 / 药监局 CDE / 民航局 CAAC"]
+        S2["📊 T1 券商深度研报: 东方财富研报中心 (13.9万篇券商深度研报库)"]
+        S3["📑 T1 法定上市公司披露: 巨潮资讯网 (A股上市公司重大合同 / 募投中试线公告)"]
+        S4["🎙️ T1 全球领袖专线: VIP Speakers (黄仁勋 / 马斯克 / 曾毓群 / 任正非 / 雷军)"]
+        S5["🌐 T2 全球快讯: 财联社 7x24 / 新浪财经 / 华尔街日报 / 56 个主流外媒"]
     end
 
-    subgraph G2 ["提纯与证据准入"]
-        S1 & S2 & S3 & S4 --> WM["WorldMonitor 结构化特征提纯"]
-        WM --> IC["Evidence Candidate 候选提纯 (含原文引用与置信度)"]
-        IC --> AG["AI Shadow 影子验证 (MiniMax / 自定义接口)"]
-        IC & AG --> HG{"人类审查道闸 (Review Gate)"}
+    subgraph G2 ["零丢失快照与指纹去重清洗 (Ingestion & Normalization)"]
+        S1 & S2 & S3 & S4 & S5 --> RAW["raw_snapshots (零丢失原始持久化)"]
+        RAW --> NORM["WorldMonitor Normalizers (多源清洗与规范化)"]
+        NORM --> CE["canonical_events (SHA-256 指纹去重规范事实)"]
     end
 
-    subgraph G3 ["确定性状态机核心 (Pure Domain)"]
-        HG -->|通过审核| ET["正式证据表 (Evidence Table)"]
-        ET --> NM["叙事记忆库 (Narrative Memory)"]
-        NM --> SG["Stage Gate 状态门槛分类器 (S0-S7)"]
+    subgraph G3 ["四大专业 Skill 审计与证据入库矩阵 (Institutional Skills Matrix)"]
+        CE --> SK1["🚀 emerging-narrative-incubator<br>(新词捕捉 / 营销换皮鉴别 / 3信源S0建档)"]
+        CE --> SK2["🔬 unit-economics-deep-dive<br>(券商BOM拆解 / 规模降本临界点 / 最窄卡点)"]
+        CE --> SK3["🛡️ stage-gate-falsification-audit<br>(4大防伪红线 / 累积证据链聚合评估 / Why-Not-Higher)"]
+        CE --> SK4["📜 historical-milestone-reconstruction<br>(5大法定锚点探针 / 3-5年历史厚度回溯)"]
+        SK1 & SK2 & SK3 & SK4 --> ET["💾 SQLite 证据资产底座 (evidence 表 727+ 条硬核证据)"]
+    end
+
+    subgraph G4 ["确定性状态机与生命周期演化 (Stage Dynamics Engine)"]
+        ET --> SG["Stage Gate 状态门槛分类器 (S0-S7 判定)"]
         SG --> SE["动力学打分引擎 (Transition Force 计算)"]
+        SE --> DIFF["Stage Diff 差异比对引擎 (跃迁/降级跟踪)"]
     end
 
-    subgraph G4 ["最终决策看板与产出"]
-        SE --> DC["Dashboard 状态卡 (outputs/dashboard_cards/)"]
-        SE --> SD["状态迁移对比 (outputs/diffs/latest_stage_diff.md)"]
-        SE --> WB["周度战略简报 (outputs/reports/weekly_brief.md)"]
-        SE --> UI["Narrative Monitor 交互式工作台 (127.0.0.1:4177)"]
+    subgraph G5 ["机构级双轨情报与大盘决策产出 (Outputs)"]
+        DIFF --> RPT["📄 每日情报态势内参 (outputs/intelligence/daily_intelligence_latest.md)<br>• 第一部分: 宏观态势与地缘作战室<br>• 第二部分: 深度产业叙事生命周期与BOM拆解"]
+        DIFF --> UI["🖥️ Narrative Monitor 交互大盘 (127.0.0.1:4177)"]
+        DIFF --> DC["📊 44 个赛道演化图谱与生命周期全景分布"]
     end
 ```
 
-### 证据发布契约（v0.14）
+### 6.3 证据发布契约与累积门槛法则
 
 系统把“发现候选”和“发布正式证据”明确分开。默认的 Workbench、`agent:run`、`autonomy:run` 与定时循环只会生成可审计候选、原文摘录、Topic/Branch 解析和待处理队列；它们不会写入 Evidence Table，也不会激活 Topic 或 Branch。
 
-受控自动发布是一个显式的运维选择，而不是默认能力。它必须同时满足：版本化策略中 `auto_publish_evidence=true`、命令明确传入 `--publish-auto`、来源/引用/Schema/去重/Topic-Branch/E0-E4 校验通过，并且没有触发父主题阶段跳跃保护。即使满足这些条件，Stage 和 Score 仍只由确定性 Evidence Table 规则重算。
+在生命周期跃迁判定中，系统严格执行**累积证据链聚合评估法则（Cumulative Momentum Rule）**：
+- 任何单一事件绝不在真空中孤立判断；
+- 阶段判定引擎必须检索该题材在 SQLite `evidence` 表沉淀的历史全量证据链；
+- 唯有在历史积累（如 20+ 条中试线、临床 Ⅰ/Ⅱ 期、定增加码）与最新催化（如国家红头批文、千万级商业订单）形成合力并击穿 S0~S7 确定性门槛时，才触发状态跃迁。
 
 ---
 
-## 七、全流程实操指南 (Run The System)
+## 七、全流程实操指南 (Unified Command Center & Practical Guide)
 
 ### 7.1 环境准备与三步启动
 
@@ -337,7 +356,7 @@ npm install
 cp .env.example .env    # 可选：填入 MiniMax 或兼容的大模型 API Key
 
 # 3. 启动交互式叙事监控大盘与工作台
-npm run intake:workbench
+npm run narrative workbench
 ```
 
 浏览器访问 **`http://localhost:4177`** 即可进入沉浸式 Narrative Monitor 作战控制台！
