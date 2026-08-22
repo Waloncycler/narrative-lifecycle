@@ -2,6 +2,7 @@ import { resolve, basename } from 'node:path';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import crypto from 'node:crypto';
 import { parsePdf } from './intake_io';
+import { rateLimitedFetch } from '@/platform/io/http_rate_limiter';
 
 export interface RemotePdfExtractionResult {
   url: string;
@@ -35,17 +36,11 @@ export async function fetchAndParseRemotePdf(
   // 1. Download if not cached
   if (!existsSync(cacheFilePath)) {
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-      const res = await fetch(remoteUrl, {
+      const res = await rateLimitedFetch(remoteUrl, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
           Accept: 'application/pdf, */*',
         },
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
+      }, { timeoutMs });
 
       if (!res.ok) return null;
       const arrayBuffer = await res.arrayBuffer();

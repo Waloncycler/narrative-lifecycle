@@ -1,4 +1,5 @@
 import type { SourcePlugin, PluginExecutionContext, PluginNormalizedFact } from './source_plugin.interface';
+import { rateLimitedFetch } from '@/platform/io/http_rate_limiter';
 
 // 1. 中国政府网 (Gov.cn) 国务院与部委红头政策库
 export class OfficialGovCnPlugin implements SourcePlugin {
@@ -15,16 +16,12 @@ export class OfficialGovCnPlugin implements SourcePlugin {
     const govUrl = `https://sousuo.www.gov.cn/search-gov/data?t=zhengce_gw&q=&timetype=timeqb&mintime=&maxtime=&sort=pubtime&sortType=1&nocorrect=1&num=${maxItems}&page=1`;
 
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), timeoutMs);
-      const res = await fetch(govUrl, {
+      const res = await rateLimitedFetch(govUrl, {
         headers: {
           'User-Agent': ctx.userAgent ?? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Referer': 'https://www.gov.cn/zhengce/zuixin.htm',
         },
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
+      }, { timeoutMs });
       if (!res.ok) return [];
       const json = await res.json();
       return json.searchVO?.catMap?.gxml || json.searchVO?.listVO || [];
@@ -78,16 +75,12 @@ export class BrokerageEastmoneyPlugin implements SourcePlugin {
     const rptUrl = `https://reportapi.eastmoney.com/report/list?industryCode=*&pageSize=${maxItems}&industry=*&rating=&ratingChange=&beginTime=&endTime=&pageNo=1&fields=&qType=1&_=${Date.now()}`;
 
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), timeoutMs);
-      const res = await fetch(rptUrl, {
+      const res = await rateLimitedFetch(rptUrl, {
         headers: {
           'User-Agent': ctx.userAgent ?? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Referer': 'https://data.eastmoney.com/report/',
         },
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
+      }, { timeoutMs });
       if (!res.ok) return [];
       const json = await res.json();
       return json.data || [];
@@ -149,9 +142,7 @@ export class CninfoDisclosurePlugin implements SourcePlugin {
     });
 
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), timeoutMs);
-      const res = await fetch(cninfoUrl, {
+      const res = await rateLimitedFetch(cninfoUrl, {
         method: 'POST',
         headers: {
           'User-Agent': ctx.userAgent ?? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -159,9 +150,7 @@ export class CninfoDisclosurePlugin implements SourcePlugin {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         },
         body: body.toString(),
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
+      }, { timeoutMs });
       if (!res.ok) return [];
       const json = await res.json();
       return json.announcements || [];
@@ -270,16 +259,12 @@ export class CcgpTendersPlugin implements SourcePlugin {
     const searchUrl = 'http://search.ccgp.gov.cn/bxsearch?searchtype=1&page_index=1&bidSort=0&buyerName=&projectId=&pinMu=0&bidType=0&dbselect=bidx&kw=%E4%BA%BA%E5%BD%A2%E6%9C%BA%E5%99%A8%E4%BA%BA+%E5%9B%BA%E6%80%81%E7%94%B5%E6%B1%A0+%E7%AE%97%E5%8A%9B+%E5%88%9B%E6%96%B0%E8%8D%AF';
 
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), timeoutMs);
-      const res = await fetch(searchUrl, {
+      const res = await rateLimitedFetch(searchUrl, {
         headers: {
           'User-Agent': ctx.userAgent ?? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Referer': 'http://www.ccgp.gov.cn/',
         },
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
+      }, { timeoutMs });
       if (!res.ok) throw new Error(`CCGP returned ${res.status}`);
     } catch {
       // Fallback to verified baseline tenders
