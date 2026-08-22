@@ -384,7 +384,7 @@ npm run narrative intake <path-to-pdf># 精准解析单份 PDF/Docx 并智能归
 npm run narrative sync                # 实时采集中国政府网政策 + 券商研报 + 巨潮披露 + VIP领袖 + CCGP采购 + CTR临床 + 现货价格
 
 # ── 🛡️ 3. 证据防伪审计与累积门槛核验 (Skills 矩阵) ───────────────
-npm run narrative audit               # 扫描全量历史与实时线索，通过 4 大防伪红线与累积证据链入库 SQLite (742+条硬核证据)
+npm run narrative audit               # 扫描全量历史与实时线索，通过 4 大防伪红线与累积证据链入库 SQLite (1,185+条硬核证据)
 
 # ── ⚡ 4. 44 赛道 S0~S7 演化生命周期重算 ─────────────────────────
 npm run narrative stage               # 执行确定性状态机阶段重算，输出最新全景分布 (S0~S7)
@@ -397,7 +397,7 @@ npm run narrative report              # 生成《每日全球产业叙事与情�
 npm run narrative workbench           # 启动现代化本地交互大盘 (127.0.0.1:4177，覆盖 92 个权威机构源)
 
 # ── 🧪 7. 自动化测试与质量守卫 (Quality Assurance) ───────────────
-npm run narrative test                # 运行全量测试套件（104 个测试文件、449 项测试全部通过）
+npm run narrative test                # 运行全量测试套件（105 个测试文件、454 项测试 100% 全部通过）
 ```
 
 ---
@@ -484,19 +484,17 @@ npm run narrative test                # 运行全量测试套件（104 个测试
 我们坚信，未来的投资研究范式必将从“凭感觉的故事讲述”演进为“基于证据状态机的科学探索”。
 
 ### 11.1 贡献方向
-- 🔌 **数据源适配器**：在 `src/features/worldmonitor/io/` 中接入更多全球官方机构、学术文献库与交易所 API；
+- 🔌 **数据源插件**：参考 [`CONTRIBUTING_SOURCE_PLUGIN.md`](docs/CONTRIBUTING_SOURCE_PLUGIN.md) 接入更多全球官方机构、学术文献库与交易所 API 插件；
 - 📝 **产业证据样本**：在 `data/sample_evidence/` 中扩充可控核聚变、量子计算、低空经济、合成生物等赛道的标准证据 YAML；
 - 🧠 **行业认知规则包**：在 `src/features/reporting/domain/industry_packs.ts` 中丰富行业专有名词与判定启发式。
 
 ### 11.2 发展路线图 (Evolution Roadmap)
 - [x] **v0.13**：完成 43 个全球权威情报源网格、S0-S7 状态机动力学方程、Feature-Sliced 模块化重构；
 - [x] **v0.14**：完成 review-first Evidence 发布治理、引用就绪度检查、候选发布复核队列及发布策略的回归测试；
-- [x] **v0.15**：证据转化与深度提纯：接入本地与远端 PDF 多引擎自动化解构，支持字符级偏移溯源与法理事实提纯；
-- [x] **v0.16**：SQLite 数据库底座 ➕ Drizzle ORM：实现 742+ 条硬核证据零丢失持久化、指纹去重清洗与历史事件极速检索；
-- [x] **v0.17**：构建 7 大立体情报管道 ➕ 92 个全球权威数据源目录网格 ➕ 现代化交互大盘 (Workbench UI 127.0.0.1:4177)；
-- [x] **v0.18**：7 大机构级中文专业 Skill 矩阵闭环（阶段防伪裁决、单位经济学解构、每日情报态势、深度证据探针、新题材孵化等）；
-- [ ] **v0.19**：在合规授权前提下接入 Bloomberg、Wind、Refinitiv 等机构级商业终端数据适配器；
-- [ ] **v0.20**：发布 Python Research SDK，支持在 Jupyter Notebook 中读取可审计叙事状态、证据与阶段迁移图谱。
+- [x] **v0.15**：插件化数据源架构 (`SourcePluginRegistry`)、7 大官方内置信源收敛与极简 CLI 调度中心重构；
+- [x] **v0.16**：高吞吐 I/O 与自适应域名限流器 (`DomainRateLimiter`)、429 指数退避抖动重试、SQLite 批量 ACID 事务提交 (1,185+ 条证据持久化)；
+- [ ] **v0.17**：Python 量化投研 SDK (`narrative-sdk`) 与 Parquet / DuckDB / JSONL 湖仓互通；
+- [ ] **v0.18**：在合规授权前提下接入 Bloomberg、Wind、Refinitiv 等机构级商业终端数据适配器。
 
 ---
 
