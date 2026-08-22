@@ -1,8 +1,8 @@
 {
   "artifact_type": "autonomous_feedback_report",
   "schema_version": "1.0.0",
-  "generated_at": "2026-08-21T18:44:39.785Z",
-  "run_id": "test_run_1787337879779",
+  "generated_at": "2026-08-22T06:26:22.434Z",
+  "run_id": "test_run_1787379982414",
   "metrics": {
     "total_candidates": 0,
     "published_evidence_count": 0,
@@ -82,7 +82,7 @@
       "topic_name": "人形机器人与具身智能",
       "domain": "robotics",
       "priority": 3,
-      "current_evidence_count": 34,
+      "current_evidence_count": 36,
       "gap_severity": "healthy",
       "recommended_queries": [
         "人形机器人与具身智能 人形机器人 最新进展 突破",
@@ -171,8 +171,8 @@
   ],
   "emerging_terms": [],
   "next_cycle_plan": {
-    "plan_id": "plan_mt3atqei",
-    "generated_at": "2026-08-21T18:44:39.785Z",
+    "plan_id": "plan_mt3zw50j",
+    "generated_at": "2026-08-22T06:26:22.434Z",
     "priority_topics": [
       {
         "topic_id": "solid_state_battery",

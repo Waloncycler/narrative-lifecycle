@@ -181,13 +181,19 @@ export function createInteractiveIntakeServer(repoRoot: string, useCases: Produc
         return json(response, { session, audit, review_status: reviewOnlyStatus(bundle.candidates.length), automation: completedAutomation(), state: readState(repoRoot) });
       }
       if (request.method === 'POST' && pathname === '/api/upload') {
-        const upload = await readMultipartFile(request);
-        const relativePath = writeUpload(repoRoot, upload.fileName, upload.body);
-        const session = useCases.prepareEvidenceIntakeUseCase.execute({ file: relativePath });
-        const bundle = await useCases.runIntakeAgentUseCase.executeLatest();
-        await useCases.runAiShadowValidationUseCase.execute();
-        const audit = useCases.validateTopicsUseCase.execute();
-        return json(response, { session, audit, review_status: reviewOnlyStatus(bundle.candidates.length), automation: completedAutomation(), state: readState(repoRoot) });
+        try {
+          const upload = await readMultipartFile(request);
+          const relativePath = writeUpload(repoRoot, upload.fileName, upload.body);
+          const session = useCases.prepareEvidenceIntakeUseCase.execute({ file: relativePath });
+          const bundle = await useCases.runIntakeAgentUseCase.executeLatest();
+          await useCases.runAiShadowValidationUseCase.execute();
+          const audit = useCases.validateTopicsUseCase.execute();
+          return json(response, { session, audit, review_status: reviewOnlyStatus(bundle.candidates.length), automation: completedAutomation(), state: readState(repoRoot) });
+        } catch (error) {
+          const msg = error instanceof Error ? error.message : String(error);
+          console.error('Upload processing failed:', msg);
+          return json(response, { error: `文件上传与解析失败: ${msg}` });
+        }
       }
       if (request.method === 'POST' && pathname === '/api/ai-shadow') {
         const result = await useCases.runAiShadowValidationUseCase.execute();
@@ -548,18 +554,43 @@ async function readJson<T>(request: IncomingMessage): Promise<T> {
 
 async function readMultipartFile(request: IncomingMessage): Promise<{ fileName: string; body: Buffer }> {
   const contentType = request.headers['content-type'] ?? '';
-  const boundary = /boundary=([^;]+)/.exec(contentType)?.[1];
+  const boundaryMatch = /boundary=(?:"([^"]+)"|([^;]+))/i.exec(contentType);
+  const boundary = boundaryMatch?.[1]?.trim() || boundaryMatch?.[2]?.trim();
   if (!boundary) throw new Error('upload requires multipart boundary');
+  
   const chunks: Buffer[] = [];
   for await (const chunk of request) chunks.push(Buffer.from(chunk));
-  const raw = Buffer.concat(chunks).toString('latin1');
-  const part = raw.split(`--${boundary}`).find((item) => item.includes('filename='));
-  if (!part) throw new Error('upload requires a file field');
-  const headerEnd = part.indexOf('\r\n\r\n');
-  const headers = part.slice(0, headerEnd);
-  const fileName = /filename="([^"]+)"/.exec(headers)?.[1] ?? 'upload.txt';
-  const content = part.slice(headerEnd + 4).replace(/\r\n$/, '');
-  return { fileName, body: Buffer.from(content, 'latin1') };
+  const fullBuffer = Buffer.concat(chunks);
+  
+  const boundaryBuffer = Buffer.from(`--${boundary}`);
+  const headerEndDelimiter = Buffer.from('\r\n\r\n');
+  
+  let start = fullBuffer.indexOf(boundaryBuffer);
+  if (start === -1) throw new Error('upload boundary not found in payload');
+  
+  while (start !== -1) {
+    const nextStart = fullBuffer.indexOf(boundaryBuffer, start + boundaryBuffer.length);
+    const partBuffer = nextStart !== -1 ? fullBuffer.subarray(start + boundaryBuffer.length, nextStart) : fullBuffer.subarray(start + boundaryBuffer.length);
+    
+    const headerEnd = partBuffer.indexOf(headerEndDelimiter);
+    if (headerEnd !== -1) {
+      const headerStr = partBuffer.subarray(0, headerEnd).toString('utf8');
+      if (headerStr.includes('filename=')) {
+        const fnMatch = /filename\*?=(?:UTF-8''([^;\r\n]+)|"([^"]+)"|([^;\r\n]+))/i.exec(headerStr);
+        let fileName = fnMatch?.[1] ? decodeURIComponent(fnMatch[1]) : (fnMatch?.[2] || fnMatch?.[3] || 'upload.pdf');
+        fileName = fileName.trim().replace(/^["']|["']$/g, '');
+        
+        let bodyBuffer = partBuffer.subarray(headerEnd + headerEndDelimiter.length);
+        if (bodyBuffer.length >= 2 && bodyBuffer[bodyBuffer.length - 2] === 0x0D && bodyBuffer[bodyBuffer.length - 1] === 0x0A) {
+          bodyBuffer = bodyBuffer.subarray(0, bodyBuffer.length - 2);
+        }
+        return { fileName, body: Buffer.from(bodyBuffer) };
+      }
+    }
+    start = nextStart;
+  }
+  
+  throw new Error('upload requires a valid file field');
 }
 
 function writeUpload(repoRoot: string, fileName: string, body: Buffer): string {

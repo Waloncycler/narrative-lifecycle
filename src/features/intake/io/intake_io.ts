@@ -288,12 +288,110 @@ function parseDocx(path: string): string {
   return execFileSync('python3', ['-c', script, path], { encoding: 'utf8' });
 }
 
-function parsePdf(path: string): string {
-  try {
-    return execFileSync('pdftotext', [path, '-'], { encoding: 'utf8' });
-  } catch {
-    return readFileSync(path).toString('latin1').replace(/[^\x09\x0a\x0d\x20-\x7e]+/g, ' ').replace(/\s+/g, ' ').trim();
+function resolvePdfToTextBinary(): string | null {
+  const candidates = [
+    '/opt/homebrew/bin/pdftotext',
+    '/usr/local/bin/pdftotext',
+    '/usr/bin/pdftotext',
+    'pdftotext',
+  ];
+  for (const candidate of candidates) {
+    try {
+      execFileSync(candidate, ['-v'], { stdio: 'ignore' });
+      return candidate;
+    } catch (e: any) {
+      if (e.code !== 'ENOENT') {
+        return candidate;
+      }
+    }
   }
+  return null;
+}
+
+function parsePdf(path: string): string {
+  // Strategy 1: Poppler pdftotext CLI (high-fidelity UTF-8 extraction)
+  const pdftotext = resolvePdfToTextBinary();
+  if (pdftotext) {
+    try {
+      const text = execFileSync(pdftotext, ['-enc', 'UTF-8', '-nopgbrk', path, '-'], {
+        encoding: 'utf8',
+        maxBuffer: 50 * 1024 * 1024,
+      });
+      if (text && text.trim().length > 10) {
+        return text.replace(/\s+/g, ' ').trim();
+      }
+    } catch {
+      // fallback to python engine
+    }
+  }
+
+  // Strategy 2: Python engine (pypdf/pymupdf/pdfminer/FlateDecode stream decompressor)
+  const pythonScript = [
+    'import sys, re, zlib, html',
+    'def extract(path):',
+    '    for mod in ["pypdf", "pypdf2", "pymupdf", "fitz", "pdfminer.high_level"]:',
+    '        try:',
+    '            if mod in ["pypdf", "pypdf2"]:',
+    '                m = __import__(mod)',
+    '                reader = m.PdfReader(path)',
+    '                text = " ".join([page.extract_text() or "" for page in reader.pages])',
+    '                if len(text.strip()) > 10:',
+    '                    return text',
+    '            elif mod in ["pymupdf", "fitz"]:',
+    '                fitz = __import__("fitz")',
+    '                doc = fitz.open(path)',
+    '                text = " ".join([page.get_text() for page in doc])',
+    '                if len(text.strip()) > 10:',
+    '                    return text',
+    '            elif mod == "pdfminer.high_level":',
+    '                from pdfminer.high_level import extract_text',
+    '                text = extract_text(path)',
+    '                if len(text.strip()) > 10:',
+    '                    return text',
+    '        except Exception:',
+    '            pass',
+    '    try:',
+    '        with open(path, "rb") as f:',
+    '            data = f.read()',
+    '        streams = re.findall(b"stream[\\\\r\\\\n]+([\\\\s\\\\S]*?)[\\\\r\\\\n]+endstream", data)',
+    '        out = []',
+    '        for s in streams:',
+    '            try: d = zlib.decompress(s)',
+    '            except Exception: d = s',
+    '            for m in re.findall(rb"\\\\((.*?)\\\\)\\\\s*T[jJ\\\']", d):',
+    '                for enc in ["utf-8", "gb18030", "gbk", "latin1"]:',
+    '                    try: out.append(m.decode(enc)); break',
+    '                    except Exception: pass',
+    '            for h in re.findall(rb"<([0-9a-fA-F\\\\s]+)>\\\\s*T[jJ\\\']", d):',
+    '                h_clean = re.sub(rb"\\\\s+", b"", h)',
+    '                try:',
+    '                    b = bytes.fromhex(h_clean.decode("ascii"))',
+    '                    for enc in ["utf-16-be", "utf-8", "gb18030", "gbk"]:',
+    '                        try: out.append(b.decode(enc)); break',
+    '                        except Exception: pass',
+    '                except Exception: pass',
+    '        res = " ".join(out).strip()',
+    '        if len(res) > 10: return res',
+    '    except Exception:',
+    '        pass',
+    '    return ""',
+    'print(extract(sys.argv[1]))',
+  ].join('\n');
+
+  try {
+    const text = execFileSync('python3', ['-c', pythonScript, path], {
+      encoding: 'utf8',
+      maxBuffer: 50 * 1024 * 1024,
+    });
+    if (text && text.trim().length > 10) {
+      return text.replace(/\s+/g, ' ').trim();
+    }
+  } catch {
+    // fallback
+  }
+
+  // Strategy 3: Raw UTF-8 string extractor
+  return readFileSync(path, 'utf8').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function renderApplyMarkdown(result: EvidenceIntakeApplyResult): string {
