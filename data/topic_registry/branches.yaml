@@ -1,0 +1,366 @@
+- branch_id: bci_medical_rehab
+  topic_id: bci
+  branch_name: 脑机接口医疗康复
+  market_name_zh: 脑机接口医疗康复
+  market_name_en: BCI medical rehabilitation
+  naming_status: verified
+  naming_sources:
+    - source_name: 工业和信息化部等七部门
+      source_url: https://www.miit.gov.cn/jgsj/kjs/wjfb/art/2025/art_438e059801414869abc50abdb06eeac6.html
+      available_at: 2025-07-30
+      source_quote: 面向肢体运动、语言、感觉缺陷患者的康复需求
+  status: active
+- branch_id: humanoid_actuator
+  topic_id: humanoid_robotics
+  branch_name: 人形机器人执行器
+  market_name_zh: 人形机器人执行器
+  market_name_en: Humanoid robot actuators
+  naming_status: provisional
+  naming_sources: []
+  status: watch
+- branch_id: adc_license_out
+  topic_id: innovative_drug_license_out
+  branch_name: ADC 对外授权
+  market_name_zh: ADC 对外授权
+  market_name_en: ADC license-out
+  naming_status: provisional
+  naming_sources: []
+  status: active
+- branch_id: ai_adoption
+  topic_id: provisional_luxury_consumer
+  branch_name: AI 应用
+  market_name_zh: AI 应用
+  market_name_en: AI adoption
+  naming_status: provisional
+  naming_sources: []
+  status: archived
+- branch_id: urban_uav_infrastructure
+  topic_id: provisional_low_altitude_economy
+  branch_name: 城市低空基础设施
+  market_name_zh: 城市低空基础设施
+  market_name_en: Urban UAV infrastructure
+  naming_status: provisional
+  naming_sources: []
+  status: active
+- branch_id: quantum_materials
+  topic_id: provisional_quantum_computing
+  branch_name: 量子材料
+  market_name_zh: 量子材料
+  market_name_en: Quantum materials
+  naming_status: provisional
+  naming_sources: []
+  status: watch
+- branch_id: video_generation
+  topic_id: provisional_ai_foundation_models
+  branch_name: 视频生成
+  market_name_zh: 视频生成
+  market_name_en: Video generation
+  naming_status: provisional
+  naming_sources: []
+  status: active
+- branch_id: a_share_price_action
+  topic_id: provisional_semiconductor_memory_market
+  branch_name: A股价格表现
+  market_name_zh: A股价格表现
+  market_name_en: A-share price action
+  naming_status: provisional
+  naming_sources: []
+  status: archived
+- branch_id: smb_desktop_3d_printing
+  topic_id: provisional_additive_manufacturing
+  branch_name: 中小型桌面 3D 打印
+  market_name_zh: 中小型桌面 3D 打印
+  market_name_en: SMB desktop 3D printing
+  naming_status: provisional
+  naming_sources: []
+  status: watch
+- branch_id: provisional_ai_foundation_models_branch_awhccv
+  topic_id: provisional_ai_foundation_models
+  branch_name: 第三个对话窗口里研究发布方案
+  naming_status: unresolved
+  naming_sources: []
+  status: archived
+- branch_id: provisional_innovative_drug_clinical_development_nct07530367
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: NCT07530367
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_innovative_drug_clinical_development_nct07741877
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: NCT07741877
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_semiconductor_advanced_manufacturing_branch_bkonti
+  topic_id: provisional_semiconductor_advanced_manufacturing
+  branch_name: 轻量智造还将沿着轻量化制造
+  status: archived
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_innovative_drug_clinical_development_alk201
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: ALK201
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_innovative_drug_clinical_development_nct07469566
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: NCT07469566
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_foundation_models_branch_evhmt7
+  topic_id: provisional_ai_foundation_models
+  branch_name: Branch Evhmt7
+  status: archived
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_innovative_drug_clinical_development_nct07299019
+  topic_id: provisional_innovative_drug_clinical_development
+  branch_name: NCT07299019
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_foundation_models_branch_bmbjj5
+  topic_id: provisional_ai_foundation_models
+  branch_name: 百亿订单履约及算力产能持续扩张需求
+  status: archived
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_blockchain_crypto_market_branch_1mjfs84
+  topic_id: provisional_blockchain_crypto_market
+  branch_name: 设备制造
+  status: archived
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_low_altitude_economy_evtol_airworthiness
+  topic_id: provisional_low_altitude_economy
+  branch_name: Evtol Airworthiness
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_china_macro_policy_hainan_smart_transport
+  topic_id: provisional_china_macro_policy
+  branch_name: Hainan Smart Transport
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_bundibugyo_ebola_drc_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Bundibugyo Ebola Drc 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_bundibugyo_ebola_drc_uganda_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Bundibugyo Ebola Drc Uganda 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_hantavirus_cruise_ship_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Hantavirus Cruise Ship 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_nipah_india_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Nipah India 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_who_don_yellow_fever_global_2026
+  topic_id: provisional_infectious_disease_outbreaks
+  branch_name: Who Don Yellow Fever Global 2026
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_bci_psychiatric_depression
+  topic_id: bci
+  branch_name: Bci Psychiatric Depression
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: innovative_drug_license_out_gp2013
+  topic_id: innovative_drug_license_out
+  branch_name: GP2013
+  status: archived
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_into_multi_level_tree_that_ranges_from_fine_grained_diagno
+  topic_id: provisional_ai_agents
+  branch_name: into multi-level tree that ranges from fine-grained diagnostic
+  status: archived
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_varied_diagnostic
+  topic_id: provisional_ai_agents
+  branch_name: varied diagnostic
+  status: archived
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_computing_infrastructure_ai_infrastructure
+  topic_id: provisional_computing_infrastructure
+  branch_name: AI infrastructure
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_computing_infrastructure_deploying_infrastructure
+  topic_id: provisional_computing_infrastructure
+  branch_name: deploying infrastructure
+  status: archived
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_bci_als_communication
+  topic_id: bci
+  branch_name: Bci Als Communication
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_compute_budget_governance
+  topic_id: provisional_ai_agents
+  branch_name: Compute Budget Governance
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ssb_semi_solid_mass_production
+  topic_id: provisional_solid_state_battery
+  branch_name: 半固态电池量产
+  market_name_zh: 半固态电池量产
+  market_name_en: Semi-solid-state battery mass production
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_ssb_sulfide_electrolyte
+  topic_id: provisional_solid_state_battery
+  branch_name: 硫化物全固态电解质
+  market_name_zh: 硫化物全固态电解质
+  market_name_en: Sulfide all-solid-state electrolyte
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_robotaxi_commercial_operation
+  topic_id: provisional_autonomous_driving_robotaxi
+  branch_name: Robotaxi 商业化运营
+  market_name_zh: Robotaxi 商业化运营
+  market_name_en: Robotaxi commercial operation
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_autonomous_driving_l3_regulation
+  topic_id: provisional_autonomous_driving_robotaxi
+  branch_name: L3 自动驾驶准入法规
+  market_name_zh: L3 自动驾驶准入法规
+  market_name_en: L3 autonomous driving regulation
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_fusion_magnetic_confinement
+  topic_id: provisional_nuclear_fusion_advanced_nuclear
+  branch_name: 磁约束聚变装置
+  market_name_zh: 磁约束聚变装置
+  market_name_en: Magnetic confinement fusion device
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_small_modular_reactor
+  topic_id: provisional_nuclear_fusion_advanced_nuclear
+  branch_name: 小型模块化反应堆
+  market_name_zh: 小型模块化反应堆
+  market_name_en: Small modular reactor
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_xr_ai_smart_glasses
+  topic_id: provisional_spatial_computing_xr
+  branch_name: AI 智能眼镜
+  market_name_zh: AI 智能眼镜
+  market_name_en: AI smart glasses
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_xr_spatial_content_ecosystem
+  topic_id: provisional_spatial_computing_xr
+  branch_name: 空间内容生态
+  market_name_zh: 空间内容生态
+  market_name_en: Spatial content ecosystem
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_synbio_ai_protein_design
+  topic_id: provisional_synthetic_biology
+  branch_name: AI 蛋白质设计
+  market_name_zh: AI 蛋白质设计
+  market_name_en: AI protein design
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: provisional_synbio_biomanufacturing
+  topic_id: provisional_synthetic_biology
+  branch_name: 生物制造
+  market_name_zh: 生物制造
+  market_name_en: Biomanufacturing
+  status: watch
+  naming_status: provisional
+  naming_sources: []
+- branch_id: humanoid_robotics_developer_of_technology_infrastructure
+  topic_id: humanoid_robotics
+  branch_name: developer of technology infrastructure
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_china_macro_policy_branch_1ms7pyj
+  topic_id: provisional_china_macro_policy
+  branch_name: 服务业新消费与高技术服务
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_personal_assistant_openclaw
+  topic_id: provisional_ai_agents
+  branch_name: Personal Assistant Openclaw
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_agentic_skills_framework
+  topic_id: provisional_ai_agents
+  branch_name: Agentic Skills Framework
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_personal_assistant_hermes
+  topic_id: provisional_ai_agents
+  branch_name: Personal Assistant Hermes
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_coding_skill_packs
+  topic_id: provisional_ai_agents
+  branch_name: Coding Skill Packs
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_workflow_automation
+  topic_id: provisional_ai_agents
+  branch_name: Workflow Automation
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_ai_agents_autonomous_agents
+  topic_id: provisional_ai_agents
+  branch_name: Autonomous Agents
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: provisional_radiopharmaceuticals_artificial_intelligence_future_of_diagnostic
+  topic_id: provisional_radiopharmaceuticals
+  branch_name: Artificial intelligence future of diagnostic
+  status: watch
+  naming_status: unresolved
+  naming_sources: []
+- branch_id: bci_ide_various_effects_on_many_industrial_fields_such_as_manufacturing
+  topic_id: bci
+  branch_name: ide various effects on many industrial fields such as manufacturing
+  status: watch
+  naming_status: unresolved
+  naming_sources: []

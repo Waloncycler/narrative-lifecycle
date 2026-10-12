@@ -1,0 +1,100 @@
+- evidence_id: humanoid_parent_label
+  topic_id: humanoid_robotics
+  branch_id:
+  event_date: "2026-01-13"
+  available_at: "2026-01-13"
+  event_title: Embodied intelligence label and stock mapping are stable
+  event_summary: Parent humanoid robotics has stable perception and beneficiary mapping.
+  event_type: label_formation
+  source_name: industry source fixture
+  source_url: https://example.invalid/fixtures/humanoid-parent-label
+  source_type: fixture_industry_source
+  evidence_strength: E2
+  affected_layer: [perception]
+  stage_effect: supports_S3
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports parent perception maturity.
+  limitation: Label evidence alone is not capital, pricing, or reality validation.
+  positive_or_negative: positive
+  confidence: 82
+- evidence_id: humanoid_parent_capital
+  topic_id: humanoid_robotics
+  branch_id:
+  event_date: "2026-01-14"
+  available_at: "2026-01-14"
+  event_title: Leaders and supply-chain breadth confirm capital testing
+  event_summary: Capital confirmation appears through leaders, breadth, and persistence in humanoid robotics.
+  event_type: capital_confirmation
+  source_name: market data fixture
+  source_url: https://example.invalid/fixtures/humanoid-parent-capital
+  source_type: fixture_market_data
+  evidence_strength: E3
+  affected_layer: [capital]
+  stage_effect: supports_S4
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports capital confirmation for the parent narrative.
+  limitation: Does not by itself prove durable S7 allocation.
+  positive_or_negative: positive
+  confidence: 82
+- evidence_id: humanoid_parent_pricing
+  topic_id: humanoid_robotics
+  branch_id:
+  event_date: "2026-01-15"
+  available_at: "2026-01-15"
+  event_title: Value-per-unit model enters institutional pricing language
+  event_summary: Pricing adoption exists through value-per-unit, penetration, and allocation language.
+  event_type: pricing_adoption
+  source_name: institutional model fixture
+  source_url: https://example.invalid/fixtures/humanoid-parent-pricing
+  source_type: fixture_institutional_model
+  evidence_strength: E3
+  affected_layer: [pricing]
+  stage_effect: supports_S5
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports pricing adoption for the parent narrative.
+  limitation: Valuation friction and good-news fatigue still require monitoring.
+  positive_or_negative: positive
+  confidence: 82
+- evidence_id: humanoid_parent_reality
+  topic_id: humanoid_robotics
+  branch_id:
+  event_date: "2026-01-16"
+  available_at: "2026-01-16"
+  event_title: Industrial testing and delivery evidence validates reality layer
+  event_summary: Parent humanoid robotics has product testing, orders, and delivery milestones.
+  event_type: product_delivery
+  source_name: customer evidence fixture
+  source_url: https://example.invalid/fixtures/humanoid-parent-reality
+  source_type: fixture_customer_evidence
+  evidence_strength: E3
+  affected_layer: [reality]
+  stage_effect: supports_S6
+  parent_or_branch: parent
+  branch_coverage_score: 0
+  interpretation: Supports reality validation for the parent narrative.
+  limitation: Repeatability and revenue conversion remain S7A triggers.
+  positive_or_negative: positive
+  confidence: 82
+- evidence_id: humanoid_e001
+  topic_id: humanoid_robotics
+  branch_id: robot_actuator
+  event_date: "2026-01-16"
+  available_at: "2026-01-16"
+  event_title: Industrial testing/order evidence
+  event_summary: Industrial test and order signals support a core humanoid robotics branch but still need revenue translation.
+  event_type: order_contract
+  source_name: company or customer evidence
+  source_url: https://example.invalid/fixtures/humanoid-industrial-testing-order
+  source_type: fixture_company_or_customer
+  evidence_strength: E2
+  affected_layer: [reality, capital]
+  stage_effect: supports_S5_to_S6
+  parent_or_branch: branch
+  branch_coverage_score: 60
+  interpretation: Supports reality validation in a core branch.
+  limitation: Requires revenue/profit translation before S7A.
+  positive_or_negative: positive
+  confidence: 82

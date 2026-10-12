@@ -1,0 +1,22 @@
+case_id: short_policy_theme
+case_name: 短期政策题材
+narrative_name: 短期政策题材
+time_period: "recurring policy-cycle calibration window"
+initial_stage: S1
+peak_stage: S3
+failed_transition: S3_to_S4
+failure_type: policy_name_without_capital_confirmation
+failure_reason_tags:
+  - policy_attention_not_capital
+  - weak_leader_breadth_persistence
+false_positive_signals:
+  - policy naming treated as capital confirmation
+  - one-day price movement treated as durable breadth
+missed_warning_signals:
+  - no persistent leader stock structure
+  - no pricing adoption or reality validation evidence
+corrective_rules:
+  - Policy naming alone cannot move a topic above S3.
+  - Require leader, breadth, volume, and persistence before S4.
+lessons_for_model: Policy attention is perception evidence, not capital confirmation.
+status: structured_calibration_case

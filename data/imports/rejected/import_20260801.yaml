@@ -1,0 +1,19 @@
+- evidence_id: invalid_parent_branch_trade_001
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  scope: parent
+  event_date: "2026-13-40"
+  available_at: "2026-13-40"
+  event_title: Branch-only BCI evidence with trading language
+  event_summary: Branch-only medical rehabilitation update says buy the parent theme.
+  event_type: rumor
+  source_name: ""
+  source_url:
+  source_type: other
+  evidence_strength: E4
+  affected_layer: [reality, invalid_layer]
+  stage_effect: upgrade
+  polarity: positive
+  interpretation: Branch evidence cannot upgrade the parent narrative.
+  limitation: Missing parent revenue confirmation.
+  confidence: high

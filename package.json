@@ -1,0 +1,66 @@
+{
+  "name": "narrative-lifecycle",
+  "version": "0.15.0",
+  "description": "A rule-based Narrative Lifecycle research system for classifying market narratives into S0-S7 stages. Evidence first. Rules second. LLM explanation third.",
+  "keywords": [
+    "narrative",
+    "market-research",
+    "lifecycle",
+    "evidence-based",
+    "stage-gate",
+    "financial-research",
+    "research-tool"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Waloncycler/narrative-lifecycle.git"
+  },
+  "homepage": "https://github.com/Waloncycler/narrative-lifecycle#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "narrative": "tsx src/cli/narrative.ts",
+    "run": "tsx src/cli/narrative.ts run",
+    "sync": "tsx src/cli/narrative.ts sync",
+    "audit": "tsx src/cli/narrative.ts audit",
+    "stage": "tsx src/cli/narrative.ts stage",
+    "intake": "tsx src/cli/narrative.ts intake",
+    "intake:workbench": "tsx src/cli/run_intake_workbench.ts",
+    "report": "tsx src/cli/narrative.ts report",
+    "workbench": "tsx src/cli/narrative.ts workbench",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "pipeline": "tsx src/cli/run_pipeline.ts",
+    "diff": "tsx src/cli/run_diff.ts",
+    "weekly": "tsx src/cli/run_weekly.ts",
+    "review": "tsx src/cli/run_review.ts",
+    "replay": "tsx src/cli/run_replay.ts",
+    "operate": "tsx src/cli/run_operate.ts",
+    "db:migrate": "tsx src/cli/run_db_migrate.ts",
+    "db:seed": "tsx src/cli/run_db_seed.ts"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "better-sqlite3": "^13.0.3",
+    "drizzle-orm": "^0.45.2",
+    "jsdom": "^27.0.1",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^26.1.0",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "drizzle-kit": "^0.31.10",
+    "json-schema-to-zod": "^2.8.1",
+    "playwright": "^1.62.1",
+    "tsx": "^4.23.12",
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  }
+}

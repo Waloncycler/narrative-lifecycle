@@ -1,0 +1,28 @@
+- topic_id: bci
+  historical_stage_path: [S2, S3, S4]
+  previous_peak_stage: S4
+  previous_failed_transition: S4_to_S5
+  previous_failure_reason: Parent narrative lacked pricing and broad reality evidence.
+  previous_missing_evidence:
+    - parent-level pricing
+    - repeatable revenue confirmation
+  previous_friction_points:
+    - medical branch can overstate parent readiness
+  previous_branch_structure:
+    - bci_medical_rehab
+  is_failure_case: false
+  memory_confidence: 70
+- topic_id: humanoid_robotics
+  historical_stage_path: [S3, S4, S5-S6]
+  previous_peak_stage: S5-S6
+  previous_failed_transition: S6_to_S7A
+  previous_failure_reason: Durability and crowded capital-cycle evidence remained incomplete.
+  previous_missing_evidence:
+    - repeat purchase
+    - standardized adoption
+  previous_friction_points:
+    - component branch evidence can be mistaken for parent confirmation
+  previous_branch_structure:
+    - humanoid_actuator
+  is_failure_case: false
+  memory_confidence: 65

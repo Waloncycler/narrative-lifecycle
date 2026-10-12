@@ -1,0 +1,23 @@
+case_id: web3_nft
+case_name: Web3/NFT selected phase
+narrative_name: Web3/NFT selected phase
+time_period: "2021-2022 broad calibration window"
+initial_stage: S2
+peak_stage: S5
+failed_transition: S5_to_S6
+failure_type: pricing_without_reality_validation
+failure_reason_tags:
+  - liquidity_driven_pricing
+  - weak_real_world_utility
+false_positive_signals:
+  - token and NFT price action treated as pricing adoption quality
+  - community attention treated as reality validation
+missed_warning_signals:
+  - unclear durable utility and cash-flow translation
+  - regulatory and platform friction
+  - deteriorating liquidity after attention saturation
+corrective_rules:
+  - Price action alone is not pricing adoption.
+  - Require customer, revenue, utility, or regulatory evidence before S6.
+lessons_for_model: Distinguish liquidity-driven narrative pricing from hard reality validation.
+status: structured_calibration_case

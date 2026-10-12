@@ -1,0 +1,59 @@
+- import_id: import_20260804
+  imported_at: 2026-08-04T01:43:58.026Z
+  source_file: outputs/intake/reviewed_evidence_draft.yaml
+  evidence_hash: 1278c8669c503686eb1b628c67f9bd60b6e674c26a68a32c58b511f5d044c2f4
+  evidence_id: direct_clinicaltrials_1eos217
+  topic_id: bci
+  branch_id: bci_medical_rehab
+  scope: branch
+  event_date: 2026-07-07
+  available_at: 2026-07-07
+  event_title: Implantable Brain-Computer Interface for Upper-Limb Recovery After Stroke
+  event_summary: RECRUITING · Stroke
+  event_type: DIRECT_SOURCE_RECORD
+  source_name: 美国临床试验注册平台
+  source_url: https://clinicaltrials.gov/study/NCT07477613
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - reality
+  stage_effect: split_branch
+  polarity: neutral
+  interpretation: A term-addressable original-source record may be relevant to
+    this Topic or Branch, but it is a review candidate rather than proof of any
+    lifecycle stage.
+  limitation: API metadata and title are insufficient to establish pricing,
+    adoption, revenue, scale, or a Stage transition. Verify the original record
+    and retain Parent/Branch separation. Branch evidence cannot upgrade the
+    parent narrative by itself.
+  confidence: low
+- import_id: import_20260804
+  imported_at: 2026-08-04T01:43:58.026Z
+  source_file: outputs/intake/reviewed_evidence_draft.yaml
+  evidence_hash: 25f67d73e0125280d76c26e84c1158051294ed26342c207ce3a61f7d0561d838
+  evidence_id: direct_clinicaltrials_1mkte81
+  topic_id: bci
+  branch_id: provisional_bci_psychiatric_depression
+  scope: branch
+  event_date: 2018-10-05
+  available_at: 2018-10-05
+  event_title: Affect Regulation Based on Brain-computer Interface Towards
+    Treatment for Depression
+  event_summary: COMPLETED · Emotion Regulation
+  event_type: DIRECT_SOURCE_RECORD
+  source_name: 美国临床试验注册平台
+  source_url: https://clinicaltrials.gov/study/NCT03696667
+  source_type: official
+  evidence_strength: E1
+  affected_layer:
+    - reality
+  stage_effect: split_branch
+  polarity: neutral
+  interpretation: A term-addressable original-source record may be relevant to
+    this Topic or Branch, but it is a review candidate rather than proof of any
+    lifecycle stage.
+  limitation: API metadata and title are insufficient to establish pricing,
+    adoption, revenue, scale, or a Stage transition. Verify the original record
+    and retain Parent/Branch separation. Branch evidence cannot upgrade the
+    parent narrative by itself.
+  confidence: low

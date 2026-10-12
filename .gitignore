@@ -1,0 +1,91 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build and distribution outputs
+dist/
+build/
+out/
+.next/
+
+# Logs and environment
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Operating System & IDE files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing and Coverage
+coverage/
+.vitest/
+.playwright-cli/
+
+# Runtime outputs (keep fixture definitions, ignore generated run outputs)
+outputs/runs/
+outputs/sources/
+outputs/operator_runs/
+outputs/reports/
+outputs/diffs/
+outputs/manifests/
+outputs/reviews/
+outputs/autonomy/
+outputs/research/
+outputs/research_agent/
+outputs/intake/
+outputs/history/
+outputs/pilot/history/
+outputs/replay/history/
+
+# Intelligence engine outputs (large generated data, not for repo)
+outputs/evolution_timelines/
+outputs/intelligence_cache/
+outputs/intelligence/
+outputs/worldmonitor/
+data/documents/remote_cache/
+outputs/research_cache/
+
+# Sensitive: API keys and credentials
+.env.*
+!.env.example
+secrets/
+*.key
+*.pem
+
+# Agent workspace files (unignore public skills)
+.agents/*
+!.agents/skills/
+
+# Generated large artifacts
+data/imports/*.yaml
+!data/imports/evidence_draft.example.yaml
+# Test fixtures that must stay tracked (consumed by the test suite).
+!data/imports/evidence_draft.invalid.yaml
+!data/imports/bci_market_baseline_2026_08.yaml
+
+# Runtime SQLite database (local-only; exceeds GitHub file size limits)
+data/narrative.db*
+data/*.db*
+*.db
+*.db-shm
+*.db-wal
+*.zip
+*.txt
+
+/generated/prisma

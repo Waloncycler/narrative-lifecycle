@@ -1,0 +1,83 @@
+pack_id: china_innovative_drugs_20260809
+title: 中国创新药产业研究包
+description: >-
+  以监管、医保和跨国药企原始披露建立可复现的原文取证入口。该研究包不接受二级报道的结论，
+  也不把交易 headline value 等同于已实现收入、临床成功或全球商业化。
+research_questions:
+  - 中国创新药对外授权是否已有持续的跨国药企原始披露与可核验的资本确认？
+  - 原始创新与新机制获批能否由监管原文独立支持，而非仅由新闻标题支持？
+  - 国内支付与商业化是否构成独立分支，且不与临床研发或对外授权混合判断？
+proposed_taxonomy:
+  parent_name: 中国创新药产业
+  parent_topic_id: null
+  proposed_branches:
+    - branch_name: 全球 BD 与对外授权
+      branch_id: innovative_drug_license_out
+      rationale: 已有正式主题，保留其独立的资本与现实证据链。
+    - branch_name: 原始创新与新机制获批
+      branch_id: null
+      rationale: 需先经 Topic Resolver 命名和证据验证，不能继承对外授权阶段。
+    - branch_name: 国内支付与商业化
+      branch_id: null
+      rationale: 需以支付准入和真实使用证据单独判断，不能由临床或 BD 代替。
+sources:
+  - source_id: nhsa_license_out_statistics_20260714
+    title: 国家医保局转载的国家药监局创新药统计与对外授权信息
+    url: https://www.nhsa.gov.cn/art/2026/7/14/art_14_21423.html
+    published_at: 2026-07-14
+    topic_id: innovative_drug_license_out
+    branch_id: null
+    candidate_node_id: null
+    source_class: official
+    rationale: 用于核验对外授权总量及创新药研发活动的官方口径，不能单独推导已实现收入。
+  - source_id: pfizer_3sbio_license_20250520
+    title: Pfizer 与三生制药达成 SSGJ-707 独家许可协议
+    url: https://www.pfizer.com/news/press-release/press-release-detail/pfizer-enters-exclusive-licensing-agreement-3sbio
+    published_at: 2025-05-20
+    topic_id: innovative_drug_license_out
+    branch_id: null
+    candidate_node_id: null
+    source_class: company_primary
+    rationale: 用于核验已披露的 upfront、milestone 与股权投资条款，交易总价值不可视为已实现收入。
+  - source_id: abbvie_remegen_license_20260112
+    title: AbbVie 与荣昌生物 RC148 独家许可协议
+    url: https://news.abbvie.com/2026-01-12-AbbVie-and-RemeGen-Announce-Exclusive-Licensing-Agreement-to-Develop-A-Novel-Bispecific-Antibody-for-Advanced-Solid-Tumors
+    published_at: 2026-01-12
+    topic_id: innovative_drug_license_out
+    branch_id: null
+    candidate_node_id: null
+    source_class: company_primary
+    rationale: 用于交叉核验跨国药企对中国资产的协议披露，保持在对外授权母题 scope。
+  - source_id: gsk_hengrui_agreements_20250728
+    title: GSK 与恒瑞医药合作协议
+    url: https://www.gsk.com/en-gb/media/press-releases/gsk-and-hengrui-pharma-enter-agreements/
+    published_at: 2025-07-28
+    topic_id: innovative_drug_license_out
+    branch_id: null
+    candidate_node_id: null
+    source_class: company_primary
+    rationale: 用于核验多资产合作的原始披露，不能越过 Evidence Gate 直接判断母题阶段。
+  - source_id: nhsa_innovation_drug_pricing_20260414
+    title: 国家医保局创新药价格与支付政策信息
+    url: https://www.nhsa.gov.cn/art/2026/4/14/art_53_20215.html
+    published_at: 2026-04-14
+    topic_id: null
+    branch_id: null
+    candidate_node_id: china_innovative_drugs_domestic_access
+    source_class: official
+    rationale: 国内支付与商业化为候选独立分支，必须先解析命名与 scope，不得污染对外授权或临床研发主题。
+  - source_id: cctv_new_mechanism_report_20260713
+    title: 央视财经关于新靶点和新机制创新药的报道
+    url: https://finance.cctv.com/2026/07/13/ARTI7QOGfiLCdFXfPaMygck7260713.shtml
+    published_at: 2026-07-13
+    topic_id: null
+    branch_id: null
+    candidate_node_id: china_innovative_drugs_original_innovation
+    source_class: secondary
+    rationale: 仅作监管原文定位线索；在找到药监局或其他一手来源前不自动取证或形成候选 Evidence。
+guardrail_check:
+  source_urls_are_retrieval_targets_not_evidence: true
+  proposed_taxonomy_is_not_auto_registered: true
+  parent_branch_separation: true
+  no_auto_evidence_import: true
+  no_trading_advice: true
